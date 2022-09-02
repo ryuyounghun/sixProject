@@ -48,8 +48,24 @@ body{
 	본문 섹션 css
  */
  .section-container{
- 	background-color:green;
- 	top: -30px;
+ 	width : 100%;
+ 	height : 72.3vh;
+ 	margin-bottom: 50px;
+ 	margin-top: 30px;
+ }
+ .searchBar-wrapper{
+ 	width :  100%;
+ 	margin:  auto;
+ 	padding : 0;
+ 	text-align : center;
+ }
+ .searchBar{
+ 	border : 5px solid black;
+ 	width: 300px;
+ 	height: 30px;
+ }
+ .aside-left, .aside-right, .aside-center{
+	margin-top : 20px;
  }
  .aside-left{
  	position : absolute;
@@ -78,50 +94,45 @@ body{
  	justify-content: center; 
  }
 
-.aside-center .storeThumbnail{
+.mapInfo{
+	padding : 40px;
+}
+.mapInfo p{
+	position : absolute;
+	color: #6666FF;
+	width: 300px;
+	background-color: navy;
+}
+.mapImg{
+	width : 300px;
+	height:200px;
+}
+.aside-center .partyJoinOut{
+	margin-top : 40px;
+	margin-left : 40px;
+	text-align : center;
 	background-color: olive;
-	width: inherit;
+	width : 300px;
+}
+.menuImg{
+	position:absolute;
+	right : 50px;
+	top : 50px;
+}
+.menuImg img{
+	width : 280px;
 	height: 150px;
 }
 
-.brandImg{
-	position : absolute;
-	margin-left : 10px;
-	margin-top: 10px;
-	width : 100px;
-	height:100px;
-}
-.storeInfo{
-	position : absolute;
-	left: 130px;	
-}
-.menuAndReview{
-	background-color: lime;
-	text-align: center;
-}
-.menuAndReviewList{
-	margin : 0;
-	padding : 0;
-	list-style: none;
-	display: flex;
-	justify-content: space-between;
+.participient{
+	position:absolute;
+	right : 40px;
+	top : 240px;
+	width : 300px;
+	height:200px;
+	
 	
 }
-.menuAndReviewList li:before {
-  display: inline-block;
-  width: 1px;
-  content: '';
-}
-.menuAndReviewList li:after {
-  display: inline-block;
-  width: 1px;
-  content: '';
-}
-.menuAndReviewList li {
-	background-color: orange;
-	width: 30%;
-}
-
 footer{
 	bottom: 0;
 	width : 100%;
