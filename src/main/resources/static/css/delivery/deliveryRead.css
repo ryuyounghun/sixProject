@@ -45,7 +45,7 @@ body{
  	width : 100%;
  	height : 72.3vh;
  	margin-bottom: 50px;
- 	margin-top: 50px;
+ 	margin-top: 30px;
  }
  .searchBar-wrapper{
  	width :  100%;
@@ -59,7 +59,7 @@ body{
  	height: 30px;
  }
  .aside-left, .aside-right, .aside-center{
-	margin-top : 5%;
+	margin-top : 20px;
  }
  .aside-left{
  	position : absolute;
@@ -88,21 +88,49 @@ body{
  	justify-content: center; 
  }
 
- .foodList{
- 	display: flex;
- 	flex-direction : row;
- 	flex-wrap : wrap;
- 	list-style: none;
- 	
- }
- .foodList li{
- 	margin-top : 10px;
-	margin-right : 10px;
-	width: 160px;
-	height: 100px;
-	background-color: yellow;
-	overflow: hidden; 	
- }
+.aside-center .storeThumbnail{
+	background-color: olive;
+	width: inherit;
+	height: 150px;
+}
+
+.brandImg{
+	position : absolute;
+	margin-left : 10px;
+	margin-top: 10px;
+	width : 100px;
+	height:100px;
+}
+.storeInfo{
+	position : absolute;
+	left: 130px;	
+}
+.menuAndReview{
+	background-color: lime;
+	text-align: center;
+}
+.menuAndReviewList{
+	margin : 0;
+	padding : 0;
+	list-style: none;
+	display: flex;
+	justify-content: space-between;
+	
+}
+.menuAndReviewList li:before {
+  display: inline-block;
+  width: 1px;
+  content: '';
+}
+.menuAndReviewList li:after {
+  display: inline-block;
+  width: 1px;
+  content: '';
+}
+.menuAndReviewList li {
+	background-color: orange;
+	width: 30%;
+}
 
 footer{
 	bottom: 0;

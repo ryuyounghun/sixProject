@@ -18,4 +18,12 @@ public class DeliveryController {
 		
 		return d+ "/" + d + "index"; 
 	}
+	
+	@GetMapping("/read")
+	public String deliveryRead() {
+		
+		return d+ "/" + d + "read"; 
+	}
+	
+	
 }
