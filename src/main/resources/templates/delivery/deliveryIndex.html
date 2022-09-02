@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" href="/css/delivery/deliveryIndex.css">
+</head>
+<body>
+	<div id="headerAndSection-wrapper">
+		<header>
+			<div class="header-container">
+				<a href="/" class="header-logo" >
+					asd
+				</a>
+
+				<ui class="header-logMenuList"> <!-- 로그인 및 로그아웃 링크 -->
+					<li sec:authorize ="not isAuthenticated">
+						<a th:href="@{/user/login}">
+							로그인
+						</a>
+					</li>
+					<li sec:authorize="not isAuthenticated">
+						<a th:href ="@{/user/join}">
+							회원가입
+						</a>
+					</li>
+					<li sec:authorize="isAuthenticated">
+						<a th:href ="@{/logout}">
+							로그아웃
+						</a>
+					</li>
+					<li sec:authorize="isAuthenticated">
+						<a th:href ="@{/user/mypage}">
+							회원정보
+						</a>
+					</li>
+				</ui>
+
+			</div>
+		</header>
+	
+		<section>
+			<div class="section-container">
+				
+				<div class="searchBar-wrapper">
+					<div class="container-searchBar">
+						<input class = "searchBar" type = "text" name="searchWord" th:value="${searchWord}" id="searchWord" placeholder="메뉴검색">
+						검색
+					</div>
+				</div>
+				
+				
+				<aside>
+					<div class="aside-left">
+
+					</div>
+				</aside>
+				
+				<aside>
+					<div class="aside-right">
+
+					</div>
+				</aside>
+
+				<div class="aside-center">
+					<div class="section-center">
+						<ul class="foodList">
+							<li>
+								<div>
+									a
+								</div>							
+							</li>
+							<li>
+								<div>
+									b
+								</div>
+							</li>
+							<li>	
+								<div>
+									c
+								</div>
+							</li>
+							<li>
+								<div>
+									d
+								</div>
+							</li>
+							<li>
+								<div>
+									e
+								</div>
+							</li>
+							<li>
+								<div>
+									F
+								</div>
+							</li>
+							<li>
+								<div>
+									G
+								</div>
+							</li>
+						</ul>
+					</div>
+				</div>	
+			</div>		
+		
+		</section>
+
+	</div>
+
+	<footer>
+		
+	</footer>
+</body>
+</html>
