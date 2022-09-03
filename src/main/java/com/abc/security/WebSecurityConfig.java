@@ -68,12 +68,12 @@ public class WebSecurityConfig {
 		String userNameQueryForEnabled =
 				// 열을 지정하고 공백을 넣자 ( FORM KEYWORD MISSING ERROR 방지)
 				"SELECT MEMBERID username, MEMBERPW password, ENABLED "+
-				"FROM MEMBER "+
+				"FROM DELIVERY_MEMBER "+
 				"WHERE MEMBERID = ?"; // ? : memberId가 들어갈 곳
 		
 		String userNameQueryForRole = 
 				"SELECT MEMBERID username, ROLENAME role_name "+
-				"FROM MEMBER "+
+				"FROM DELIVERY_MEMBER "+
 				"WHERE MEMBERID = ?";
 		
 		auth.jdbcAuthentication()
