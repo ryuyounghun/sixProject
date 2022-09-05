@@ -19,35 +19,22 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Controller
-@RequestMapping("delivery")
-public class DeliveryController {
+@RequestMapping("store")
+public class StoreController {
 
-	String d = "delivery";
+	String s = "store";
 	
 	@Autowired
-	private DeliveryService dService;
+	private DeliveryService sService;
+	
 	
 	// 첨부파일 업로드 패스 지정
 	@Value("${spring.servlet.multipart.location}")		// 설정파일(application 파일)의 속성을 가지고 오고 싶을떄 사용할 수 있는 annotation(spring)
 	private String uploadPath;
 	
-	
-	@GetMapping("/index")
-	public String deliveryIndex() {
-		
-		return d+ "/" + d + "index"; 
-	}
-	
-	@GetMapping("/read")
-	public String deliveryRead() {
-		
-		return d+ "/" + d + "read"; 
-	}
-	
-
 	@GetMapping("/inputStore")
 	public String inputStore() {
-		return d + "/" + "inputStore";
+		return s+ "/" + "inputStore";
 	}
 	
 	@PostMapping("/inputStore")
@@ -70,7 +57,7 @@ public class DeliveryController {
 			
 		}
 		log.debug("store : {} ", store);
-		dService.insertStore(store);
+		sService.insertStore(store);
 		
 		return "redirect:./";
 	}

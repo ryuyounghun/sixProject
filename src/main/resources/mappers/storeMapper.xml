@@ -1,0 +1,42 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- com.abc.dao.GuestbookDAO 인터페이스와 매핑됨 -->
+<mapper namespace="com.abc.dao.DeliveryDAO">
+
+	<!-- 상품 정보 등록 쿼리 -->
+	<insert id="insertStore" parameterType="Store">
+		INSERT INTO STORE(
+			STORENUM,
+			MEMBERNUM,
+			STORENAME,
+			STORECONTENT,
+			CATEGORY,
+			ADDRESS,
+			PHONE
+			<!-- 첨부파일 정보가 있을때 -->
+			<if test = "originalFile != null and savedFile != null">
+				, ORIGINALFILE
+				, SAVEDFILE
+			</if>
+		)
+		VALUES (
+			STORE_SEQ.NEXTVAL,
+			#{memberNum},
+			#{storeName},
+			#{storeContent},
+			#{category},
+			#{address},
+			#{phone}
+			<!-- 첨부파일 정보 유무 확인 -->
+			<if test = "originalFile != null and savedFile != null">
+				, #{originalFile}
+				, #{savedFile}
+			</if>
+		)
+	</insert>
+	
+	
+</mapper>
+
