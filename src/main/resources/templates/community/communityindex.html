@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" 
+<html xmlns:th="http://www.thymeleaf.org"
 	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
 <meta charset="UTF-8">
@@ -10,49 +10,35 @@
 	<div id="headerAndSection-wrapper">
 		<header>
 			<div class="header-container">
-				<a href="/" class="header-logo" >
-					asdxx
-				</a>
-				<a th:href="@{/delivery/index}" class="header-toAnother" >
-					배달로~qwe
+				<a href="/" class="header-logo"> asdxx </a> <a
+					th:href="@{/delivery/index}" class="header-toAnother"> 배달로~qwe
 				</a>
 				<ui class="header-logMenuList"> <!-- 로그인 및 로그아웃 링크 -->
-					<li sec:authorize ="not isAuthenticated">
-						<a th:href="@{/user/login}">
-							로그인
-						</a>
-					</li>
-					<li sec:authorize="not isAuthenticated">
-						<a th:href ="@{/user/join}">
-							회원가입
-						</a>
-					</li>
-					<li sec:authorize="isAuthenticated">
-						<a th:href ="@{/logout}">
-							로그아웃
-						</a>
-					</li>
-					<li sec:authorize="isAuthenticated">
-						<a th:href ="@{/user/mypage}">
-							회원정보
-						</a>
-					</li>
+				<li sec:authorize="not isAuthenticated"><a
+					th:href="@{/user/login}"> 로그인 </a></li>
+				<li sec:authorize="not isAuthenticated"><a
+					th:href="@{/user/join}"> 회원가입 </a></li>
+				<li sec:authorize="isAuthenticated"><a th:href="@{/logout}">
+						로그아웃 </a></li>
+				<li sec:authorize="isAuthenticated"><a
+					th:href="@{/user/mypage}"> 회원정보 </a></li>
 				</ui>
 
 			</div>
 		</header>
-	
+
 		<section>
 			<div class="section-container">
-				
+
 				<div class="searchBar-wrapper">
 					<div class="container-searchBar">
-						<input class = "searchBar" type = "text" name="searchWord" th:value="${searchWord}" id="searchWord" placeholder="메뉴검색">
+						<input class="searchBar" type="text" name="searchWord"
+							th:value="${searchWord}" id="searchWord" placeholder="메뉴검색">
 						검색
 					</div>
 				</div>
-				
-				
+
+
 				<aside>
 					<div class="aside-left">
 						<ul>
@@ -63,40 +49,62 @@
 						</ul>
 					</div>
 				</aside>
-				
+
 				<aside>
 					<div class="aside-right">
 						<!-- 실시간 키워드(aJax)  -->
-						<div id="">
-						 	실시간 키워드(aJax)
-						</div>
+						<div id="">실시간 키워드(aJax)</div>
 					</div>
 				</aside>
 
 				<div class="aside-center">
 					<div class="section-center">
 						<div class="boardBox">
-							<div >
-								asd
+							<div>실시간 모임 구직</div>
+
+							<div>실시간 게시글</div>
+						</div>
+						<!--  ajax로 글보여주기 -->
+						<div class="write-container">
+							<div class="partyWrite">
+								<table>
+									<tr>
+										<th>작성자</th>
+										<th>제목</td>
+										<th>작성일</th>
+									</tr>
+									<tr>
+										<td>a</td>
+										<td>s</td>
+										<td>d</td>
+									</tr>
+								</table>
 							</div>
-							
-							<div>
-								qwe
+							<div class="liveWrite">
+								<table>
+									<tr>
+										<th>작성자</th>
+										<th>제목</td>
+										<th>작성일</th>
+									</tr>
+									<tr>
+										<td>a</td>
+										<td>s</td>
+										<td>d</td>
+									</tr>
+								</table>
 							</div>
+						</div>
 					</div>
-					<!--  ajax로 글보여주기 -->
-					<div>
-						ㅁㄴㅇ
-					</div>
-				</div>	
-			</div>		
-		
+					<input type="button" value="글쓰기" class="write-btn" onclick="javascript:location.href='write'">
+				</div>
+				
+				
+			</div>
 		</section>
 
 	</div>
 
-	<footer>
-		
-	</footer>
+	<footer> </footer>
 </body>
 </html>
