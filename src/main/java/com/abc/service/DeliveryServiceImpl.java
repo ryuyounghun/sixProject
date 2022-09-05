@@ -1,5 +1,7 @@
 package com.abc.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +18,12 @@ public class DeliveryServiceImpl implements DeliveryService{
 	public int insertStore(Store store) {
 		// TODO Auto-generated method stub
 		return dDao.insertStore(store);
+	}
+
+	@Override
+	public List<Store> selectSearch(String searchKeyword) {
+		// TODO Auto-generated method stub
+		return dDao.selectSearch(searchKeyword);
 	}
 
 }

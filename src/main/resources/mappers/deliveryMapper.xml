@@ -37,6 +37,14 @@
 		)
 	</insert>
 	
+	<select id="selectSearch" parameterType="string" resultType="Store">
+	SELECT * FROM
+	STORE
+	WHERE WAITING = 'N' 
+	<if test="title != null">
+		AND STORENAME LIKE '%'||#{title}||'%'
+	</if>
 	
+	</select>
 </mapper>
 

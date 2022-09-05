@@ -18,12 +18,12 @@
 				</a>
 				<ui class="header-logMenuList"> <!-- 로그인 및 로그아웃 링크 -->
 					<li sec:authorize ="not isAuthenticated">
-						<a th:href="@{/user/login}">
+						<a th:href="@{/member/login}">
 							로그인
 						</a>
 					</li>
 					<li sec:authorize="not isAuthenticated">
-						<a th:href ="@{/user/join}">
+						<a th:href ="@{/member/join}">
 							회원가입
 						</a>
 					</li>
@@ -33,7 +33,7 @@
 						</a>
 					</li>
 					<li sec:authorize="isAuthenticated">
-						<a th:href ="@{/user/mypage}">
+						<a th:href ="@{/member/mypage}">
 							회원정보
 						</a>
 					</li>

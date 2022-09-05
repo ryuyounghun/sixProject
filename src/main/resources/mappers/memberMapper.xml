@@ -1,0 +1,19 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- com.abc.dao.MemberDAO 인터페이스와 매핑됨 -->
+<mapper namespace="com.abc.dao.MemberDAO">
+
+	<!-- 회원정보 등록 쿼리 -->
+	<insert id = "insertMember" parameterType = "member">
+		INSERT INTO DELIVERY_MEMBER (MEMBERNUM, MEMBERID, MEMBERPW, MEMBERNAME, NICKNAME, ADDRESS, PHONE)
+		VALUES (DELIVERY_MEMBER_SEQ.NEXTVAL, #{memberId}, #{memberPw}, #{name}, #{nickname}, #{address}, #{phone})
+	</insert>
+	
+	<select id = "selectOneMember" parameterType = "string" resultType = "member">
+	 	SELECT * FROM DELIVERY_MEMBER
+	 	WHERE MEMBERID = #{memberId}
+	</select>
+</mapper>
+

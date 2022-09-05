@@ -1,0 +1,120 @@
+@charset "UTF-8";
+
+/* joinContainer */
+.joinContainer {
+	width:780px; 
+	margin: 0 auto; 
+}
+
+/* joinTitle */
+.joinContainer .joinTitle {
+	margin-top: 30px;
+}
+.joinContainer .joinTitle h2 { 
+	text-align: center;
+    padding: 30px;
+    font-size: 45px
+}
+
+/* joinContent */
+.joinContainer .joinContent form {
+	width: 100%; 
+	/* 패딩수치를 영역안으로 인사이드시켜 영역이 커지지 않게 처리 */
+	padding: 30px 100px; box-sizing: border-box; 
+}
+.joinContainer .joinContent fieldset { border: none; background: #fcf5e1; padding-bottom: 23px; }
+
+.joinContainer .joinContent .optionalInfo { margin-top: 45px; }
+
+.joinContainer .joinContent legend { position: relative; top: -25px; left: 30px; }
+
+.joinContainer .joinContent label { 
+	font-size: 18px;
+	margin: 75px;
+}
+.joinContainer .joinContent .requiredInfo input {
+	display: block;
+	width: 80%;
+	height: 50px;
+	margin: 10px auto;
+	border: none; background-color: #ededed;
+	padding: 0 20px;
+	box-sizing: border-box; /* 패딩수치를 인사이드 처리 */
+}
+.joinContainer .joinContent #birth {
+	display: block;
+	width: 80%;
+	height: 50px;
+	margin: 10px auto;
+	border: none; background-color: #ededed;
+	padding: 0 20px;
+	box-sizing: border-box; /* 패딩수치를 인사이드 처리 */
+}
+.joinContainer .joinContent {
+	margin: 0;
+}
+.joinContainer .joinContent p { 
+	font-size: 18px;
+	margin: 15px 75px 0;
+}
+.joinContainer .joinContent div {
+	margin: 0 75px;
+}
+.joinContainer .joinContent input {
+	margin: 0 10px;
+}
+.joinContainer .joinContent span {
+	font-size: 20px;
+	margin-right: 20px;
+}
+.joinContainer .joinContent .address1 {
+	display: inline-block;
+    width: 62%;
+    height: 50px;
+    margin: 10px 0 10px 57px;
+    border: none;
+    background-color: #ededed;
+    padding: 0 20px;
+    box-sizing: border-box; /* 패딩수치를 인사이드 처리 */
+}
+.joinContainer .joinContent .addressFind {
+	width: 110px; height: 50px;
+	margin: 10px;
+	border: none;
+	font-size: 20px;
+	background-color: #ededed;
+	text-align: center;
+}
+
+/* joinContent의 joinIdWrap */
+.joinContainer .joinContent .joinIdWrap { width: 80%; margin: 0 auto; }
+.joinContainer .joinContent #memberId { width: 62%; display: inline-block; }
+.joinContainer .joinContent #memberIdChk { width: 36%; display: inline-block; }
+
+/* joinContent의 button */
+.joinContainer .joinContent .buttons {
+    background: none;
+    margin: 60px 100px 0px;
+}
+.joinContainer .joinContent .buttons legend { position: absolute; top: -999em; }
+
+.joinContainer .joinContent button { 
+	margin: 10px;
+	font-size: 20px;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 15px;
+    font-family: "paybooc-Light", sans-serif;
+    box-shadow: 0 15px 35px rgb(0 0 0 / 20%);
+    font-weight: 600;
+    transition: 0.25s;
+    background-color: #ffc500;
+	color: #360d00;
+}
+
+.joinContainer .joinContent button:hover {
+	letter-spacing: 2px;
+    transform: scale(1.2);
+    cursor: pointer;
+}
+

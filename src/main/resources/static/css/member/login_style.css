@@ -1,0 +1,81 @@
+@charset "UTF-8";
+
+/* loginContainer */
+.loginContainer {
+	width:780px; height: 550px; 
+	margin: 0 auto; 
+	
+}
+
+/* loginTitle */
+.loginContainer .loginTitle h2 { 
+	width: 100%; 
+	height: 100px; 
+	line-height: 45px;
+	margin-top: 50px;
+	text-align: center;
+	padding-top: 30px;
+    box-sizing: border-box;
+    font-size: 30px;
+}
+em {color: #c90f00; font-size: 50px; }
+
+/* loginContent */
+.loginContainer .loginContent form {
+	width: 100%; height:450px;
+	/* 패딩수치를 영역안으로 인사이드시켜 영역이 커지지 않게 처리 */
+	padding: 60px 100px;; box-sizing: border-box; margin-top: 20px;
+}
+.loginContainer .loginContent fieldset { border: none; }
+.loginContainer .loginContent legend { 
+	/* 요소를 화면 밖으로 처리 왜? 스크린리더가 읽어줘야 하므로 display:none; 을 사용하지 말 것 */
+	position: absolute; left: -999em; }
+.loginContainer .loginContent label { 
+	display: block; 
+	font-size: 18px;
+	margin-bottom: 10px;
+}
+.loginContainer .loginContent input {
+	display: block;
+	width: 100%; height: 50px;
+	margin-bottom: 25px;
+	border: none; background-color: #ededed;
+	padding: 0 20px;
+	box-sizing: border-box; /* 패딩수치를 인사이드 처리 */
+}
+.loginContainer .loginContent ul {
+	width: 100%;
+	text-align: right;
+	margin-bottom: 40px;
+}
+.loginContainer .loginContent li {
+	display: inline-block;
+	height: 12px; line-height: 12px;
+}
+.loginContainer .loginContent li a {
+	font-size: 18px;
+}
+.loginContainer .loginContent li:last-child {
+	border-left: 1px solid #fff;
+	height: 18px;
+	padding-left: 10px;
+	margin-left: 4px;
+}
+.loginContainer .loginContent button {
+	border: none;
+    padding: 15px 30px;
+    border-radius: 15px;
+    font-family: "paybooc-Light", sans-serif;
+    box-shadow: 0 15px 35px rgb(0 0 0 / 20%);
+    font-weight: 600;
+    transition: 0.25s;
+    background-color: #ffc500;
+	color: #360d00;
+	font-size: 25px;
+	margin: 0 195px;
+}
+.loginContainer .loginContent button:hover {
+    letter-spacing: 2px;
+    transform: scale(1.2);
+    cursor: pointer;
+}
