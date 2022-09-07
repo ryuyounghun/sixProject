@@ -17,6 +17,7 @@ public class Member implements UserDetails {
 	private String memberNum;
 	private String memberId;
 	private String memberPw;
+	private String name;
 	private String nickname;
 	private String pinNumber;	// 핀번호
 	private String address;

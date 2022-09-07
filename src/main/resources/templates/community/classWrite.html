@@ -8,11 +8,13 @@
 </head>
 <body>
 
-	<form action = "classWrite" method = "POST" onsubmit = "checkValues();">
+	<form action = "classWrite" method = "POST" onsubmit = "return checkValues();" enctype = "multipart/form-data">
 		<table>
 			<tr>
 				<th>약속장소</th>
-				<td><input type="text" id="address_kakao" name="destination" readonly /></td>
+				<td>
+					<input type="text" id="address_kakao" name="destination" readonly>
+				</td>
 				<td>
 					<input type="button" value="지도 참고하기" onclick="openDestinationForm();">
 				</td>
@@ -30,9 +32,7 @@
 				</td>
 			</tr>
 			<tr>
-				<div class="tag-form">
-                	<input  type="hidden" name="tag" id="tagList" value="">
-            	</div>
+                	<input  type="hidden" name="classTag" id="tagList" value="">
 				
 				<ul id="tag-list"></ul>
 
@@ -41,11 +41,22 @@
 					placeholder="스페이스바로 해시태그를 등록해주세요." style="width: 300px;" />
 				</div>
 			</tr>
-			
+			<tr>
+				<th>인원(본인포함!)</th>
+				<td>
+					<input type="number" min="2" name="totalMember" value="2">
+				</td>
+			</tr>
 			<tr>
 				<th colspan = "2">
 					<input type = "submit" value = "글쓰기">
 				</th>
+			</tr>
+			<tr>
+				<th>첨부파일</th>
+				<td>
+					<input type = "file" name = "file" >
+				</td>
 			</tr>
 		</table>
 	</form>
@@ -133,7 +144,21 @@ function openDestinationForm(){
 	window.open("/community/selectDestination", "장소찾기", "left=50%, top=50%, width=1000, height=510")
 }
 
+function checkValues(){
+	let title = document.getElementById('title');
+	let content = document.getElementById('content');
 
+	if ( title.value.trim().length == 0){
+		alert('제목을 입력해 주세요.');
+		title.focus();
+		return false;
 	
+	}
+	if ( content.value.trim().length == 0){
+		alert('내용을 입력해 주세요.');
+		content.focus();
+		return false;
+	}
+}
 </script>
 </html>

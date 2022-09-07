@@ -16,8 +16,8 @@ import lombok.ToString;
 public class ClassBoard {
 
 	private int classNum;
-	private String tag;
-	private String memberNum;
+	private String classTag;
+	private int memberNum;
 	private String destination;
 	private int totalMember;
 	private String nickname;

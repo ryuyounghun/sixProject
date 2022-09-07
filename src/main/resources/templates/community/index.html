@@ -15,13 +15,13 @@
 				</a>
 				<ui class="header-logMenuList"> <!-- 로그인 및 로그아웃 링크 -->
 				<li sec:authorize="not isAuthenticated"><a
-					th:href="@{/user/login}"> 로그인 </a></li>
+					th:href="@{/member/login}"> 로그인 </a></li>
 				<li sec:authorize="not isAuthenticated"><a
-					th:href="@{/user/join}"> 회원가입 </a></li>
+					th:href="@{/member/join}"> 회원가입 </a></li>
 				<li sec:authorize="isAuthenticated"><a th:href="@{/logout}">
 						로그아웃 </a></li>
 				<li sec:authorize="isAuthenticated"><a
-					th:href="@{/user/mypage}"> 회원정보 </a></li>
+					th:href="@{/member/mypage}"> 회원정보 </a></li>
 				</ui>
 
 			</div>
@@ -73,10 +73,20 @@
 										<th>제목</td>
 										<th>작성일</th>
 									</tr>
-									<tr>
-										<td>a</td>
-										<td>s</td>
-										<td>d</td>
+									
+									<tr th:each="list : ${cbList}">
+										<td th:text="${list.nickname}"></td>
+										<td>
+											<a>
+												<span th:text="${list.title}"
+												 style="display:inline-block;
+												 white-space: nowrap;
+												 overflow: hidden;
+												 text-overflow: ellipsis; 
+												 max-width: 13ch;"></span>
+											</a>
+										</td>
+										<td th:text="${list.inputdate}"></td>
 									</tr>
 								</table>
 							</div>

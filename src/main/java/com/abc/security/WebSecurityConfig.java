@@ -50,7 +50,7 @@ public class WebSecurityConfig {
 		.passwordParameter("memberPw") 
 		.and()
 		.logout() // 로그아웃설정
-		.logoutSuccessUrl("/") // 로그 아웃 성공시 이동할 주소
+		.logoutSuccessUrl("/") // 로그아웃 성공시 이동할 주소
 		.permitAll()
 		.and()
 		.cors()
@@ -67,14 +67,14 @@ public class WebSecurityConfig {
 		
 		String userNameQueryForEnabled =
 				// 열을 지정하고 공백을 넣자 ( FORM KEYWORD MISSING ERROR 방지)
-				"SELECT MEMBERNUM username, MEMBERPW password, ENABLED "+
+				"SELECT MEMBERID username, MEMBERPW password, ENABLED "+
 				"FROM DELIVERY_MEMBER "+
-				"WHERE MEMBERNUM = ?"; // ? : memberId가 들어갈 곳
+				"WHERE MEMBERID = ?"; // ? : memberId가 들어갈 곳
 		
 		String userNameQueryForRole = 
-				"SELECT MEMBERNUM username, ROLENAME role_name "+
+				"SELECT MEMBERID username, ROLENAME role_name "+
 				"FROM DELIVERY_MEMBER "+
-				"WHERE MEMBERNUM = ?";
+				"WHERE MEMBERID = ?";
 		
 		auth.jdbcAuthentication()
 		.dataSource(dataSource) // db에 접속하기 위한 정보
