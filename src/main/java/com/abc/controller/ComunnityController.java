@@ -47,7 +47,6 @@ public class ComunnityController {
 		log.debug("Post write()시작");
 
 		log.debug("write cBoard : {}", cBoard);
-		log.debug("rdTag : {}", rdTag);
 		
 		
 		return "redirect:./index"; // .../board/

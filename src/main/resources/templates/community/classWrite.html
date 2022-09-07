@@ -31,7 +31,7 @@
 			</tr>
 			<tr>
 				<div class="tag-form">
-                	<input  type="hidden" name="tag" id="rdTag" value="">
+                	<input  type="hidden" name="tag" id="tagList" value="">
             	</div>
 				
 				<ul id="tag-list"></ul>
@@ -65,6 +65,69 @@ window.onload = function(){
         }).open();
     });
 }
+
+// 해시태그
+$(document).ready(function () {
+    var tag = {};
+    var counter = 0;
+
+	    
+    // 입력한 값을 태그로 생성한다.
+    function addTag (value) {
+        tag[counter] = value;
+        counter++; 
+    	
+    }
+
+    function marginTag () {
+        return Object.values(tag).filter(function (word) {
+            return word !== "";
+        });
+    }
+
+    $("#tag").on("keyup", function (e) {
+        var value = marginTag(); // return array
+        $("#tagList").val(value); 
+    });
+    
+    $("#tag").on("keypress", function (e) {
+        var self = $(this);
+
+        //엔터나 스페이스바 눌렀을때 실행
+        if ( e.keyCode == 32) {
+
+            var tagValue = self.val(); // 값 가져오기
+
+            // 해시태그 값 없으면 실행X
+            if (tagValue !== "") {
+
+                // 같은 태그가 있는지 검사한다. 있다면 해당값이 array 로 return 된다.
+                var result = Object.values(tag).filter(function (word) {
+                    return word === tagValue;
+                })
+            
+                // 해시태그가 중복되었는지 확인
+                if (result.length == 0) { 
+                    $("#tag-list").append("<li class='tag-item'>"+tagValue+"<span class='del-btn' idx='"+counter+"'>x</span></li>");
+                    addTag(tagValue);
+                    self.val("");
+                } else {
+                    alert("태그값이 중복됩니다.");
+                }
+            }
+            e.preventDefault(); // SpaceBar 시 빈공간이 생기지 않도록 방지
+        }
+    });
+
+    // 삭제 버튼 
+    // 인덱스 검사 후 삭제
+    $(document).on("click", ".del-btn", function (e) {
+        var index = $(this).attr("idx");
+        tag[index] = "";
+        $(this).parent().remove();
+    });
+})
+	
 	
 function openDestinationForm(){
 	window.open("/community/selectDestination", "장소찾기", "left=50%, top=50%, width=1000, height=510")
