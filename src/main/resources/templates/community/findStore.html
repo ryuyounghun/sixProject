@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+		xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<meta charset="UTF-8">
+<title>지도</title>
+	<link rel = "stylesheet" href = "/css/style.css">
+	<link rel = "stylesheet" href = "/css/find_style2.css">
+</head>
+<body>
+	<div id="wrap">
+	    <!-- 헤더 부분 -->
+	    <header id = "header" class = "clearfix">
+	    	<!-- 로고 부분 -->
+	        <a th:href = "@{/}" >
+	        	<span id = "logo"></span>
+	        </a>
+	        <!-- 헤더 윗 부분(로그인, 회원가입) -->
+	        <div class = "util">
+	        	
+	        	<!-- 인증되지 않은 사용자의 경우(비로그인 상태) -->
+	        	<p sec:authorize = "not isAuthenticated()"><a th:href = "@{/member/join}">회원가입</a></p>
+	        	<p sec:authorize = "not isAuthenticated()"><a th:href = "@{/member/login}">로그인</a></p>
+	        	
+	        	<!-- 인증된 사용자(로그인 상태) -->
+	        	<!-- WebSecurityConfig에 이미 logout에 대한 것을 정의해둠. 따라서 html을 따로 만들어주지 않아도 됨 -->
+	        	<p sec:authorize = "isAuthenticated()"><a th:href = "@{/member/update}">정보수정</a></p>
+	        	<p sec:authorize = "isAuthenticated()"><a th:href = "@{/logout}">로그아웃</a></p>
+	        	
+	        	<!-- 관리자(ADMIN) 계정만 접근가능 -->
+	        	<p sec:authorize = "hasRole('ADMIN')"><a th:href = "@{/manager}">관리자</a></p>
+	        	
+	        	<!-- 인증된 사용자의 이름(username) -->
+	        	<p id = "welcomeMsg" sec:authorize = "isAuthenticated()"><span sec:authentication = "name"></span> 님 환영합니다!</p>
+	        	
+	        </div>
+	        <!-- 메뉴 네비게이션 -->
+	        <nav class="nav">
+	            <ul>
+	                <li><a th:href="@{/product/menu}">메뉴</a>
+	                    <ul class="submenu">
+	                        <li><a th:href="|@{/product/menu}?category=1|">단품메뉴</a></li>
+	                        <li><a th:href="|@{/product/menu}?category=2|">세트메뉴</a></li>
+	                        <li><a th:href="|@{/product/menu}?category=3|">사이드</a></li>
+	                        <li><a th:href="|@{/product/menu}?category=4|">음료&디저트</a></li>
+	                    </ul>
+	                </li>
+	                <li><a th:href="@{/item/buyItem}">주문하기</a>
+	                    <ul class="submenu">
+	                        <li><a th:href="@{/item/buyItem}">배달</a></li>
+	                        <li><a th:href="@{/findStore}">매장찾기</a></li>
+	                    </ul>
+	                </li>
+	                <li><a th:href="@{/notice/brandInfo}">브랜드</a>
+	                    <ul class="submenu">
+	                        <li><a th:href="@{/notice/brandInfo}">최고영소개</a></li>
+	                        <li><a th:href="@{/notice/list}">공지사항</a></li>
+	                        <li><a th:href="@{/notice/event}">이벤트</a></li>
+	                    </ul>
+	                </li>
+	                <li><a th:href="@{/myPage}">마이페이지</a>
+	                    <ul class="submenu">
+	                        <li><a th:href="@{/member/update}">회원정보수정</a></li>
+	                        <li><a th:href="@{/item/orderItem}">장바구니</a></li>
+	                    </ul>
+	                </li>
+	            </ul>
+	        </nav>
+	    </header>
+		
+		<!-- contentWrap 부분 -->
+	    <section id = "contentsWrap" class = "clearfix">
+	        <!-- 페이지 위치 표시해주는 부분 -->
+	        <div class = "webLocation">
+				<div class = "page_navi">
+					<a th:href="@{/}">
+						<span>HOME</span>
+					</a>
+					<span>주문하기</span>
+					<span>매장 찾기</span>
+				</div>
+	    	</div>
+	    	
+			<!-- 광주점 찾는 버튼 -->
+			<div id = "clickbutton">
+				<h1>우리 매장 찾기</h1>
+				<div id = "address">
+					<button onclick="setCenter()">무역회관점</button>
+					<button onclick="panTo()">충장점</button>
+					<div th:if="${member != null}" id="memberAddress">
+						<span th:if = "${member.address != null}">
+							<span th:text = "${member.address}"></span>
+							<input type="hidden" th:value = "${member.address}" id="myAddress">
+						</span>
+					</div>	
+				</div>
+				<!-- 지도 api -->
+				<div id="map"></div>
+			</div>
+		</section>
+
+		<!-- 푸터 부분 -->
+	    <footer id="footer">
+	        <div class="foot1">
+	        	<!-- 로고 부분 -->
+	        	<a th:href = "@{/}" >
+	        		<span></span>
+	        	</a>
+			</div>
+	        <div class="foot2">
+	        	<p>광주 광산구 무진대로 282 광주무역회관 7층  전화주문 010-1111-2222<br>
+				사업자 등록번호 123-45-67890 (주)CGY 대표이사 최세련, 고혜정, 류영훈<br>
+				Copyright 2022 CGY Co., Ltd. All right Reserved</p>
+			</div>
+	        <div class="foot3">
+	        	<p>이용약관</p>
+	        	<p>개인정보취급방침</p>
+	        	<p>법적고지</p>
+	        	<a href = "http://www.facebook.com" target="_blank"><span id = "facebook"></span></a>
+	        	<a href = "http://www.instagram.com" target="_blank"><span id = "insta"></span></a>
+	        </div>
+	    </footer>
+	    <!-- //footer 끝 -->
+
+
+
+<!-- 지도 api script부분(잘 모름요) -->
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=d279b1c92d3ca770d7f475a33f9cc889&libraries=services"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<script>
+		$(".nav > ul > li").mouseenter(function() {
+			$(".nav > ul > li > ul").stop().slideDown(200)
+		});
+		$(".nav > ul > li").mouseleave(function() {
+			$(".nav > ul > li > ul").stop().slideUp(200)
+		});
+	</script>
+<script>
+	var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+	
+	mapOption = { 
+	    center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
+	    level: 3 // 지도의 확대 레벨
+	};
+	
+	var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+	
+	
+	
+	
+	function setCenter() {            
+		// 이동할 위도 경도 위치를 생성합니다 
+		var moveLatLon = new kakao.maps.LatLng(35.1606, 126.8114);
+		
+		
+		// 지도 중심을 이동 시킵니다
+		map.setCenter(moveLatLon);
+		
+	}
+	
+	function panTo() {
+		// 이동할 위도 경도 위치를 생성합니다 
+		var moveLatLon = new kakao.maps.LatLng(35.1509, 126.9145);
+		// 지도 중심을 부드럽게 이동시킵니다
+		// 만약 이동할 거리가 지도 화면보다 크면 부드러운 효과 없이 이동합니다
+	        
+		map.panTo(moveLatLon);            
+		
+	}      
+	
+	
+	// 마커를 표시할 위치와 내용을 가지고 있는 객체 배열입니다 
+	var positions = [
+	    {
+	        content: '<div style="font-size:30px;color:black">최고영버거 무역회관점</div>', 
+	        latlng: new kakao.maps.LatLng(35.1606, 126.8114)
+	    },
+	    {
+	        content: '<div style="font-size:30px;color:black">최고영버거 충장점</div>', 
+	        latlng: new kakao.maps.LatLng(35.1509, 126.9145)
+	    },
+	    {
+	        content: '<div>텃밭</div>', 
+	        latlng: new kakao.maps.LatLng(33.450879, 126.569940)
+	    },
+	    {
+	        content: '<div>근린공원</div>',
+	        latlng: new kakao.maps.LatLng(33.451393, 126.570738)
+	    }
+	];
+
+	for (var i = 0; i < positions.length; i ++) {
+	    // 마커를 생성합니다
+	    var marker = new kakao.maps.Marker({
+	        map: map, // 마커를 표시할 지도
+	        position: positions[i].latlng // 마커의 위치
+	    });
+
+	    // 마커에 표시할 인포윈도우를 생성합니다 
+	    var infowindow = new kakao.maps.InfoWindow({
+	        content: positions[i].content // 인포윈도우에 표시할 내용
+	    });
+
+	    // 마커에 mouseover 이벤트와 mouseout 이벤트를 등록합니다
+	    // 이벤트 리스너로는 클로저를 만들어 등록합니다 
+	    // for문에서 클로저를 만들어 주지 않으면 마지막 마커에만 이벤트가 등록됩니다
+	    kakao.maps.event.addListener(marker, 'mouseover', makeOverListener(map, marker, infowindow));
+	    kakao.maps.event.addListener(marker, 'mouseout', makeOutListener(infowindow));
+	}
+
+	// 인포윈도우를 표시하는 클로저를 만드는 함수입니다 
+	function makeOverListener(map, marker, infowindow) {
+	    return function() {
+	        infowindow.open(map, marker);
+	    };
+	}
+
+	// 인포윈도우를 닫는 클로저를 만드는 함수입니다 
+	function makeOutListener(infowindow) {
+	    return function() {
+	        infowindow.close();
+	    };
+	}
+	
+	//=====================================================================================
+	// 주소-좌표 변환 객체를 생성합니다
+	var geocoder = new kakao.maps.services.Geocoder();
+	
+	let add = document.getElementById('myAddress').value;
+	
+	// 주소로 좌표를 검색합니다
+	geocoder.addressSearch(add, function(result, status) {
+
+	    // 정상적으로 검색이 완료됐으면 
+	     if (status === kakao.maps.services.Status.OK) {
+
+	        var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+
+	        // 결과값으로 받은 위치를 마커로 표시합니다
+	        var marker = new kakao.maps.Marker({
+	            map: map,
+	            position: coords
+	        });
+
+	        // 인포윈도우로 장소에 대한 설명을 표시합니다
+	        var infowindow = new kakao.maps.InfoWindow({
+	            content: '<div style="width:150px;text-align:center;padding:6px 0;color:black;">우리집</div>'
+	        });
+	        infowindow.open(map, marker);
+
+	        // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+	        map.setCenter(coords);
+	    } 
+	}); 
+</script>
+</body>
+</html>

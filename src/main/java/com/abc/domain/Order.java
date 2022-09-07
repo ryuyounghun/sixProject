@@ -16,7 +16,7 @@ import lombok.ToString;
 public class Order {
 
 	private int orderNum;
-	private int memberNum;
+	private String memberNum;
 	private int itemNum;
 	private int StoreNum;
 	private String itemName;
