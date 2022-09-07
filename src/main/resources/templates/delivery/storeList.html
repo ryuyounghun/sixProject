@@ -13,22 +13,30 @@
 		load();
 	});
 	
+	function getParameterByName(name) {
+		  name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+		  var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+		  results = regex.exec(location.search);
+		  return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+		}
 	
 	function load() {
 		let title = $("#searchWord").val();
+		var category = getParameterByName('category');
 		
 		$.ajax({
 			url : "storeListAjax",
 			type : "get",
-			data : {"title" : title},
+			data : {"title" : title, "category" : category},
 			success : function(data) {
+				console.log(data);
 				
-				let htmlStr = "<table><tr><th>번호</th><th>카테고리</th><th>제목</th></tr>";
+				let htmlStr = "<table border='1'><tr><th>상호명</th><th>카테고리</th><th>별점</th></tr>";
 				
 				$.each(data, function(index, item) {
 					
 					htmlStr += "<tr>"
-					htmlStr += "<td>" + item.storeName + "</td>";
+					htmlStr += "<td><a th:href='@{/delivery/read}'>" + item.storeName + "</a></td>";
 					htmlStr += "<td>" + item.category + "</td>";
 					htmlStr += "<td>" + item.rating + "</td>";
 					htmlStr += "</tr>";
@@ -53,6 +61,7 @@
 				<a th:href="@{/community/index}" class="header-toAnother" >
 					커뮤니티로~
 				</a>
+				
 				<ui class="header-logMenuList"> <!-- 로그인 및 로그아웃 링크 -->
 					<li sec:authorize ="not isAuthenticated">
 						<a th:href="@{/member/login}">

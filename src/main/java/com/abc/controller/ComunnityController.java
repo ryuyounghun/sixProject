@@ -11,19 +11,20 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("community")
 public class ComunnityController {
 
-	String c = "community";
+	String c = "community/community";
 	
 	@GetMapping("/index")
 	public String communityIndex() {
 		
-		return c+ "/" + c + "Index"; 
+		return c+ "Index"; 
 	}
 	
 	@GetMapping("/read")
 	public String communityRead() {
 		log.debug("읽기파일");
-		return c + "/" + c + "Read"; 
+		return c + "read"; 
 	}
+	
 	
 	
 }

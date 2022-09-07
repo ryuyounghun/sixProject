@@ -37,12 +37,40 @@
 		)
 	</insert>
 	
-	<select id="selectSearch" parameterType="string" resultType="Store">
+	<select id="selectSearch" parameterType="map" resultType="Store">
 	SELECT * FROM
 	STORE
 	WHERE WAITING = 'N' 
-	<if test="title != null">
-		AND STORENAME LIKE '%'||#{title}||'%'
+	<if test="category == 'all'">
+		AND STORENAME LIKE '%'||#{searchKeyword}||'%'
+	</if>
+	<if test = 'category eq "1"'>
+		AND CATEGORY = #{category}
+		AND STORENAME LIKE '%'||#{searchKeyword}||'%'
+	</if>
+	<if test = 'category eq "2"'>
+		AND CATEGORY = #{category}
+		AND STORENAME LIKE '%'||#{searchKeyword}||'%'
+	</if>
+	<if test = 'category eq "3"'>
+		AND CATEGORY = #{category}
+		AND STORENAME LIKE '%'||#{searchKeyword}||'%'
+	</if>
+	<if test = 'category eq "4"'>
+		AND CATEGORY = #{category}
+		AND STORENAME LIKE '%'||#{searchKeyword}||'%'
+	</if>
+	<if test = 'category eq "5"'>
+		AND CATEGORY = #{category}
+		AND STORENAME LIKE '%'||#{searchKeyword}||'%'
+	</if>
+	<if test = 'category eq "6"'>
+		AND CATEGORY = #{category}
+		AND STORENAME LIKE '%'||#{searchKeyword}||'%'
+	</if>
+	<if test = 'category eq "7"'>
+		AND CATEGORY = #{category}
+		AND STORENAME LIKE '%'||#{searchKeyword}||'%'
 	</if>
 	
 	</select>

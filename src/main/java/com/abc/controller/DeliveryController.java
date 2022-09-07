@@ -43,13 +43,13 @@ public class DeliveryController {
 	@GetMapping("/index")
 	public String deliveryIndex() {
 		
-		return d+ "/" + d + "index"; 
+		return d+ "/index"; 
 	}
 	
 	@GetMapping("/read")
 	public String deliveryRead() {
 		
-		return d+ "/" + d + "read"; 
+		return d+ "/read"; 
 	}
 	
 
@@ -94,17 +94,12 @@ public class DeliveryController {
 	}
 	
 	@GetMapping("/storeListAjax")
-	public @ResponseBody List<Store> storeListAjax(String title) {
+	public @ResponseBody List<Store> storeListAjax(String title, String category) {
 		
 		
-		if(title == null) {
-			List<Store> list = dService.selectSearch(title);
-			return list;
-		} else {
-			List<Store> list = dService.selectSearch(null);
-			return list;
-		}
-		
-		
+		log.debug("category : {}", category);
+		log.debug("title : {}", title);
+		List<Store> list = dService.selectSearch(title, category);
+		return list;
 	}
 }
