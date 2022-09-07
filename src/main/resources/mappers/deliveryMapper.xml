@@ -5,7 +5,7 @@
 <!-- com.abc.dao.GuestbookDAO 인터페이스와 매핑됨 -->
 <mapper namespace="com.abc.dao.DeliveryDAO">
 
-	<!-- 상품 정보 등록 쿼리 -->
+	<!-- 가게 정보 등록 쿼리 -->
 	<insert id="insertStore" parameterType="Store">
 		INSERT INTO STORE(
 			STORENUM,
@@ -38,9 +38,9 @@
 	</insert>
 	
 	<select id="selectSearch" parameterType="map" resultType="Store">
-	SELECT * FROM
-	STORE
-	WHERE WAITING = 'N' 
+		SELECT * FROM
+		STORE
+		WHERE WAITING = 'N' 
 	<if test="category == 'all'">
 		AND STORENAME LIKE '%'||#{searchKeyword}||'%'
 	</if>
@@ -74,5 +74,92 @@
 	</if>
 	
 	</select>
+	
+	<select id="selectOne" parameterType="int" resultType="Store">
+		SELECT * FROM
+		STORE
+		WHERE STORENUM = #{storeNum}
+	</select>
+	
+	
+	<select id="selectMemberOne" parameterType="int" resultType="Store">
+		SELECT * FROM
+		STORE
+		WHERE MEMBERNUM = #{memberNum}
+	</select>
+	
+	<!-- 상품 정보 등록 쿼리 -->
+	<insert id="insertItem" parameterType="Item">
+		INSERT INTO ITEM_TABLE(
+			ITEMNUM,
+			STORENUM,
+			ITEMNAME,
+			ITEMCONTENT,
+			ITEMPRICE
+			<!-- 첨부파일 정보가 있을때 -->
+			<if test = "originalFile != null and savedFile != null">
+				, ORIGINALFILE
+				, SAVEDFILE
+			</if>
+		)
+		VALUES	(
+			ITEM_SEQ.NEXTVAL,
+			#{storeNum},
+			#{itemName},
+			#{itemContent},
+			#{itemPrice}
+			<!-- 첨부파일 정보 유무 확인 -->
+			<if test = "originalFile != null and savedFile != null">
+				, #{originalFile}
+				, #{savedFile}
+			</if>
+		)
+	</insert>
+	
+	<select id="selectItemSearch" parameterType="map" resultType="Item">
+		SELECT * FROM
+		ITEM_TABLE
+	 	WHERE STORENUM = #{storeNum}
+		<if test = 'title != null'>
+			AND ITEMNAME LIKE '%'||#{title}||'%'
+		</if>
+	</select>
+	
+	<select id="selectOneItem" parameterType="int" resultType="Item">
+		SELECT * FROM
+		ITEM_TABLE
+		WHERE ITEMNUM = #{itemNum}
+	</select>
+	
+	<insert id="insertOrder" parameterType="Order">
+		INSERT INTO ORDER_TABLE(
+			ORDERNUM,
+			MEMBERNUM,
+			ITEMNUM,
+			STORENUM,
+			ITEMNAME,
+			ITEMPRICE
+		)
+		VALUES(
+			ORDER_SEQ.NEXTVAL,
+			#{memberNum},
+			#{itemNum},
+			#{storeNum},
+			#{itemName},
+			#{itemPrice}
+		)
+	</insert>
+	
+	<select id="selectOrder" parameterType="Order" resultType="Order">
+		SELECT * FROM
+		ORDER_TABLE
+		WHERE STORENUM = #{storeNum} AND MEMBERNUM = #{memberNum}
+	</select>
+	
+	<update id="plusOrder" parameterType="Order">
+		UPDATE ORDER_TABLE
+		SET QUANTITY = QUANTITY + 1
+		WHERE MEMBERNUM = #{memberNum} AND ORDERNUM = #{orderNum}
+	</update>
 </mapper>
 

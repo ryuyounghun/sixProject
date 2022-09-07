@@ -16,11 +16,12 @@ import lombok.ToString;
 public class Order {
 
 	private int orderNum;
-	private String memberNum;
+	private int memberNum;
 	private int itemNum;
-	private int StoreNum;
+	private int storeNum;
 	private String itemName;
 	private int itemPrice;
 	private int quantity;
+	private String waiting;
 	private String orderComplete;
 }

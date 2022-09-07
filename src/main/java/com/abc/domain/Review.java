@@ -16,7 +16,7 @@ import lombok.ToString;
 public class Review {
 
 	private int reviewNum;
-	private String memberNum;
+	private int memberNum;
 	private int storeNum;
 	private int orderNum;
 	private int rating;

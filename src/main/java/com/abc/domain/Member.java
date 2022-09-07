@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Member implements UserDetails {
 
-	private String memberNum;
+	private int memberNum;
 	private String memberId;
 	private String memberPw;
 	private String name;

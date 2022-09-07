@@ -17,7 +17,7 @@ public class Reply {
 
 	private int replyNum;
 	private int boardNum;
-	private String memberNum;
+	private int memberNum;
 	private String nickname;
 	private String content;
 	private String inputdate;

@@ -16,7 +16,7 @@ import lombok.ToString;
 public class Store {
 
 	private int storeNum;
-	private String memberNum;
+	private int memberNum;
 	private String storeName;
 	private String storeContent;
 	private String category;

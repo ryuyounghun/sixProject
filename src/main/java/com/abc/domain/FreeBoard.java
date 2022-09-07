@@ -16,7 +16,7 @@ import lombok.ToString;
 public class FreeBoard {
 
 	private int boardNum;
-	private String memberNum;
+	private int memberNum;
 	private String nickname;
 	private String category;
 	private String title;

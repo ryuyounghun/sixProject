@@ -5,6 +5,84 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel="stylesheet" href="/css/delivery/deliveryRead.css">
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+<script>
+	$(document).ready(function() {
+		$("#searchWord").on("keyup", function() { load(); });
+		load();
+		click1();
+	});
+	
+	function getParameterByName(name) {
+		  name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+		  var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+		  results = regex.exec(location.search);
+		  return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+		}
+	
+	function click1(itemNum) {
+		let storeNum = getParameterByName('num');
+		
+		$.ajax({
+			url : "orderListAjax",
+			type : "get",
+			data : {"storeNum" : storeNum, "itemNum" : itemNum},
+			success : function(data) {
+				console.log(data);
+				
+				let htmlStr = "<table border='1'>";
+				$.each(data, function(index, item) {
+					htmlStr += "<tr>"; 
+					htmlStr += "<td><a>" + item.itemName + "</a></td>";
+					htmlStr += "<td>" + item.itemPrice + "</td>";
+					htmlStr += "<td>" + item.quantity + "</td>";
+					htmlStr += "</tr>";
+				});
+					htmlStr += "</table>"
+				
+				
+				$(".aside-right").html(htmlStr);
+				
+			}
+		});
+	}
+	
+	
+	function load() {
+		let title = $("#searchWord").val();
+		let storeNum = getParameterByName('num');
+		
+		$.ajax({
+			url : "itemListAjax",
+			type : "get",
+			data : {"title" : title, "storeNum" : storeNum},
+			success : function(data) {
+				console.log(data);
+				
+				/* <![CDATA[ */
+					
+				/* var display = [[@{itemDisplay}]];
+				console.log(display); */
+				let htmlStr = "<table border='1'>";
+				$.each(data, function(index, item) {
+					htmlStr += "<tr>"; 
+					/* htmlStr += "<td><img src='" + display + "'></td>"; */
+					htmlStr += "<td><a>" + item.itemName + "</a></td>";
+					htmlStr += "<td>" + item.itemContent + "</td>";
+					htmlStr += "<td>" + item.itemPrice + "</td>";
+					htmlStr += "<td><input type='button' value='주문' id='item" + item.itemNum + "' onclick='click1(" + item.itemNum + ");'></td>";
+					htmlStr += "</tr>";
+				});
+					htmlStr += "</table>"
+				
+				
+				$("#menu").html(htmlStr);
+				/* ]]> */
+			}
+		});
+		
+	}
+</script>
 </head>
 <body>
 	<div id="headerAndSection-wrapper">
@@ -73,13 +151,12 @@
 						<div class="storeThumbnail">
 							<span class="storename">&nbsp;&nbsp;가게이름</span>
 							<div>
-							<img alt="가게이미지" src="/images/다운로드.gif" class="brandImg">
-							<span class="storeInfo">Lolem believed Professor Zaroff's
+							<img th:src="@{storeDisplay(num = ${store.storeNum})}" class="brandImg">
+							<span class="storeInfo" th:text="|${store.rating}점|">Lolem believed Professor Zaroff's
 								promise to raise the city above the sea was the fulfilment of
 								Amdo's prophecy. He tried to sacrifice the Second Doctor and
 								his companions to his goddess. They were rescued by Zaroff, but
-								later Zaroff gave the Doctor and Ramo to Lolem to sacrifice
-								them to Amdo. When the goddess appeared to speak, Lolem and the
+								later Zaroff gave the Doctor and 
 							</span>
 							</div>
 						</div>
@@ -110,8 +187,8 @@
 							</ul>
 						</div>
 						<!-- ajax로 리뷰랑 메뉴 보여주는 리스트  -->
-						<div>
-						ajax로 보여주기
+						<div id="menu">
+							ajax로 보여주기
 						</div>
 						
 					</div>
