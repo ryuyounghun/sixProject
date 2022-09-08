@@ -6,83 +6,14 @@
 <title>Insert title here</title>
 <link rel="stylesheet" href="/css/delivery/deliveryRead.css">
 <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
-<script>
-	$(document).ready(function() {
-		$("#searchWord").on("keyup", function() { load(); });
-		load();
-		click1();
-	});
-	
-	function getParameterByName(name) {
-		  name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
-		  var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
-		  results = regex.exec(location.search);
-		  return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
-		}
-	
-	function click1(itemNum) {
-		let storeNum = getParameterByName('num');
-		
-		$.ajax({
-			url : "orderListAjax",
-			type : "get",
-			data : {"storeNum" : storeNum, "itemNum" : itemNum},
-			success : function(data) {
-				console.log(data);
-				
-				let htmlStr = "<table border='1'>";
-				$.each(data, function(index, item) {
-					htmlStr += "<tr>"; 
-					htmlStr += "<td><a>" + item.itemName + "</a></td>";
-					htmlStr += "<td>" + item.itemPrice + "</td>";
-					htmlStr += "<td>" + item.quantity + "</td>";
-					htmlStr += "</tr>";
-				});
-					htmlStr += "</table>"
-				
-				
-				$(".aside-right").html(htmlStr);
-				
-			}
-		});
+<script src="/js/delivery/read.js"></script>
+<style>
+	.aside-right-allPay{
+		height : 100px;
+		background-color: red;
 	}
-	
-	
-	function load() {
-		let title = $("#searchWord").val();
-		let storeNum = getParameterByName('num');
-		
-		$.ajax({
-			url : "itemListAjax",
-			type : "get",
-			data : {"title" : title, "storeNum" : storeNum},
-			success : function(data) {
-				console.log(data);
-				
-				/* <![CDATA[ */
-					
-				/* var display = [[@{itemDisplay}]];
-				console.log(display); */
-				let htmlStr = "<table border='1'>";
-				$.each(data, function(index, item) {
-					htmlStr += "<tr>"; 
-					/* htmlStr += "<td><img src='" + display + "'></td>"; */
-					htmlStr += "<td><a>" + item.itemName + "</a></td>";
-					htmlStr += "<td>" + item.itemContent + "</td>";
-					htmlStr += "<td>" + item.itemPrice + "</td>";
-					htmlStr += "<td><input type='button' value='주문' id='item" + item.itemNum + "' onclick='click1(" + item.itemNum + ");'></td>";
-					htmlStr += "</tr>";
-				});
-					htmlStr += "</table>"
-				
-				
-				$("#menu").html(htmlStr);
-				/* ]]> */
-			}
-		});
-		
-	}
-</script>
+</style>
+
 </head>
 <body>
 	<div id="headerAndSection-wrapper">
@@ -131,16 +62,57 @@
 					</div>
 				</div>
 				
-				
 				<aside>
 					<div class="aside-left">
-
+						<ul class="foodList">
+							<li>
+								<a th:href = "|@{storeList}?category=all|">
+									전체보기
+								</a>
+							</li>
+							<li>
+								<a th:href="|@{storeList}?category=1|">
+									한식
+								</a>
+							</li>
+							<li>	
+								<a th:href="|@{storeList}?category=2|">
+									중식
+								</a>
+							</li>
+							<li>
+								<a th:href="|@{storeList}?category=3|">
+									일식
+								</a>
+							</li>
+							<li>
+								<a th:href="|@{storeList}?category=4|">
+									양식
+								</a>
+							</li>
+							<li>
+								<a th:href="|@{storeList}?category=5|">
+									디저트
+								</a>
+							</li>
+							<li>
+								<a th:href="|@{storeList}?category=6|">
+									야식
+								</a>
+							</li>
+							<li>
+								<a th:href="|@{storeList}?category=7|">
+									도시락
+								</a>
+							</li>
+						</ul>
 					</div>
 				</aside>
 				
 				<aside>
 					<div class="aside-right">
-
+						<div class="aside-right-order"></div>
+						<div class="aside-right-allPay"></div>
 					</div>
 				</aside>
 
@@ -169,17 +141,17 @@
 						<!-- 메뉴 및 리뷰 -->
 						<div class="menuAndReview">
 							<ul class="menuAndReviewList">
-								<li>
+								<li id="menuButton">
 									<a>
 										메뉴
 									</a>
 								</li>
-								<li>
+								<li id="reviewButton">
 									<a>
 										리뷰
 									</a>
 								</li>
-								<li>
+								<li id="infoButton">
 									<a>
 										가게정보
 									</a>
@@ -190,10 +162,20 @@
 						<div id="menu">
 							ajax로 보여주기
 						</div>
-						
+						<div id="review">
+							ajax로 보여주기
+						</div>
+						<div id="info">
+							<h3>가게정보</h3>
+							<p th:text="${store.storeContent}"></p><br>
+							<p th:text="${store.address}"></p><br>
+							<p th:text="${store.phone}"></p>
+						</div>
 					</div>
 				</div>	
 			</div>		
+		
+		
 		
 		</section>
 
@@ -202,5 +184,6 @@
 	<footer>
 		
 	</footer>
+	
 </body>
 </html>

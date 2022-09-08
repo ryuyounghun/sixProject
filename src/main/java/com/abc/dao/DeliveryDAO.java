@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.abc.domain.Item;
 import com.abc.domain.Order;
+import com.abc.domain.Receipt;
 import com.abc.domain.Store;
 
 @Mapper
@@ -26,6 +27,16 @@ public interface DeliveryDAO {
 	
 	// 주문 등록 및 출력부분
 	public int insertOrder(Order order);
-	public List<Order> selectOrder(Order order);
+	public List<Order> selectMyOrder(Map<Object, Object> map);
+	public List<Order> selectMyOrders(int memberNum);
+	public Order selectOneOrder(int num);
+	
 	public int plusOrder(Order order);
+	public int minusOrder(Order order);
+	public int deleteOrder(int num);
+	
+	public int paymentOrder(Map<Object, Object> map);
+	
+	public int insertReceipt(Receipt receipt);
+	public List<Receipt> selectReceipt(int memberNum);
 }

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.abc.dao.DeliveryDAO;
 import com.abc.domain.Item;
 import com.abc.domain.Order;
+import com.abc.domain.Receipt;
 import com.abc.domain.Store;
 
 import lombok.extern.slf4j.Slf4j;
@@ -87,15 +88,74 @@ public class DeliveryServiceImpl implements DeliveryService{
 	}
 
 	@Override
-	public List<Order> selectOrder(Order order) {
-		// TODO Auto-generated method stub
-		return dDao.selectOrder(order);
+	public List<Order> selectMyOrder(int memberNum, int storeNum) {
+		
+		Map<Object, Object> map = new HashMap<Object, Object>();
+		
+		log.debug("memberNum : {}", memberNum);
+		log.debug("storeNum : {}", storeNum);
+		
+		map.put("memberNum", memberNum);
+		map.put("storeNum", storeNum);
+		
+		return dDao.selectMyOrder(map);
 	}
 
 	@Override
 	public int plusOrder(Order order) {
 		// TODO Auto-generated method stub
 		return dDao.plusOrder(order);
+	}
+
+	@Override
+	public Order selectOneOrder(int num) {
+		// TODO Auto-generated method stub
+		return dDao.selectOneOrder(num);
+	}
+
+	@Override
+	public int minusOrder(Order order) {
+		// TODO Auto-generated method stub
+		return dDao.minusOrder(order);
+	}
+
+	@Override
+	public int paymentOrder(int memberNum, int storeNum) {
+		// TODO Auto-generated method stub
+		
+		Map<Object, Object> map = new HashMap<Object, Object>();
+		
+		log.debug("memberNum : {}", memberNum);
+		log.debug("storeNum : {}", storeNum);
+		
+		map.put("memberNum", memberNum);
+		map.put("storeNum", storeNum);
+		
+		return dDao.paymentOrder(map);
+	}
+
+	@Override
+	public int deleteOrder(int num) {
+		// TODO Auto-generated method stub
+		return dDao.deleteOrder(num);
+	}
+
+	@Override
+	public List<Order> selectMyOrders(int memberNum) {
+		// TODO Auto-generated method stub
+		return dDao.selectMyOrders(memberNum);
+	}
+
+	@Override
+	public int insertReceipt(Receipt receipt) {
+		// TODO Auto-generated method stub
+		return dDao.insertReceipt(receipt);
+	}
+
+	@Override
+	public List<Receipt> selectReceipt(int memberNum) {
+		// TODO Auto-generated method stub
+		return dDao.selectReceipt(memberNum);
 	}
 
 

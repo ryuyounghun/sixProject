@@ -150,16 +150,70 @@
 		)
 	</insert>
 	
-	<select id="selectOrder" parameterType="Order" resultType="Order">
+	<select id="selectMyOrder" parameterType="map" resultType="Order">
 		SELECT * FROM
 		ORDER_TABLE
 		WHERE STORENUM = #{storeNum} AND MEMBERNUM = #{memberNum}
 	</select>
+
+	<select id="selectMyOrders" parameterType="int" resultType="Order">
+		SELECT * FROM
+		ORDER_TABLE
+		WHERE MEMBERNUM = #{memberNum}
+	</select>
+	
+	<select id="selectOneOrder" parameterType="int" resultType="Order">
+		SELECT * FROM
+		ORDER_TABLE
+		WHERE ORDERNUM = #{orderNum}
+	</select>
+	
 	
 	<update id="plusOrder" parameterType="Order">
 		UPDATE ORDER_TABLE
 		SET QUANTITY = QUANTITY + 1
-		WHERE MEMBERNUM = #{memberNum} AND ORDERNUM = #{orderNum}
+		WHERE ORDERNUM = #{orderNum}
 	</update>
+	
+	<update id="minusOrder" parameterType="Order">
+		UPDATE ORDER_TABLE
+		SET QUANTITY = QUANTITY - 1
+		WHERE ORDERNUM = #{orderNum}
+	</update>
+	
+	<select id="paymentOrder" resultType="int" parameterType="map">
+		SELECT SUM(ITEMPRICE * quantity)
+		FROM ORDER_TABLE
+		WHERE STORENUM = #{storeNum} AND MEMBERNUM = #{memberNum}
+	</select>
+	
+	<delete id="deleteOrder" parameterType="int">
+		DELETE FROM ORDER_TABLE
+		WHERE ORDERNUM = #{orderNum}
+	</delete>
+	
+	
+	<insert id="insertReceipt" parameterType="Receipt">
+		INSERT INTO RECEIPT(
+			RECEIPTNUM,
+			MEMBERNUM,
+			STORENUM,
+			ORDERHISTORY,
+			TOTALAMOUNT
+		)
+		VALUES(
+			RECEIPT_SEQ.NEXTVAL,
+			#{memberNum},
+			#{storeNum},
+			#{orderHistory},
+			#{totalAmount}
+		)
+	</insert>
+	
+	<select id="selectReceipt" parameterType="int" resultType="Receipt">
+		SELECT * FROM
+		RECEIPT
+		WHERE MEMBERNUM = #{memberNum}
+	</select>
 </mapper>
 
