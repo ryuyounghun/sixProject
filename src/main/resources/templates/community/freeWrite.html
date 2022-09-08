@@ -34,65 +34,50 @@
 					<input type="submit" value = "제출">
 				</td>
 			</tr>
-			<tr>
-				<th>파일</th>
-				<td>
-					<div name="fileDiv">
-						<div >
-							<label for="file_0" >찾아보기</label>
-							<input type="file" name="files" id="file_0" />
-	
-							<button type="button" onclick="addFile()" >
-								+
-							</button>
-							<button type="button" onclick="removeFile(this)" >
-								-
-							</button>
-						</div>
-					</div>
-				</td>
-				<td id="fileboxForPlusFile"></td>
-			</tr>
 		</table>
+			<div name="fileDiv" id= "fdIdx_0">
+					<input type="file" name="files" id="file_0" />
+					<button type="button" onclick="addFile()" >
+						+
+					</button>
+					<button type="button" onclick="removeFile('fdIdx_0')" >
+						-
+					</button>
+			</div>
+			<div id="fileboxForPlusFile"></div>
 	</form>
 	
 	
 </body>
 <script >
+let fdIdx = 0;
+let fileIdx = 0; 
 
-let fileIdx = 0; /*[- 파일 인덱스 처리용 전역 변수 -]*/
 function addFile() {
 
-	/* 
-	const fileDivs = $('.fileDiv');
-	if (fileDivs.length > 2) {
-		alert('파일은 최대 세 개까지 업로드 할 수 있습니다.');
-		return false;
-	}
-	*/
-
+	fdIdx++;
 	fileIdx++;
-	let fileHtml = `
-			<td>
-				<div name="fileDiv">
-					<label for="file_${fileIdx}"></label>
-					<div>
-						<input type="text" value="파일 찾기" readonly />
-						<label for="file_${fileIdx}" >찾아보기</label>
-						<input type="file" name="files" id="file_${fileIdx}"/>
-						<button type="button" onclick="addFile()" >
-							+
-						</button>
-						<button type="button" onclick="removeFile(this)" >
-							-
-						</button>
-					</div>
-				</div>
-			</td>
-	`;
 	
+	let fileHtml = `
+		<div name="fileDiv" id= "fdIdx_${fdIdx}">
+			<input type="file" name="files" id="file_${fileIdx}" />
+			<button type="button" onclick="addFile()" >
+				+
+			</button>
+			<button type="button" onclick="removeFile('fdIdx_${fdIdx}')" >
+				-
+			</button>
+		</div>
+	`;
 	$('#fileboxForPlusFile').before(fileHtml);
+}
 
+function removeFile(param){
+
+	console.log(param);
+	let p = param;
+	let element = "#" + p;
+	$(element).children().remove();
 }
 
 function checkValues(){
@@ -111,5 +96,6 @@ function checkValues(){
 		return false;
 	}
 }
+
 </script>
 </html>

@@ -121,9 +121,9 @@ public class ComunnityController{
 
 		log.debug("Post freeWrite()시작");
 		log.debug("FreeBoard : {}", fBoard);
+	
 		try {
 			boolean isRegistered = fService.registerBoard(fBoard, files);
-			
 		} catch  ( Exception e) {
 			e.printStackTrace();
 			
