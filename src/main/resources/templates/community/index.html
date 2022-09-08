@@ -70,37 +70,38 @@
 								<table>
 									<tr>
 										<th>작성자</th>
-										<th>제목</td>
+										<th>제목</th>
 										<th>작성일</th>
 									</tr>
-									
 									<tr th:each="list : ${cbList}">
 										<td th:text="${list.nickname}"></td>
 										<td>
 											<a>
 												<span th:text="${list.title}"
-												 style="display:inline-block;
-												 white-space: nowrap;
-												 overflow: hidden;
-												 text-overflow: ellipsis; 
-												 max-width: 13ch;"></span>
+												style="display: inline-block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 13ch;">
+												</span>
 											</a>
 										</td>
 										<td th:text="${list.inputdate}"></td>
 									</tr>
 								</table>
 							</div>
-							<div class="liveWrite">
+							<div class="freeWrite">
 								<table>
 									<tr>
 										<th>작성자</th>
-										<th>제목</td>
+										<th>제목</th>
 										<th>작성일</th>
 									</tr>
-									<tr>
-										<td>a</td>
-										<td>s</td>
-										<td>d</td>
+									<tr th:each="list : ${fbList}">
+										<td th:text="${list.nickname}"></td>
+										<td>
+											<a>
+												<span th:text="${list.title}"
+												style="display: inline-block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 13ch;"></span>
+											</a>
+										</td>
+										<td th:text="${list.inputdate}"></td>
 									</tr>
 								</table>
 							</div>

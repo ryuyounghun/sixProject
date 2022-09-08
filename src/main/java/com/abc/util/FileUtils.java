@@ -17,7 +17,10 @@ import org.springframework.web.multipart.MultipartFile;
 import com.abc.domain.FileDTO;
 import com.abc.exception.AttachFileException;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Component
+@Slf4j
 public class FileUtils {
 
 	/** 오늘 날짜 */
@@ -40,7 +43,7 @@ public class FileUtils {
 	 * @param boardIdx - 게시글 번호
 	 * @return 업로드 파일 목록
 	 */
-	public List<FileDTO> uploadFiles(MultipartFile[] files, Long boardIdx) {
+	public List<FileDTO> uploadFiles(MultipartFile[] files) {
 
 		/* 파일이 비어있으면 비어있는 리스트 반환 */
 		if (files[0].getSize() < 1) {
@@ -68,13 +71,16 @@ public class FileUtils {
 				File target = new File(uploadPath, saveName);
 				file.transferTo(target);
 
+				
 				/* 파일 정보 저장 */
 				FileDTO attach = new FileDTO();
-				attach.setBoardNum(boardIdx);
-				attach.setOriginalFile(file.getOriginalFilename());
-				attach.setSavedFile(saveName);
+				// attach.setBoardNum(boardIdx);
+				
+				attach.setOriginalName(file.getOriginalFilename()); 
+				attach.setSaveName(saveName);
 				attach.setFileSize(file.getSize());
 
+				log.debug("파일 : {}", attach.getOriginalName());
 				/* 파일 정보 추가 */
 				attachList.add(attach);
 

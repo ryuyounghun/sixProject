@@ -26,8 +26,6 @@ public interface FreeBoardDAO {
 
 	public int selectBoardTotalCount(FreeBoard bf);
 
-	/*
-	 public List<FreeBoard> selectAllFreeBoard(RowBounds rb); public int
-	 countAllFreeBoard(Map<String, String> map);
-	 */
+	 public List<FreeBoard> selectAllFreeBoard(RowBounds rb);
+	 public int countAllFreeBoard(Map<String, String> map);
 }

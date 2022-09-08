@@ -5,10 +5,10 @@
 <mapper namespace="com.abc.dao.FileDAO">
 
 	<insert id="insertFile" parameterType="FileDTO">
-		<selectKey resultType="long" keyProperty="BOARDNUM" order="BEFORE">
-				SELECT MAX(BOARDNUM)+1 FROM FREE_BOARD
+	
+		<selectKey resultType="Long" keyProperty="boardNum" order="BEFORE">
+				SELECT MAX(BOARDNUM) FROM FREE_BOARD
 		</selectKey>
-			
 		INSERT INTO multi_file_table_of_free_board (
 			FILENUM,
 		    BOARDNUM,
@@ -20,8 +20,8 @@
 		(
 			file_table_seq_of_free_board.nextval,
 			#{boardNum},
-			#{originalFile},
-			#{savedFile},
+			#{originalName},
+			#{saveName},
 			#{fileSize}
 		)
 	</insert>

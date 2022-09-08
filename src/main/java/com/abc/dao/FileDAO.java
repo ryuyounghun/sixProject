@@ -9,8 +9,9 @@ import com.abc.domain.FileDTO;
 @Mapper
 public interface FileDAO {
 
-
-	public int insertFile(List<FileDTO> fileList);
+	
+	
+	public int insertFile(FileDTO fd);
 
 	public FileDTO selectFileDetail(Long fileNum);
 

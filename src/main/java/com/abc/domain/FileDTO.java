@@ -16,10 +16,10 @@ public class FileDTO {
 	private Long boardNum;
 
 	/** 원본 파일명 */
-	private String originalFile;
+	private String originalName;
 
 	/** 저장 파일명 */
-	private String savedFile;
+	private String saveName;
 
 	/** 파일 크기 */
 	private long fileSize;

@@ -12,10 +12,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.abc.dao.FileDAO;
 import com.abc.dao.FreeBoardDAO;
+import com.abc.domain.ClassBoard;
 import com.abc.domain.FileDTO;
 import com.abc.domain.FreeBoard;
 import com.abc.exception.AttachFileException;
 import com.abc.util.FileUtils;
+import com.abc.util.PageNavigator;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -48,9 +50,14 @@ public class FreeBoardServiceImpl implements FreeBoardService{
 		int result = 1;
 	
 		
-		List<FileDTO> fileList = fileUtils.uploadFiles(files, fb.getBoardNum());
+		List<FileDTO> fileList = fileUtils.uploadFiles(files);
 		
 		fbDAO.insertFreeBoard(fb);
+		for ( int i = 0; i<fileList.size(); i++ ) {
+			fileDAO.insertFile(fileList.get(i));
+			log.debug(fileList.get(i).toString());
+		}	
+		
 		return result > 0;
 	}
 
@@ -75,6 +82,28 @@ public class FreeBoardServiceImpl implements FreeBoardService{
 	public int selectOneFreeBoard(Long boardNum) {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	@Override
+	public PageNavigator getPageNavigator(int pagePerGroup, int countPerPage, int Page) {
+		Map<String, String> map = new HashMap<>();
+		
+		int total= fbDAO.countAllFreeBoard(map);
+		
+		PageNavigator navi =
+				new PageNavigator(pagePerGroup, countPerPage, Page, total);
+		
+		return navi;
+	}
+
+	@Override
+	public List<FreeBoard> selectAllFreeBoard(PageNavigator navi) {
+		Map<String, String> map = new HashMap<>();
+
+		// "시작 레코드"부터 "한 페이지의 글" 단위만큼 선택
+		RowBounds rb = new RowBounds(navi.getStartRecord(), navi.getCountPerPage());
+		
+		return fbDAO.selectAllFreeBoard(rb);
 	}
 
 

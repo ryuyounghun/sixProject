@@ -62,14 +62,20 @@ public class ComunnityController{
 		log.debug("index실행");
 		
 		List<ClassBoard> cbList = null;
-		PageNavigator navi = cService.getPageNavigator(
+		List<FreeBoard> fbList = null;
+		PageNavigator cbNavi = cService.getPageNavigator(
 				pagePerGroup, countPerPage, page); 
 		
-		cbList = cService.selectAllClassBoard(navi);
-		
+		PageNavigator fbNavi = fService.getPageNavigator(
+				pagePerGroup, countPerPage, page); 
+		fbList = fService.selectAllFreeBoard(fbNavi);
+		cbList = cService.selectAllClassBoard(cbNavi);
+		// fbList = fService.selectAllClassBoard (navi);
 		log.debug("cbList의 길이 : {}",cbList.size());
+		log.debug("fbList의 길이 : {}",fbList.size());
 		
-		model.addAttribute(navi);
+		model.addAttribute(cbNavi);
+		model.addAttribute("fbList",fbList);
 		model.addAttribute("cbList",cbList);
 		
 		return c + "index"; 
@@ -121,6 +127,9 @@ public class ComunnityController{
 
 		log.debug("Post freeWrite()시작");
 		log.debug("files길이 : {}",files.length);
+		log.debug("file정보 : {}",files[0].toString());
+		
+		
 		Member m = mService.selectOneMember(user.getUsername());
 		fBoard.setMemberNum(m.getMemberNum());
 		fBoard.setNickname(m.getNickname());
