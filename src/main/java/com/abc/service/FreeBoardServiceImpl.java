@@ -33,36 +33,25 @@ public class FreeBoardServiceImpl implements FreeBoardService{
 	private FileUtils fileUtils;
 
 	@Override
-	public boolean registerBoard(FreeBoard fb) {
+	public int registerBoard(FreeBoard fb) {
 		
-		int queryResult = 0;
-		
-		if ( fb.getBoardNum() < 0 ) {	
-			queryResult = fbDAO.insertFreeBoard(fb);
-		}else {
-			queryResult = fbDAO.updateFreeBoard(fb);
-			
-		}
-		return (queryResult == 1) ? true : false;
+		return fbDAO.insertFreeBoard(fb);
 	}
 
 	@Override
 	public boolean registerBoard(FreeBoard fb, MultipartFile[] files) {
-		int queryResult = 1;
-
-		if (registerBoard(fb) == false) {
+		
+		if (fb == null) {
 			return false;
 		}
-
+		
+		int result = 1;
+	
+		
 		List<FileDTO> fileList = fileUtils.uploadFiles(files, fb.getBoardNum());
-		if (CollectionUtils.isEmpty(fileList) == false) {
-			queryResult = fileDAO.insertFile(fileList);
-			if (queryResult < 1) {
-				queryResult = 0;
-			}
-		}
-
-		return (queryResult > 0);
+		
+		fbDAO.insertFreeBoard(fb);
+		return result > 0;
 	}
 
 	@Override
@@ -80,6 +69,12 @@ public class FreeBoardServiceImpl implements FreeBoardService{
 	public List<FreeBoard> getBoardList(FreeBoard params) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public int selectOneFreeBoard(Long boardNum) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 

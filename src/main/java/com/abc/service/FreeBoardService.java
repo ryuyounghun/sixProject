@@ -9,8 +9,8 @@ import com.abc.domain.FreeBoard;
 
 public interface FreeBoardService {
 
-	public boolean registerBoard(FreeBoard fb);
-
+	public int registerBoard(FreeBoard fb);
+	public int selectOneFreeBoard(Long boardNum);
 	public boolean registerBoard(FreeBoard fb, MultipartFile[] files);
 
 	public FreeBoard getBoardDetail(Long fileNum);

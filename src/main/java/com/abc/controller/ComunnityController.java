@@ -120,13 +120,25 @@ public class ComunnityController{
 			@RequestParam MultipartFile[] files) {
 
 		log.debug("Post freeWrite()시작");
+		log.debug("files길이 : {}",files.length);
+		Member m = mService.selectOneMember(user.getUsername());
+		fBoard.setMemberNum(m.getMemberNum());
+		fBoard.setNickname(m.getNickname());
 		log.debug("FreeBoard : {}", fBoard);
-	
-		try {
-			boolean isRegistered = fService.registerBoard(fBoard, files);
-		} catch  ( Exception e) {
-			e.printStackTrace();
-			
+		
+		/* 여기까지 실행 완료 */
+		
+		if ( files.length > 0 ) {
+			try {
+				boolean isRegistered = fService.registerBoard(fBoard, files); //파일 있을 때의 등록
+			} catch  ( Exception e) {
+				e.printStackTrace();
+				System.out.println("등록실패");
+				
+			}
+		}
+		else { //파일 없을 때의 등록
+			fService.registerBoard(fBoard);
 		}
 		
 		return "redirect:./index"; // .../board/

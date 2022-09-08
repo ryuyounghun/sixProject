@@ -15,28 +15,18 @@
 				NICKNAME,
 				CATEGORY,
 				TITLE,
-				CONTENT,
-				<!-- 첨부파일 정보가 있을때 -->
-				<if test = "originalFile != null and savedFile != null">
-					, ORIGINALFILE
-					, SAVEDFILE
-				</if>
+				CONTENT
 			)
 			VALUES (
 				BOARDNUM_SEQ.NEXTVAL,
 				#{memberNum},
-				#{destination},
 				#{nickname},
 				#{category},
 				#{title},
-				#{content},
-				<!-- 첨부파일 정보 유무 확인 -->
-				<if test = "originalFile != null and savedFile != null">
-					, #{originalFile}
-					, #{savedFile}
-				</if>
+				#{content}
 			)
 		</insert>
+		
 	<!-- 자유 게시판 글 불러오기 -->
 	<select id="selectAllFreeBoard" resultType="FreeBoard">
 		SELECT 
@@ -49,6 +39,15 @@
 			count(*)
 		FROM FREE_BOARD
 	</select>
+	
+	
+	<select id="selectOneFreeBoard" resultType="FreeBoard" parameterType="long">
+		SELECT 
+			*
+		FROM FREE_BOARD
+		WHERE BOARDNUM = #{boardNum} 
+	</select>
+	
 	
 </mapper>
 

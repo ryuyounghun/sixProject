@@ -2,9 +2,11 @@ package com.abc.domain;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
+@ToString
 public class FileDTO {
 
 	/** 파일 번호 (PK) */

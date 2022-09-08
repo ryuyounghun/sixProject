@@ -16,7 +16,10 @@ public interface FreeBoardDAO {
 	public int insertFreeBoard(FreeBoard fb);
 	public int updateFreeBoard(FreeBoard fb);
 	
+	public FreeBoard selectOneFreeBoard(Long boardNum);
+	
 	public FreeBoard selectBoardDetail(Long boardNum);
+	
 	public int deleteBoard(Long boardNum);
 
 	public List<FreeBoard> selectBoardList(FreeBoard bf);
