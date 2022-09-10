@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,7 @@ import com.abc.domain.Order;
 import com.abc.domain.Receipt;
 import com.abc.domain.Review;
 import com.abc.domain.Store;
+import com.abc.domain.Wishlist;
 import com.abc.service.DeliveryService;
 import com.abc.service.MemberService;
 import com.abc.util.FileService;
@@ -57,20 +59,25 @@ public class DeliveryController {
 	
 	
 	@GetMapping("/index")
-	public String deliveryIndex() {
+	public String deliveryIndex(Model model,
+			@AuthenticationPrincipal UserDetails user) {
+		
+		Member member = mService.selectOneMember(user.getUsername());
+		
+		model.addAttribute("member", member);
 		
 		return d+ "/index"; 
 	}
 	
 	@GetMapping("/read")
-	public String deliveryRead(Model model, int num) {
+	public String deliveryRead(Model model, int num,
+			@AuthenticationPrincipal UserDetails user) {
 		
-		Store store = dService.selectOne(num);
+		Store store = dService.selectOneStore(num);
 		
 		log.debug("store : {}", store);
 		
 		model.addAttribute("store", store);
-		
 		return d+ "/read"; 
 	}
 	
@@ -129,7 +136,7 @@ public class DeliveryController {
 		
 		log.debug("num : {}", num);
 		
-		Store store = dService.selectOne(num);
+		Store store = dService.selectOneStore(num);
 		
 		Resource resource 
 			= new FileSystemResource(uploadPath + "/" + store.getSavedFile());
@@ -238,9 +245,34 @@ public class DeliveryController {
 		
 		List<Order> list = dService.selectMyOrder(member.getMemberNum(), storeNum);
 		
+		
 		return list;
 	}
 	
+	@GetMapping("/checkItem")
+	public @ResponseBody Order checkItem(int storeNum, int itemNum,
+			@AuthenticationPrincipal UserDetails user) {
+		
+		Item item = dService.selectOneItem(itemNum);
+		
+		Member member = mService.selectOneMember(user.getUsername());
+		
+		List<Order> oList = dService.selectMyOrder(member.getMemberNum(), storeNum);
+		
+		log.debug("oList의 : {}", oList);
+		
+		Order order = null;
+		
+		for (int i = 0; i < oList.size(); i++) {
+			log.debug("for문 시작");
+			if (oList.get(i).getItemNum() == itemNum) {
+				order = oList.get(i);
+				log.debug("order체크1 : {}", order);
+			}
+		}
+		log.debug("order체크2 : {}", order);
+		return order;
+	}
 	
 	
 	@GetMapping("/orderListAjax")
@@ -322,9 +354,19 @@ public class DeliveryController {
 	public @ResponseBody int orderPrice(int storeNum,
 			@AuthenticationPrincipal UserDetails user) {
 		
+		int result = 0;
+		
 		Member member = mService.selectOneMember(user.getUsername());
 		
-		int result = dService.paymentOrder(member.getMemberNum(), storeNum);
+		List<Order> oList = dService.selectMyOrder(member.getMemberNum(), storeNum);
+		
+		for (int i = 0; i < oList.size(); i++) {
+			log.debug("complete : {}", oList.get(i).getComplete());
+			if (oList.get(i).getComplete().equals("N")) {
+				result = dService.paymentOrder(member.getMemberNum(), storeNum);
+			}
+		}
+		
 		
 		return result;
 	}
@@ -338,11 +380,7 @@ public class DeliveryController {
 		return result;
 	}
 	
-	@GetMapping("/writeReview")
-	public String writeReview() {
-		
-		return d + "/writeReview";
-	}
+
 	
 	
 	@GetMapping("/myCompleteOrderList")	
@@ -362,8 +400,31 @@ public class DeliveryController {
 	public String myCompleteOrderList(Review review,
 			@AuthenticationPrincipal UserDetails user) {
 		
+		Member member = mService.selectOneMember(user.getUsername());
+		Receipt receipt = dService.selectReceiptByReceiptNum(review.getReceiptNum());
+		Store store = dService.selectOneStore(review.getStoreNum());
+		
+		review.setOrderHistory(receipt.getOrderHistory());
+		review.setMemberNum(member.getMemberNum());
+		review.setNickname(member.getNickname());
+		
 		log.debug("review : {}", review);
 		
+		dService.insertReview(review);
+		
+		List<Review> rList = dService.selectReviews(review.getStoreNum());
+
+		log.debug("rList : {}", rList);
+		int sum = 0;
+		for (int i = 0; i < rList.size(); i++) {
+			sum += rList.get(i).getRating();  
+		}
+		log.debug("sum : {}", sum);
+		double rate = sum / rList.size();
+		
+		store.setRating(rate);
+		
+		dService.updateRating(store);
 		
 		return "redirect:./index";
 	}
@@ -379,10 +440,11 @@ public class DeliveryController {
 		receipt.setMemberNum(member.getMemberNum());
 		
 		List<Order> oList = dService.selectMyOrders(member.getMemberNum());
+		
 		String orderItems = "";
 		for (int i = 0; i < oList.size(); i++) {
 			orderItems += oList.get(i).getItemName() + " " + oList.get(i).getQuantity() + "개, ";
-			
+			dService.completeOrder(oList.get(i).getOrderNum());
 		}
 		log.debug("orderItems : {}", orderItems);
 		
@@ -393,5 +455,87 @@ public class DeliveryController {
 		dService.insertReceipt(receipt);
 		
 		return receipt;
+	}
+	
+	@GetMapping("/printReviewAjax")
+	public @ResponseBody List<Review> printReviewAjax(int storeNum) {
+		
+		List<Review> rList = dService.selectReviews(storeNum);
+		
+		return rList;
+	}
+	
+	@GetMapping("/clickWish")
+	public @ResponseBody Store clickWish(int storeNum,
+			@AuthenticationPrincipal UserDetails user) {
+		Member member = mService.selectOneMember(user.getUsername());
+		
+		Wishlist wish = dService.selectWishlist(storeNum, member.getMemberNum());
+		
+		if (wish == null) {
+			wish = new Wishlist();
+			wish.setMemberNum(member.getMemberNum());
+			wish.setStoreNum(storeNum);
+			wish.setMemberId(user.getUsername());
+			
+			dService.insertWishlist(wish);
+			dService.plusWishlist(storeNum);
+		} else {
+			dService.deleteWish(storeNum, member.getMemberNum());
+			dService.minusWishlist(storeNum);
+		}
+		Store store = dService.selectOneStore(storeNum);
+		return store;
+	}
+	
+	
+	@GetMapping("/loadWish")
+	public @ResponseBody Wishlist loadWish(int storeNum,
+			@AuthenticationPrincipal UserDetails user) {
+		Member member = mService.selectOneMember(user.getUsername());
+		
+		Wishlist wish = dService.selectWishlist(storeNum, member.getMemberNum());
+		
+		
+		return wish;
+	}
+	
+	@GetMapping("/sellerPage")
+	public String sellerPage() {
+		
+		return d + "/sellerPage";
+	}
+	
+	@GetMapping("/sellerOrderList")
+	public String sellerOrderList() {
+		
+		return d + "/sellerOrderList";
+	}
+	
+	@GetMapping("/selectMyStore")
+	public @ResponseBody List<Store> selectMyStore(@AuthenticationPrincipal UserDetails user) {
+		
+		Member member = mService.selectOneMember(user.getUsername());
+		List<Store> storeList = dService.selectMemberOne(member.getMemberNum());
+		
+		return storeList;
+	}
+	
+	@GetMapping("/loadSellerOrderList")
+	public @ResponseBody List<Receipt> loadSellerOrderList(int storeNum) {
+		
+		List<Receipt> rList = dService.selectReceiptByStoreNum(storeNum);
+		
+		log.debug("판매자 주문 목록 리스트 : {}", rList);
+		
+		return rList;
+	}
+	
+	@GetMapping("/storeRank")
+	public @ResponseBody List<Store> storeRank() {
+		
+		List<Store> sList = dService.selectStoreRank();
+		log.debug("sList : {}", sList);
+		return sList;
 	}
 }

@@ -4,20 +4,59 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<link rel="stylesheet" href="/css/delivery/deliveryIndex.css">
+<link rel="stylesheet" href="/css/delivery/deliveryRead.css">
 <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
-
+<style>
+	.storeTable {
+		margin : 20px;
+		width : 40%;
+		color : white;
+		border : 1px solid black;
+		display : inline-block;
+	}
+	
+	.storeTable td {
+		padding : 15px;
+	}
+	
+	.storeTable a {
+		color : white;
+		text-decoration : none;
+	}
+	
+	.storeTable .nameTd {
+		padding-top : 30px;
+		padding-bottom : 30px;
+		width : 120px;
+		text-align : center;
+		
+	}
+	
+</style>
 <script th:inline="javascript">
-	
-
-	
 	
 	$(document).ready(function() {
 		$("#searchWord").on("keyup", function() { load(); });
 		load();
 		
-		
 	});
+	
+	function plusWish(storeNum){
+		
+		$.ajax({
+			url : "plusWish",
+			type : "get",
+			data : {"storeNum" : storeNum},
+			success : function(data) {
+				console.log(data);
+				if(data.storeNum == storeNum) {
+					$(".wish").val("♥");
+				}
+				
+				
+			}
+		});
+	}
 	
 	function getParameterByName(name) {
 		  name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
@@ -40,19 +79,19 @@
 				/* <![CDATA[ */
 				var goRead = [[@{/delivery/read}]];
 				
-				let htmlStr = "<table border='1'><tr><th>상호명</th><th>카테고리</th><th>별점</th></tr>";
-		
+				let htmlStr = "";
 				
 				$.each(data, function(index, item) {
+					htmlStr += "<table class='storeTable'>";
 					
 					htmlStr += "<tr>"
-					htmlStr += "<td><a href='" + goRead + "?num=" + item.storeNum + "'>" + item.storeName + "</a></td>";
-					htmlStr += "<td>" + item.category + "</td>";
-					htmlStr += "<td>" + item.rating + "</td>";
+					htmlStr += "<td class='nameTd'><a href='" + goRead + "?num=" + item.storeNum + "'>" + item.storeName + "</a></td>";
+					htmlStr += "<td>★ " + item.rating + "</td>";
+					htmlStr += "<td>♥ " + item.wishlist + "</td>";
 					htmlStr += "</tr>";
+					htmlStr += "</table>";
 				});
 				
-				htmlStr += "</table>"
 				
 				$("#center-dv").html(htmlStr);
 				/* ]]> */
@@ -113,7 +152,48 @@
 				
 				<aside>
 					<div class="aside-left">
-
+						<ul class="foodList">
+							<li>
+								<a th:href = "|@{storeList}?category=all|">
+									전체보기
+								</a>
+							</li>
+							<li>
+								<a th:href="|@{storeList}?category=1|">
+									한식
+								</a>
+							</li>
+							<li>	
+								<a th:href="|@{storeList}?category=2|">
+									중식
+								</a>
+							</li>
+							<li>
+								<a th:href="|@{storeList}?category=3|">
+									일식
+								</a>
+							</li>
+							<li>
+								<a th:href="|@{storeList}?category=4|">
+									양식
+								</a>
+							</li>
+							<li>
+								<a th:href="|@{storeList}?category=5|">
+									디저트
+								</a>
+							</li>
+							<li>
+								<a th:href="|@{storeList}?category=6|">
+									야식
+								</a>
+							</li>
+							<li>
+								<a th:href="|@{storeList}?category=7|">
+									도시락
+								</a>
+							</li>
+						</ul>
 					</div>
 				</aside>
 				

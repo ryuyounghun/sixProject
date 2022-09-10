@@ -20,4 +20,6 @@ public class Receipt {
 	private int storeNum;
 	private String orderHistory;
 	private int totalAmount;
+	private String waiting;
+	private String complete;
 }

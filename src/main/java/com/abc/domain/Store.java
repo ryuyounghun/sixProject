@@ -22,7 +22,7 @@ public class Store {
 	private String category;
 	private String address;
 	private String phone;
-	private int rating;
+	private double rating;
 	private int wishlist;
 	
 	private String originalFile;	 

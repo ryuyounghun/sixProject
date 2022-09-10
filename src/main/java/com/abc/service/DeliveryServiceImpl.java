@@ -11,7 +11,9 @@ import com.abc.dao.DeliveryDAO;
 import com.abc.domain.Item;
 import com.abc.domain.Order;
 import com.abc.domain.Receipt;
+import com.abc.domain.Review;
 import com.abc.domain.Store;
+import com.abc.domain.Wishlist;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -44,9 +46,9 @@ public class DeliveryServiceImpl implements DeliveryService{
 	}
 
 	@Override
-	public Store selectOne(int num) {
+	public Store selectOneStore(int num) {
 		// TODO Auto-generated method stub
-		return dDao.selectOne(num);
+		return dDao.selectOneStore(num);
 	}
 
 	@Override
@@ -156,6 +158,96 @@ public class DeliveryServiceImpl implements DeliveryService{
 	public List<Receipt> selectReceipt(int memberNum) {
 		// TODO Auto-generated method stub
 		return dDao.selectReceipt(memberNum);
+	}
+
+	@Override
+	public int insertReview(Review review) {
+		// TODO Auto-generated method stub
+		return dDao.insertReview(review);
+	}
+
+	@Override
+	public int completeOrder(int orderNum) {
+		// TODO Auto-generated method stub
+		return dDao.completeOrder(orderNum);
+	}
+
+	@Override
+	public List<Review> selectReviews(int storeNum) {
+		// TODO Auto-generated method stub
+		return dDao.selectReviews(storeNum);
+	}
+
+	@Override
+	public int updateRating(Store store) {
+		// TODO Auto-generated method stub
+		return dDao.updateRating(store);
+	}
+
+	@Override
+	public Receipt selectReceiptByReceiptNum(int receiptNum) {
+		// TODO Auto-generated method stub
+		return dDao.selectReceiptByReceiptNum(receiptNum);
+	}
+
+	@Override
+	public int insertWishlist(Wishlist wish) {
+		// TODO Auto-generated method stub
+		return dDao.insertWishlist(wish);
+	}
+
+	@Override
+	public int plusWishlist(int storeNum) {
+		// TODO Auto-generated method stub
+		return dDao.plusWishlist(storeNum);
+	}
+
+	@Override
+	public Wishlist selectWishlist(int storeNum, int memberNum) {
+		// TODO Auto-generated method stub
+		
+		Map<Object, Object> map = new HashMap<Object, Object>();
+		
+		log.debug("storeNum : {}", storeNum);
+		log.debug("memberNum : {}", memberNum);
+		
+		map.put("memberNum", memberNum);
+		map.put("storeNum", storeNum);
+
+		return dDao.selectWishlist(map);
+	}
+
+	@Override
+	public List<Receipt> selectReceiptByStoreNum(int storeNum) {
+		// TODO Auto-generated method stub
+		return dDao.selectReceiptByStoreNum(storeNum);
+	}
+
+	@Override
+	public int deleteWish(int storeNum, int memberNum) {
+		// TODO Auto-generated method stub
+		
+		Map<Object, Object> map = new HashMap<Object, Object>();
+		
+		log.debug("storeNum : {}", storeNum);
+		log.debug("memberNum : {}", memberNum);
+		
+		map.put("memberNum", memberNum);
+		map.put("storeNum", storeNum);
+		
+		return dDao.deleteWish(map);
+	}
+
+	@Override
+	public int minusWishlist(int storeNum) {
+		// TODO Auto-generated method stub
+		return dDao.minusWishlist(storeNum);
+	}
+
+	@Override
+	public List<Store> selectStoreRank() {
+		// TODO Auto-generated method stub
+		return dDao.selectStoreRank();
 	}
 
 

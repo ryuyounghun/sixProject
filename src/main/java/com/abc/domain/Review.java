@@ -19,6 +19,9 @@ public class Review {
 	private int memberNum;
 	private int storeNum;
 	private int receiptNum;
+	private String nickname;
+	private String orderHistory;
+	private String complete;
 	private int rating;
 	private String reviewContent;
 }

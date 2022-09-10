@@ -20,12 +20,82 @@ $(document).ready(function() {
 			$("#review").hide();
 		});
 		
+		$("#wish").on("click", function() { clickWish(); });
+		
 		$("#review").hide();
 		$("#info").hide();
 		load();
 		resultMenu();
+		printReview();
+		loadWish();
 		
 	});
+	
+	function loadWish(){
+		let storeNum = getParameterByName('num');
+		let loginUser = $("#loginUser").val();
+		
+		console.log(loginUser);
+		$.ajax({
+			url : "loadWish",
+			type : "get",
+			data : {"storeNum" : storeNum},
+			success : function(data) {
+				console.log(data);
+				
+				if(data.memberId == loginUser) {
+					$("#wish").val("♥");
+				} else {
+					$("#wish").val("♡");
+				}
+				
+			}
+		});
+	}
+	
+	function clickWish(){
+		let storeNum = getParameterByName('num');
+		
+		$.ajax({
+			url : "clickWish",
+			type : "get",
+			data : {"storeNum" : storeNum},
+			success : function(data) {
+				
+				loadWish();
+				$("#countWishlist").html(data.wishlist);
+			}
+		});
+	}
+	
+	function printReview() {
+		let storeNum = getParameterByName('num');
+		
+		$.ajax({
+			url : "printReviewAjax",
+			type : "get",
+			data : {"storeNum" : storeNum},
+			success : function(data) {
+				
+				let htmlStr = "";
+				
+				$.each(data, function(index, item) {
+					htmlStr += "<table border='1' class='menuTable'>";
+					htmlStr += "<tr><td colspan='2'>" + item.nickname + "님</td></tr>";
+					htmlStr += "<tr><td colspan='2'>" + item.orderHistory + "</td></tr>";
+					htmlStr += "<tr>"; 
+					htmlStr += "<td>" + item.reviewContent + "</td>";
+					htmlStr += "<td>" + item.rating + "점</td>";
+					htmlStr += "</tr>";
+					htmlStr += "</table>"
+				});
+				
+				
+				$("#review").html(htmlStr);
+			}
+		});
+	}
+	
 	
 	function allOrder(data) {
 		let storeNum = getParameterByName('num');
@@ -36,6 +106,7 @@ $(document).ready(function() {
 			data : {"data" : data, "storeNum" : storeNum},
 			success : function() {
 				alert("주문에 성공했습니다.");
+				resultMenu();
 			}
 		});
 	}
@@ -123,8 +194,7 @@ $(document).ready(function() {
 			data : {"storeNum" : storeNum, "itemNum" : itemNum},
 			success : function(data) {
 				
-				resultMenu()
-				
+				resultMenu();
 			}
 		});
 	}
@@ -138,8 +208,11 @@ $(document).ready(function() {
 			data : {"storeNum" : storeNum},
 			success : function(data) {
 				
+				console.log(data);
+				
 				let htmlStr = "<table>";
 				$.each(data, function(index, item) {
+					
 					htmlStr += "<tr>"
 					htmlStr += "<td colspan='5'>" + item.itemName + "</td>";
 					htmlStr += "</tr><tr>"; 
@@ -176,24 +249,46 @@ $(document).ready(function() {
 					
 				/* var display = [[@{itemDisplay}]];
 				console.log(display); */
-				let htmlStr = "<table border='1'>";
+				
+				let htmlStr = "";
+				
 				$.each(data, function(index, item) {
+					htmlStr += "<table border='1' class='menuTable'>";
 					htmlStr += "<tr>"; 
 					/* htmlStr += "<td><img src='" + display + "'></td>"; */
 					htmlStr += "<td><a>" + item.itemName + "</a></td>";
 					htmlStr += "<td>" + item.itemContent + "</td>";
 					htmlStr += "<td>" + item.itemPrice + "</td>";
-					htmlStr += "<td><input type='button' value='주문' id='item" + item.itemNum + "' onclick='orderMenu(" + item.itemNum + ");'></td>";
+					htmlStr += "<td><input type='button' value='주문' id='item" + item.itemNum + "' onclick='checkItem(" + item.itemNum + ");'></td>";
 					htmlStr += "</tr>";
-				});
 					htmlStr += "</table>"
+				});
 				
 				
 				$("#menu").html(htmlStr);
 				/* ]]> */
 			}
 		});
+	}
+	
+	function checkItem(itemNum) {
+		let storeNum = getParameterByName('num');
 		
+		$.ajax({
+			url : "checkItem",
+			type : "get",
+			data : {"storeNum" : storeNum, "itemNum" : itemNum},
+			success : function(data) {
+				
+				console.log(data);
+				
+				if(data == "") {
+					orderMenu(itemNum);
+				} else {
+					plus(data.orderNum);
+				}
+			}
+		});
 	}
 	
 	

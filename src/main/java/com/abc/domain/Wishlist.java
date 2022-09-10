@@ -13,14 +13,9 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class Order {
+public class Wishlist {
 
-	private int orderNum;
 	private int memberNum;
-	private int itemNum;
+	private String memberId;
 	private int storeNum;
-	private String itemName;
-	private int itemPrice;
-	private int quantity;
-	private String complete;
 }

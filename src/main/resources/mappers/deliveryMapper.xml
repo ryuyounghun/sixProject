@@ -41,52 +41,62 @@
 		SELECT * FROM
 		STORE
 		WHERE WAITING = 'N' 
-	<if test="category == 'all'">
-		AND STORENAME LIKE '%'||#{searchKeyword}||'%'
-	</if>
-	<if test = 'category eq "1"'>
-		AND CATEGORY = #{category}
-		AND STORENAME LIKE '%'||#{searchKeyword}||'%'
-	</if>
-	<if test = 'category eq "2"'>
-		AND CATEGORY = #{category}
-		AND STORENAME LIKE '%'||#{searchKeyword}||'%'
-	</if>
-	<if test = 'category eq "3"'>
-		AND CATEGORY = #{category}
-		AND STORENAME LIKE '%'||#{searchKeyword}||'%'
-	</if>
-	<if test = 'category eq "4"'>
-		AND CATEGORY = #{category}
-		AND STORENAME LIKE '%'||#{searchKeyword}||'%'
-	</if>
-	<if test = 'category eq "5"'>
-		AND CATEGORY = #{category}
-		AND STORENAME LIKE '%'||#{searchKeyword}||'%'
-	</if>
-	<if test = 'category eq "6"'>
-		AND CATEGORY = #{category}
-		AND STORENAME LIKE '%'||#{searchKeyword}||'%'
-	</if>
-	<if test = 'category eq "7"'>
-		AND CATEGORY = #{category}
-		AND STORENAME LIKE '%'||#{searchKeyword}||'%'
-	</if>
-	
+		<if test="category == 'all'">
+			AND STORENAME LIKE '%'||#{searchKeyword}||'%'
+		</if>
+		<if test = 'category eq "1"'>
+			AND CATEGORY = #{category}
+			AND STORENAME LIKE '%'||#{searchKeyword}||'%'
+		</if>
+		<if test = 'category eq "2"'>
+			AND CATEGORY = #{category}
+			AND STORENAME LIKE '%'||#{searchKeyword}||'%'
+		</if>
+		<if test = 'category eq "3"'>
+			AND CATEGORY = #{category}
+			AND STORENAME LIKE '%'||#{searchKeyword}||'%'
+		</if>
+		<if test = 'category eq "4"'>
+			AND CATEGORY = #{category}
+			AND STORENAME LIKE '%'||#{searchKeyword}||'%'
+		</if>
+		<if test = 'category eq "5"'>
+			AND CATEGORY = #{category}
+			AND STORENAME LIKE '%'||#{searchKeyword}||'%'
+		</if>
+		<if test = 'category eq "6"'>
+			AND CATEGORY = #{category}
+			AND STORENAME LIKE '%'||#{searchKeyword}||'%'
+		</if>
+		<if test = 'category eq "7"'>
+			AND CATEGORY = #{category}
+			AND STORENAME LIKE '%'||#{searchKeyword}||'%'
+		</if>
 	</select>
 	
-	<select id="selectOne" parameterType="int" resultType="Store">
+	<select id="selectOneStore" parameterType="int" resultType="Store">
 		SELECT * FROM
 		STORE
 		WHERE STORENUM = #{storeNum}
 	</select>
 	
+	<update id="updateRating" parameterType="Store">
+		UPDATE STORE
+		SET RATING = #{rating}
+		WHERE STORENUM = #{storeNum}
+	</update>
+	
+	<select id="selectStoreRank" resultType="Store">
+		SELECT * FROM STORE
+		ORDER BY WISHLIST DESC
+	</select>
 	
 	<select id="selectMemberOne" parameterType="int" resultType="Store">
 		SELECT * FROM
 		STORE
 		WHERE MEMBERNUM = #{memberNum}
 	</select>
+	
 	
 	<!-- 상품 정보 등록 쿼리 -->
 	<insert id="insertItem" parameterType="Item">
@@ -154,12 +164,14 @@
 		SELECT * FROM
 		ORDER_TABLE
 		WHERE STORENUM = #{storeNum} AND MEMBERNUM = #{memberNum}
+		AND COMPLETE = 'N'
 	</select>
 
 	<select id="selectMyOrders" parameterType="int" resultType="Order">
 		SELECT * FROM
 		ORDER_TABLE
 		WHERE MEMBERNUM = #{memberNum}
+		AND COMPLETE = 'N'
 	</select>
 	
 	<select id="selectOneOrder" parameterType="int" resultType="Order">
@@ -184,7 +196,9 @@
 	<select id="paymentOrder" resultType="int" parameterType="map">
 		SELECT SUM(ITEMPRICE * quantity)
 		FROM ORDER_TABLE
-		WHERE STORENUM = #{storeNum} AND MEMBERNUM = #{memberNum}
+		WHERE COMPLETE = 'N' 
+		AND MEMBERNUM = #{memberNum}
+		AND STORENUM = #{storeNum}
 	</select>
 	
 	<delete id="deleteOrder" parameterType="int">
@@ -192,6 +206,11 @@
 		WHERE ORDERNUM = #{orderNum}
 	</delete>
 	
+	<update id="completeOrder" parameterType="int">
+		UPDATE ORDER_TABLE
+		SET COMPLETE = 'Y'
+		WHERE ORDERNUM = #{orderNum}
+	</update>
 	
 	<insert id="insertReceipt" parameterType="Receipt">
 		INSERT INTO RECEIPT(
@@ -215,5 +234,82 @@
 		RECEIPT
 		WHERE MEMBERNUM = #{memberNum}
 	</select>
+	
+	<select id="selectReceiptByReceiptNum" parameterType="int" resultType="Receipt">
+		SELECT * FROM
+		RECEIPT
+		WHERE RECEIPTNUM = #{receiptNum}
+	</select>
+	
+	<select id="selectReceiptByStoreNum" parameterType="int" resultType="Receipt">
+		SELECT * FROM
+		RECEIPT
+		WHERE STORENUM = #{storeNum} AND WAITING = 'N'
+	</select>
+	
+	<insert id="insertReview" parameterType="Review">
+		INSERT INTO REVIEW(
+			REVIEWNUM,
+			MEMBERNUM,
+			STORENUM,
+			RECEIPTNUM,
+			NICKNAME,
+			ORDERHISTORY,
+			RATING,
+			REVIEWCONTENT
+		)
+		VALUES(
+			REVIEW_SEQ.NEXTVAL,
+			#{memberNum},
+			#{storeNum},
+			#{receiptNum},
+			#{nickname},
+			#{orderHistory},
+			#{rating},
+			#{reviewContent}
+		)
+	</insert>
+	
+	<select id="selectReviews" parameterType="int" resultType="Review">
+		SELECT * FROM
+		REVIEW
+		WHERE STORENUM = #{storeNum}
+	</select>
+	
+	<insert id="insertWishlist" parameterType="Wishlist">
+		INSERT INTO WISHLIST(
+			MEMBERNUM,
+			MEMBERID,
+			STORENUM
+		)
+		VALUES(
+			#{memberNum},
+			#{memberId},
+			#{storeNum}
+		)
+	</insert>
+	
+	<select id="selectWishlist" parameterType="map" resultType="Wishlist">
+		SELECT * FROM
+		WISHLIST
+		WHERE STORENUM = #{storeNum} AND MEMBERNUM = #{memberNum}
+	</select>
+	
+	<delete id="deleteWish" parameterType="map">
+		DELETE FROM WISHLIST
+		WHERE STORENUM = #{storeNum} AND MEMBERNUM = #{memberNum}
+	</delete>
+	
+	<update id="plusWishlist" parameterType="int">
+		UPDATE STORE
+		SET WISHLIST = WISHLIST + 1
+		WHERE STORENUM = #{storeNum}
+	</update>
+	
+	<update id="minusWishlist" parameterType="int">
+		UPDATE STORE
+		SET WISHLIST = WISHLIST - 1
+		WHERE STORENUM = #{storeNum}
+	</update>
 </mapper>
 

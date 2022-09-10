@@ -6,15 +6,22 @@ import java.util.Map;
 import com.abc.domain.Item;
 import com.abc.domain.Order;
 import com.abc.domain.Receipt;
+import com.abc.domain.Review;
 import com.abc.domain.Store;
+import com.abc.domain.Wishlist;
 
 public interface DeliveryService {
 
 	public int insertStore(Store store);
 	public List<Store> selectSearch(String category, String keyword);
-	public Store selectOne(int num);
+	public Store selectOneStore(int num);
+	public int updateRating(Store store);
+	
+	public int plusWishlist(int storeNum);
+	public int minusWishlist(int storeNum);
 	
 	public List<Store> selectMemberOne(int num);
+	public List<Store> selectStoreRank();
 	
 	public int insertItem(Item item);
 	public List<Item> selectItemSearch(String title, String storeNum);
@@ -29,8 +36,18 @@ public interface DeliveryService {
 	public int minusOrder(Order order);
 	public int deleteOrder(int num);
 	
+	public int completeOrder(int orderNum);
 	public int paymentOrder(int memberNum, int storeNum);
 	
 	public int insertReceipt(Receipt receipt);
 	public List<Receipt> selectReceipt(int memberNum);
+	public Receipt selectReceiptByReceiptNum(int receiptNum);
+	public List<Receipt> selectReceiptByStoreNum(int storeNum);
+	
+	public int insertReview(Review review);
+	public List<Review> selectReviews(int storeNum);
+	
+	public int insertWishlist(Wishlist wish);
+	public Wishlist selectWishlist(int storeNum, int memberNum);
+	public int deleteWish(int storeNum, int memberNum);
 }
