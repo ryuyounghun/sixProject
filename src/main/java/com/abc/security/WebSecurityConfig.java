@@ -7,6 +7,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -15,10 +17,11 @@ import org.springframework.security.web.SecurityFilterChain;
 /**
  * 스프링 시큐리티 관련 설정을 하는 클래스
  */
-
+@EnableWebSecurity
 @Configuration // 설정하는 클래스
 public class WebSecurityConfig {
 
+	
 	@Autowired
 	private DataSource dataSource;
 	// application.properties에있는 datasource정보
@@ -53,6 +56,7 @@ public class WebSecurityConfig {
 		.logoutSuccessUrl("/") // 로그아웃 성공시 이동할 주소
 		.permitAll()
 		.and()
+		
 		.cors()
 		.and()
 		.httpBasic();

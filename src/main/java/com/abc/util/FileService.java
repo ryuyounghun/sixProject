@@ -2,8 +2,10 @@ package com.abc.util;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Date;
 
+import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -18,9 +20,11 @@ public class FileService {
 	 * @param path 저장할 경로
 	 * @return 저장된 파일명
 	 */
+	
+	
 	public static String saveFile(MultipartFile mfile, String uploadPath) {
-		//업로드된 파일이 없거나 크기가 0이면 저장하지 않고 null을 리턴
 		if (mfile == null || mfile.isEmpty() || mfile.getSize() == 0) {
+		//업로드된 파일이 없거나 크기가 0이면 저장하지 않고 null을 리턴
 			return null;
 		}
 		

@@ -1,0 +1,53 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.abc.dao.FreeBoardDAO">
+<!--
+모임 게시판 관련 쿼리
+ -->
+ 
+	<!-- 자유 게시판 글 쓰기 -->
+		<insert id="insertFreeBoard" parameterType="FreeBoard">
+			INSERT INTO FREE_BOARD(
+				BOARDNUM,
+				MEMBERNUM,
+				NICKNAME,
+				CATEGORY,
+				TITLE,
+				CONTENT
+			)
+			VALUES (
+				BOARDNUM_SEQ.NEXTVAL,
+				#{memberNum},
+				#{nickname},
+				#{category},
+				#{title},
+				#{content}
+			)
+		</insert>
+		
+	<!-- 자유 게시판 글 불러오기 -->
+	<select id="selectAllFreeBoard" resultType="FreeBoard">
+		SELECT 
+			*
+		FROM FREE_BOARD
+		ORDER BY BOARDNUM DESC
+	</select>
+	<select id = "countAllFreeBoard" parameterType="map" resultType = "int">
+		SELECT
+			count(*)
+		FROM FREE_BOARD
+	</select>
+	
+	
+	<select id="selectOneFreeBoard" resultType="FreeBoard" parameterType="long">
+		SELECT 
+			*
+		FROM FREE_BOARD
+		WHERE BOARDNUM = #{boardNum} 
+	</select>
+	
+	
+</mapper>
+

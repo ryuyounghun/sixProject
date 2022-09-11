@@ -1,0 +1,57 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.abc.dao.ClassBoardDAO">
+<!--
+모임 게시판 관련 쿼리
+ -->
+ 
+	<!-- 모임게시판 글 쓰기 -->
+		<insert id="insertClassBoard" parameterType="ClassBoard">
+			INSERT INTO CLASS_BOARD(
+				CLASSNUM,
+				MEMBERNUM,
+				DESTINATION,
+				TOTALMEMBER,
+				NICKNAME,
+				TITLE,
+				CONTENT,
+				CLASSTAG
+				<!-- 첨부파일 정보가 있을때 -->
+				<if test = "originalFile != null and savedFile != null">
+					, ORIGINALFILE
+					, SAVEDFILE
+				</if>
+			)
+			VALUES (
+				CLASS_BOARD_SEQ.NEXTVAL,
+				#{memberNum},
+				#{destination},
+				#{totalMember},
+				#{nickname},
+				#{title},
+				#{content},
+				#{classTag}
+				<!-- 첨부파일 정보 유무 확인 -->
+				<if test = "originalFile != null and savedFile != null">
+					, #{originalFile}
+					, #{savedFile}
+				</if>
+			)
+		</insert>
+	<!-- 모임 게시판 글 불러오기 -->
+	<select id="selectAllClassBoard" resultType="ClassBoard">
+		SELECT 
+			*
+		FROM CLASS_BOARD
+		ORDER BY CLASSNUM DESC
+	</select>
+	<select id = "countAllClassBoard" parameterType="map" resultType = "int">
+		SELECT
+			count(*)
+		FROM CLASS_BOARD
+	</select>
+	
+</mapper>
+

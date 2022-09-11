@@ -5,7 +5,14 @@
 <meta charset="UTF-8">
 <title>로그인</title>
 	<link rel = "stylesheet" href = "/css/member/login_style.css">
+	<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+	<script type="text/javascript">
+		
+		$(document).ready(function() {
+			
+		});
 	
+	</script>
 </head>
 <body>
 <!-- 네이버 -->
@@ -36,6 +43,23 @@
       </a>
 	</li>
 </ul>
+
+<h1>Kakao Login Test</h1>
+	<span th:if="${userId==null}">
+		<a href="https://kauth.kakao.com/oauth/authorize?client_id=ff7e45d762a8cd9c3235651811e41a69&redirect_uri=http://localhost:1123/kakao&response_type=code">
+			<img src = "img/kakao_login_medium_narrow.png">
+		</a>
+	</span>
+	<span th:if="${userId!=null}">
+		<form name="logout" action="http://localhost:1123/logout">
+			<input type="submit" value="로그아웃">
+		</form>
+	</span>
+
+
+
+
+
 <!-- 로그인 화면 -->
 	    	<div class = "loginContainer">
 				<!-- 로그인 화면 제목 -->
@@ -48,7 +72,7 @@
 		        <!-- 로그인 화면 내용 -->
 		        <div class = "loginContent">
 		        	<!-- 서버에 보낼 링크, 방식 작성해야 함 -->
-		        	<form action = "login" method = "post">
+		        	<form action = "login" method = "post" id="loginForm">
 		        		<fieldset>
 		        			<legend>로그인 구역</legend>
 		        			<!-- 아이디 -->
@@ -129,9 +153,9 @@
 	<!-- 카카오 스크립트 -->
 	<script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
 	<script>
-	Kakao.init('792ed7644eca630710d2a7db35e61f90'); //발급받은 키 중 javascript키를 사용해준다.
+	Kakao.init('6e7c79dc40e0d0df1bb9a7bb0628d68a'); //발급받은 키 중 javascript키를 사용해준다.
 	console.log(Kakao.isInitialized()); // sdk초기화여부판단
-	
+	//kauth.kakao.com/oauth/authorize?client_id=ff7e45d762a8cd9c3235651811e41a69&redirect_uri=http://localhost:1123/member/kakao&response_type=code
 	//카카오로그인
 	function kakaoLogin() {
 	    Kakao.Auth.login({
@@ -139,11 +163,52 @@
 	        Kakao.API.request({
 	          url: '/v2/user/me',
 	          success: function (response) {
-	        	  console.log(response)
+	        	  console.log(response);
+	        	  let kakaoid = response.id;
+	        	  let email = response.kakao_account.email;
+	        	  let nickname = response.properties.nickname;
+	        
+	        	  $.ajax({
+	        		 url : "kakaoIdCheck",
+	        		 type : "post",
+	        		 data : {"id" : email},
+	        		 success : function(data) {
+	        			 console.log(data);
+						if(data != ""){
+							
+							createHiddenLoginForm(email, kakaoid);
+							
+						} else {
+							$.ajax({
+								type : "post",
+		    					url : '/member/kakaoSignUp',
+		    					data : {"userid":kakaoid,
+		    						    "name":response.properties.nickname,
+		    						    "email":response.kakao_account.email},
+		    					dataType :"json",
+		    					success : function(data){
+		    						console.log(data);
+		    						if(data != ""){
+		    							// 로그인
+		    							createHiddenLoginForm(email, kakaoid);		    							
+		    						} else {
+		    							alert('카카오 회원가입 실패. 일반계정으로 로그인하시기 바랍니다.');
+		    						}
+		    					},
+		    					fail: function(request, status, error){
+		    		                   alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+		    		                }
+							});
+						}
+	        		 
+	        		 }
+	        	  }); 
+	        	  
+	        	  
 	          },
-	          fail: function (error) {
-	            console.log(error)
-	          },
+	          fail: function(request, status, error){
+                  alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+               },
 	        })
 	      },
 	      fail: function (error) {
@@ -152,21 +217,16 @@
 	    })
 	  }
 	
-	//카카오로그아웃  
-	function kakaoLogout() {
-	    if (Kakao.Auth.getAccessToken()) {
-	      Kakao.API.request({
-	        url: '/v1/user/unlink',
-	        success: function (response) {
-	        	console.log(response)
-	        },
-	        fail: function (error) {
-	          console.log(error)
-	        },
-	      })
-	      Kakao.Auth.setAccessToken(undefined)
-	    }
-	  }  
+	
+	function createHiddenLoginForm(email, kakaoId) {
+		
+		let form = document.getElementById("loginForm");
+		
+		$("#loginId").val(email);
+		$("#loginPw").val(kakaoId);
+		
+		form.submit();
+	}
 </script>
 </body>
 </html>

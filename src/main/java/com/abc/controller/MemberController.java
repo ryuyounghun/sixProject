@@ -6,10 +6,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.abc.domain.Member;
 import com.abc.service.MemberService;
 
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Controller
@@ -71,4 +75,42 @@ public class MemberController {
 			return "memberView/idChkForm";
 		}
 	
+		/*
+		 * @ResponseBody
+		 * 
+		 * @GetMapping("/login") public void kakaoCallback(@RequestParam String code) {
+		 * System.out.println(code); }
+		 */
+		
+		@PostMapping("/kakaoIdCheck")
+		public @ResponseBody Member kakaoIdCheck(String id) {
+			
+			Member member = mService.selectOneMember(id);
+			log.debug("member:{}", member);
+			return member;
+		}
+		
+		@PostMapping("/kakaoSignUp")
+		public @ResponseBody Member kakaoSignUp(String userid, String name, String email) {
+			
+			log.debug("signUp 시작");
+			
+			Member member = new Member();
+			
+			member.setMemberId(email);
+			member.setMemberPw(userid);
+			member.setName(name);
+			member.setNickname(name);
+			member.setAddress("다시 입력해 주세요");
+			member.setPhone("다시입력해주세요");
+			
+			mService.insertMember(member);
+			
+			member = mService.selectOneMember(email);
+			
+			log.debug("member:{}", member);
+			return member;
+		}
+		
+		
 }
