@@ -95,10 +95,13 @@
 									</tr>
 									<tr th:each="list : ${fbList}">
 										<td th:text="${list.nickname}"></td>
+										<!--
+										 -->
 										<td>
-											<a>
+											<a th:href="@{|fbRead?num=${list.boardNum}|}">
 												<span th:text="${list.title}"
-												style="display: inline-block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 13ch;"></span>
+												style="display: inline-block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 13ch;">
+												</span>
 											</a>
 										</td>
 										<td th:text="${list.inputdate}"></td>

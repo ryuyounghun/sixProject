@@ -41,7 +41,7 @@
 	</select>
 	
 	
-	<select id="selectOneFreeBoard" resultType="FreeBoard" parameterType="long">
+	<select id="selectOneFreeBoard" resultType="FreeBoard" parameterType="int">
 		SELECT 
 			*
 		FROM FREE_BOARD

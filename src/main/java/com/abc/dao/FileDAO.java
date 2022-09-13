@@ -13,12 +13,12 @@ public interface FileDAO {
 	
 	public int insertFile(FileDTO fd);
 
-	public FileDTO selectFileDetail(Long fileNum);
+	public FileDTO selectOneFile(Long fileNum);
 
-	public int deleteFile(Long boardNum);
+	public int deleteFile(int boardNum);
 
-	public List<FileDTO> selectFileList(Long boardNum);
+	public List<FileDTO> selectFileList(int boardNum);
 
-	public int selectFileTotalCount(Long boardNum);
+	public int selectFileTotalCount(int boardNum);
 	
 }

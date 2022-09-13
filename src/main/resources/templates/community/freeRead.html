@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" href="/css/community/communityIndex.css">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+</head>
+<body>
+	<div id="headerAndSection-wrapper">
+		<header>
+			<div class="header-container">
+				<a href="/" class="header-logo" >
+					ㄹ고
+				</a>
+				<a th:href="@{/delivery/indexqwe}" class="header-toAnother" >
+					배달로~
+				</a>
+				
+				<ui class="header-logMenuList"> <!-- 로그인 및 로그아웃 링크 -->
+					<li sec:authorize ="not isAuthenticated">
+						<a th:href="@{/member/login}">
+							로그인
+						</a>
+					</li>
+					<li sec:authorize="not isAuthenticated">
+						<a th:href ="@{/member/join}">
+							회원가입
+						</a>
+					</li>
+					<li sec:authorize="isAuthenticated">
+						<a th:href ="@{/logout}">
+							로그아웃
+						</a>
+					</li>
+					<li sec:authorize="isAuthenticated">
+						<a th:href ="@{/member/mypage}">
+							회원정보
+						</a>
+					</li>
+				</ui>
+
+			</div>
+		</header>
+	
+		<section>
+			<div class="section-container">
+				<aside>
+					<div class="aside-left">
+
+					</div>
+				</aside>
+				
+				<aside>
+					<div class="aside-right">
+
+					</div>
+				</aside>
+
+				<div class="aside-center">
+					<div class="section-center">
+
+
+						<div th:unless="${#lists.isEmpty(fileList)}" th:each="file : ${fileList}">
+							<img alt="asd" th:src="@{display(num=${file.fileNum})}" width="200">
+						</div>
+						<div>
+						<div th:unless="${#lists.isEmpty(fileList)}" th:each="file : ${fileList}">
+							<a th:href="@{download(num=${file.fileNum})}" th:text =${file.originalName}></a><br>
+						</div>
+					</div>
+				</div>	
+			</div>		
+		
+		</section>
+	</div>
+		
+</body>
+</html>

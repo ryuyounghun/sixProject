@@ -13,14 +13,20 @@ import com.abc.domain.FreeBoard;
 @Mapper
 public interface FreeBoardDAO {
 
+	// 등록
 	public int insertFreeBoard(FreeBoard fb);
+	
+	// 수정
 	public int updateFreeBoard(FreeBoard fb);
 	
-	public FreeBoard selectOneFreeBoard(Long boardNum);
-	
-	public FreeBoard selectBoardDetail(Long boardNum);
-	
+	// 지우기
 	public int deleteBoard(Long boardNum);
+	
+	// 선택하기
+	public FreeBoard selectOneFreeBoard(int boardNum);
+	
+	public FreeBoard selectBoardDetail(int boardNum);
+	
 
 	public List<FreeBoard> selectBoardList(FreeBoard bf);
 

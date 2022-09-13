@@ -27,7 +27,7 @@ public class FileUtils {
 	private final String today = LocalDate.now().format(DateTimeFormatter.ofPattern("yyMMdd"));
 
 	/** 업로드 경로 */
-	private final String uploadPath = Paths.get("C:", "develop", "upload", today).toString();
+	private final String uploadPath = Paths.get("C:","upload").toString();
 
 	/**
 	 * 서버에 생성할 파일명을 처리할 랜덤 문자열 반환

@@ -61,10 +61,6 @@ public class FreeBoardServiceImpl implements FreeBoardService{
 		return result > 0;
 	}
 
-	@Override
-	public FreeBoard getBoardDetail(Long fileNum) {
-		return fbDAO.selectBoardDetail(fileNum);
-	}
 
 	@Override
 	public int deleteBoard(Long fileNum) {
@@ -79,11 +75,16 @@ public class FreeBoardServiceImpl implements FreeBoardService{
 	}
 
 	@Override
-	public int selectOneFreeBoard(Long boardNum) {
-		// TODO Auto-generated method stub
-		return 0;
+	public FreeBoard selectOneFreeBoard(int boardNum) {
+		return fbDAO.selectOneFreeBoard(boardNum);
 	}
-
+	
+	@Override
+	public List<FileDTO> selectFileList(int num) {
+		return fileDAO.selectFileList(num);
+	}
+	
+	
 	@Override
 	public PageNavigator getPageNavigator(int pagePerGroup, int countPerPage, int Page) {
 		Map<String, String> map = new HashMap<>();
@@ -105,6 +106,13 @@ public class FreeBoardServiceImpl implements FreeBoardService{
 		
 		return fbDAO.selectAllFreeBoard(rb);
 	}
+
+	@Override
+	public FileDTO selectOneFile(Long fileNum) {
+		return fileDAO.selectOneFile(fileNum);
+	}
+
+	
 
 
 }

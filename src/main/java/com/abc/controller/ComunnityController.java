@@ -1,15 +1,25 @@
 package com.abc.controller;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,8 +28,10 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.abc.domain.ClassBoard;
+import com.abc.domain.FileDTO;
 import com.abc.domain.FreeBoard;
 import com.abc.domain.Member;
+import com.abc.domain.Reply;
 import com.abc.service.ClassBoardService;
 import com.abc.service.FreeBoardService;
 import com.abc.service.MemberService;
@@ -152,20 +164,23 @@ public class ComunnityController{
 		
 		return "redirect:./index"; // .../board/
 				
+	}
+	@GetMapping("/fbRead")
+	public String fbRead(int num, Model model) {
+		log.debug("fbread()");
+		log.debug("fbread() num : {} ", num);
+	
 		
+		//보드정보 호출
+		FreeBoard freeBoard = fService.selectOneFreeBoard(num);
+		// 보드에 해당하는 파일 호출
+		List<FileDTO> fileList = fService.selectFileList(num);
 		
-		/*
-		Member member = mService.selectOneMember(user.getUsername());	
-		
-		String mNickname = member.getNickname();
-		cBoard.setNickname(mNickname);
-		
-		int mNum = Integer.parseInt(member.getMemberNum());
-		cBoard.setMemberNum(mNum);
-		
-		log.debug("write cBoard : {}", cBoard);
-		cService.insertClassBoard(cBoard);
-		*/
+		// 해당 글 번호의 댓글 정보 가져오기
+		model.addAttribute("board", freeBoard);
+		model.addAttribute("fileList", fileList);
+		log.debug("파일리스트투스트링: {}", fileList.toString());
+		return c + "freeRead";
 	}
 	
 	@GetMapping("/selectDestination")
@@ -174,7 +189,90 @@ public class ComunnityController{
 		
 		return c + "selectDestination";
 	}
-	
+
+	@GetMapping("/display")
+	public ResponseEntity<Resource> display(long num) {
+	  
+		log.debug("num : {}", num);
+		FileDTO file = fService.selectOneFile(num);
+		log.debug("저장된 파일 :{}", file.getSaveName());
+		Resource resource = 
+				new FileSystemResource(uploadPath + "/" + file.getSaveName());
+		
+		// 파일이 존재하지 않을 때
+		if ( !resource.exists()) {
+			// 404 요소 없음
+			 return new ResponseEntity<Resource>(HttpStatus.NOT_FOUND);
+			// return new ResponseEntity<Resource>(HttpStatus.OK);
+			
+		}
+		HttpHeaders header = new HttpHeaders();
+		
+		// 경로를 가져오기 
+		Path filePath = null;
+		
+		try {
+			// 파일 경로
+			// 첨부한 내용의 타입은 파일
+			filePath = Paths.get(uploadPath + "/" + file.getSaveName());
+			header.add("Content-type", Files.probeContentType(filePath));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		
+		return new ResponseEntity<Resource>(resource, header, HttpStatus.OK);
+	}
+
+	/*
+	@GetMapping("/display")
+	// get값으로 들어온 num23을 쓸거라 pathvariable
+	public List<FileDTO> display(int num) {
+		log.debug("num : {}", num);
+
+		// 파일과 경로 가져오기
+		// 파일정보가 담긴 리스트
+		
+		//파일자체를 줘버려서 해당 경로값 뽑아버리기
+		return fService.getFileList(num);
+		}
+		// log.debug("파일리스트사이즈 : {}",fileList.size());
+		
+		// 진짜 파일 읽어오기
+		 
+		List<Resource> resource = null; 
+		for ( int i = 0; i < fileList.size(); i++) {
+			resource.add(new FileSystemResource(uploadPath + "/" + fileList.get(i).getSaveName()));
+		}
+		// 파일이 존재하지 않을 때
+		if ( resource.size()==0) {
+			// 404 요소 없음
+			 return new ResponseEntity<Resource>(HttpStatus.NOT_FOUND);
+			// return new ResponseEntity<Resource>(HttpStatus.OK);
+			
+		}
+		
+		HttpHeaders header = new HttpHeaders();
+		// List<HttpHeaders> header = (List<HttpHeaders>) new HttpHeaders();
+		
+		// 경로를 가져오기 
+		List<Path> filePath = null;
+		
+		try {
+			// 파일 경로
+			// 첨부한 내용의 타입은 파일
+			for ( int i = 0; i < fileList.size(); i++) {
+				filePath.add(Paths.get(uploadPath + "/" + fileList.get(i).getSaveName()));
+				header.add("Content-type", Files.probeContentType(filePath.get(i)));
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		
+		return new ResponseEntity<Resource>(resource, header, HttpStatus.OK);
+	}
+	 */
 	
 	
 }

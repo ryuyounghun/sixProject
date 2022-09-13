@@ -6,16 +6,24 @@ import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.abc.domain.ClassBoard;
+import com.abc.domain.FileDTO;
 import com.abc.domain.FreeBoard;
 import com.abc.util.PageNavigator;
 
 public interface FreeBoardService {
 
+	// 글등록하기
 	public int registerBoard(FreeBoard fb);
-	public int selectOneFreeBoard(Long boardNum);
 	public boolean registerBoard(FreeBoard fb, MultipartFile[] files);
+	
+	// freeboard객체 하나 가져오기
+	public FreeBoard selectOneFreeBoard(int boardNum);
+	
+	// 해당 boardNum에 해당하는 파일 가져오기
+	public List<FileDTO> selectFileList(int num);
 
-	public FreeBoard getBoardDetail(Long fileNum);
+	// 파일넘에 해당하는 파일 가져오기
+	public FileDTO selectOneFile(Long fileNum);
 
 	public int deleteBoard(Long fileNum);
 

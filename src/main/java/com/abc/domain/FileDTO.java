@@ -10,10 +10,10 @@ import lombok.ToString;
 public class FileDTO {
 
 	/** 파일 번호 (PK) */
-	private Long fileNum;
+	private long fileNum;
 
 	/** 게시글 번호 (FK) */
-	private Long boardNum;
+	private int boardNum;
 
 	/** 원본 파일명 */
 	private String originalName;

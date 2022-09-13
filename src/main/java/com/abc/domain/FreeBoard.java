@@ -15,7 +15,7 @@ import lombok.ToString;
 @ToString
 public class FreeBoard {
 
-	private long boardNum;
+	private int boardNum;
 	private String memberNum;
 	private String nickname;
 	private String category;

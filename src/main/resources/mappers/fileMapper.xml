@@ -6,7 +6,7 @@
 
 	<insert id="insertFile" parameterType="FileDTO">
 	
-		<selectKey resultType="Long" keyProperty="boardNum" order="BEFORE">
+		<selectKey resultType="int" keyProperty="boardNum" order="BEFORE">
 				SELECT MAX(BOARDNUM) FROM FREE_BOARD
 		</selectKey>
 		INSERT INTO multi_file_table_of_free_board (
@@ -26,14 +26,16 @@
 		)
 	</insert>
 
-	<select id="selectFileDetail" parameterType="long" resultType="FileDTO">
+	<select id="selectOneFile" parameterType="long" resultType="FileDTO">
 		SELECT
-			*
+			FILENUM AS fileNum,
+		    BOARDNUM AS boardNum,
+		    ORIGINALFILE AS originalName,
+		    SAVEDFILE AS saveName,
+		    FILESIZE AS fileSize
 		FROM
 			multi_file_table_of_free_board
 		WHERE
-			delete_yn = 'N'
-		AND
 			FILENUM = #{fileNum}
 	</select>
 
@@ -46,9 +48,13 @@
 			boardNum = #{boardNum}
 	</update>
 
-	<select id="selectFileList" parameterType="long" resultType="FileDTO">
+	<select id="selectFileList" parameterType="int" resultType="FileDTO">
 		SELECT
-			*
+			FILENUM AS fileNum,
+		    BOARDNUM AS boardNum,
+		    ORIGINALFILE AS originalName,
+		    SAVEDFILE AS saveName,
+		    FILESIZE AS fileSize
 		FROM
 			multi_file_table_of_free_board
 		WHERE
