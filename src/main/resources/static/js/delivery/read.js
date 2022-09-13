@@ -110,8 +110,26 @@ $(document).ready(function() {
 			}
 		});
 	}
-	
+	//onclick="ChooseCategory()"
 	function orderPrice() {
+		let storeNum = getParameterByName('num');
+		
+		$.ajax({
+			url : "orderPrice",
+			type : "get",
+			data : {"storeNum" : storeNum},
+			success : function(data) {
+				
+				let htmlStr = "<h1>총금액</h1>";
+				htmlStr += "<h2>" + data + "원</h2>";
+				htmlStr += "<input type='button' onclick='allOrder(" + data + ")' value='주문'>";
+				
+				$(".aside-right-allPay").html(htmlStr);
+			}
+		});
+	}
+	
+	function ChooseCategory() {
 		let storeNum = getParameterByName('num');
 		
 		$.ajax({
@@ -291,4 +309,6 @@ $(document).ready(function() {
 		});
 	}
 	
-	
+	function ChooseCategory() {
+		$('#modal').modal('show');
+	}

@@ -5,6 +5,16 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel="stylesheet" href="/css/community/communityRead.css">
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+<style>
+	table {
+		border : 1px solid black;
+		background-color : aqua;
+		width:100%;
+		margin:10px;
+	}	
+	
+</style>
 </head>
 <body>
 	<div id="headerAndSection-wrapper">
@@ -60,22 +70,28 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 				<div class="aside-center">
 					<div class="section-center">
 						<div class="mapInfo">
-							<img alt="" src="/images/다운로드.gif"  class="mapImg">
+							<div id="map" class="mapImg"></div>
 							<div>
-								<p>우리집으로부터 몇 미터</p>
+								<p id="m">우리집으로부터 몇 미터</p>
+								<input type="hidden" th:value="${cBoard.destination}" id="destination">
+								<input type="hidden" th:value="${member.address}" id="myAddress">
+								<input type="button" id="btn" value="button">
+								<input type="hidden" value="" id="x1">
+								<input type="hidden" value="" id="x2">
+								<input type="hidden" value="" id="y1">
+								<input type="hidden" value="" id="y2">
 							</div>
 						</div>
 						<div class="partyJoinOut">
 							<div>
-								<a href="">참여하기</a> 
+								<a onclick="joinParty()">참여하기</a> 
 							</div> 
 							<div>
-								<a href="">나가기</a> 
+								<a onclick="withdrawalParty()">나가기</a> 
 							</div> 
 						</div>
 						<div class="menuImg">
-							<img alt="" src="/images/다운로드.gif"  class="mapImg">
-							
+							<div th:text="${cBoard.classTag}"></div>
 						</div>
 						
 						<div class="participient">
@@ -92,5 +108,7 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 	<footer>
 		
 	</footer>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=6e7c79dc40e0d0df1bb9a7bb0628d68a&libraries=services"></script>
+<script src="/js/community/read.js"></script>
 </body>
 </html>

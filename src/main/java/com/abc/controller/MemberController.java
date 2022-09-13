@@ -75,14 +75,8 @@ public class MemberController {
 			return "memberView/idChkForm";
 		}
 	
-		/*
-		 * @ResponseBody
-		 * 
-		 * @GetMapping("/login") public void kakaoCallback(@RequestParam String code) {
-		 * System.out.println(code); }
-		 */
 		
-		@PostMapping("/kakaoIdCheck")
+		@PostMapping("/socialIdCheck")
 		public @ResponseBody Member kakaoIdCheck(String id) {
 			
 			Member member = mService.selectOneMember(id);
@@ -99,10 +93,10 @@ public class MemberController {
 			
 			member.setMemberId(email);
 			member.setMemberPw(userid);
-			member.setName(name);
+			member.setMemberName(name);
 			member.setNickname(name);
 			member.setAddress("다시 입력해 주세요");
-			member.setPhone("다시입력해주세요");
+			member.setPhone("다시 입력해 주세요");
 			
 			mService.insertMember(member);
 			
@@ -112,5 +106,26 @@ public class MemberController {
 			return member;
 		}
 		
-		
+		@PostMapping("/naverSignUp")
+		public @ResponseBody Member naverSignUp(String userid, String name,
+				String email, String nickname, String phone) {
+			
+			log.debug("signUp 시작");
+			
+			Member member = new Member();
+			
+			member.setMemberId(email);
+			member.setMemberPw(userid);
+			member.setMemberName(name);
+			member.setNickname(name);
+			member.setAddress("다시 입력해 주세요");
+			member.setPhone(phone);
+			
+			mService.insertMember(member);
+			
+			member = mService.selectOneMember(email);
+			
+			log.debug("member:{}", member);
+			return member;
+		}
 }

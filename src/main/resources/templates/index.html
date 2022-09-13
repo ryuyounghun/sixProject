@@ -5,6 +5,63 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel="stylesheet" href="/index.css">
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+	
+	$(document).ready(function() {
+		$("#insertInfo").on("click", function() { updateMember(); });
+		let user = $("#loginUser").val();
+		console.log(user);
+		if(user != null) {
+			joinInfo();
+		}
+		
+	});
+
+	function joinInfo() {
+		
+		$.ajax({
+			url : "memberCheck",
+			type : "get",
+			success : function(data) {
+				console.log(data.phone);
+
+				
+				if(data.phone == "다시 입력해 주세요" && data.address == "다시 입력해 주세요") {
+					$('#exampleModal').modal('show');
+				} else if(data.address == "다시 입력해 주세요") {
+					$('#exampleModal').modal('show');
+				}
+				
+				
+			}
+		});
+	}
+
+	
+	function updateMember() {
+		
+		let address = $("#sample4_roadAddress").val();
+		let phone = $("#phoneNumber").val();
+		
+		$.ajax({
+			url : "addressAndPhone",
+			type : "post",
+			data : {"address" : address, "phone" : phone},
+			success : function(data) {
+				console.log(data.address);
+				console.log(data.phone);
+				
+				$('#exampleModal').modal('hide');
+			}
+		});
+	}
+	
+	
+</script>
 </head>
 <body>
 
@@ -43,7 +100,7 @@
 		<section>
 			<div class="box-wrapper">
 				<aside class="deliveryBox" >
-					<a th:href="@{delivery/index}">
+					<a th:href="@{/delivery/index}">
 						배달주소
 					</a>
 				</aside>
@@ -54,7 +111,9 @@
 					</a>				
 				</aside>
 			</div>
-		
+			<div sec:authorize ="isAuthenticated">
+				<input type="hidden" id="loginUser" th:value="${#authentication.getPrincipal().getUsername()}">
+			</div>
 		</section>
 	</div>
 
@@ -62,5 +121,93 @@
 		
 	</footer>
 
+	
+	<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="exampleModalLabel">New userInfo</h5>
+	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+	      </div>
+	      <div class="modal-body">
+	      		<h4>소셜 회원가입은 주소와 전화번호를 기입해야합니다.</h4>
+	          <div class="mb-3">
+	            <label for="recipient-name" class="col-form-label">New address</label>
+	            <input type="text" class="form-control" id="sample4_roadAddress">
+	       			<input type = "button" value = "주소찾기" class = "addressFind" onclick="sample4_execDaumPostcode()">
+				
+	       			<input type="hidden" id="sample4_postcode" placeholder="우편번호">
+					<input type="hidden" id="sample4_jibunAddress" placeholder="지번주소">
+					<span id="guide" style="color:#999;display:none"></span>
+					<input type="hidden" id="sample4_extraAddress" placeholder="참고항목">
+	          </div>
+	          <div class="mb-3">
+	            <label for="recipient-name" class="col-form-label">New Phone</label>
+	            <input type="text" class="form-control" id="phoneNumber">
+	          </div>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+	        <button type="button" class="btn btn-primary" id="insertInfo">확인</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	
+	
+	
+	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+	<script>
+
+	var selectBoxChange = function(value) {
+		let va = document.getElementById("hiddenNum").value = value;
+	}
+	
+    function sample4_execDaumPostcode() {
+        new daum.Postcode({
+            oncomplete: function(data) {
+
+            	var roadAddr = data.roadAddress; // 도로명 주소 변수
+                var extraRoadAddr = ''; // 참고 항목 변수
+
+                if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+                    extraRoadAddr += data.bname;
+                }
+                if(data.buildingName !== '' && data.apartment === 'Y'){
+                   extraRoadAddr += (extraRoadAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                }
+                if(extraRoadAddr !== ''){
+                    extraRoadAddr = ' (' + extraRoadAddr + ')';
+                }
+
+                document.getElementById('sample4_postcode').value = data.zonecode;
+                document.getElementById("sample4_roadAddress").value = roadAddr;
+                document.getElementById("sample4_jibunAddress").value = data.jibunAddress;
+                
+                if(roadAddr !== ''){
+                    document.getElementById("sample4_extraAddress").value = extraRoadAddr;
+                } else {
+                    document.getElementById("sample4_extraAddress").value = '';
+                }
+
+                var guideTextBox = document.getElementById("guide");
+                if(data.autoRoadAddress) {
+                    var expRoadAddr = data.autoRoadAddress + extraRoadAddr;
+                    guideTextBox.innerHTML = '(예상 도로명 주소 : ' + expRoadAddr + ')';
+                    guideTextBox.style.display = 'block';
+
+                } else if(data.autoJibunAddress) {
+                    var expJibunAddr = data.autoJibunAddress;
+                    guideTextBox.innerHTML = '(예상 지번 주소 : ' + expJibunAddr + ')';
+                    guideTextBox.style.display = 'block';
+                } else {
+                    guideTextBox.innerHTML = '';
+                    guideTextBox.style.display = 'none';
+                }
+            }
+        }).open();
+		
+    }
+	</script>
 </body>
 </html>

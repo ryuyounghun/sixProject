@@ -53,5 +53,54 @@
 		FROM CLASS_BOARD
 	</select>
 	
+	
+	<select id="selectAllClassBoardNoParameter" resultType="ClassBoard">
+		SELECT 
+			*
+		FROM CLASS_BOARD
+		ORDER BY CLASSNUM DESC
+	</select>
+	
+	<select id="selectOneClassBoard" resultType="ClassBoard" parameterType="int">
+		SELECT * FROM
+		CLASS_BOARD
+		WHERE CLASSNUM = #{classNum}
+	</select>
+	
+	<insert id="insertClassRoom" parameterType="ClassRoom">
+		<selectKey resultType="int" keyProperty="classNum" order="BEFORE">
+			SELECT MAX(CLASSNUM) FROM CLASS_BOARD		
+		</selectKey>
+		INSERT INTO CLASS_ROOM(
+			ROOMNUM,
+			CLASSNUM,
+			MEMBERNUM,
+			NICKNAME,
+			ADDRESS
+		) VALUES (
+			CLASS_ROOM_SEQ.NEXTVAL,
+			#{classNum},
+			#{memberNum},
+			#{nickname},
+			#{address}		
+		)
+	</insert>
+	
+	<select id = "selectClassRoom" parameterType="int" resultType="ClassRoom">
+		SELECT * FROM
+		CLASS_ROOM
+		WHERE CLASSNUM = #{classNum}
+	</select>
+	
+	<select id="selectClassRoomByMemberNumAndClassNum" parameterType="map" resultType="ClassRoom">
+		SELECT * FROM
+		CLASS_ROOM
+		WHERE MEMBERNUM = #{memberNum} AND CLASSNUM = #{classNum}
+	</select>
+	
+	<delete id="withdrawalParty" parameterType="map">
+		DELETE FROM CLASS_ROOM
+		WHERE CLASSNUM = #{classNum} AND MEMBERNUM = #{memberNum}
+	</delete>
 </mapper>
 

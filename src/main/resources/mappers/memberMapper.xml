@@ -8,12 +8,18 @@
 	<!-- 회원정보 등록 쿼리 -->
 	<insert id = "insertMember" parameterType = "member">
 		INSERT INTO DELIVERY_MEMBER (MEMBERNUM, MEMBERID, MEMBERPW, MEMBERNAME, NICKNAME, ADDRESS, PHONE)
-		VALUES (DELIVERY_MEMBER_SEQ.NEXTVAL, #{memberId}, #{memberPw}, #{name}, #{nickname}, #{address}, #{phone})
+		VALUES (DELIVERY_MEMBER_SEQ.NEXTVAL, #{memberId}, #{memberPw}, #{memberName}, #{nickname}, #{address}, #{phone})
 	</insert>
 	
 	<select id = "selectOneMember" parameterType = "string" resultType = "member">
 	 	SELECT * FROM DELIVERY_MEMBER
 	 	WHERE MEMBERID = #{memberId}
 	</select>
+	
+	<update id="updateAddressAndPhone" parameterType="Member">
+		UPDATE DELIVERY_MEMBER
+		SET ADDRESS = #{address}, PHONE = #{phone}
+		WHERE MEMBERID = #{memberId}		
+	</update>
 </mapper>
 
