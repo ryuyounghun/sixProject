@@ -1,0 +1,55 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- com.abc.dao.PersonDAO 인터페이스와 매핑됨 -->
+<mapper namespace="com.abc.dao.ReplyDAO">
+<!-- 자유게시판 댓글 쓰기 -->
+	<insert id="insertReply" parameterType="reply">
+		INSERT INTO FREE_REPLY
+			(
+				REPLYNUM,
+				BOARDNUM,
+				MEMBERNUM,
+				NICKNAME,
+				CONTENT
+			)
+		VALUES
+			(
+				FREE_REPLY_SEQ.NEXTVAL,
+				#{boardNum},
+				#{memberNum},
+				(SELECT NICKNAME 
+				FROM DELIVERY_MEMBER
+				WHERE MEMBERNUM = #{memberNum}),
+				#{content}
+			)
+		
+	</insert>	
+<!-- 댓글 하나 보기 -->
+	<select id="selectOneReply" parameterType="int" resultType="Reply">
+		SELECT * FROM FREE_REPLY
+		WHERE REPLYNUM = #{replyNum}
+	</select>
+
+<!-- 글에 달린 댓글 보기 -->
+	<select id="selectReplyByBoardNum" parameterType="int" resultType="Reply">
+		SELECT * FROM FREE_REPLY
+		WHERE BOARDNUM = #{boardNum}
+		ORDER BY REPLYNUM
+	</select>
+	
+<!-- 댓글 삭제하기 -->
+	<delete id="deleteReply" parameterType="int">
+		DELETE FROM FREE_REPLY
+		WHERE REPLYNUM = #{replyNum}
+	</delete>
+
+<!-- 댓글 수정하기 -->
+	<update id="updateReply" parameterType="Reply">
+		UPDATE FREE_REPLY
+		SET CONTENT = #{content}
+		WHERE REPLYNUM = #{replyNum}
+	</update>
+</mapper>
+

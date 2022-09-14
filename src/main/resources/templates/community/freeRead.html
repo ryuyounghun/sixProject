@@ -61,18 +61,178 @@
 				<div class="aside-center">
 					<div class="section-center">
 
-
+						<table th:object="${board}">
+							<tr>
+								<th th:text="*{title}"></th>
+							</tr>
+							<tr>
+								<td th:text="*{nickname}"></td>
+								<td><p>|</p></td>
+								<td th:text="*{inputdate}"></td>
+							</tr>
+							<tr>
+								<td th:text=*{content}>
+							</tr>
+						</table>
+						
 						<div th:unless="${#lists.isEmpty(fileList)}" th:each="file : ${fileList}">
 							<img alt="asd" th:src="@{display(num=${file.fileNum})}" width="200">
 						</div>
-						<div>
 						<div th:unless="${#lists.isEmpty(fileList)}" th:each="file : ${fileList}">
 							<a th:href="@{download(num=${file.fileNum})}" th:text =${file.originalName}></a><br>
 						</div>
 					</div>
-				</div>	
+					
+					<div id ="reList" >
+						
+					</div>
+					
+					<!-- 댓글 박스 -->
+					<div sec:authorize="isAuthenticated">
+						<div>
+							<textarea name="content" id="content"></textarea>
+						</div>
+						<div>
+							<input type="button" value="댓글달기" id="btnReplyWrite">
+						</div>
+						<input type="hidden" id="boardNum" name="boardNum" th:value="${board.boardNum}"> 		
+						<input type="hidden" id="memberNum" th:value="${board.memberNum}"> 		
+					</div>
+					<script>
+						
+						$(document).ready(function(){
+							$("#btnReplyWrite").on("click", function(){
+								writeReply();
+							});
+							
+							getAllfbReply();
+						});
+						function getAllfbReply(){
+							let bNum = $("#boardNum").val();
+							let loginMemberNum = $("#memberNum").val();
+							
+							$.ajax({
+								url : "getAllfbReply",
+								type : "get",
+								data : { "num" : bNum},
+								success : function (data){
+									
+									let htmlStr = "<table>";
+									$.each(data, function(index, item){
+										// 각 댓글번호마다 고유번호 달아주기
+										
+										// $("#reList").append(item.replyText);
+										htmlStr += "<tr>";	
+										htmlStr += "<td>" + item.nickname +"</td>";
+										htmlStr += "<td>" + item.content +"</td>";
+										htmlStr += "<td>" + item.inputdate +"</td>";	
+										htmlStr += "<td>";
+										if(loginMemberNum == item.memberNum){
+											htmlStr += "<a href='javascript:getOneReply("+ item.replyNum+");'>수정</a>";
+											htmlStr += " | ";
+											htmlStr += "<a href='javascript:deleteReply("+ item.replyNum+");'>삭제</a>";
+										}
+										htmlStr += "</td>";	
+										htmlStr += "</tr>";
+										
+										htmlStr += "<tr><div>";
+										htmlStr += "<textarea id="+item.replyNum +" style='display:none'></textarea>"
+										htmlStr += "<a id="+"a"+ item.replyNum +" href='javascript:updateReply("+ item.replyNum+");' style='display:none'>수정하기</a>";
+										htmlStr += "</div></tr>";
+									})
+									htmlStr += "</table>";
+									htmlStr += "<a href='javascript:getAllfbReply();'>댓글 새로고침</a>"
+									$("#reList").html(htmlStr);
+								
+								}
+								
+							});
+						}
+						
+						function writeReply(){
+							let content = $("#content").val();
+							let boardNum = $("#boardNum").val();
+							
+							$.ajax({
+								url : "fbWriteReply",
+								type : "Post",
+								data : {
+									"content" : content,
+									"boardNum" : boardNum,
+								},
+								success : function (){
+									$("#content").val(""); 
+									getAllfbReply();			
+								}
+								
+							});
+						}
+						function getOneReply(replyNum){
+							$.ajax({
+								url : "getOneReply",
+								type : "get",
+								data : {
+									"replyNum" : replyNum
+								},
+								success : function(reply){
+									let r = reply.replyNum;
+									let a = "a" + reply.replyNum;
+									let reContent = "#" + r;
+									let reIdx = "#" + a;
+									$(reContent).val(reply.content);
+									$(reContent).show();
+									$(reIdx).show();
+								}
+								
+							});
+						}
+						function updateReply(replyNum){
+							let r = "#" + replyNum;
+							let reContent = $(r).val();
+							$.ajax({
+								url : "updateReply",
+								type : "post",
+								data : {
+									"replyNum" : replyNum,
+									"content" : reContent
+								},
+								success : function(text){
+									if ( text == "changeSuccess"){
+										alert("댓글이 수정되었습니다.");
+									}else{
+										alert("댓글이 수정 실패.");
+									}
+									
+									$("#"+replyNum).val("");
+									$("#a"+replyNum).hide();
+									$("#"+replyNum).hide();
+									getAllfbReply();
+								}
+							});
+						}
+						
+						function deleteReply(replyNum){
+							let answer = confirm("삭제하시겠습니까?");
+							
+							if ( answer == true ){
+								$.ajax({
+									url : "deleteReply",
+									type : "get",
+									data : {"num" : replyNum},
+									success: function (){
+										alert("삭제완료");
+										getAllfbReply();
+									}
+								})
+								
+							}
+							
+						}
+					</script>
+					
+					
+				</div>
 			</div>		
-		
 		</section>
 	</div>
 		

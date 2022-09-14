@@ -35,6 +35,7 @@ import com.abc.domain.Reply;
 import com.abc.service.ClassBoardService;
 import com.abc.service.FreeBoardService;
 import com.abc.service.MemberService;
+import com.abc.service.ReplyService;
 import com.abc.util.FileService;
 import com.abc.util.PageNavigator;
 
@@ -55,6 +56,9 @@ public class ComunnityController{
 	
 	@Autowired
 	MemberService mService; 
+	
+	@Autowired
+	ReplyService rService; 
 	
 	// page당 글 수
 	@Value("${user.board.page}")
@@ -224,55 +228,64 @@ public class ComunnityController{
 		return new ResponseEntity<Resource>(resource, header, HttpStatus.OK);
 	}
 
-	/*
-	@GetMapping("/display")
-	// get값으로 들어온 num23을 쓸거라 pathvariable
-	public List<FileDTO> display(int num) {
-		log.debug("num : {}", num);
-
-		// 파일과 경로 가져오기
-		// 파일정보가 담긴 리스트
+	@PostMapping("/fbWriteReply")
+	public String fbWriteReply(Reply reply, @AuthenticationPrincipal UserDetails user) {
+		log.debug("reply : {}", reply);
 		
-		//파일자체를 줘버려서 해당 경로값 뽑아버리기
-		return fService.getFileList(num);
-		}
-		// log.debug("파일리스트사이즈 : {}",fileList.size());
+		String memberId = user.getUsername();
+		Member member = mService.selectOneMember(memberId);
 		
-		// 진짜 파일 읽어오기
-		 
-		List<Resource> resource = null; 
-		for ( int i = 0; i < fileList.size(); i++) {
-			resource.add(new FileSystemResource(uploadPath + "/" + fileList.get(i).getSaveName()));
-		}
-		// 파일이 존재하지 않을 때
-		if ( resource.size()==0) {
-			// 404 요소 없음
-			 return new ResponseEntity<Resource>(HttpStatus.NOT_FOUND);
-			// return new ResponseEntity<Resource>(HttpStatus.OK);
-			
-		}
+		reply.setMemberNum(member.getMemberNum());
 		
-		HttpHeaders header = new HttpHeaders();
-		// List<HttpHeaders> header = (List<HttpHeaders>) new HttpHeaders();
+		rService.insertReply(reply);
 		
-		// 경로를 가져오기 
-		List<Path> filePath = null;
-		
-		try {
-			// 파일 경로
-			// 첨부한 내용의 타입은 파일
-			for ( int i = 0; i < fileList.size(); i++) {
-				filePath.add(Paths.get(uploadPath + "/" + fileList.get(i).getSaveName()));
-				header.add("Content-type", Files.probeContentType(filePath.get(i)));
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		
-		return new ResponseEntity<Resource>(resource, header, HttpStatus.OK);
+		// 하나의 메소드를 최대한 활용하기위ㅐ 쿼리스트링으로 보내주기
+		// #(id값) : 해당 id로 포커스()
+		return "redirect:./fbRead?num="+reply.getBoardNum() + "#reList";
 	}
-	 */
 	
+	@GetMapping("/getAllfbReply")
+	public @ResponseBody List<Reply> getAllfbReply(int num) {
+		log.debug("글번호 :  {} ", num);
+		
+		List<Reply> replyList = rService.selectReplyByBoardNum(num);
+		
+		log.debug("replyList :  {} ", replyList.size());
+		// 호출한곳으로 보내기
+		return replyList;
+	}
+	@GetMapping("/getOneReply")
+	public @ResponseBody Reply getOneReply(int replyNum) {
+		log.debug("댓글번호 :  {} ", replyNum);
+		
+		Reply reply = rService.selectOneReply(replyNum);
+		
+		log.debug("reply :  {} ", reply);
+		// 호출한곳으로 보내기
+		return reply;
+	}
+
+	@PostMapping("/updateReply")
+	public @ResponseBody String updateReply(Reply reply) {
+		log.debug("reply수정 : {}", reply);
+		
+		int result = rService.updateReply(reply);
+		
+		if ( result != 0 ) {
+			return "changeSuccess"; 
+		}else {
+			return "changeFailed";
+		}
+	}
 	
+	@GetMapping("/deleteReply")
+	public String deleteReply(int num) {
+		log.debug("num : {}", num);
+		
+		Reply reply = rService.selectOneReply(num);
+		log.debug("reply : {}", reply);
+		rService.deleteReply(num);
+		
+		return "redirect:./fbRead?num="+reply.getBoardNum();
+	}
 }
