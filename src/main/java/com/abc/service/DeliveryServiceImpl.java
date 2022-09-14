@@ -250,5 +250,17 @@ public class DeliveryServiceImpl implements DeliveryService{
 		return dDao.selectStoreRank();
 	}
 
+	@Override
+	public Review selectReviewsByReceiptNum(int receiptNum) {
+		// TODO Auto-generated method stub
+		return dDao.selectReviewsByReceiptNum(receiptNum);
+	}
+
+	@Override
+	public Review selectReviewsByMemberNum(int memberNum) {
+		// TODO Auto-generated method stub
+		return dDao.selectReviewsByMemberNum(memberNum);
+	}
+
 
 }

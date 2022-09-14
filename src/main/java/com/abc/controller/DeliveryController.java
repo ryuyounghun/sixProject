@@ -390,9 +390,17 @@ public class DeliveryController {
 		Member member = mService.selectOneMember(user.getUsername());
 		
 		List<Receipt> rList = dService.selectReceipt(member.getMemberNum());
-		
+		Review review = dService.selectReviewsByMemberNum(member.getMemberNum());
 		model.addAttribute("rList", rList);
+		log.debug("rList : {}", rList);
 		
+		/*
+		 * int num = 1;
+		 * 
+		 * for (int i = 0; i < rList.size(); i++) { if(review == null) { num = 1; } else
+		 * if (rList.get(i).getReceiptNum() == review.getReceiptNum()) { num = 0; } }
+		 * model.addAttribute("num", num);
+		 */
 		return d + "/myCompleteOrderList";
 	}
 	
@@ -428,6 +436,15 @@ public class DeliveryController {
 		
 		return "redirect:./index";
 	}
+	
+	@GetMapping("/checkReview")
+	public @ResponseBody Review checkReview(int receiptNum) {
+		
+		Review review = dService.selectReviewsByReceiptNum(receiptNum);
+		
+		return review;
+	}
+	
 	
 	@GetMapping("/allOrder")
 	public @ResponseBody Receipt allOrder(int data, int storeNum,
@@ -538,4 +555,6 @@ public class DeliveryController {
 		log.debug("sList : {}", sList);
 		return sList;
 	}
+	
+	
 }

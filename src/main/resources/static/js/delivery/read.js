@@ -28,6 +28,7 @@ $(document).ready(function() {
 		resultMenu();
 		printReview();
 		loadWish();
+		loadMap();
 		
 	});
 	
@@ -107,6 +108,7 @@ $(document).ready(function() {
 			success : function() {
 				alert("주문에 성공했습니다.");
 				resultMenu();
+				location.href="index"
 			}
 		});
 	}
@@ -312,3 +314,6 @@ $(document).ready(function() {
 	function ChooseCategory() {
 		$('#modal').modal('show');
 	}
+	
+	
+	

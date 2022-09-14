@@ -54,6 +54,8 @@ public interface DeliveryDAO {
 	// 리뷰 관련
 	public int insertReview(Review review);
 	public List<Review> selectReviews(int storeNum);
+	public Review selectReviewsByReceiptNum(int receiptNum);
+	public Review selectReviewsByMemberNum(int memberNum);
 
 	// 찜 관련
 	public int insertWishlist(Wishlist wish);

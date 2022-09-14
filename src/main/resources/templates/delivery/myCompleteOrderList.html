@@ -10,9 +10,36 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
 
 <script>
+	
+	$(document).ready(function() {
+		
+		
+	});
+	
+	function endReview(receiptNum) {
+		
+		$.ajax({
+			url : "checkReview",
+			type : "get",
+			data : {"receiptNum" : receiptNum},
+			success : function(data) {
+				console.log(data);
+				if(data == "") {
+					$('#exampleModal').modal('show');
+				} else {
+					alert("이미 등록한 리뷰입니다.");
+				}
+			}
+		});
+		
+	}
+
 	function writeReview(storeNum, receiptNum) {
 		$("#hiddenStoreNum").val(storeNum);
 		$("#hiddenReceiptNum").val(receiptNum);
+		
+		
+		endReview(receiptNum);
 	}
 	
 </script>
@@ -76,10 +103,10 @@
 							<h1>주문내역</h1>
 							<table th:each="rList : ${rList}" border="1">
 								<tr>	
-									<td th:text="${rList.receiptNum}"></td>
+									<td th:id="'rNum' + ${rList.receiptNum}" th:text="${rList.receiptNum}"></td>
 									<td th:text="${rList.totalAmount}"></td>
 									<td>
-										<input type="button" data-bs-toggle="modal" data-bs-target="#exampleModal" th:onclick='|writeReview(${rList.storeNum}, ${rList.receiptNum})|' value="리뷰">
+										<input type="button" th:onclick='|writeReview(${rList.storeNum}, ${rList.receiptNum})|' value="리뷰">
 									</td>
 								</tr>
 								<tr>

@@ -46,6 +46,8 @@ public interface DeliveryService {
 	
 	public int insertReview(Review review);
 	public List<Review> selectReviews(int storeNum);
+	public Review selectReviewsByReceiptNum(int receiptNum);
+	public Review selectReviewsByMemberNum(int memberNum);
 	
 	public int insertWishlist(Wishlist wish);
 	public Wishlist selectWishlist(int storeNum, int memberNum);

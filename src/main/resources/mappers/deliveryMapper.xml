@@ -276,6 +276,20 @@
 		WHERE STORENUM = #{storeNum}
 	</select>
 	
+	<select id="selectReviewsByReceiptNum" parameterType="int" resultType="Review">
+		SELECT * FROM
+		REVIEW
+		WHERE RECEIPTNUM = #{receiptNum}
+	</select>
+	
+	<select id="selectReviewsByMemberNum" parameterType="int" resultType="Review">
+		SELECT * FROM
+		REVIEW
+		WHERE MEMBERNUM = #{memberNum}
+	</select>
+	
+	
+	
 	<insert id="insertWishlist" parameterType="Wishlist">
 		INSERT INTO WISHLIST(
 			MEMBERNUM,
