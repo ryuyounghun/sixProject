@@ -18,7 +18,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -33,8 +32,6 @@ import com.abc.domain.FreeBoard;
 import com.abc.domain.Member;
 import com.abc.domain.Reply;
 
-import com.abc.domain.ChatRoom;
-import com.abc.service.ChatService;
 import com.abc.service.ClassBoardService;
 import com.abc.service.FreeBoardService;
 import com.abc.service.MemberService;
@@ -55,8 +52,6 @@ public class ComunnityController{
 	@Autowired
 	ClassBoardService cService; 
 	
-	@Autowired
-	ChatService chatService;
 	
 	@Autowired
 	FreeBoardService fService; 
