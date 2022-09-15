@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.abc.dao.ClassBoardDAO;
 import com.abc.domain.ClassBoard;
+import com.abc.domain.ClassRoom;
 import com.abc.util.PageNavigator;
 
 import lombok.extern.slf4j.Slf4j;
@@ -49,6 +50,50 @@ public class ClassBoardServiceImpl implements ClassBoardService{
 		return navi;
 	}
 
-	
+	@Override
+	public List<ClassBoard> selectAllClassBoardNoParameter() {
+		// TODO Auto-generated method stub
+		return cDAO.selectAllClassBoardNoParameter();
+	}
+
+	@Override
+	public ClassBoard selectOneClassBoard(int classNum) {
+		// TODO Auto-generated method stub
+		return cDAO.selectOneClassBoard(classNum);
+	}
+
+	@Override
+	public int insertClassRoom(ClassRoom cRoom) {
+		// TODO Auto-generated method stub
+		return cDAO.insertClassRoom(cRoom);
+	}
+
+	@Override
+	public List<ClassRoom> selectClassRoom(int classNum) {
+		// TODO Auto-generated method stub
+		return cDAO.selectClassRoom(classNum);
+	}
+
+	@Override
+	public ClassRoom selectClassRoomByMemberNumAndClassNum(int memberNum, int classNum) {
+		// TODO Auto-generated method stub
+		Map<Object, Object> map = new HashMap<>();
+		
+		map.put("memberNum", memberNum);
+		map.put("classNum", classNum);
+		
+		return cDAO.selectClassRoomByMemberNumAndClassNum(map);
+	}
+
+	@Override
+	public int withdrawalParty(int memberNum, int classNum) {
+		// TODO Auto-generated method stub
+		Map<Object, Object> map = new HashMap<>();
+		
+		map.put("memberNum", memberNum);
+		map.put("classNum", classNum);
+		
+		return cDAO.withdrawalParty(map);
+	}
 
 }

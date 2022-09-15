@@ -5,6 +5,49 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel="stylesheet" href="/css/community/communityIndex.css">
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+<style>
+	table {
+		width:150px;
+		border : 1px solid black;
+		margin : 30px;
+	}
+</style>
+
+<script>
+	$(document).ready(function() {
+		partyBox();
+	});
+	
+	function partyBox() {
+		
+		$.ajax({
+			url : "setPartBox",
+			type : "get",
+			success : function(data) {
+				console.log(data);
+				
+				let htmlStr = "";
+				
+				$.each(data, function(index, item) {
+					htmlStr += "<table><tr>";
+					htmlStr += "<th>" + item.title + "</th></tr>"; 
+					htmlStr += "<tr><th>" + item.totalMember + "</tr></th>";
+					htmlStr += "<tr><th>" + item.destination + "</tr></th>";
+					htmlStr += "<tr><th><input type='button' value='자세히보기' onclick='read(" + item.classNum + ")'></tr></th>";
+					htmlStr += "</table>";
+				});
+				
+				$("#partyBox").html(htmlStr);
+			}
+		});
+	}
+	
+	
+	function read(classNum) {
+		location.href="read?num=" + classNum;
+	}
+</script>
 </head>
 <body>
 	<div id="headerAndSection-wrapper">
@@ -59,58 +102,9 @@
 
 				<div class="aside-center">
 					<div class="section-center">
-						<div class="boardBox">
-							<div>실시간 모임 구직</div>
-
-							<div>실시간 게시글</div>
-						</div>
-						<!--  ajax로 글보여주기 -->
-						<div class="write-container">
-							<div class="partyWrite">
-								<table>
-									<tr>
-										<th>작성자</th>
-										<th>제목</th>
-										<th>작성일</th>
-									</tr>
-									<tr th:each="list : ${cbList}">
-										<td th:text="${list.nickname}"></td>
-										<td>
-											<a th:href="@{|read?num=${list.classNum}|}">
-												<span th:text="${list.title}"
-												style="display: inline-block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 13ch;">
-												</span>
-											</a>
-										</td>
-										<td th:text="${list.inputdate}"></td>
-									</tr>
-								</table>
-							</div>
-							<div class="freeWrite">
-								<table>
-									<tr>
-										<th>작성자</th>
-										<th>제목</th>
-										<th>작성일</th>
-									</tr>
-									<tr th:each="list : ${fbList}">
-										<td th:text="${list.nickname}"></td>
-										<!--
-										 -->
-										<td>
-											<a th:href="@{|fbRead?num=${list.boardNum}|}">
-												<span th:text="${list.title}"
-												style="display: inline-block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 13ch;">
-												</span>
-											</a>
-										</td>
-										<td th:text="${list.inputdate}"></td>
-									</tr>
-								</table>
-							</div>
-						</div>
+						<div id="partyBox"></div>
+					
 					</div>
-					<input type="button" value="글쓰기" class="write-btn" onclick="javascript:location.href='classWrite'">
 				</div>
 				
 				

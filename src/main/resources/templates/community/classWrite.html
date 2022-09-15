@@ -63,4 +63,102 @@
 	
 	
 </body>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script>
+window.onload = function(){
+    document.getElementById("address_kakao").addEventListener("click", function(){ //주소입력칸을 클릭하면
+        //카카오 지도 발생
+        new daum.Postcode({
+            oncomplete: function(data) { //선택시 입력값 세팅
+                document.getElementById("address_kakao").value = data.address; // 주소 넣기
+                document.querySelector("#title").focus(); //상세입력 포커싱
+            }
+        }).open();
+    });
+}
+
+// 해시태그
+$(document).ready(function () {
+    var tag = {};
+    var counter = 0;
+
+	    
+    // 입력한 값을 태그로 생성한다.
+    function addTag (value) {
+        tag[counter] = value;
+        counter++; 
+    	
+    }
+
+    function marginTag () {
+        return Object.values(tag).filter(function (word) {
+            return word !== "";
+        });
+    }
+
+    $("#tag").on("keyup", function (e) {
+        var value = marginTag(); // return array
+        $("#tagList").val(value); 
+    });
+    
+    $("#tag").on("keypress", function (e) {
+        var self = $(this);
+
+        //엔터나 스페이스바 눌렀을때 실행
+        if ( e.keyCode == 32) {
+
+            var tagValue = self.val(); // 값 가져오기
+
+            // 해시태그 값 없으면 실행X
+            if (tagValue !== "") {
+
+                // 같은 태그가 있는지 검사한다. 있다면 해당값이 array 로 return 된다.
+                var result = Object.values(tag).filter(function (word) {
+                    return word === tagValue;
+                })
+            
+                // 해시태그가 중복되었는지 확인
+                if (result.length == 0) { 
+                    $("#tag-list").append("<li class='tag-item'>"+tagValue+"<span class='del-btn' idx='"+counter+"'>x</span></li>");
+                    addTag(tagValue);
+                    self.val("");
+                } else {
+                    alert("태그값이 중복됩니다.");
+                }
+            }
+            e.preventDefault(); // SpaceBar 시 빈공간이 생기지 않도록 방지
+        }
+    });
+
+    // 삭제 버튼 
+    // 인덱스 검사 후 삭제
+    $(document).on("click", ".del-btn", function (e) {
+        var index = $(this).attr("idx");
+        tag[index] = "";
+        $(this).parent().remove();
+    });
+})
+	
+	
+function openDestinationForm(){
+	window.open("/community/selectDestination", "장소찾기", "left=50%, top=50%, width=1000, height=510")
+}
+
+function checkValues(){
+	let title = document.getElementById('title');
+	let content = document.getElementById('content');
+
+	if ( title.value.trim().length == 0){
+		alert('제목을 입력해 주세요.');
+		title.focus();
+		return false;
+	
+	}
+	if ( content.value.trim().length == 0){
+		alert('내용을 입력해 주세요.');
+		content.focus();
+		return false;
+	}
+}
+</script>
 </html>

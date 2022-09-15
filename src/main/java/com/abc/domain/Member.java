@@ -14,10 +14,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Member implements UserDetails {
 
-	private String memberNum;
+	private int memberNum;
 	private String memberId;
 	private String memberPw;
-	private String name;
+	private String memebrName;
 	private String nickname;
 	private String pinNumber;	// 핀번호
 	private String address;

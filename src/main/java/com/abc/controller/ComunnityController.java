@@ -5,7 +5,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,28 +27,36 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.abc.domain.ClassBoard;
+import com.abc.domain.ClassRoom;
 import com.abc.domain.FileDTO;
 import com.abc.domain.FreeBoard;
 import com.abc.domain.Member;
 import com.abc.domain.Reply;
+
+import com.abc.domain.ChatRoom;
+import com.abc.service.ChatService;
 import com.abc.service.ClassBoardService;
 import com.abc.service.FreeBoardService;
 import com.abc.service.MemberService;
 import com.abc.service.ReplyService;
-import com.abc.util.FileService;
 import com.abc.util.PageNavigator;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Controller
-@RequestMapping("community")
+@RequiredArgsConstructor
+@RequestMapping("/community")
 public class ComunnityController{
 
 	String c = "community/";
 
 	@Autowired
 	ClassBoardService cService; 
+	
+	@Autowired
+	ChatService chatService;
 	
 	@Autowired
 	FreeBoardService fService; 
@@ -98,11 +105,20 @@ public class ComunnityController{
 	}
 	
 	@GetMapping("/read")
-	public String communityRead() {
+	public String communityRead(Model model, int num, @AuthenticationPrincipal UserDetails user) {
 		log.debug("읽기파일");
+		
+		log.debug("num : {}", num);
+
+		ClassBoard cBoard = cService.selectOneClassBoard(num);
+		Member member = mService.selectOneMember(user.getUsername());
+		model.addAttribute("cBoard", cBoard);
+		model.addAttribute("member", member);
+		
 		return c  + "read"; 
 	}
-	
+	// 채팅방 
+    
 	@GetMapping("/classWrite")
 	public String classWrite() {
 		log.debug("classWrite() 실행");
@@ -114,20 +130,31 @@ public class ComunnityController{
 			@AuthenticationPrincipal UserDetails user) {
 
 		log.debug("Post classWrite()시작");
-
+		ClassRoom cRoom = new ClassRoom();
 		Member member = mService.selectOneMember(user.getUsername());	
 
+		// 게시판 객체 설정
 		String mNickname = member.getNickname();
 		cBoard.setNickname(mNickname);
 		
-		int mNum = Integer.parseInt(member.getMemberNum());
+		int mNum = member.getMemberNum();
 		cBoard.setMemberNum(mNum);
 		
 		log.debug("write cBoard : {}", cBoard);
 		cService.insertClassBoard(cBoard);
 		
+		// 파티원객체 생성
+		cRoom.setClassNum(cBoard.getClassNum());
+		cRoom.setMemberNum(member.getMemberNum());
+		cRoom.setAddress(member.getAddress());
+		cRoom.setNickname(mNickname);
+
+		log.debug("cRoom : {}", cRoom);
+
+		cService.insertClassRoom(cRoom);
 		return "redirect:./index"; // .../board/
 	}
+	
 	
 	@GetMapping("/freeWrite")
 	public String freeWrite() {
@@ -287,5 +314,64 @@ public class ComunnityController{
 		rService.deleteReply(num);
 		
 		return "redirect:./fbRead?num="+reply.getBoardNum();
+	}
+	@GetMapping("/partyIndex")
+	public String partyIndex() {
+
+		return c + "partyIndex";
+	}
+
+	@GetMapping("/setPartBox")
+	public @ResponseBody List<ClassBoard> setPartBox() {
+
+		List<ClassBoard> cList = cService.selectAllClassBoardNoParameter();
+
+		return cList;
+	}
+
+	@GetMapping("/partyPeople")
+	public @ResponseBody List<ClassRoom> partyPeople(int classNum) {
+		
+		List<ClassRoom> cRList = cService.selectClassRoom(classNum);
+		
+		return cRList;
+		
+	}
+	
+	@GetMapping("/joinParty")
+	public @ResponseBody String joinParty(int classNum,
+			@AuthenticationPrincipal UserDetails user) {
+		Member member = mService.selectOneMember(user.getUsername());
+		ClassBoard cBoard = cService.selectOneClassBoard(classNum);
+		ClassRoom cRoom = cService.selectClassRoomByMemberNumAndClassNum(member.getMemberNum(), classNum);
+		log.debug("cRoom : {}", cRoom);
+		int totalMember = cBoard.getTotalMember();
+		log.debug("totalMember : {}", totalMember);
+		List<ClassRoom> cRList = cService.selectClassRoom(classNum);
+		log.debug("cRList : {}", cRList.size());
+		
+		String anwser = "이미 정원입니다.";
+		
+		if (totalMember > cRList.size()) {
+			anwser = "이미 파티원입니다.";
+			if (cRoom == null) {
+				cRoom = new ClassRoom();
+				cRoom.setAddress(member.getAddress());
+				cRoom.setClassNum(classNum);
+				cRoom.setMemberNum(member.getMemberNum());
+				cRoom.setNickname(member.getNickname());
+				
+				cService.insertClassRoom(cRoom);
+				anwser = "추가되었습니다.";
+			}
+		}
+		return anwser;
+	}
+	
+	@GetMapping("/withdrawalParty")
+	public @ResponseBody void withdrawalParty(int classNum,
+			@AuthenticationPrincipal UserDetails user) {
+		Member member = mService.selectOneMember(user.getUsername());
+		cService.withdrawalParty(member.getMemberNum(), classNum);
 	}
 }
