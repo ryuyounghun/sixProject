@@ -1,0 +1,260 @@
+@charset "UTF-8";
+
+body{
+	margin : 0;
+	padding : 0;
+}
+
+/*
+	헤더css
+*/
+.header-container{
+		width: 100%;
+		height: 100px;
+		background-color: fuchsia;
+		position: relative;
+}
+
+.header-logo{
+	position : absolute;
+	height : 75px;
+	width : 75px;
+	background-color: blue;
+	top: 10%;
+	left : 10%;
+}
+
+.header-logMenuList{
+	position: absolute;
+	display : flex;
+	right : 10%;
+	list-style: none;
+	top: 10%;
+}
+.header-logMenuList li {
+	margin-right : 20px;
+}
+.header-logMenuList a {
+	text-decoration: none;
+	
+}
+
+/* 
+	본문 섹션 css
+ */
+ /* joinContainer */
+.joinContainer {
+	width:780px; 
+	margin: 0 auto; 
+}
+
+/* joinTitle */
+.joinContainer .joinTitle {
+	margin-top: 30px;
+}
+.joinContainer .joinTitle h2 { 
+	text-align: center;
+    padding: 15px;
+    font-size: 35px
+}
+
+/* joinContent */
+.joinContainer .joinContent form {
+	width: 100%; 
+	/* 패딩수치를 영역안으로 인사이드시켜 영역이 커지지 않게 처리 */
+	padding: 30px 100px; box-sizing: border-box; 
+}
+.joinContainer .joinContent fieldset { border: none; background: #fcf5e1; padding-bottom: 23px; }
+
+.joinContainer .joinContent .optionalInfo { margin-top: 45px; }
+
+.joinContainer .joinContent legend { position: relative; top: -25px; left: 30px; }
+
+.joinContainer .joinContent label { 
+	font-size: 18px;
+	margin: 75px;
+}
+.joinContainer .joinContent .requiredInfo input {
+	display: block;
+	width: 80%;
+	height: 50px;
+	margin: 10px auto;
+	border: none; background-color: #ededed;
+	padding: 0 20px;
+	box-sizing: border-box; /* 패딩수치를 인사이드 처리 */
+}
+.joinContainer .joinContent #birth {
+	display: block;
+	width: 80%;
+	height: 50px;
+	margin: 10px auto;
+	border: none; background-color: #ededed;
+	padding: 0 20px;
+	box-sizing: border-box; /* 패딩수치를 인사이드 처리 */
+}
+.joinContainer .joinContent {
+	margin: 0;
+}
+.joinContainer .joinContent p { 
+	font-size: 18px;
+	margin: 15px 75px 0;
+}
+.joinContainer .joinContent div {
+	margin: 0 75px;
+}
+.joinContainer .joinContent input {
+	margin: 0 10px;
+}
+.joinContainer .joinContent span {
+	font-size: 15px;
+	margin-right: 20px;
+}
+#text2{
+	margin-left: 50px;
+}
+.joinContainer .joinContent .address1 {
+	display: inline-block;
+    width: 62%;
+    height: 50px;
+    margin: 10px 0 10px 57px;
+    border: none;
+    background-color: #ededed;
+    padding: 0 20px;
+    box-sizing: border-box; /* 패딩수치를 인사이드 처리 */
+}
+.joinContainer .joinContent .addressFind {
+	width: 110px; height: 50px;
+	margin: 10px;
+	border: none;
+	font-size: 20px;
+	background-color: #ededed;
+	text-align: center;
+}
+
+/* joinContent의 joinIdWrap */
+.joinContainer .joinContent #memberId { width: 62%; display: inline-block; }
+.joinContainer .joinContent #memberIdChk { width: 36%; display: inline-block; }
+
+/* joinContent의 button */
+.joinContainer .joinContent .buttons {
+    background: none;
+    margin: 60px 100px 0px;
+}
+.joinContainer .joinContent .buttons legend {
+	/* 요소를 화면 밖으로 처리 왜? 스크린리더가 읽어줘야 하므로 display:none; 을 사용하지 말 것 */
+	position: absolute; left: -999em; 
+}
+.joinContainer .joinContent button { 
+	margin: 10px;
+	font-size: 20px;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 15px;
+    font-family: "paybooc-Light", sans-serif;
+    box-shadow: 0 15px 35px rgb(0 0 0 / 20%);
+    font-weight: 600;
+    transition: 0.25s;
+    background-color: #ffc500;
+	color: #360d00;
+}
+
+.joinContainer .joinContent button:hover {
+	letter-spacing: 2px;
+    transform: scale(1.2);
+    cursor: pointer;
+}
+ 
+ 
+ .section-container{
+ 	width : 100%;
+ 	height : 72.3vh;
+ 	margin-bottom: 50px;
+ 	margin-top: 30px;
+ }
+ .searchBar-wrapper{
+ 	width :  100%;
+ 	margin:  auto;
+ 	padding : 0;
+ 	text-align : center;
+ }
+ .searchBar{
+ 	border : 5px solid black;
+ 	width: 300px;
+ 	height: 30px;
+ }
+ .aside-left, .aside-right, .aside-center{
+	margin-top : 20px;
+ }
+ .aside-left{
+ 	position : absolute;
+ 	background-color: red;
+ 	width : 15%;
+ 	height: 60vh;
+ 	left : 5%;
+ }
+ 
+ .aside-right{
+ 	position : absolute;
+ 	background-color: blue;
+ 	width : 15%;
+ 	height: 60vh;
+ 	right : 5%;
+ }
+ .aside-center{
+ 	position:absolute;
+ 	width :50%;
+ 	left: 25%;
+ 	right: 25%;
+ }
+ .aside-center .section-center{
+ 	min-height: 60vh;
+ 	justify-content: center; 
+ }
+
+.mapInfo{
+	padding : 40px;
+}
+.mapInfo p{
+	position : absolute;
+	color: #6666FF;
+	width: 300px;
+	background-color: navy;
+}
+.mapImg{
+	width : 300px;
+	height:200px;
+}
+.aside-center .partyJoinOut{
+	margin-top : 40px;
+	margin-left : 40px;
+	text-align : center;
+	background-color: olive;
+	width : 300px;
+}
+.menuImg{
+	position:absolute;
+	right : 50px;
+	top : 50px;
+}
+.menuImg img{
+	width : 280px;
+	height: 150px;
+}
+
+.participient{
+	position:absolute;
+	right : 40px;
+	top : 240px;
+	width : 300px;
+	height:200px;
+	
+	
+}
+
+footer{
+	bottom: 0;
+	width : 100%;
+	height : 100px;
+	background-color : lime;
+	
+}

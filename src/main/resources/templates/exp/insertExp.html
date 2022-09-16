@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<meta charset="UTF-8">
+<title>레벨 관리하기(관리자용_수정중)</title>
+<link rel="stylesheet" href="/css/exp/insertExp_style.css">
+</head>
+<body>
+	<div id="headerAndSection-wrapper">
+			<header>
+				<div class="header-container">
+					<a href="/" class="header-logo" >
+						asd
+					</a>
+				
+				<!-- 관리자(ADMIN) 계정만 접근가능 -->
+	        	<p sec:authorize = "hasRole('ADMIN')"><a th:href = >관리자</a></p>
+	        	
+					<ui class="header-logMenuList"> <!-- 로그인 및 로그아웃 링크 -->
+						<li sec:authorize ="not isAuthenticated">
+							<a th:href="@{/member/login}">
+								로그인
+							</a>
+						</li>
+						<li sec:authorize="not isAuthenticated">
+							<a th:href ="@{/member/join}">
+								회원가입
+							</a>
+						</li>
+						<li sec:authorize="isAuthenticated">
+							<a th:href ="@{/logout}">
+								로그아웃
+							</a>
+						</li>
+						<li sec:authorize="isAuthenticated">
+							<a th:href ="@{/member/updateInfo}">
+								회원정보
+							</a>
+						</li>
+					</ui>
+				</div>
+				
+			</header>
+			<!-- header-container 부분 끝 -->
+			
+			<section>
+				<div class = "section-container">
+					<aside>
+						<div class="aside-left">
+						</div>
+					</aside>
+					<aside>
+						<div class="aside-right">
+						</div>
+					</aside>
+				
+				<!-- section-container 부분 끝  -->	
+					
+				<div class = "aside-center">
+					<h2>레벨 관리하기</h2>
+						<div class = "ExpContent">
+							<form action = "insertExp" method = "post" onsubmit="return checkValues();">
+								<div class = "section-center">
+									<fieldset class = "requiredInfo">
+									<span id = "userLevelBox">사용자 Level 지정하기</span>
+									<select name = "userLevel" class = "selectbox">
+										<option value = "" class = "level-option">레벨을 선택해주세요.</option>
+										<option value = "2" class = "level-option">2</option>
+										<option value = "3" class = "level-option">3</option>
+										<option value = "4" class= "level-option">4</option>
+										<option value = "5" class = "level-option">5</option>
+										<option value = "6" class = "level-option">6</option>
+										<option value = "7" class = "level-option">7</option>
+										<option value = "8" class = "level-option">8</option>
+										<option value = "9" class = "level-option">9</option>
+										<option value = "0" class = "level-option">직접입력</option>
+									</select>
+									<span id = "userExpBox">사용자 Exp 지정하기</span>
+										<input type = "text" name = "userExp" placeholder="내용을 입력해주세요." required> 
+									</fieldset>
+									<div id = "buttonBox">
+										<button type = "submit" id = "rightBtn">등록하기</button>&nbsp;&nbsp;&nbsp;
+										<button type = "reset" id = "cancelBtn">취소하기</button>
+									</div>
+								</div><!-- section-center 부분 끝 -->
+							</form>
+						</div>	
+				</div><!-- aside-center 부분 끝 -->
+				</div><!-- section-container 부분 끝 -->
+			</section> <!-- section 부분 끝 -->
+			</div> <!-- headerAndSection-wrapper 부분 끝 -->
+		<!-- 풋터 시작  -->
+		<footer>
+		</footer>
+</body>
+</html>

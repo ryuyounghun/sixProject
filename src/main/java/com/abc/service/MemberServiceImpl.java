@@ -47,14 +47,32 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public int updateAddressAndPhone(Member member) {
-		// TODO Auto-generated method stub
 		return mDao.updateAddressAndPhone(member);
 	}
 
 	@Override
 	public int updatePoint(Member member) {
-		// TODO Auto-generated method stub
 		return mDao.updatePoint(member);
+	}
+
+	@Override
+	public int updateMember(Member member) {
+		String pw = member.getMemberPw();
+		
+		String encodePw = passwordEncoder.encode(pw);
+		
+		member.setMemberPw(encodePw); 
+		
+		return mDao.updateMember(member);
+	}
+
+	@Override
+	public int checkId(String memberId) {
+		int cnt = mDao.checkId(memberId);
+		
+		log.debug("memberId : {}", memberId);
+		
+		return cnt;
 	}
 
 

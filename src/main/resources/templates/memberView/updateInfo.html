@@ -2,83 +2,214 @@
 <html xmlns:th="http://www.thymeleaf.org/"
    xmlns:sec="http://www.thyemeleaf.org/extras/spring-security">
 <head>
-	<meta charset="UTF-8">
-	<title>회원정보 수정</title>
-	<link rel = "stylesheet" href = "/css/member/style.css">
-	<link rel = "stylesheet" href = "/css/member/updateInfo_style.css">
+<meta charset="UTF-8">
+<title>회원정보 수정</title>
+<link rel = "stylesheet" href = "/css/member/updateInfo_style.css">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+
+	/* 비밀번호 유효성 검사 */
+	$(document).ready(function(){
+		$("#memberPw").on("blur", function(){
+			
+			let pw1 = $("#memberPw").val();
+			let pw2 = $("#memberPwChk").val();
+			let num = pw1.search(/[0-9]/g);
+			let eng = pw1.search(/[a-z]/ig);
+			let spe = pw1.search(/[`~!@@#$%^&*|₩₩₩'₩";:₩/?]/gi);
+			
+			
+			if(pw1 == pw2){
+				$("#text2").text("비밀번호가 일치합니다.").css("color", "green");
+				$("#doublePw").val("1");
+			} else if (pw1 != pw2) {
+				$("#text2").text("비밀번호가 일치하지 않습니다.").css("color", "red");
+				$("#doublePw").val("0");
+			}
+			
+			if(pw1.length < 8 || pw1.length > 16){
+				$("#text2").text("8자리~16자리 이내로 입력해주세요.").css("color", "red");
+				$("#doublePw").val("0");
+			} else if(pw1.search(/\s/) != -1){
+				$("#text2").text("비밀번호는 공백 없이 입력해주세요.").css("color", "red");
+				$("#doublePw").val("0");
+			} else if(num < 0 || eng < 0 || spe < 0){
+				$("#text2").text("영문, 숫자, 특수문자를 혼합하여 입력해주세요.").css("color", "red");
+				$("#doublePw").val("0");
+			} 
+			
+		});
+		
+		/* 비밀번호 유효성 검사 */
+		$("#memberPwChk").on("blur", function(){
+			let pw1 = $("#memberPw").val();
+			let pw2 = $("#memberPwChk").val();
+			let num = pw2.search(/[0-9]/g);
+			let eng = pw2.search(/[a-z]/ig);
+			let spe = pw2.search(/[`~!@@#$%^&*|₩₩₩'₩";:₩/?]/gi);	
+			
+			if(pw1 == pw2){
+				$("#text2").text("비밀번호가 일치합니다.").css("color", "green");
+				$("#doublePw").val("1");
+			} else if (pw1 != pw2) {
+				$("#text2").text("비밀번호가 일치하지 않습니다.").css("color", "red");
+				$("#doublePw").val("0");
+			}
+			
+			if(pw2.length < 8 || pw2.length > 16){
+				$("#text2").text("8자리~16자리 이내로 입력해주세요.").css("color", "red");
+				$("#doublePw").val("0");
+			} else if(pw2.search(/\s/) != -1){
+				$("#text2").text("비밀번호는 공백 없이 입력해주세요.").css("color", "red");
+				$("#doublePw").val("0");
+			} else if(num < 0 || eng < 0 || spe < 0){
+				$("#text2").text("영문, 숫자, 특수문자를 혼합하여 입력해주세요.").css("color", "red");
+				$("#doublePw").val("0");
+			}
+			
+		});
+		$("#memberName").keyup( function(){
+			let mName = $("#memberName").val();
+			let kor = mName.search(/^[가-힣]+$/);
+			let doubleCheckKor = mName.search(/^[ㄱ-ㅎ]+$/);
+			let eng = mName.search(/[a-zA-Z]/g);
+			let num = mName.search(/[0-9]/g);
+				console.log("-----");
+				console.log(kor);
+				console.log(doubleCheckKor);
+				console.log(eng);
+				console.log(num);
+				console.log("-----");
+				if ( mName.trim().length == 0){
+					$("#memberNameCheck").text("");
+				}
+				else if (kor == -1){ 
+					console.log("옳지 않은 이름입니다 한국어만입력하세요.");
+					$("#memberNameCheck").text("옳바르지 않거나 한국어만입력하세요.").css("color","red");
+				}
+				else {
+					$("#memberNameCheck").text("굿").css("color","green");
+				}
+				$("#memberNameCheck").show();
+			
+		});
+	});
+	
+	/* 아이디 중복 체크 + 아이디 유효성 검사 */
+	function checkIdValues(){
+		let mdId = $("#memberId").val();
+		// 아이디 영문 대소문자 + 숫자 조합으로
+		// 한글 + 특수기호 금지
+		let nameRegExp = /^[a-zA-z0-9]{4,12}$/;
+		let kor = mdId.search(/[ㄱ-ㅎㅏ-ㅣ가-힣]/g);
+		let num = mdId.search(/[0-9]/g);
+        let eng = mdId.search(/[a-z]/ig);
+        let spe = mdId.search(/[`~!@@#$%^&*|₩₩₩'₩";:₩/?]/gi);
+         
+		$('.id_ok').hide();
+		$('.id_already').hide();
+		
+		$.ajax({
+			url: 'checkId',
+			type: 'post',
+			data: {id:mdId},
+			success: function(result){
+				console.log(result);
+				
+				if(mdId == 0){
+					$('.id_already').text("아이디는 공백없이 입력해주세요.").css("color", "red");
+					$('.id_already').show();
+					$("#memberIdCheck").val("0");
+				} else if (mdId.length < 3 || mdId.length > 13) {
+					$('.id_already').text("아이디는 3~12글자 사이로 입력해주세요.").css("color", "red");
+					$('.id_already').show();
+					$("#memberIdCheck").val("0");
+				} else if (num < 0 || eng < 0){
+					$('.id_already').text("아이디는 영문+숫자를 섞어서 입력해주세요").css("color", "red");;
+	               	$('.id_already').show();
+					$('#memberIdCheck').val("0");
+		        } else if (spe > 0){
+		        	$('.id_already').text("특수문자는 사용할 수 없습니다").css("color", "red");;
+	                $('.id_already').show();
+	                $("#memberIdCheck").val("0");
+	             } else if (kor > 0){
+					$('.id_already').text("아이디에는 한글을 사용할 수 없습니다.").css("color", "red");
+					$('.id_already').show();
+					$("#memberIdCheck").val("0");
+				} else if(result == 1) {
+					$('.id_already').text("이미 사용중인 아이디입니다.").css("color", "red");
+					$('.id_already').show();
+					$("#memberIdCheck").val("0");
+				} else {
+					$('.id_already').text("멋진 아이디입니다.").css("color", "green");
+					$('.id_already').show();
+					$("#memberIdCheck").val("1");
+				}
+	
+			},
+			error:function(){
+				alert("아이디 에러!");
+			}
+
+		});
+		
+	}
+		
+	
+</script>	
 </head>
 <body>
-	<div id = "wrap">
-	    <!-- 헤더 부분 -->
-	    <header id = "header" class = "clearfix">
-	    	<!-- 로고 부분 -->
-	        <a th:href = "@{/}" >
-	        	<span id = "logo"></span>
-	        </a>
-	        <!-- 헤더 윗 부분(로그인, 회원가입) -->
-	        <div class = "util">
-	        	
-	        	<!-- 인증되지 않은 사용자의 경우(비로그인 상태) -->
-	        	<p sec:authorize = "not isAuthenticated()"><a th:href = "@{/member/join}">회원가입</a></p>
-	        	<p sec:authorize = "not isAuthenticated()"><a th:href = "@{/member/login}">로그인</a></p>
-	        	
-	        	<!-- 인증된 사용자(로그인 상태) -->
-	        	<!-- WebSecurityConfig에 이미 logout에 대한 것을 정의해둠. 따라서 html을 따로 만들어주지 않아도 됨 -->
-	        	<p sec:authorize = "isAuthenticated()"><a th:href = "@{/member/update}">정보수정</a></p>
-	        	<p sec:authorize = "isAuthenticated()"><a th:href = "@{/logout}">로그아웃</a></p>
-	        	
-	        	
-	        	<!-- 인증된 사용자의 이름(username) -->
-	        	<p id = "welcomeMsg" sec:authorize = "isAuthenticated()"><span sec:authentication = "name"></span> 님 환영합니다!</p>
-	        	
-	        </div>
-	        <!-- 메뉴 네비게이션 -->
-	        <nav class="nav">
-	            <ul>
-	                <li><a href="#">메뉴</a>
-	                    <ul class="submenu">
-	                        <li><a href="#">단품메뉴</a></li>
-	                        <li><a href="#">세트메뉴</a></li>
-	                        <li><a href="#">사이드</a></li>
-	                        <li><a href="#">음료&디저트</a></li>
-	                    </ul>
-	                </li>
-	                <li><a href="#">주문하기</a>
-	                    <ul class="submenu">
-	                        <li><a th:href="@{/item/buyItem}">배달</a></li>
-	                        <li><a th:href="@{/findStore}">매장찾기</a></li>
-	                    </ul>
-	                </li>
-	                <li><a href="#">브랜드</a>
-	                    <ul class="submenu">
-	                        <li><a th:href="@{/brand/brandInfo}">최고영소개</a></li>
-	                        <li><a th:href="@{/brand/list}">공지사항</a></li>
-	                    </ul>
-	                </li>
-	                <li><a href="#">마이페이지</a>
-	                    <ul class="submenu">
-	                        <li><a th:href="@{/member/update}">회원정보수정</a></li>
-	                        <li><a th:href="@{/item/orderItem}">장바구니</a></li>
-	                    </ul>
-	                </li>
-	            </ul>
-	        </nav>
-	    </header>
-	    <!-- //header 끝 -->
-	    
-		<!-- contentWrap 부분 -->
-	    <section id = "contentsWrap" class = "clearfix">
-	    	<!-- 페이지 위치 표시해주는 부분 -->
-	    	<div class = "webLocation">
-				<div class = "page_navi">
-					<a href = "#/home">
-						<span>HOME</span>
-					</a>
-					<span>마이페이지</span>
-					<span>회원정보 수정</span>
-				</div>
-	    	</div>
-	    	
+	<div id = "headerAndSection-wrapper">
+		<header>
+			<div class="header-container">
+				<a href="/" class="header-logo" >
+					로고
+				</a>
+				<a th:href="@{/delivery/indexqwe}" class="header-toAnother" >
+					배달로~
+				</a>
+				
+				<ui class = "header-logMenuList"> <!-- 로그인 및 로그아웃 링크 -->
+					<li sec:authorize ="not isAuthenticated">
+						<a th:href="@{/member/login}">
+							로그인
+						</a>
+					</li>
+					<li sec:authorize="not isAuthenticated">
+						<a th:href ="@{/member/join}">
+							회원가입
+						</a>
+					</li>
+					<li sec:authorize="isAuthenticated">
+						<a th:href ="@{/logout}">
+							로그아웃
+						</a>
+					</li>
+					<li sec:authorize="isAuthenticated">
+						<a th:href ="@{/member/updateInfo}">
+							회원정보
+						</a>
+					</li>
+				</ui>
+			</div>
+		</header>
+		
+		<section>
+			<div class = "section-container">
+				<aside>
+					<div class = "aside-left">
+
+					</div>
+				</aside>
+				
+				<aside>
+					<div class="aside-right">
+
+					</div>
+				</aside>
+			<!-- 헤더 윗 부분(로그인, 회원가입) -->
+			
+			
 		    <!-- 회원정보 수정 내용 들어갈 container -->
 		   	<div class = "joinContainer">
 		   		<!-- 회원가입 제목 -->
@@ -86,49 +217,45 @@
 					<h2>회원정보 수정</h2>
 				</div>
 				<!-- 회원가입 내용 -->
-				<div class = "joinContent">
+				<div class = "aside-center">
 					
 					<!-- 서버에 보낼 링크랑 방식 적어야함 -->
-					<form action = "update" method = "post" th:object = "${member}" onsubmit = "return checkValues();">
-					
+					<form action = "updateInfo" method = "post" th:object = "${member}" onsubmit = "return checkValues();">
+						
 						<!-- 회원가입 기본정보 -->
 						<fieldset class = "requiredInfo">
 							<legend>기본정보</legend>
-								<!-- 아이디 -->
-								<label for = "memberId">아이디</label>
-								<span class = "joinIdWrap" th:text = "*{memberId}">아이디</span><br>
-			        			
-			        			<!-- 비밀번호 -->
-			        			<label for = "memberPw">비밀번호</label><br>
-			        			<input type = "password" id = "memberPw" name = "memberPw" placeholder = "비밀번호를 입력해주세요" required>
-			        			
-			        			<!-- 비밀번호 확인 -->
-			        			<label for = "memberPwChk">비밀번호 확인</label>
-			        			<input type = "password" id = "memberPwChk" placeholder = "비밀번호를 다시한번 입력해주세요" required>
-			        			
-			        			<!-- 이름 -->
-			        			<label for = "memberName">이름</label>
-			        			<span th:text = "*{memberName}">이름</span><br>
-			        			<!-- 전화번호 -->
-			        			<label for = "phone">전화번호</label>
-			        			<input type = "text" id = "phone" name = "phone" th:value = "*{phone}" required>
+							<!-- 아이디 -->
+							<label for = "memberId">아이디</label>
+							<span class = "joinIdWrap" th:text = "*{memberId}">아이디</span><br>
+		        			
+		        			<!-- 비밀번호 -->
+							<label for = "memberPw">비밀번호</label><br>
+							<input type = "password" id = "memberPw" name = "memberPw" placeholder = "비밀번호는 필수입력입니다." required>
+							<input type = "hidden" id = "doublePw" value = "0"> <br>
+							
+							<!-- 비밀번호 확인 -->
+							<label for = "memberPwChk">비밀번호 확인</label>
+							<input type = "password" id = "memberPwChk" placeholder = "비밀번호를 한번 더 입력해주세요." required>
+							<span id = "text2"></span><br>
+		        			
+		        			<!-- 이름 -->
+		        			<label for = "name">이름</label>
+							<input type = "text" id = "memberName" name = "memberName" th:value = "*{memberName}" placeholder = "이름을 입력해주세요." required>
+		        			<span style='display:none' id = "memberNameCheck"></span> <br>
+								
+		        			<!-- 닉네임 -->
+		        			<label for = "nickname">닉네임</label>
+		        			<input type = "text" id = "nickname" name = "nickname" th:value = "*{nickname}" required>
+							
+							<!-- 전화번호 -->
+							<label for = "phone">전화번호</label>
+							<input type = "text" id = "phone" name = "phone" th:value = "*{phone}" placeholder = "전화번호를 입력해주세요.">
 						</fieldset>
 						
 						<!-- 회원가입 선택정보 -->
 						<fieldset class = "optionalInfo">
 							<legend>선택정보</legend>
-							
-								<!-- 생년월일 -->
-								<label for = "birth">생년월일</label>
-			        			<input type = "text" id = "birth" name = "birth" th:value = "*{birth}">
-			        			<!-- 성별 -->
-			        			<div id = "sex">
-			        				<p>성별</p>
-			        				<div class = "sexReset">
-			        					<input type = "radio" name = "sex" checked="checked" th:text = "*{sex}">
-			        				</div>
-			        			</div>
-			        			<!-- 주소 -->
 			        			<!-- 주소 -->
 			        			<label for = "address">주소</label>
 			        			<input type = "text" id = "sample4_roadAddress" class = "address1" name = "address" placeholder = "주소찾기를 눌러주세요" readonly>
@@ -139,110 +266,97 @@
 								<input type="hidden" id="sample4_jibunAddress" placeholder="지번주소">
 								<span id="guide" style="color:#999;display:none"></span>
 								<input type="hidden" id="sample4_extraAddress" placeholder="참고항목">
-								<!-- <input type="hidden" id="fullAddress" value="" name="address"> -->
+								<!-- <input type="hidden" id="fullAddress" value="" name="address">  -->
 						</fieldset>
 						
 						<!-- 버튼 -->
 						<fieldset class = "buttons">
 							<legend>버튼</legend>
-							<button type = "submit">수정하기</button>
+							<button type = "submit">수정하기</button>&nbsp;&nbsp;&nbsp;
 							<button type = "reset">취소하기</button>
 						</fieldset>
-					</form>
+						</form>
+					</div>
 				</div>
 			</div>		   	
 		</section>
-	
-		<!-- 푸터 부분 -->
-	    <footer id="footer">
-	        <div class="foot1">
-	        	<!-- 로고 부분 -->
-	        	<a th:href = "@{/}" >
-	        		<span></span>
-	        	</a>
-			</div>
-	        <div class="foot2">
-	        	<p>광주 광산구 무진대로 282 광주무역회관 7층  전화주문 010-1111-2222<br>
-				사업자 등록번호 123-45-67890 (주)CGY 대표이사 최세련, 고혜정, 류영훈<br>
-				Copyright 2022 CGY Co., Ltd. All right Reserved</p>
-			</div>
-	        <div class="foot3">
-	        	<p>이용약관</p>
-	        	<p>개인정보취급방침</p>
-	        	<p>법적고지</p>
-	        	<a href = "#"><span id = "facebook"></span></a>
-	        	<a href = "#"><span id = "insta"></span></a>
-	        </div>
-	    </footer>
-	    <!-- //footer 끝 -->
 	</div>
-	<!-- Javascript -->
-	<!-- 메뉴바 기능 -->
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	
+	<footer>
+	
+	</footer>
 	<script>
-		$(".nav > ul > li").mouseenter(function() {
-			$(".nav > ul > li > ul").stop().slideDown(200)
-		});
-		$(".nav > ul > li").mouseleave(function() {
-			$(".nav > ul > li > ul").stop().slideUp(200)
-		});
-	</script>
-	<script>
-	function confirmChange(){
-		let answer = confirm('확인을 누르시면 입력한 정보로 수정됩니다.');
+	function checkValues() {
+		let memberId = document.getElementById('memberId');
+		let memberName = document.getElementById('name');
+		let phone = document.getElementById('phone');
+	
 		
-		if(answer == true){
-			return CheckValues();
-		} else {
+		let doublePw = document.getElementById("doublePw");
+		if(doublePw.value == 0) {
 			return false;
+		} else {
+			return true;
+		}
+		
+		let memberIdCheck = document.getElementById("memberIdCheck");
+		if(memberIdCheck.value == 0) {
+			return false;
+		} else {
+			return true;
 		}
 	}
+		
+	</script>
+	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+	<script>
+	function sample4_execDaumPostcode() {
+	new daum.Postcode({
+	    oncomplete: function(data) {
 	
-	function checkValues(){
-	      let memberPw = document.getElementById('memberPw');
-	      let memberPwCheck = document.getElementById('memberPwCheck');
-	      let memberName = document.getElementById('memberName');
-	      
-	      // 비밀번호체크
-	      if(memberPw.value.trim().length == 0){
-	         alert('비밀번호는 필수 항목입니다');
-	         memberPw.focus();
-	         return false;
-	      } else if(memberPw.value.trim().length < 3 || memberPw.value.trim().length > 10){
-	         alert('비밀번호는 3~10자 사이로 입력해주세요');
-	         memberPw.focus();
-	         return false;
-	      } else if(memberPw.value.trim() != memberPwCheck.value.trim()){
-	         alert('비밀번호가 서로 다릅니다');
-	         memberPw.focus();
-	         return false;
-	      }
-	      
-	   // 전화번호 체크
-			if(phone.value.trim().length == 0) {
-				alert('전화번호는 필수 항목입니다.');
-				phone.focus();
-				return false;
-			} else if(phone.value.trim().length != 11) {
-				alert('전화번호는 숫자 11자리로 입력해주세요(-제외)');
-				phone.focus();
-				return false;
-			}
-			
-			// 전화번호에 글자가 있으면 경고 표시
-			let phoneValue = phone.value;
-			
-			for(let i = 0; i < phoneValue.length; i++){
-				// i번 방에 있는 글자가 글자라면
-				if(isNaN(phoneValue.indexOf(i))) {
-					let message = 
-						"전화번호는 숫자 11자리로 입력해주세요(-제외)";
-					alert(message);
-					phone.focus;
-					return false;
-				}
-			} 
-		}
+	    	var roadAddr = data.roadAddress; // 도로명 주소 변수
+	        var extraRoadAddr = ''; // 참고 항목 변수
+	
+	        if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+	            extraRoadAddr += data.bname;
+	        }
+	        if(data.buildingName !== '' && data.apartment === 'Y'){
+	           extraRoadAddr += (extraRoadAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+	        }
+	        if(extraRoadAddr !== ''){
+	            extraRoadAddr = ' (' + extraRoadAddr + ')';
+	        }
+	
+	        document.getElementById('sample4_postcode').value = data.zonecode;
+	        document.getElementById("sample4_roadAddress").value = roadAddr;
+	        document.getElementById("sample4_jibunAddress").value = data.jibunAddress;
+	        
+	        if(roadAddr !== ''){
+	            document.getElementById("sample4_extraAddress").value = extraRoadAddr;
+	        } else {
+	            document.getElementById("sample4_extraAddress").value = '';
+	        }
+	
+	        var guideTextBox = document.getElementById("guide");
+	        if(data.autoRoadAddress) {
+	            var expRoadAddr = data.autoRoadAddress + extraRoadAddr;
+	            guideTextBox.innerHTML = '(예상 도로명 주소 : ' + expRoadAddr + ')';
+	            guideTextBox.style.display = 'block';
+	
+	        } else if(data.autoJibunAddress) {
+	            var expJibunAddr = data.autoJibunAddress;
+	            guideTextBox.innerHTML = '(예상 지번 주소 : ' + expJibunAddr + ')';
+	            guideTextBox.style.display = 'block';
+	        } else {
+	            guideTextBox.innerHTML = '';
+	            guideTextBox.style.display = 'none';
+	        }
+	    }
+	}).open();
+	
+	}
+	
+	
 	</script>
 </body>
 </html>

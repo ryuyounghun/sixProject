@@ -16,6 +16,34 @@
 	 	WHERE MEMBERID = #{memberId}
 	</select>
 	
+	<select id = "checkId" parameterType="string" resultType="int">
+		SELECT COUNT(MEMBERID) FROM DELIVERY_MEMBER
+		WHERE MEMBERID = #{memberId}
+	</select>
+	
+	<!-- 회원정보 수정 쿼리 -->
+	<update id = "updateMember" parameterType="member">
+		UPDATE DELIVERY_MEMBER
+		SET 
+		<if test = "memberPw != null">
+			MEMBERPW = #{memberPw}
+		</if>
+		<if test = "memberName != null">
+			,MEMBERNAME = #{memberName}
+		</if>
+		<if test = "nickname != null">
+			,NICKNAME = #{nickname}
+		</if>
+		<if test = "address != null">
+			,ADDRESS = #{address}
+		</if>
+		<if test = "phone != null">
+			,PHONE = #{phone}
+		</if>
+		WHERE
+			MEMBERID = #{memberId}
+	</update>
+	
 	<update id="updateAddressAndPhone" parameterType="Member">
 		UPDATE DELIVERY_MEMBER
 		SET ADDRESS = #{address}, PHONE = #{phone}

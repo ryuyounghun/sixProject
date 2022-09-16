@@ -11,7 +11,6 @@
 
 	/* 비밀번호 유효성 검사 */
 	$(document).ready(function(){
-		
 		$("#memberPw").on("blur", function(){
 			
 			let pw1 = $("#memberPw").val();
@@ -41,7 +40,7 @@
 			} 
 			
 		});
-			
+		
 		/* 비밀번호 유효성 검사 */
 		$("#memberPwChk").on("blur", function(){
 			let pw1 = $("#memberPw").val();
@@ -70,35 +69,9 @@
 			}
 			
 		});
-		
-		$("#memberName").keyup( function(){
-			let mName = $("#memberName").val();
-			let kor = mName.search(/^[가-힣]+$/);
-			let doubleCheckKor = mName.search(/^[ㄱ-ㅎ]+$/);
-			let eng = mName.search(/[a-zA-Z]/g);
-			let num = mName.search(/[0-9]/g);
-				console.log("-----");
-				console.log(kor);
-				console.log(doubleCheckKor);
-				console.log(eng);
-				console.log(num);
-				console.log("-----");
-				if ( mName.trim().length == 0){
-					$("#memberNameCheck").text("");
-				}
-				else if (kor == -1){ 
-					console.log("옳바르지 않거나 한국어만입력하세요.");
-					$("#memberNameCheck").text("옳지 않은 이름입니다 한국어만입력하세요.").css("color","red");
-				}
-				else {
-					$("#memberNameCheck").text("굿").css("color","green");
-				}
-				$("#memberNameCheck").show();
-			
-		});
-		
-	});
 
+	});
+	
 	/* 아이디 중복 체크 + 아이디 유효성 검사 */
 	function checkIdValues(){
 		let mdId = $("#memberId").val();
@@ -250,10 +223,10 @@
 								<!-- 이름 -->
 								<label for = "name">이름</label>
 								<input type = "text" id = "memberName" name = "memberName" placeholder = "이름을 입력해주세요." required>
-								<span style='display:none' id = "memberNameCheck"></span> <br>
+								
 								<!-- 닉네임 -->
 								<label for = "nickname">닉네임</label>
-								<input type = "text" id = "nickname" name = "nickname" placeholder = "미입력시 이름이 닉네임으로 지정됩니다.">
+								<input type = "text" id = "nickname" name = "nickname" placeholder = "닉네임을 입력하지 않으면 이름이 닉네임으로 지정됩니다.">
 								
 								<!-- 주소 -->
 								<label for = "address">주소</label>

@@ -1,17 +1,15 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"	
-		xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html xmlns:th="http://www.thymeleaf.org/"
+   xmlns:sec="http://www.thyemeleaf.org/extras/spring-security">
 <head>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
 <meta charset="UTF-8">
-<title>회원가입</title>
-<link rel = "stylesheet" href = "/css/member/join_style.css">
+<title>회원정보 수정</title>
+<link rel = "stylesheet" href = "/css/member/updateInfo_style.css">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
 
 	/* 비밀번호 유효성 검사 */
 	$(document).ready(function(){
-		
 		$("#memberPw").on("blur", function(){
 			
 			let pw1 = $("#memberPw").val();
@@ -41,7 +39,7 @@
 			} 
 			
 		});
-			
+		
 		/* 비밀번호 유효성 검사 */
 		$("#memberPwChk").on("blur", function(){
 			let pw1 = $("#memberPw").val();
@@ -70,35 +68,9 @@
 			}
 			
 		});
-		
-		$("#memberName").keyup( function(){
-			let mName = $("#memberName").val();
-			let kor = mName.search(/^[가-힣]+$/);
-			let doubleCheckKor = mName.search(/^[ㄱ-ㅎ]+$/);
-			let eng = mName.search(/[a-zA-Z]/g);
-			let num = mName.search(/[0-9]/g);
-				console.log("-----");
-				console.log(kor);
-				console.log(doubleCheckKor);
-				console.log(eng);
-				console.log(num);
-				console.log("-----");
-				if ( mName.trim().length == 0){
-					$("#memberNameCheck").text("");
-				}
-				else if (kor == -1){ 
-					console.log("옳바르지 않거나 한국어만입력하세요.");
-					$("#memberNameCheck").text("옳지 않은 이름입니다 한국어만입력하세요.").css("color","red");
-				}
-				else {
-					$("#memberNameCheck").text("굿").css("color","green");
-				}
-				$("#memberNameCheck").show();
-			
-		});
-		
-	});
 
+	});
+	
 	/* 아이디 중복 체크 + 아이디 유효성 검사 */
 	function checkIdValues(){
 		let mdId = $("#memberId").val();
@@ -160,14 +132,14 @@
 	}
 		
 	
-</script>
+</script>	
 </head>
 <body>
-	<div id="headerAndSection-wrapper">
+	<div id = "headerAndSection-wrapper">
 		<header>
 			<div class="header-container">
 				<a href="/" class="header-logo" >
-					ㄹ고
+					로고
 				</a>
 				<a th:href="@{/delivery/indexqwe}" class="header-toAnother" >
 					배달로~
@@ -195,162 +167,106 @@
 						</a>
 					</li>
 				</ui>
-			</div><!-- header-container 부분 끝 -->
+			</div>
 		</header>
+		
 		<section>
-			<div class="section-container">
+			<div class = "section-container">
 				<aside>
-					<div class="aside-left">
+					<div class = "aside-left">
+
 					</div>
 				</aside>
 				
 				<aside>
 					<div class="aside-right">
+
 					</div>
 				</aside>
 			<!-- 헤더 윗 부분(로그인, 회원가입) -->
-			<div class = "util">
-				<!-- 인증된 사용자의 닉네임 -->
-				<p id = "WelcomMsg" sec:authorize = "isAuthenticated()"><span sec:authentication = 'nickname'> 님 안녕하세요.</span>
-			</div> <!-- util 부분 끝 -->
-		
-			<!-- 메뉴 네비게이션(상의해야할 부분) 위치 -->
-			<!--  회원가입 내용 들어갈 container -->
-			<div class = "joinContainer">
-				<!-- 회원가입 제목 -->
+			
+			
+		    <!-- 회원정보 수정 내용 들어갈 container -->
+		   	<div class = "joinContainer">
+		   		<!-- 회원가입 제목 -->
 				<div class = "joinTitle">
-					<h2>회원가입</h2>
+					<h2>회원정보 수정</h2>
 				</div>
 				<!-- 회원가입 내용 -->
-					<div class = "aside-center">
-						<!-- 서버에 보낼 링크와 방식 -->
-						<form action = "join" method = "post" onsubmit = "return checkValues();">
+				<div class = "aside-center">
+					
+					<!-- 서버에 보낼 링크랑 방식 적어야함 -->
+					<form action = "updateInfo" method = "post" th:object = "${member}" onsubmit = "return checkValues();">
 						
-							<!-- 회원가입 기본정보 -->
-							<fieldset class = "requiredInfo">
-								<legend>기본정보</legend>
-								<!-- 아이디 -->
-								<label for = "memberId">아이디</label>
-								<div class = "joinIdWrap">
-								<input type = "text" id = "memberId" name = "memberId" oninput = "return checkIdValues();" placeholder = "ID는 필수정보입니다." required>
-								<span class = "id_already"></span>
-								<input type = "hidden" id = "memberIdCheck" value = 0>
-								</div> <!--joinIdWrap 부분 끝-->
-								
-								<!-- 비밀번호 -->
-								<label for = "memberPw">비밀번호</label><br>
-								<input type = "password" id = "memberPw" name = "memberPw" placeholder = "비밀번호는 필수정보입니다." required>
-								<input type = "hidden" id = "doublePw" value = "0"> <br>
-								
-								<!-- 비밀번호 확인 -->
-								<label for = "memberPwChk">비밀번호 확인</label>
-								<input type = "password" id = "memberPwChk" placeholder = "비밀번호를 한번 더 입력해주세요." required>
-								<span id = "text2"></span>
-								
-								<!-- 이름 -->
-								<label for = "name">이름</label>
-								<input type = "text" id = "memberName" name = "memberName" placeholder = "이름을 입력해주세요." required>
-								<span style='display:none' id = "memberNameCheck"></span> <br>
-								<!-- 닉네임 -->
-								<label for = "nickname">닉네임</label>
-								<input type = "text" id = "nickname" name = "nickname" placeholder = "미입력시 이름이 닉네임으로 지정됩니다.">
-								
-								<!-- 주소 -->
-								<label for = "address">주소</label>
-								<input type = "text" id = "sample4_roadAddress" class = "address1" name = "address" placeholder="주소찾기를 눌러주세요." readonly>
-								<input type = "button" value = "주소찾기" class = "addressFind" onclick = "sample4_execDaumPostcode()">
-								<input type = "text" class = "address1" id = "sample4_detailAddress" placeholder = "상세 주소를 입력해주세요.">
-								
-								<input type = "hidden" id = "sample4_postcode" placeholder = "우편번호">
-								<input type = "hidden" id = "sample4_jibunAddress" placeholder = "지번주소">
+						<!-- 회원가입 기본정보 -->
+						<fieldset class = "requiredInfo">
+							<legend>기본정보</legend>
+							<!-- 아이디 -->
+							<label for = "memberId">아이디</label>
+							<span class = "joinIdWrap" th:text = "*{memberId}">아이디</span><br>
+		        			
+		        			<!-- 비밀번호 -->
+							<label for = "memberPw">비밀번호</label><br>
+							<input type = "password" id = "memberPw" name = "memberPw" placeholder = "비밀번호는 필수입력입니다." required>
+							<input type = "hidden" id = "doublePw" value = "0"> <br>
+							
+							<!-- 비밀번호 확인 -->
+							<label for = "memberPwChk">비밀번호 확인</label>
+							<input type = "password" id = "memberPwChk" placeholder = "비밀번호를 한번 더 입력해주세요." required>
+							<span id = "text2"></span><br>
+		        			
+		        			<!-- 이름 -->
+		        			<label for = "name">이름</label>
+							<input type = "text" id = "memberName" name = "memberName" th:value = "*{memberName}" placeholder = "이름을 입력해주세요." required>
+		        			
+		        			<!-- 닉네임 -->
+		        			<label for = "nickname">닉네임</label>
+		        			<input type = "text" id = "nickname" name = "nickname" th:value = "*{nickname}" required>
+							
+							<!-- 전화번호 -->
+							<label for = "phone">전화번호</label>
+							<input type = "text" id = "phone" name = "phone" th:value = "*{phone}" placeholder = "전화번호를 입력해주세요.">
+						</fieldset>
+						
+						<!-- 회원가입 선택정보 -->
+						<fieldset class = "optionalInfo">
+							<legend>선택정보</legend>
+			        			<!-- 주소 -->
+			        			<label for = "address">주소</label>
+			        			<input type = "text" id = "sample4_roadAddress" class = "address1" name = "address" placeholder = "주소찾기를 눌러주세요" readonly>
+			        			<input type = "button" value = "주소찾기" class = "addressFind" onclick="sample4_execDaumPostcode()">
+								<input type = "text" class = "address1" id="sample4_detailAddress" placeholder = "상세 주소를 입력해주세요">
+							
+			        			<input type="hidden" id="sample4_postcode" placeholder="우편번호">
+								<input type="hidden" id="sample4_jibunAddress" placeholder="지번주소">
 								<span id="guide" style="color:#999;display:none"></span>
 								<input type="hidden" id="sample4_extraAddress" placeholder="참고항목">
-								
-								<!-- 전화번호 -->
-								<label for = "phone">전화번호('-'없이 번호만 입력해주세요.)</label>
-								<input type = "text" id = "phone" name = "phone" placeholder = "전화번호를 입력해주세요." required>
-								<span id = "text4"></span>
-							</fieldset> <!-- 회원가입 정보입력 끝 -->
+								<!-- <input type="hidden" id="fullAddress" value="" name="address">  -->
+						</fieldset>
 						
-							<fieldset class = "buttons">
-								<legend>버튼</legend>
-								<button type = "submit">회원가입</button>&nbsp;&nbsp;&nbsp;
-								<button type = "reset">취소하기</button>
-							</fieldset> <!-- buttons 부분 끝 -->
-				
-							</form>
-						</div><!-- aside-center 부분 끝 -->
+						<!-- 버튼 -->
+						<fieldset class = "buttons">
+							<legend>버튼</legend>
+							<button type = "submit">수정하기</button>&nbsp;&nbsp;&nbsp;
+							<button type = "reset">취소하기</button>
+						</fieldset>
+						</form>
 					</div>
 				</div>
-			</section>
-		</div>
-	<footer>
-	</footer>
+			</div>		   	
+		</section>
+	</div>
 	
-<script>
+	<footer>
+	
+	</footer>
+	<script>
 	function checkValues() {
 		let memberId = document.getElementById('memberId');
-		let memberName = document.getElementById('memberName');
+		let memberName = document.getElementById('name');
 		let phone = document.getElementById('phone');
-		
-		// 아이디 체크
-		/* let idRegExp = /^[a-zA-z0-9]{4,12}$/;
-		if(memberId.value.trim().length == 0){
-			alert('아이디는 필수 항목입니다.');
-			memberId.focus();
-			return false;
-		} else if(memberId.value.trim().length < 3 || memberId.value.trim().length > 13){
-			alert('아이디는 4~12자 사이로 입력해주세요.');
-			memberId.focus();
-			return false;
-		} else if(!idRegExp.test(memberId.value)){
-			alert('아이디는 4~12자의 영문 대소문자와 숫자로만 입력해주세요.');
-			memberId.focus();
-			return false;
-		} */
-		
-		// 이름 체크
-		let nameExp = /^[가-힣]{2,4}|[a-zA-Z]{2,10}\s[a-zA-Z]{2,10}$/;
-		if(memberName.value.trim().length == 0){
-			alert('이름은 필수 항목입니다.');
-			memberName.focus;
-			return false;
-		} else if(memberName.value.trim().length < 2 || memberName.value.trim().length > 6) {
-			alert('이름은 2~6글자 사이로 입력해주세요.');
-			memberName.focus();
-			return false;
-		} else if (nameExp.test(memberName.value) == false){
-			alert('이름은 한글만 입력해주세요.');
-			memberName.focus();
-			return false;
-		}
 	
-		// 전화번호 체크
-		if(phone.value.trim().length == 0) {
-			alert('전화번호는 필수 항목입니다.');
-			phone.focus();
-			return false;
-		} else if(phone.value.trim().length != 11) {
-			alert('전화번호는 숫자 11자리로 입력해주세요(-제외)');
-			phone.focus();
-			return false;
-		}
 		
-		// 전화번호에 글자가 있으면 경고 표시
-		let phoneValue = phone.value;
-		
-		for(let i = 0; i < phoneValue.length; i++){
-			// i번 방에 있는 글자가 글자라면
-			if(isNaN(phoneValue.indexOf(i))) {
-				let message = 
-					"전화번호는 숫자 11자리로 입력해주세요(-제외)";
-				alert(message);
-				phone.focus;
-				return false;
-			}
-		}
-	
-
 		let doublePw = document.getElementById("doublePw");
 		if(doublePw.value == 0) {
 			return false;
@@ -364,10 +280,9 @@
 		} else {
 			return true;
 		}
-	}/* checkValues 끝 */
-
-	
-</script>
+	}
+		
+	</script>
 	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 	<script>
 	function sample4_execDaumPostcode() {
@@ -415,6 +330,8 @@
 	}).open();
 	
 	}
-</script>
+	
+	
+	</script>
 </body>
 </html>
