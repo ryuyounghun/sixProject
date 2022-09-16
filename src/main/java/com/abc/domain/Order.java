@@ -22,5 +22,5 @@ public class Order {
 	private String itemName;
 	private int itemPrice;
 	private int quantity;
-	private String orderComplete;
+	private String complete;
 }

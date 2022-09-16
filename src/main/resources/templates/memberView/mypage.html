@@ -5,6 +5,16 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel="stylesheet" href="/css/delivery/deliveryIndex.css">
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+
+<style>
+	a {
+		display : inline-block;
+	}
+</style>
 </head>
 <body>
 	<div id="headerAndSection-wrapper">
@@ -18,12 +28,12 @@
 				</a>
 				<ui class="header-logMenuList"> <!-- 로그인 및 로그아웃 링크 -->
 					<li sec:authorize ="not isAuthenticated">
-						<a th:href="@{/user/login}">
+						<a th:href="@{/member/login}">
 							로그인
 						</a>
 					</li>
 					<li sec:authorize="not isAuthenticated">
-						<a th:href ="@{/user/join}">
+						<a th:href ="@{/member/join}">
 							회원가입
 						</a>
 					</li>
@@ -33,7 +43,7 @@
 						</a>
 					</li>
 					<li sec:authorize="isAuthenticated">
-						<a th:href ="@{/user/mypage}">
+						<a th:href ="@{/member/mypage}">
 							회원정보
 						</a>
 					</li>
@@ -44,14 +54,7 @@
 	
 		<section>
 			<div class="section-container">
-				
-				<div class="searchBar-wrapper">
-					<div class="container-searchBar">
-						<input class = "searchBar" type = "text" name="searchWord" th:value="${searchWord}" id="searchWord" placeholder="메뉴검색">
-						검색
-					</div>
-				</div>
-				
+				<h1 style="text-align:center;">마이페이지</h1>
 				
 				<aside>
 					<div class="aside-left">
@@ -67,43 +70,14 @@
 
 				<div class="aside-center">
 					<div class="section-center">
-						<ul class="foodList">
-							<li>
-								<div>
-									a
-								</div>							
-							</li>
-							<li>
-								<div>
-									b
-								</div>
-							</li>
-							<li>	
-								<div>
-									c
-								</div>
-							</li>
-							<li>
-								<div>
-									d
-								</div>
-							</li>
-							<li>
-								<div>
-									e
-								</div>
-							</li>
-							<li>
-								<div>
-									F
-								</div>
-							</li>
-							<li>
-								<div>
-									G
-								</div>
-							</li>
-						</ul>
+						
+						
+						<div class="d-grid gap-2">
+							<a th:href="@{/delivery/inputStore}"><input value = "가게등록 승인" class="btn btn-primary" type="button"></a>
+						  	<a th:href="@{/member/myCoupons}"><input value = "내쿠폰확인" class="btn btn-primary" type="button"></a>
+						  	<a th:href="@{/delivery/sellerOrderList}"><input value = "레벨 관리" class="btn btn-primary" type="button"></a>
+						</div>
+					
 					</div>
 				</div>	
 			</div>		

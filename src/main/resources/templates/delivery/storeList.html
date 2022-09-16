@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" href="/css/delivery/deliveryRead.css">
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+<style>
+	.storeTable {
+		margin : 20px;
+		width : 40%;
+		color : white;
+		border : 1px solid black;
+		display : inline-block;
+	}
+	
+	.storeTable td {
+		padding : 15px;
+	}
+	
+	.storeTable a {
+		color : white;
+		text-decoration : none;
+	}
+	
+	.storeTable .nameTd {
+		padding-top : 30px;
+		padding-bottom : 30px;
+		width : 120px;
+		text-align : center;
+		
+	}
+	
+</style>
+<script th:inline="javascript">
+	
+	$(document).ready(function() {
+		$("#searchWord").on("keyup", function() { load(); });
+		load();
+		
+	});
+	
+	function plusWish(storeNum){
+		
+		$.ajax({
+			url : "plusWish",
+			type : "get",
+			data : {"storeNum" : storeNum},
+			success : function(data) {
+				console.log(data);
+				if(data.storeNum == storeNum) {
+					$(".wish").val("♥");
+				}
+				
+				
+			}
+		});
+	}
+	
+	function getParameterByName(name) {
+		  name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+		  var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+		  results = regex.exec(location.search);
+		  return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+		}
+	
+	function load() {
+		let title = $("#searchWord").val();
+		var category = getParameterByName('category');
+		
+		$.ajax({
+			url : "storeListAjax",
+			type : "get",
+			data : {"title" : title, "category" : category},
+			success : function(data) {
+				console.log(data);
+				
+				/* <![CDATA[ */
+				var goRead = [[@{/delivery/read}]];
+				
+				let htmlStr = "";
+				
+				$.each(data, function(index, item) {
+					htmlStr += "<table class='storeTable'>";
+					
+					htmlStr += "<tr>"
+					htmlStr += "<td class='nameTd'><a href='" + goRead + "?num=" + item.storeNum + "'>" + item.storeName + "</a></td>";
+					htmlStr += "<td>★ " + item.rating + "</td>";
+					htmlStr += "<td>♥ " + item.wishlist + "</td>";
+					htmlStr += "</tr>";
+					htmlStr += "</table>";
+				});
+				
+				
+				$("#center-dv").html(htmlStr);
+				/* ]]> */
+			}
+		});
+		
+	}
+</script>
+
+</head>
+<body>
+	<div id="headerAndSection-wrapper">
+		<header>
+			<div class="header-container">
+				<a href="/" class="header-logo" >
+					asd
+				</a>
+				<a th:href="@{/community/index}" class="header-toAnother" >
+					커뮤니티로~
+				</a>
+				
+				<ui class="header-logMenuList"> <!-- 로그인 및 로그아웃 링크 -->
+					<li sec:authorize ="not isAuthenticated">
+						<a th:href="@{/member/login}">
+							로그인
+						</a>
+					</li>
+					<li sec:authorize="not isAuthenticated">
+						<a th:href ="@{/member/join}">
+							회원가입
+						</a>
+					</li>
+					<li sec:authorize="isAuthenticated">
+						<a th:href ="@{/logout}">
+							로그아웃
+						</a>
+					</li>
+					<li sec:authorize="isAuthenticated">
+						<a th:href ="@{/member/mypage}">
+							회원정보
+						</a>
+					</li>
+				</ui>
+
+			</div>
+		</header>
+	
+		<section>
+			<div class="section-container">
+				
+				<div class="searchBar-wrapper">
+					<div class="container-searchBar">
+						<input class = "searchBar" type = "text" name="searchWord" th:value="${searchWord}" id="searchWord" placeholder="가게검색">
+						검색
+					</div>
+				</div>
+				
+				
+				<aside>
+					<div class="aside-left">
+						<ul class="foodList">
+							<li>
+								<a th:href = "|@{storeList}?category=all|">
+									전체보기
+								</a>
+							</li>
+							<li>
+								<a th:href="|@{storeList}?category=1|">
+									한식
+								</a>
+							</li>
+							<li>	
+								<a th:href="|@{storeList}?category=2|">
+									중식
+								</a>
+							</li>
+							<li>
+								<a th:href="|@{storeList}?category=3|">
+									일식
+								</a>
+							</li>
+							<li>
+								<a th:href="|@{storeList}?category=4|">
+									양식
+								</a>
+							</li>
+							<li>
+								<a th:href="|@{storeList}?category=5|">
+									디저트
+								</a>
+							</li>
+							<li>
+								<a th:href="|@{storeList}?category=6|">
+									야식
+								</a>
+							</li>
+							<li>
+								<a th:href="|@{storeList}?category=7|">
+									도시락
+								</a>
+							</li>
+						</ul>
+					</div>
+				</aside>
+				
+				<aside>
+					<div class="aside-right">
+
+					</div>
+				</aside>
+
+				<div class="aside-center">
+					<div class="section-center">
+						<div id="center-dv"></div>
+					
+					</div>
+				</div>	
+			</div>		
+		
+		</section>
+
+	</div>
+
+	<footer>
+		
+	</footer>
+	
+	
+</body>
+</html>

@@ -15,5 +15,18 @@
 	 	SELECT * FROM DELIVERY_MEMBER
 	 	WHERE MEMBERID = #{memberId}
 	</select>
+	
+	<update id="updateAddressAndPhone" parameterType="Member">
+		UPDATE DELIVERY_MEMBER
+		SET ADDRESS = #{address}, PHONE = #{phone}
+		WHERE MEMBERID = #{memberId}		
+	</update>
+	
+	<update id="updatePoint" parameterType="Member">
+		UPDATE DELIVERY_MEMBER
+		SET MEMBERPOINT = #{memberPoint}
+		WHERE MEMBERID = #{memberId}
+	</update>
+	
 </mapper>
 

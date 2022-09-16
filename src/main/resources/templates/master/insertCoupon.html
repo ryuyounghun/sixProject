@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<meta charset="UTF-8">
+<title>쿠폰 등록하기(수정 중)</title>
+<link rel="stylesheet" href="/css/coupon/insertCoupon_style.css">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+	$(document).ready(function(){
+	
+		$("#couponId").on("blur", function(){
+			let cpId = $("#couponId").val();
+			let nameExp = /[가-힣]{3,21}/;
+			
+			if(cpId.length < 3 || cpId.length > 21){
+				$("#text1").text("쿠폰명은 3~20자리 이내로 입력해주세요.").css("color", "red");
+				$("#couponIdCheck").val("0");
+			} else if(!nameExp.test(cpId)){
+				$("#text1").text("쿠폰명은 한글로만 입력해주세요.").css("color", "red");
+				$("#couponIdCheck").val("0");
+			} else {
+				$("#text1").text("멋진 쿠폰명입니다!").css("color", "green");
+				$("#couponIdCheck").val("1");
+			}
+			
+				
+		})
+		
+	
+	});
+</script>
+</head>
+<body>
+	<div id="headerAndSection-wrapper">
+		<header>
+			<div class="header-container">
+				<a href="/" class="header-logo" >
+					asd
+				</a>
+			
+				<ui class="header-logMenuList"> <!-- 로그인 및 로그아웃 링크 -->
+					<li sec:authorize ="not isAuthenticated">
+						<a th:href="@{/member/login}">
+							로그인
+						</a>
+					</li>
+					<li sec:authorize="not isAuthenticated">
+						<a th:href ="@{/member/join}">
+							회원가입
+						</a>
+					</li>
+					<li sec:authorize="isAuthenticated">
+						<a th:href ="@{/logout}">
+							로그아웃
+						</a>
+					</li>
+					<li sec:authorize="isAuthenticated">
+						<a th:href ="@{/member/updateInfo}">
+							회원정보
+						</a>
+					</li>
+				</ui>
+			</div>
+			<!-- header-container 부분 끝 -->
+		</header>
+		
+		<section>
+			<div class = "section-container">
+				<aside>
+					<div class="aside-left">
+
+					</div>
+				</aside>
+				
+				<aside>
+					<div class="aside-right">
+
+					</div>
+				</aside>
+			
+			<!-- section-container 부분 끝  -->	
+				
+			<div class = "aside-center">
+				<h2>쿠폰 등록하기</h2>
+				<form action = "insertCoupon" method = "post" onsubmit="return checkValues();">
+					<div class = "section-center">
+						<!-- 쿠폰명 -->
+						<label for = "insertCoupon_name">쿠폰명</label>
+						<div class = "joinIdWrap">
+						<input type = "text" id = "couponId" name = "couponName" placeholder="쿠폰명을 입력해주세요." required>
+						<input type = "hidden" id = "couponIdCheck" value = 0><br>
+						<span id = "text1"></span>
+						</div> <!-- joinIdWrap 부분 끝 -->
+						
+						<!-- 쿠폰 금액 -->
+						<label for = "insertCoupon_title">쿠폰 금액</label>
+						<div class = "joinIdWrap">
+						<select id = "couponBill" name = "couponPoint" required style="font-size:30px;">
+							<option>금액을 고르세요.</option>
+							<option value=1000>1000</option>
+							<option value=5000>5000</option>
+							<option value=10000>10000</option>
+							<option value=50000>50000</option>
+							<option value=10000>10000</option>								
+						</select>
+						<input type = "hidden" id = "couponBillCheck" value = 0><br>
+						<span id = "text2"></span>
+						</div> <!-- joinIdWrap 부분 끝 -->
+						
+						<!-- 버튼 -->
+						<div class = "buttons">
+							<button type = "submit">등록하기</button>&nbsp;&nbsp;&nbsp;
+							<button type = "reset">취소하기</button>
+						</div>
+						</div><!-- section-center 부분 끝 -->
+						</form>
+				</div><!-- aside-center 부분 끝 -->
+				</div><!-- section-container 부분 끝 -->
+		</section> <!-- section 부분 끝 -->
+		
+		</div> <!-- headerAndSection-wrapper 부분 끝 -->
+
+	<!-- 풋터 시작  -->
+	<footer>
+		
+	</footer>
+	
+	<script>
+		function checkValues() {
+			let couponId = document.getElementById('couponId');
+			let nameExp = /^[가-힣]{3,21}$/;
+			
+			if(couponId.value.trim().length == 0){
+				alert('쿠폰명을 입력해주세요.');
+				couponId.focus();
+				return false;
+			} else if(couponId.value.trim().length < 3 || couponId.value.trim().length > 21){
+				alert('쿠폰명은 3~12글자 사이로 입력해주세요.');
+				couponId.focus();
+				return false;
+			} else if (!nameExp.test(couponId.value)){
+				alert('쿠폰명은 한글로1만 입력해주세요. ');
+				couponId.focus();
+				return false;
+			} 
+			
+			let couponBill = document.getElementById('couponBill');	
+			
+			if(couponBill.value.trim().length == 0){
+				alert('쿠폰금액을 입력해주세요.');
+				couponBill.focus();
+				return false;
+			} else if(couponBill.value.trim().length < 3 || couponBill.value.trim().length > 7){
+				alert('쿠폰금액 3~7글자 사이로 입력해주세요.');
+				couponBill.focus();
+				return false;
+			} 
+			
+
+			let couponIdCheck = document.getElementById("couponIdCheck");
+			if(couponIdCheck.value == 0) {
+				return false;
+			} else {
+				return true;
+			}
+			
+			let couponBillCheck = document.getElementById("couponBillCheck");
+			if(couponBillCheck.value == 0){
+				return false;
+			} else {
+				return true;
+			}
+		} 
+	</script>
+</body>
+</html>

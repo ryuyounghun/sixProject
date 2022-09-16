@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" href="/css/delivery/deliveryIndex.css">
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+
+<script th:inline="javascript">
+	$(document).ready(function(){
+		selectMyStore();
+	});
+
+	
+	function selectMyStore() {
+		
+		$.ajax({
+			url : "selectMyStore",
+			type : "get",
+			success : function(data) {
+				console.log(data);
+				
+				let htmlStr = "<select onchange='loadSellerOrderList(this.value)'>";
+				htmlStr += "<option>선택</option>";
+				$.each(data, function(index, item) {
+					htmlStr += "<option value='" + item.storeNum + "'>" + item.storeName + "</option>";
+				});
+				
+				htmlStr += "</select>";
+				
+				$("#center-dv").html(htmlStr);
+			}
+		});
+	}
+	
+	function loadSellerOrderList(storeNum) {
+		
+		$.ajax({
+			url : "loadSellerOrderList",
+			type : "get",
+			data : {"storeNum" : storeNum},
+			success : function(data) {
+				
+				
+				let htmlStr = "";
+				$.each(data, function(index, item) {
+					htmlStr += "<table border='1'>";
+					htmlStr += "<tr><th>" + item.receiptNum + "</th>";
+					htmlStr += "<th>" + item.totalAmount + "원</th><tr>";
+					htmlStr += "<tr><th colspan='2'>" + item.orderHistory + "</th></tr>";
+					htmlStr += "</table>";
+				});
+				
+				$("#center-dv2").html(htmlStr);
+			}
+		});
+	}
+</script>
+
+</head>
+<body>
+	<div id="headerAndSection-wrapper">
+		<header>
+			<div class="header-container">
+				<a href="/" class="header-logo" >
+					asd
+				</a>
+				<a th:href="@{/community/index}" class="header-toAnother" >
+					커뮤니티로~
+				</a>
+				
+				<ui class="header-logMenuList"> <!-- 로그인 및 로그아웃 링크 -->
+					<li sec:authorize ="not isAuthenticated">
+						<a th:href="@{/member/login}">
+							로그인
+						</a>
+					</li>
+					<li sec:authorize="not isAuthenticated">
+						<a th:href ="@{/member/join}">
+							회원가입
+						</a>
+					</li>
+					<li sec:authorize="isAuthenticated">
+						<a th:href ="@{/logout}">
+							로그아웃
+						</a>
+					</li>
+					<li sec:authorize="isAuthenticated">
+						<a th:href ="@{/member/mypage}">
+							회원정보
+						</a>
+					</li>
+				</ui>
+
+			</div>
+		</header>
+	
+		<section>
+			<div class="section-container">
+				
+				<aside>
+					<div class="aside-left">
+
+					</div>
+				</aside>
+				
+				<aside>
+					<div class="aside-right">
+
+					</div>
+				</aside>
+
+				<div class="aside-center">
+					<div class="section-center">
+						<div id="center-dv"></div>
+						<div id="center-dv2"></div>
+					</div>
+				</div>	
+			</div>		
+		
+		</section>
+
+	</div>
+
+	<footer>
+		
+	</footer>
+</body>
+</html>

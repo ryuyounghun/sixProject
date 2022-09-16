@@ -1,5 +1,7 @@
 package com.abc.domain;
 
+import org.springframework.stereotype.Service;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -13,15 +15,12 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class Review {
+// 내가 갖고 있는 쿠폰
+public class MyCoupon {
 
-	private int reviewNum;
+	private int myCouponNum;
 	private int memberNum;
-	private int storeNum;
-	private int receiptNum;
-	private String nickname;
-	private String orderHistory;
-	private String complete;
-	private int rating;
-	private String reviewContent;
+	private int couponNum;
+	private String couponName;
+	private int couponPoint;
 }

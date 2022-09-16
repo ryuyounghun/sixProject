@@ -13,15 +13,9 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class Review {
+public class Wishlist {
 
-	private int reviewNum;
 	private int memberNum;
+	private String memberId;
 	private int storeNum;
-	private int receiptNum;
-	private String nickname;
-	private String orderHistory;
-	private String complete;
-	private int rating;
-	private String reviewContent;
 }

@@ -165,15 +165,14 @@ public class ComunnityController{
 
 		log.debug("Post freeWrite()시작");
 		log.debug("files길이 : {}",files.length);
-		log.debug("file정보 : {}",files[0].toString());
+		// 제대로 들어갔나 한번더 확인
+		log.debug("file정보 : {}",files.toString());
 		
 		
 		Member m = mService.selectOneMember(user.getUsername());
 		fBoard.setMemberNum(m.getMemberNum());
 		fBoard.setNickname(m.getNickname());
 		log.debug("FreeBoard : {}", fBoard);
-		
-		/* 여기까지 실행 완료 */
 		
 		if ( files.length > 0 ) {
 			try {
