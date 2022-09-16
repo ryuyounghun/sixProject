@@ -178,3 +178,4 @@ $(document).ready(function() {
 			return polyline.getLength();			    
 			
 	}	
+	

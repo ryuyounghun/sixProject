@@ -1,4 +1,4 @@
-package com.abc.domain;
+package com.abc.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
