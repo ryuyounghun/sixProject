@@ -8,7 +8,7 @@
 	<!-- 회원정보 등록 쿼리 -->
 	<insert id = "insertMember" parameterType = "member">
 		INSERT INTO DELIVERY_MEMBER (MEMBERNUM, MEMBERID, MEMBERPW, MEMBERNAME, NICKNAME, ADDRESS, PHONE)
-		VALUES (DELIVERY_MEMBER_SEQ.NEXTVAL, #{memberId}, #{memberPw}, #{name}, #{nickname}, #{address}, #{phone})
+		VALUES (DELIVERY_MEMBER_SEQ.NEXTVAL, #{memberId}, #{memberPw}, #{memberName}, #{nickname}, #{address}, #{phone})
 	</insert>
 	
 	<select id = "selectOneMember" parameterType = "string" resultType = "member">
@@ -51,6 +51,12 @@
 	</update>
 	
 	<update id="updatePoint" parameterType="Member">
+		UPDATE DELIVERY_MEMBER
+		SET MEMBERPOINT = MEMBERPOINT + #{memberPoint}
+		WHERE MEMBERID = #{memberId}
+	</update>
+	
+	<update id="useMyPoint" parameterType="Member">
 		UPDATE DELIVERY_MEMBER
 		SET MEMBERPOINT = #{memberPoint}
 		WHERE MEMBERID = #{memberId}

@@ -17,4 +17,6 @@ public interface MemberService {
 	
 	// checkID
 	public int checkId(String memberId);
+
+	public int useMyPoint(Member member);
 }

@@ -75,5 +75,11 @@ public class MemberServiceImpl implements MemberService {
 		return cnt;
 	}
 
+	@Override
+	public int useMyPoint(Member member) {
+		// TODO Auto-generated method stub
+		return mDao.useMyPoint(member);
+	}
+
 
 }

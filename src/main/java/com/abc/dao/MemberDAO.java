@@ -19,4 +19,6 @@ public interface MemberDAO {
 	public int checkId(String memberId);
 	//회원정보 수정하기
 	public int updateMember(Member member);
+	
+	public int useMyPoint(Member member);
 }
