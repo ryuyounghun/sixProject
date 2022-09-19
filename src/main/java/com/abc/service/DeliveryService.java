@@ -44,6 +44,9 @@ public interface DeliveryService {
 	public Receipt selectReceiptByReceiptNum(int receiptNum);
 	public List<Receipt> selectReceiptByStoreNum(int storeNum);
 	
+	public int updateReceiptByWaiting(int receiptNum);
+	public int updateReceiptByComplete(int receiptNum);
+	
 	public int insertReview(Review review);
 	public List<Review> selectReviews(int storeNum);
 	public Review selectReviewsByReceiptNum(int receiptNum);

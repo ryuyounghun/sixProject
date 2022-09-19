@@ -1,6 +1,10 @@
 package com.abc.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +15,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.abc.domain.Member;
+import com.abc.domain.MyCoupon;
+import com.abc.service.MasterService;
 import com.abc.service.MemberService;
 
 import lombok.AllArgsConstructor;
@@ -22,6 +28,9 @@ public class MemberController {
 
 	@Autowired
 	private MemberService mService;
+	
+	@Autowired
+	private MasterService mtService;
 	
 	@GetMapping("/join")
 	public String join() {
@@ -127,5 +136,60 @@ public class MemberController {
 			
 			log.debug("member:{}", member);
 			return member;
+		}
+		
+		@GetMapping("/mypage")
+		public String mypage(Model model,
+				@AuthenticationPrincipal UserDetails user) {
+			
+			Member member = mService.selectOneMember(user.getUsername());
+			
+			model.addAttribute("member", member);
+			
+			return "memberView/mypage";
+		}
+		
+		@GetMapping("/myCoupons")
+		public String myCoupons() {
+			
+			return "memberView/myCoupons";
+		}
+		
+		@GetMapping("/myCouponList")
+		public @ResponseBody List<MyCoupon> myCouponList(
+				@AuthenticationPrincipal UserDetails user) {
+			Member member = mService.selectOneMember(user.getUsername());
+			
+			List<MyCoupon> myCList = mtService.selectAllMyCoupon(member.getMemberNum());
+			
+			log.debug("myCList : {}", myCList);
+			
+			
+			return myCList;
+		}
+		
+		@GetMapping("/useCoupon")
+		public @ResponseBody String useCoupon(int myCouponNum,
+				@AuthenticationPrincipal UserDetails user) {
+			Member member = mService.selectOneMember(user.getUsername());
+			MyCoupon myCoupon = mtService.useOneMyCoupon(myCouponNum);
+			
+			member.setMemberPoint(myCoupon.getCouponPoint());
+			
+			mService.updatePoint(member);
+			
+			mtService.deleteOneMyCoupon(myCouponNum);
+			
+			return "ㅇㅇ";
+		}
+		
+		@GetMapping("/myPoint")
+		public @ResponseBody Member myPoint(
+				@AuthenticationPrincipal UserDetails user) {
+			
+			Member member = mService.selectOneMember(user.getUsername());
+			
+			return member;
+			
 		}
 }

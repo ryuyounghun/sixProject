@@ -22,6 +22,6 @@ public class Review {
 	private String nickname;
 	private String orderHistory;
 	private String complete;
-	private int rating;
+	private double rating;
 	private String reviewContent;
 }

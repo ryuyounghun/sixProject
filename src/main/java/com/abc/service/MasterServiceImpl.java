@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.abc.dao.MasterDAO;
 import com.abc.domain.Coupon;
+import com.abc.domain.MyCoupon;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -31,6 +32,30 @@ public class MasterServiceImpl implements MasterService{
 	public Coupon selectCoupon(int couponNum) {
 		// TODO Auto-generated method stub
 		return mtDao.selectCoupon(couponNum);
+	}
+
+	@Override
+	public int insertMyCoupon(MyCoupon myCoupon) {
+		// TODO Auto-generated method stub
+		return mtDao.insertMyCoupon(myCoupon);
+	}
+
+	@Override
+	public List<MyCoupon> selectAllMyCoupon(int memberNum) {
+		// TODO Auto-generated method stub
+		return mtDao.selectAllMyCoupon(memberNum);
+	}
+
+	@Override
+	public MyCoupon useOneMyCoupon(int myCouponNum) {
+		// TODO Auto-generated method stub
+		return mtDao.useOneMyCoupon(myCouponNum);
+	}
+
+	@Override
+	public int deleteOneMyCoupon(int myCouponNum) {
+		// TODO Auto-generated method stub
+		return mtDao.deleteOneMyCoupon(myCouponNum);
 	}
 
 }

@@ -262,5 +262,17 @@ public class DeliveryServiceImpl implements DeliveryService{
 		return dDao.selectReviewsByMemberNum(memberNum);
 	}
 
+	@Override
+	public int updateReceiptByWaiting(int receiptNum) {
+		// TODO Auto-generated method stub
+		return dDao.updateReceiptByWaiting(receiptNum);
+	}
+
+	@Override
+	public int updateReceiptByComplete(int receiptNum) {
+		// TODO Auto-generated method stub
+		return dDao.updateReceiptByComplete(receiptNum);
+	}
+
 
 }

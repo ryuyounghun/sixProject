@@ -390,7 +390,7 @@ public class DeliveryController {
 		Member member = mService.selectOneMember(user.getUsername());
 		
 		List<Receipt> rList = dService.selectReceipt(member.getMemberNum());
-		Review review = dService.selectReviewsByMemberNum(member.getMemberNum());
+		//Review review = dService.selectReviewsByMemberNum(member.getMemberNum());
 		model.addAttribute("rList", rList);
 		log.debug("rList : {}", rList);
 		
@@ -449,7 +449,7 @@ public class DeliveryController {
 	@GetMapping("/allOrder")
 	public @ResponseBody Receipt allOrder(int data, int storeNum,
 			@AuthenticationPrincipal UserDetails user) {
-		
+		log.debug("allOrder() 시작");
 		Receipt receipt = new Receipt();
 		
 		Member member = mService.selectOneMember(user.getUsername());
@@ -469,7 +469,24 @@ public class DeliveryController {
 		receipt.setTotalAmount(data);
 		receipt.setStoreNum(storeNum);
 		
-		dService.insertReceipt(receipt);
+		
+		int pay = 0;
+		log.debug("point : {}", member.getMemberPoint());
+		log.debug("data : {}", data);
+		if (member.getMemberPoint() > data) {
+			pay	= member.getMemberPoint() - data;
+			dService.insertReceipt(receipt);
+		} else {
+			pay = member.getMemberPoint();
+			receipt = null;
+		}
+		
+		
+		log.debug("pay : {}", pay);
+		
+		member.setMemberPoint(pay);
+		
+		mService.useMyPoint(member);
 		
 		return receipt;
 	}
@@ -530,7 +547,8 @@ public class DeliveryController {
 	}
 	
 	@GetMapping("/selectMyStore")
-	public @ResponseBody List<Store> selectMyStore(@AuthenticationPrincipal UserDetails user) {
+	public @ResponseBody List<Store> selectMyStore(
+			@AuthenticationPrincipal UserDetails user) {
 		
 		Member member = mService.selectOneMember(user.getUsername());
 		List<Store> storeList = dService.selectMemberOne(member.getMemberNum());
@@ -557,4 +575,34 @@ public class DeliveryController {
 	}
 	
 	
+	@GetMapping("/leftoverPoint")
+	public @ResponseBody Member leftoverPoint(
+			@AuthenticationPrincipal UserDetails user) {
+		Member member = mService.selectOneMember(user.getUsername());
+		
+		return member;
+	}
+	
+	@GetMapping("/checkOrder")
+	public @ResponseBody Receipt checkOrder(int receiptNum) {
+		
+		Receipt receipt = dService.selectReceiptByReceiptNum(receiptNum);
+		
+		dService.updateReceiptByWaiting(receiptNum);
+		
+		return receipt;
+		
+	}
+	
+	@GetMapping("/startDelivery")
+	public @ResponseBody Receipt startDelivery(int receiptNum) {
+		Receipt receipt = dService.selectReceiptByReceiptNum(receiptNum);
+		log.debug("waiting : {}",receipt.toString());
+		if(receipt.getWaiting().equals("Y")) {
+			dService.updateReceiptByComplete(receiptNum);
+		} else {
+			receipt = null;
+		}
+		return receipt;
+	}
 }

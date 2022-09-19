@@ -21,5 +21,18 @@
 		SET ADDRESS = #{address}, PHONE = #{phone}
 		WHERE MEMBERID = #{memberId}		
 	</update>
+	
+	<update id="updatePoint" parameterType="Member">
+		UPDATE DELIVERY_MEMBER
+		SET MEMBERPOINT = MEMBERPOINT + #{memberPoint}
+		WHERE MEMBERID = #{memberId}
+	</update>
+	
+	<update id="useMyPoint" parameterType="Member">
+		UPDATE DELIVERY_MEMBER
+		SET MEMBERPOINT = #{memberPoint}
+		WHERE MEMBERID = #{memberId}
+	</update>
+	
 </mapper>
 

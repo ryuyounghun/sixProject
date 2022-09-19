@@ -6,6 +6,8 @@
 <title>Insert title here</title>
 <link rel="stylesheet" href="/css/delivery/deliveryIndex.css">
 <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
 
 <script th:inline="javascript">
 	$(document).ready(function(){
@@ -49,10 +51,54 @@
 					htmlStr += "<tr><th>" + item.receiptNum + "</th>";
 					htmlStr += "<th>" + item.totalAmount + "원</th><tr>";
 					htmlStr += "<tr><th colspan='2'>" + item.orderHistory + "</th></tr>";
+					htmlStr += "<tr><th><input type='button' value='주문확인' onclick='checkOrder(" + item.receiptNum + ")'></th>";
+					htmlStr += "<th><input type='button' value='배달시작' onclick='startDelivery(" + item.receiptNum + ")'</th></tr>";
 					htmlStr += "</table>";
 				});
 				
 				$("#center-dv2").html(htmlStr);
+			}
+		});
+	}
+	
+	function checkOrder(receiptNum) {
+		
+		$.ajax({
+			url : "checkOrder",
+			type : "get",
+			data : {"receiptNum" : receiptNum},
+			success : function(data) {
+				console.log(data.waiting);
+				if(data.waiting == "Y") {
+					let alarm = "<h1>이미 승인한 주문입니다.</h1>";
+					$("#alarm").html(alarm);
+					$("#exampleModal").modal('show');					
+				} else {
+					let alarm = "<h1>" + receiptNum + "번의 주문이 승인되었습니다.</h1>";
+					$("#alarm").html(alarm);
+					$("#exampleModal").modal('show');	
+				}
+			}
+		});
+	}
+	
+	function startDelivery(receiptNum) {
+		
+		$.ajax({
+			url : "startDelivery",
+			type : "get",
+			data : {"receiptNum" : receiptNum},
+			success : function(data) {
+				if(data == "") {
+					let alarm = "<h1>아직 주문 승인이 되지 않았습니다.</h1>";	
+					$("#alarm").html(alarm);
+					$("#exampleModal").modal('show');
+				} else {
+					let alarm = "<h1>" + receiptNum + "번의 배달이 시작되었습니다.</h1>";
+					$("#alarm").html(alarm);
+					$("#exampleModal").modal('show');
+				}
+				
 			}
 		});
 	}
@@ -126,5 +172,23 @@
 	<footer>
 		
 	</footer>
+	
+	<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	  <div class="modal-dialog modal-dialog-centered">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="exampleModalLabel">주문확인</h5>
+	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+	      </div>
+	      <div class="modal-body" id="alarm">
+	        ...
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+	        <button type="button" class="btn btn-primary">Save changes</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
 </body>
 </html>

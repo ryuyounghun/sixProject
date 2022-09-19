@@ -244,7 +244,8 @@
 	<select id="selectReceiptByStoreNum" parameterType="int" resultType="Receipt">
 		SELECT * FROM
 		RECEIPT
-		WHERE STORENUM = #{storeNum} AND WAITING = 'N'
+		WHERE STORENUM = #{storeNum} AND COMPLETE = 'N'
+		ORDER BY RECEIPTNUM DESC
 	</select>
 	
 	<insert id="insertReview" parameterType="Review">
@@ -324,6 +325,18 @@
 		UPDATE STORE
 		SET WISHLIST = WISHLIST - 1
 		WHERE STORENUM = #{storeNum}
+	</update>
+	
+	<update id="updateReceiptByWaiting" parameterType="int">
+		UPDATE RECEIPT
+		SET WAITING = 'Y'
+		WHERE RECEIPTNUM = #{receiptNum}
+	</update>
+	
+	<update id="updateReceiptByComplete" parameterType="int">
+		UPDATE RECEIPT
+		SET COMPLETE = 'Y'
+		WHERE RECEIPTNUM = #{receiptNum}
 	</update>
 </mapper>
 

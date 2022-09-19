@@ -51,5 +51,17 @@ public class MemberServiceImpl implements MemberService {
 		return mDao.updateAddressAndPhone(member);
 	}
 
+	@Override
+	public int updatePoint(Member member) {
+		// TODO Auto-generated method stub
+		return mDao.updatePoint(member);
+	}
+
+	@Override
+	public int useMyPoint(Member member) {
+		// TODO Auto-generated method stub
+		return mDao.useMyPoint(member);
+	}
+
 
 }

@@ -3,7 +3,7 @@
 	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
 <meta charset="UTF-8">
-<title>쿠폰 구매하기 페이지(수정 중)</title>
+<title>내 쿠폰 페이지(수정 중)</title>
 <link rel="stylesheet" href="/css/coupon/insertCoupon_style.css">
 <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 
@@ -20,17 +20,67 @@
 <script>
 	
 	$(document).ready(function() {
-		
+		couponList();
+		myPoint();
 	});
 	
-	function buyCoupon(couponNum) {
+	
+	function useCoupon(myCouponNum) {
 		
 		$.ajax({
-			url : "buyOneCoupon",
+			url : "useCoupon",
 			type : "get",
-			data : {"couponNum" : couponNum},
+			data : {"myCouponNum" : myCouponNum},
 			success : function(data) {
-				alert("상품을 구입하셨습니다.");
+				console.log(data);
+				alert("쿠폰을 사용하였습니다.");
+				
+				couponList();
+				myPoint();
+			}
+		});
+	}
+	////////////////////////////////////////////
+	function myPoint() {
+		
+		$.ajax({
+			url : "myPoint",
+			type : "get",
+			success : function(data) {
+				console.log(data.memberPoint);
+				
+				let htmlStr = "<h1>잔여 포인트</h1>";
+				htmlStr += "<h1>" + data.memberPoint + "원</h1>";
+				
+				$(".aside-left").html(htmlStr);
+			}
+		});
+		
+		
+		
+		
+	}
+	
+	
+	function couponList() {
+		
+		$.ajax({
+			url : "myCouponList",
+			type : "get",
+			success : function(data) {
+				console.log(data);
+				
+				let htmlStr = "";
+				
+				$.each(data, function(index, item) {
+					htmlStr += "<table>";
+					htmlStr += "<tr><th>" + item.couponName + "</th></tr>";
+					htmlStr += "<tr><th>" + item.couponPoint + "</th></tr>";
+					htmlStr += "<tr><th><input type='button' value='사용' onclick='useCoupon(" + item.myCouponNum + ")'></th></tr>";
+					htmlStr += "</table>";
+				});
+				
+				$("#couponList").html(htmlStr);
 			}
 		});
 	}
@@ -87,25 +137,9 @@
 				
 				
 				<div class = "aside-center">
-					<h2>쿠폰 구매하기</h2>
-						<div class = "section-center">
-							<table th:each="cList : ${cList}">
-								<tr>
-									<th th:text="${cList.couponNum}"></th>
-								</tr>
-								<tr>
-									<th th:text="${cList.couponName}"></th>
-								</tr>
-								<tr>
-									<th th:text="|${cList.couponPoint}원|"></th>
-								</tr>
-								<tr>
-									<th>
-										<input type="button" th:onclick="|buyCoupon(${cList.couponNum})|" value="button">
-									</th>
-								</tr>
-							</table>
-						
+					<h2>MY COUPON</h2>
+						<div class = "section-center" id="couponList">
+							
 						</div><!-- section-center 부분 끝 -->
 				</div><!-- aside-center 부분 끝 -->
 			</div><!-- section-container 부분 끝 -->
