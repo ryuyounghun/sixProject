@@ -137,7 +137,7 @@ $(document).ready(function() {
 			success : function(data) {
 				console.log(data);
 				
-				let htmlStr = "<h1>잔액 : " + data.memberPoint + "</h1>";
+				let htmlStr = "<h1>잔여 포인트 : " + data.memberPoint + "포인트</h1>";
 				
 				$("#leftoverPoint").html(htmlStr);
 			}
