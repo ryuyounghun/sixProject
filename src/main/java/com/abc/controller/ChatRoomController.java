@@ -41,6 +41,8 @@ public class ChatRoomController {
     @ResponseBody
     public ChatRoom createRoom(@RequestParam String name) {
     	
+    	
+    	
         return chatService.createRoom(name);
     }
     // 채팅방 입장 화면

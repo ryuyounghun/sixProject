@@ -88,11 +88,11 @@ body{
  	width :50%;
  	left: 25%;
  	right: 25%;
- 	background-color: purple;
  }
  .aside-center .section-center{
  	min-height: 50vh;
  	justify-content: center; 
+ 	background-color: purple;
  }
 
 .boardBox{
@@ -107,8 +107,11 @@ body{
 	width : inherit;
 	position: relative;
 	justify-content: space-around;
+	background-color: lime;
 }
 .partyWrite{
+	height : inherit;
+	overflow : auto;
 	position : absolute;
 	left: 0;
 	width: 48%;

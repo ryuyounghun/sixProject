@@ -11,7 +11,7 @@ body{
 .header-container{
 		width: 100%;
 		height: 100px;
-		background-color: fuchsia;
+		background-color: #ddd;
 		position: relative;
 }
 
@@ -22,8 +22,7 @@ body{
 	background-color: blue;
 	top: 10%;
 	left : 10%;
-}
-
+}	
 .header-logMenuList{
 	position: absolute;
 	display : flex;
@@ -43,23 +42,52 @@ body{
  */
  .box-wrapper{
  	height: 75vh;
+ 	background-image : url("/images/delivery_banner.gif");
+ 	background-repeat: no-repeat;
+ 	background-size: 100% 100%;
  }
  .deliveryBox{
  	position : absolute;
  	width: 30%;
  	height: 40vh;
- 	background-color: red;
+ 	line-height : 40vh;
+/*  	background-image : url("/images/delivery_banner.gif");
+ 	background-size : 100% 100%;
+ 	background-repeat : no-repeat; */
 	margin-top:  15vh;
  	left : 30vh;
+ 	border-radius: 15px;
+ 	text-align: center;
+ 	font-size: 30px;
+ 	background-color : #FFC500;
  }
- 
+ .deliveryBox:hover{
+ 	width : 33%;
+ 	height: 42vh;
+ 	border: 1px solid black;
+ 	transition : 0.4s;
+ }
  .communityBox{
  	position : absolute;
  	width: 30%;
  	height: 40vh;
- 	background-color: blue;
+ 	line-height : 40vh;
+ 	/* background-image : url("/images/community_banner.gif");
+ 	background-size : 100% 100%;
+ 	background-repeat : no-repeat; */
 	margin-top:  15vh;
+ 	border-radius: 30px;
+ 	text-align: center;
  	right : 30vh;
+ 	font-size: 30px;
+ 	color:black;
+ 	background-color : #FFC500;
+ }
+ .communityBox:hover{
+ 	width : 33%;
+ 	height: 42vh;
+ 	border: 1px solid black;
+ 	transition : 0.4s;
  }
  
  
@@ -67,6 +95,6 @@ footer{
 	bottom: 0;
 	width : 100%;
 	height : 100px;
-	background-color : lime;
+	background-color : #FFC500;
 	
 }

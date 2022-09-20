@@ -98,18 +98,20 @@
 		</header>
 	
 		<section>
-			<div class="box-wrapper">
-				<aside class="deliveryBox" >
-					<a th:href="@{/delivery/index}">
-						배달주소
-					</a>
-				</aside>
-					
-				<aside class="communityBox">
-					<a th:href="@{/community/index}">
-						커뮤니티로
-					</a>				
-				</aside>
+			<div class="box-wrapper" id="player">
+			
+			
+			
+				<a th:href="@{/delivery/index}">
+					<aside class="deliveryBox" >
+					<p>배달주소</p>
+					</aside>
+				</a>
+				<a th:href="@{/community/index}">
+					<aside class="communityBox">
+						<p>커뮤니티로</p>
+					</aside>
+				</a>				
 			</div>
 			<div sec:authorize ="isAuthenticated">
 				<input type="hidden" id="loginUser" th:value="${#authentication.getPrincipal().getUsername()}">

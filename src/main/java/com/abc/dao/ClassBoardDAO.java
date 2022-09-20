@@ -14,8 +14,9 @@ public interface ClassBoardDAO {
 
 	public int insertClassBoard(ClassBoard cb);
 	
-	public List<ClassBoard> selectAllClassBoard(RowBounds rb);
+	public List<ClassBoard> selectAllClassBoard(Map<String, String>map, RowBounds rb);
 	public int countAllClassBoard(Map<String, String> map);
+	
 	public List<ClassBoard> selectAllClassBoardNoParameter();
 	
 	public ClassBoard selectOneClassBoard(int classNum);

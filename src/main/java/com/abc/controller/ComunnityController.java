@@ -80,10 +80,10 @@ public class ComunnityController{
 		log.debug("index실행");
 		
 		List<ClassBoard> cbList = null;
-		List<FreeBoard> fbList = null;
 		PageNavigator cbNavi = cService.getPageNavigator(
 				pagePerGroup, countPerPage, page); 
 		
+		List<FreeBoard> fbList = null;
 		PageNavigator fbNavi = fService.getPageNavigator(
 				pagePerGroup, countPerPage, page); 
 		fbList = fService.selectAllFreeBoard(fbNavi);
@@ -91,6 +91,7 @@ public class ComunnityController{
 		// fbList = fService.selectAllClassBoard (navi);
 		log.debug("cbList의 길이 : {}",cbList.size());
 		log.debug("fbList의 길이 : {}",fbList.size());
+		
 		
 		model.addAttribute(cbNavi);
 		model.addAttribute("fbList",fbList);
@@ -150,7 +151,18 @@ public class ComunnityController{
 		return "redirect:./index"; // .../board/
 	}
 	
-	
+	@GetMapping("/freeIndex")
+	public String freeIndex(Model model,
+			@RequestParam(name="page", defaultValue = "1" )int page) {
+		
+		List<FreeBoard> fbList = null;
+		PageNavigator fbNavi = fService.getPageNavigator(
+				pagePerGroup, countPerPage, page); 
+		fbList = fService.selectAllFreeBoard(fbNavi);
+
+		model.addAttribute("fbList",fbList);
+		return c + "freeIndex";
+	}
 	@GetMapping("/freeWrite")
 	public String freeWrite() {
 		log.debug("freeWrite() 실행");
@@ -309,18 +321,54 @@ public class ComunnityController{
 		
 		return "redirect:./fbRead?num="+reply.getBoardNum();
 	}
+	
+	
 	@GetMapping("/partyIndex")
-	public String partyIndex() {
-
+	public String partyIndex(Model model,
+			@RequestParam(name = "page", defaultValue="1") int page,
+			String searchWord) {
+		
+		PageNavigator navi = cService.getPageNavigator(
+				pagePerGroup, 
+				countPerPage,
+				page,
+				searchWord);
+		
+		model.addAttribute("navi",navi);
 		return c + "partyIndex";
 	}
 
 	@GetMapping("/setPartBox")
-	public @ResponseBody List<ClassBoard> setPartBox() {
+	public @ResponseBody List<ClassBoard> setPartBox(
+			String searchWord,
+			@RequestParam(name = "page", defaultValue="1") int page
+			,Model model) {
 
-		List<ClassBoard> cList = cService.selectAllClassBoardNoParameter();
+		
+		log.debug(searchWord);
+		List<ClassBoard> cbList = null;
+		PageNavigator navi = cService.getPageNavigator(
+				pagePerGroup, 
+				countPerPage,
+				page,
+				searchWord);
+		log.debug("페이지 : {}", navi.getCurrentPage());
+		log.debug("페이지 : {}", navi.getEndPageGroup());
+		
+		// ------------------------------
+		if ( searchWord == null || searchWord.trim().length() == 0 ) {
+			
+			// 나중에 10개씩 출력하는걸로 바꾸기
+			// cbList =  cService.selectAllClassBoardNoParameter();
 
-		return cList;
+			cbList = cService.selectAllClassBoard(navi);
+		
+		}else {
+			
+			
+			cbList = cService.selectAllClassBoard(navi, searchWord);
+		}
+		return cbList;
 	}
 
 	@GetMapping("/partyPeople")
