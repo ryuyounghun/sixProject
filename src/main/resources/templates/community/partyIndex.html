@@ -71,9 +71,9 @@
 				
 				<div class="aside-center">
 					<div class="section-center">
-						<table>
+						<table th:each = "list:${cbList}">
 							<tr>
-								<th></th>
+								<th  th:text="${list.title}"></th>
 							</tr> 
 							<tr>
 								<th>
