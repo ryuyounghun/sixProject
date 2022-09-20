@@ -76,16 +76,16 @@
 								<th  th:text="${list.title}"></th>
 							</tr> 
 							<tr>
-								<th>
+								<th th:text="${list.totalMember}">
+								</th>
+							</tr>
+							<tr>
+								<th th:text="${list.destination}">
 								</th>
 							</tr>
 							<tr>
 								<th>
-								</th>
-							</tr>
-							<tr>
-								<th>
-									<input type='button' value='자세히보기' onclick='read()'>
+									<a th:href="@{|read?num=${list.classNum}|}">자세히보기</a>
 								</th>
 							</tr>
 						</table>
