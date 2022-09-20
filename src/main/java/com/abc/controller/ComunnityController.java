@@ -328,13 +328,32 @@ public class ComunnityController{
 			@RequestParam(name = "page", defaultValue="1") int page,
 			String searchWord) {
 		
+		log.debug(searchWord);
+		List<ClassBoard> cbList = null;
 		PageNavigator navi = cService.getPageNavigator(
 				pagePerGroup, 
 				countPerPage,
 				page,
 				searchWord);
+		log.debug("페이지 : {}", navi.getCurrentPage());
+		log.debug("페이지 : {}", navi.getEndPageGroup());
 		
-		model.addAttribute("navi",navi);
+		// ------------------------------
+		if ( searchWord == null || searchWord.trim().length() == 0 ) {
+			
+			// 나중에 10개씩 출력하는걸로 바꾸기
+			// cbList =  cService.selectAllClassBoardNoParameter();
+
+			cbList = cService.selectAllClassBoard(navi);
+		
+		}else {
+			
+			
+			cbList = cService.selectAllClassBoard(navi, searchWord);
+		}
+		
+		model.addAttribute("cbList" , cbList);
+		model.addAttribute("navi" , navi);
 		return c + "partyIndex";
 	}
 

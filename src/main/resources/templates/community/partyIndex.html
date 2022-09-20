@@ -14,52 +14,6 @@
 	}
 </style>
 
-<script>
-	$(document).ready(function() {
-		partyBox();
-		
-		$("#searchWord").keyup(function(){
-			partyBox();
-		})
-
-		
-	});
-	
-	function partyBox() {
-		let searchWord = $("#searchWord").val();
-		let page = $("#page").val();
-		$.ajax({
-			url : "setPartBox",
-			type : "get",
-			data : {
-				
-				"page" : page,
-				"searchWord" : searchWord
-			},
-			success : function(data) {
-				console.log(data);
-				
-				let htmlStr = "";
-				
-				$.each(data, function(index, item) {
-					htmlStr += "<table><tr>";
-					htmlStr += "<th>" + item.title + "</th></tr>"; 
-					htmlStr += "<tr><th>" + item.totalMember + "</tr></th>";
-					htmlStr += "<tr><th>" + item.destination + "</tr></th>";
-					htmlStr += "<tr><th><input type='button' value='자세히보기' onclick='read(" + item.classNum + ")'></tr></th>";
-					htmlStr += "</table>";
-				});
-				
-				$("#partyBox").html(htmlStr);
-			}
-		});
-	}
-	
-	
-	function read(classNum) {
-		location.href="read?num=" + classNum;
-	}
-</script>
 </head>
 <body>
 	<div id="headerAndSection-wrapper">
@@ -117,7 +71,24 @@
 				
 				<div class="aside-center">
 					<div class="section-center">
-						
+						<table>
+							<tr>
+								<th></th>
+							</tr> 
+							<tr>
+								<th>
+								</th>
+							</tr>
+							<tr>
+								<th>
+								</th>
+							</tr>
+							<tr>
+								<th>
+									<input type='button' value='자세히보기' onclick='read()'>
+								</th>
+							</tr>
+						</table>
 					
 					</div>
 					
