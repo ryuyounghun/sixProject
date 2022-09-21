@@ -25,13 +25,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.abc.domain.ChatRoom;
 import com.abc.domain.ClassBoard;
 import com.abc.domain.ClassRoom;
 import com.abc.domain.FileDTO;
 import com.abc.domain.FreeBoard;
 import com.abc.domain.Member;
+import com.abc.domain.MyChatRoom;
 import com.abc.domain.Reply;
-
+import com.abc.service.ChatService;
 import com.abc.service.ClassBoardService;
 import com.abc.service.FreeBoardService;
 import com.abc.service.MemberService;
@@ -52,6 +54,8 @@ public class ComunnityController{
 	@Autowired
 	ClassBoardService cService; 
 	
+	@Autowired
+	private ChatService chatService;
 	
 	@Autowired
 	FreeBoardService fService; 
@@ -109,17 +113,19 @@ public class ComunnityController{
 		Member member = mService.selectOneMember(user.getUsername());
 		model.addAttribute("cBoard", cBoard);
 		model.addAttribute("member", member);
-		
+		log.debug("cBoard id : {}", cBoard.getRoomId());
 		return c  + "read"; 
 	}
-	// 채팅방 
     
 	@GetMapping("/classWrite")
 	public String classWrite() {
 		log.debug("classWrite() 실행");
+		
+		
 		return c + "classWrite";
 	}
 
+	// 번개방 생성
 	@PostMapping("/classWrite")
 	public String classWrite(ClassBoard cBoard,
 			@AuthenticationPrincipal UserDetails user) {
@@ -136,9 +142,27 @@ public class ComunnityController{
 		cBoard.setMemberNum(mNum);
 		
 		log.debug("write cBoard : {}", cBoard);
-		cService.insertClassBoard(cBoard);
 		
-		// 파티원객체 생성
+		
+		
+		
+		// 채팅방 생성
+		MyChatRoom myCtRoom = new MyChatRoom();
+		ChatRoom ctRoom = chatService.createRoom(cBoard.getTitle());
+		
+		myCtRoom.setMemberNum(member.getMemberNum());
+    	myCtRoom.setRoomId(ctRoom.getRoomId());
+    	myCtRoom.setRoomName(ctRoom.getRoomName());
+    	
+    	chatService.insertMyChatRoom(myCtRoom);
+    	// 채팅방 생성 끝
+    	
+    	// 파티 생성
+    	cBoard.setRoomId(ctRoom.getRoomId());
+    	cService.insertClassBoard(cBoard);
+		// 파티생성 완료
+    	
+    	// 파티원객체 생성
 		cRoom.setClassNum(cBoard.getClassNum());
 		cRoom.setMemberNum(member.getMemberNum());
 		cRoom.setAddress(member.getAddress());

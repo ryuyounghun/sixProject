@@ -66,8 +66,8 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 				<aside>
 					<div class="aside-right">
 						
-				        <div>
-							<input type="button" value="채팅방 개설" onclick="javascript:location.href='/chat/room'">
+				        <div id="chatBtn">
+							<input type="button" value="채팅방" onclick="enterChat()">
 				        </div>
 						<script type="text/javascript">
 						</script>
@@ -107,7 +107,10 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 					</div>
 				</div>	
 			</div>		
-		
+			<div>
+				<input type="hidden" th:value="${member.memberName}" id="sender">
+				<input type="hidden" th:value="${cBoard.roomId}" id="roomId">
+		    </div>
 		</section>
 
 	</div>

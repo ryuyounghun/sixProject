@@ -1,4 +1,4 @@
-package com.abc.model;
+package com.abc.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,4 +21,6 @@ public class ChatMessage {
     private String sender;
     //내용
     private String message;
+    
+    private String inputdate;
 }

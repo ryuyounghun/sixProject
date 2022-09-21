@@ -12,13 +12,19 @@
         [v-cloak] {
             display: none;
         }
+        
+        #messageDiv{
+        	height:80%;
+        	background-color: aqua;
+        }
     </style>
 </head>
 <body>
 <div class="container" id="app" v-cloak>
     <div>
-        <h2>{{room.name}}</h2>
+        <h2>{{room.roomName}}</h2>
     </div>
+    
     <div class="input-group">
         <div class="input-group-prepend">
             <label class="input-group-text">내용</label>
@@ -28,11 +34,13 @@
             <button class="btn btn-primary" type="button" @click="sendMessage">보내기</button>
         </div>
     </div>
-    <ul class="list-group">
-        <li class="list-group-item" v-for="message in messages">
-            {{message.sender}} - {{message.message}}
-        </li>
-    </ul>
+    <div id="messageDiv">
+	    <ul class="list-group">
+	        <li class="list-group-item" v-for="message in messages">
+	            {{message.sender}} - {{message.message}} 
+	        </li>
+	    </ul>
+    </div>
     <div></div>
 </div>
 <!-- JavaScript -->

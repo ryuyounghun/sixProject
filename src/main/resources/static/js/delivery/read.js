@@ -105,13 +105,48 @@ $(document).ready(function() {
 			url : "allOrder",
 			type : "get",
 			data : {"data" : data, "storeNum" : storeNum},
-			success : function() {
-				alert("주문에 성공했습니다.");
+			success : function(data) {
+				console.log(data);
 				resultMenu();
-				location.href="index"
+				//location.href="index"
+				if(data != "") {
+					let htmlStr = "<table id='orderList'>";
+					htmlStr += "<tr><th>주문서</th></tr>";
+					htmlStr += "<tr><th>잠시만 기다려주세요.</th></tr>";
+					htmlStr += "<tr><th>" + data.orderHistory + "</th></tr>";
+					htmlStr += "<tr><th>" + data.totalAmount + "원</th></tr>";
+					htmlStr += "</table>";
+					
+					
+					$("#receiptModal").html(htmlStr);
+					leftoverPoint();
+					$("#staticBackdrop").modal('show');
+				} else {
+					alert("잔액이 모자랍니다.");
+				}
 			}
 		});
 	}
+	
+	
+	function leftoverPoint() {
+		
+		$.ajax({
+			url : "leftoverPoint",
+			type : "get",
+			success : function(data) {
+				console.log(data);
+				
+				let htmlStr = "<h1>잔여 포인트 : " + data.memberPoint + " 포인트</h1>";
+				
+				$("#leftoverPoint").html(htmlStr);
+			}
+		});
+	}
+	
+	
+	
+	
 	//onclick="ChooseCategory()"
 	function orderPrice() {
 		let storeNum = getParameterByName('num');

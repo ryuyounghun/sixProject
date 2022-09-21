@@ -25,6 +25,17 @@ $(document).ready(function() {
 		});
 	}
 	
+	function enterChat() {
+		var sender = $("#sender").val();
+		var roomId = $("#roomId").val();
+                if(sender !== "") {
+                    localStorage.setItem('wschat.sender',sender);
+                    localStorage.setItem('wschat.roomId',roomId);
+                    location.href="/chat/room/enter/"+roomId;
+                }
+	}
+	
+	
 	function joinParty() {
 		let classNum = getParameterByName('num');
 		$.ajax({

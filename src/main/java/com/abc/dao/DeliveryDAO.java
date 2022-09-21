@@ -15,6 +15,7 @@ import com.abc.domain.Wishlist;
 @Mapper
 public interface DeliveryDAO {
 	
+	// 가게 등록 및 출력 부분
 	public int insertStore(Store store);
 	public List<Store> selectSearch(Map<String, String> map);
 	public Store selectOneStore(int num);
@@ -49,6 +50,9 @@ public interface DeliveryDAO {
 	public List<Receipt> selectReceipt(int memberNum);
 	public Receipt selectReceiptByReceiptNum(int receiptNum);
 	public List<Receipt> selectReceiptByStoreNum(int storeNum);
+	
+	public int updateReceiptByWaiting(int receiptNum);
+	public int updateReceiptByComplete(int receiptNum);
 
 	// 리뷰 관련
 	public int insertReview(Review review);
