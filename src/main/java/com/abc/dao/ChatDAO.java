@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.abc.domain.ChatMessage;
 import com.abc.domain.ChatRoom;
 import com.abc.domain.MyChatRoom;
 
@@ -26,4 +27,5 @@ public interface ChatDAO {
 	
 	// 내 채팅목록 삽입
 	public int insertMyChatRoom(MyChatRoom myChatRoom);
+	
 }

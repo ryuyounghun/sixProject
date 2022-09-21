@@ -114,7 +114,7 @@ public class ComunnityController{
 		model.addAttribute("cBoard", cBoard);
 		model.addAttribute("member", member);
 		log.debug("cBoard id : {}", cBoard.getRoomId());
-		return c  + "read"; 
+		return c  + "read2"; 
 	}
     
 	@GetMapping("/classWrite")

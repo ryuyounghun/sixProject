@@ -22,5 +22,5 @@ public class ChatMessage {
     //내용
     private String message;
     
-    private String inputdate;
+    
 }

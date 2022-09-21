@@ -86,14 +86,16 @@ public class ChatRoomController {
     }
     // 채팅방 입장 화면
     @GetMapping("/room/enter/{roomId}")
-    public String roomDetail(Model model, @PathVariable String roomId) {
+    public String roomDetail(Model model, @PathVariable String roomId,
+    		@AuthenticationPrincipal UserDetails user) {
     	
+    	Member member = mService.selectOneMember(user.getUsername());
     	
-    	
-        model.addAttribute("roomId", roomId);
+        model.addAttribute("member", member);
         
         return "/chat/roomdetail";
     }
+    
     
     // 특정 채팅방 조회
     @GetMapping("/room/{roomId}")

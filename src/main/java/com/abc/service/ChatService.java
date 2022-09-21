@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.abc.dao.ChatDAO;
+import com.abc.domain.ChatMessage;
 import com.abc.domain.ChatRoom;
 import com.abc.domain.MyChatRoom;
 
