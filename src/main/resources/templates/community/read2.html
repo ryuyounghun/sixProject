@@ -82,6 +82,10 @@
 						
 				        <div id="chatBtn">
 							<input type="button" value="채팅방" onclick="enterChat()">
+				        	<!-- Button trigger modal -->
+							<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+							  미니 채팅방 보기
+							</button>
 				        </div>
 						<script type="text/javascript">
 						</script>
@@ -133,17 +137,14 @@
 		
 	</footer>
 	
-	<!-- Button trigger modal -->
-	<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-	  Launch static backdrop modal
-	</button>
+	
 	
 	<!-- Modal -->
 	<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
 	  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
 	    <div class="modal-content">
 	      <div class="modal-header">
-	        <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+	        <h5 class="modal-title" id="staticBackdropLabel">채팅</h5>
 	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 	      </div>
 	      <div class="modal-body">
@@ -209,7 +210,7 @@
         	var rId = $("#cRoomId").val();
             var loginUser = $("#loginUser").val();
             this.roomId = rId;
-            this.sender = roomId;
+            this.sender = loginUser;
             	//localStorage.getItem('wschat.sender');
             this.findRoom();
         },
