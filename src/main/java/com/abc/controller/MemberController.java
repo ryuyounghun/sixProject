@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.abc.domain.GuestBook;
 import com.abc.domain.Member;
 import com.abc.domain.MyCoupon;
 import com.abc.service.MasterService;
@@ -201,6 +202,38 @@ public class MemberController {
 			return "redirect:/";
 		}
 		
+		@PostMapping("/writeReply")
+		@ResponseBody
+		public void writeReply(String content, int memberNum, @AuthenticationPrincipal UserDetails user) {
 		
+			log.debug("content : {}", content);
+			log.debug("memberNum : {}", memberNum);
+			
+			GuestBook guestbook = new GuestBook();
+			
+			Member member = mService.selectOneMember(user.getUsername());
+			
+			guestbook.setNickname(member.getNickname());
+			guestbook.setContent(content);
+			guestbook.setWriterNum(member.getMemberNum());
+			guestbook.setMemberNum(memberNum);
+			
+			mService.insertMyPage(guestbook);
+			
+		}	
+		
+		@GetMapping("/loadAllReply") //writeId = memberId 
+		public @ResponseBody List<GuestBook> loadAllReply(int memberNum){
+			
+			
+			log.debug("마이페이지 주인 멤버넘 : {}", memberNum);
+			
+			List<GuestBook> gList = mService.selectAllReply(memberNum);
+			
+			log.debug("gList : {}", gList.size());
+			
+			return gList;
+			
+		}
 		
 }

@@ -62,5 +62,34 @@
 		WHERE MEMBERID = #{memberId}
 	</update>
 	
+	<!-- 마이페이지 댓글 달기  -->
+	<insert id = "insertMyPage" parameterType="GuestBook">
+		INSERT INTO GUESTBOOK
+		(
+			MEMBERNUM,
+			WRITERNUM,
+			NICKNAME,
+			CONTENT
+		)
+	VALUES
+		(
+			#{memberNum},
+			#{writerNum},
+			#{nickname},
+			#{content}
+		)
+	</insert>
+	<!-- 마이페이지 댓글 전체 보기 -->
+	<select id = "selectAllReply" resultType="GuestBook" parameterType="int">
+		SELECT * FROM GUESTBOOK
+		WHERE MEMBERNUM = #{memberNum}
+	</select>
+	
+	<!-- 0923 추가 / 멤버번호로 멤버찾기 -->
+	<select id="selectOneMemberByMemberNum" resultType="Member" parameterType="int">
+		SELECT * FROM
+		DELIVERY_MEMBER
+		WHERE MEMBERNUM = #{memberNum}
+	</select>
 </mapper>
 

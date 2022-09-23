@@ -114,6 +114,7 @@
 							<div>
 								<a onclick="withdrawalParty()">나가기</a> 
 							</div> 
+							<div id="deleteArea"></div>
 						</div>
 						<div class="menuImg">
 							<div th:text="${cBoard.classTag}"></div>
@@ -126,7 +127,7 @@
 				</div>	
 			</div>		
 			<div>
-				<input type="hidden" th:value="${member.memberName}" id="sender">
+				<input type="hidden" id="loginUser" th:value="${#authentication.getPrincipal().getUsername()}">
 				<input type="hidden" th:value="${cBoard.roomId}" id="roomId">
 		    </div>
 		</section>
@@ -219,7 +220,6 @@
                 axios.get('/chat/room/'+this.roomId).then(response => { this.room = response.data; });
             },
             sendMessage: function() {
-            	console.log(loginUser);
                 ws.send("/app/chat/message", {}, JSON.stringify({type:'TALK', roomId:this.roomId, sender:this.sender, message:this.message}));
                 this.message = '';
             },

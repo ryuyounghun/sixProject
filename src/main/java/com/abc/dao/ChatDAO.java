@@ -28,4 +28,7 @@ public interface ChatDAO {
 	// 내 채팅목록 삽입
 	public int insertMyChatRoom(MyChatRoom myChatRoom);
 	
+	// 0923 추가 
+	public int deleteOneRoom(String roomId);
+	
 }

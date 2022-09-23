@@ -1,7 +1,8 @@
 $(document).ready(function() {
 		loadAddress();
 		partyPeople();
-		$("#btn").on("click",function() { mmaapp(); })
+		$("#btn").on("click",function() { mmaapp(); });
+		deleteClassBoard();
 	});
 	
 	function getParameterByName(name) {
@@ -10,7 +11,45 @@ $(document).ready(function() {
 		  results = regex.exec(location.search);
 		  return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
 	}
+	
+	// 0923 추가
+	function deleteBoard() {
+		let classNum = getParameterByName('num');
+		var roomId = $("#roomId").val();
+		$.ajax({
+			url : "deleteBoard",
+			type : "post",
+			data : {"classNum" : classNum, "roomId" : roomId},
+			success : function() {
+				console.log("a;sdklfj");
+				location.href="/community/index";
+			}
+		});
+	}
+	
+	
+	// 0923 추가
+	function deleteClassBoard() {
+		let classNum = getParameterByName('num');
+		let memberId = $("#loginUser").val();
 		
+		$.ajax({
+			url : "deleteClassBoard",
+			type : "post",
+			data : {"classNum" : classNum},
+			success : function(data) {
+				console.log(data.memberId);
+				
+				if(memberId == data.memberId) {
+					htmlStr = "<input type='button' value='게시글 삭제하기' onclick='deleteBoard()'>";
+					$("#deleteArea").html(htmlStr);
+				}
+			}
+		});
+	}	
+	
+	
+	
 	function withdrawalParty() {
 		let classNum = getParameterByName('num');
 		
@@ -26,7 +65,7 @@ $(document).ready(function() {
 	}
 	
 	function enterChat() {
-		var sender = $("#sender").val();
+		var sender = $("#loginUser").val();
 		var roomId = $("#roomId").val();
                 if(sender !== "") {
                     localStorage.setItem('wschat.sender',sender);
@@ -49,6 +88,13 @@ $(document).ready(function() {
 		});
 	}
 	
+	// 0923추가
+	function memberPage(memberNum) {
+		
+		location.href = "/member/mypage?num=" + memberNum;
+	}
+	
+	
 	function partyPeople() {
 		let classNum = getParameterByName('num');
 		$.ajax({
@@ -65,6 +111,7 @@ $(document).ready(function() {
 					htmlStr += "<td>" + item.memberNum + "</td>";
 					htmlStr += "<th>" + item.nickname + "</th>";
 					htmlStr += "<td>" + item.address + "</td>";
+					htmlStr += "<td><input type='button' onclick='memberPage(" + item.memberNum + ")' value='마이페이지 방문'></td>";
 					htmlStr += "</tr></table>";
 				});
 				

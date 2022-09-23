@@ -99,8 +99,19 @@
 	</select>
 	
 	<delete id="withdrawalParty" parameterType="map">
-		DELETE FROM CLASS_ROOM
+		DELETE CLASS_ROOM
 		WHERE CLASSNUM = #{classNum} AND MEMBERNUM = #{memberNum}
+	</delete>
+	
+	<select id="selectClassRoomByMemberNum" parameterType="int" resultType="ClassRoom">
+		SELECT * FROM
+		CLASS_ROOM
+		WHERE MEMBERNUM = #{memberNum}
+	</select>
+	
+	<delete id="deleteClassBoard" parameterType="int">
+		DELETE CLASS_BOARD
+		WHERE CLASSNUM = #{classNum}
 	</delete>
 </mapper>
 

@@ -78,4 +78,9 @@ public class ChatService {
     	return result;
     }
     
+    // 0923 추가 
+    public int deleteOneRoom(String roomId) {
+    	int result = chatDao.deleteOneRoom(roomId);
+    	return result;
+    }
 }

@@ -1,10 +1,13 @@
 package com.abc.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.abc.dao.MemberDAO;
+import com.abc.domain.GuestBook;
 import com.abc.domain.Member;
 
 import lombok.extern.slf4j.Slf4j;
@@ -79,6 +82,30 @@ public class MemberServiceImpl implements MemberService {
 	public int useMyPoint(Member member) {
 		// TODO Auto-generated method stub
 		return mDao.useMyPoint(member);
+	}
+
+	@Override
+	public int insertMyPage(GuestBook guestbook) {
+		// TODO Auto-generated method stub
+		return mDao.insertMyPage(guestbook);
+	}
+
+	@Override
+	public int selectOneReply(GuestBook guestbook) {
+		// TODO Auto-generated method stub
+		return mDao.selectOneReply(guestbook);
+	}
+
+	@Override
+	public List<GuestBook> selectAllReply(int memberNum) {
+		// TODO Auto-generated method stub
+		return mDao.selectAllReply(memberNum);
+	}
+
+	@Override
+	public Member selectOneMemberByMemberNum(int memberNum) {
+		// TODO Auto-generated method stub
+		return mDao.selectOneMemberByMemberNum(memberNum);
 	}
 
 

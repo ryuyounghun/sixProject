@@ -96,4 +96,16 @@ public class ClassBoardServiceImpl implements ClassBoardService{
 		return cDAO.withdrawalParty(map);
 	}
 
+	@Override
+	public ClassRoom selectClassRoomByMemberNum(int memberNum) {
+		// TODO Auto-generated method stub
+		return cDAO.selectClassRoomByMemberNum(memberNum);
+	}
+
+	@Override
+	public int deleteClassBoard(int classNum) {
+		// TODO Auto-generated method stub
+		return cDAO.deleteClassBoard(classNum);
+	}
+
 }

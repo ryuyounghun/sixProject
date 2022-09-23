@@ -171,6 +171,7 @@ public class ComunnityController{
 		log.debug("cRoom : {}", cRoom);
 
 		cService.insertClassRoom(cRoom);
+		
 		return "redirect:./index"; // .../board/
 	}
 	
@@ -367,23 +368,29 @@ public class ComunnityController{
 		log.debug("totalMember : {}", totalMember);
 		List<ClassRoom> cRList = cService.selectClassRoom(classNum);
 		log.debug("cRList : {}", cRList.size());
+		ClassRoom checkRoom = cService.selectClassRoomByMemberNum(member.getMemberNum());
 		
-		String anwser = "이미 정원입니다.";
-		
-		if (totalMember > cRList.size()) {
-			anwser = "이미 파티원입니다.";
-			if (cRoom == null) {
-				cRoom = new ClassRoom();
-				cRoom.setAddress(member.getAddress());
-				cRoom.setClassNum(classNum);
-				cRoom.setMemberNum(member.getMemberNum());
-				cRoom.setNickname(member.getNickname());
-				
-				cService.insertClassRoom(cRoom);
-				anwser = "추가되었습니다.";
+		////////////////////////////////////////// 수정
+		String answer = "이미 정원입니다.";
+		if (checkRoom == null) {
+			if (totalMember > cRList.size()) {
+				answer = "이미 파티원입니다.";
+				if (cRoom == null) {
+					cRoom = new ClassRoom();
+					cRoom.setAddress(member.getAddress());
+					cRoom.setClassNum(classNum);
+					cRoom.setMemberNum(member.getMemberNum());
+					cRoom.setNickname(member.getNickname());
+					
+					cService.insertClassRoom(cRoom);
+					answer = "추가되었습니다.";
+				}
 			}
+			
+		} else {
+			answer = "이미 참여한 파티가 있습니다.";
 		}
-		return anwser;
+		return answer;
 	}
 	
 	@GetMapping("/withdrawalParty")
@@ -391,5 +398,63 @@ public class ComunnityController{
 			@AuthenticationPrincipal UserDetails user) {
 		Member member = mService.selectOneMember(user.getUsername());
 		cService.withdrawalParty(member.getMemberNum(), classNum);
+	}
+	// 0923추가
+	@GetMapping("/realTimeParty")
+	public @ResponseBody List<ClassRoom> realTimeParty(
+			@AuthenticationPrincipal UserDetails user) {
+		
+		Member member = mService.selectOneMember(user.getUsername());
+		
+		ClassRoom classRoom = cService.selectClassRoomByMemberNum(member.getMemberNum());
+	
+		List<ClassRoom> cList = cService.selectClassRoom(classRoom.getClassNum());
+		
+		return cList;
+	}
+	
+	// 0923추가
+	@GetMapping("/fullParty")
+	public @ResponseBody ClassBoard fullParty(
+			@AuthenticationPrincipal UserDetails user) {
+		
+		Member member = mService.selectOneMember(user.getUsername());
+		
+		ClassRoom classRoom = cService.selectClassRoomByMemberNum(member.getMemberNum());
+		
+		ClassBoard cBoard = cService.selectOneClassBoard(classRoom.getClassNum());
+		
+		return cBoard;
+	}
+	
+	// 0923 추가
+	@PostMapping("/deleteClassBoard")
+	public @ResponseBody Member deleteClassBoard(int classNum) {
+		
+		ClassBoard cBoard = cService.selectOneClassBoard(classNum);
+		
+		Member member = mService.selectOneMemberByMemberNum(cBoard.getMemberNum());
+		
+		return member;
+	}
+
+	// 0923 추가
+	@PostMapping("/deleteBoard")
+	public String deleteBoard(int classNum, String roomId) {
+		
+		cService.deleteClassBoard(classNum);
+		chatService.deleteOneRoom(roomId);
+		
+		return "/community/index";
+	}
+	
+	// 0923 추가
+	@GetMapping("/checkJoinedParty")
+	public @ResponseBody ClassRoom checkJoinedParty(String memberId) {
+		Member member = mService.selectOneMember(memberId);
+		
+		ClassRoom cRoom = cService.selectClassRoomByMemberNum(member.getMemberNum());
+		
+		return cRoom;
 	}
 }

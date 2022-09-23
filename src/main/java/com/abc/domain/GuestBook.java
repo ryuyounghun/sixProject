@@ -15,8 +15,8 @@ import lombok.ToString;
 @ToString
 public class GuestBook {
 
-	private String memberNum;
-	private int writeNum;
+	private int memberNum;
+	private int writerNum;
 	private String nickname;
 	private String content;
 	private String inputdate;

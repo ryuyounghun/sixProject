@@ -17,9 +17,12 @@ public interface ClassBoardService {
 	public List<ClassBoard> selectAllClassBoardNoParameter();
 	
 	public ClassBoard selectOneClassBoard(int classNum);
-	
+	// 0923 추가
+	public int deleteClassBoard(int classNum);
+		
 	public int insertClassRoom(ClassRoom cRoom);
 	public List<ClassRoom> selectClassRoom(int classNum);
 	public ClassRoom selectClassRoomByMemberNumAndClassNum(int memberNum, int classNum);
 	public int withdrawalParty(int memberNum, int classNum);
+	public ClassRoom selectClassRoomByMemberNum(int memberNum);
 }

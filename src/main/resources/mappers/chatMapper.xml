@@ -49,5 +49,10 @@
 		)
 	</insert>
 	
+	
+	<delete id="deleteOneRoom" parameterType="string">
+		DELETE CHATROOM
+		WHERE ROOMID = #{roomId}
+	</delete>
 </mapper>
 

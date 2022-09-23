@@ -19,10 +19,12 @@ public interface ClassBoardDAO {
 	public List<ClassBoard> selectAllClassBoardNoParameter();
 	
 	public ClassBoard selectOneClassBoard(int classNum);
-	
+	// 0923 추가
+	public int deleteClassBoard(int classNum);
 	
 	public int insertClassRoom(ClassRoom cRoom);
 	public List<ClassRoom> selectClassRoom(int classNum);
 	public ClassRoom selectClassRoomByMemberNumAndClassNum(Map<Object, Object> map);
 	public int withdrawalParty(Map<Object, Object> map);
+	public ClassRoom selectClassRoomByMemberNum(int memberNum);
 }
