@@ -338,5 +338,14 @@
 		SET COMPLETE = 'Y'
 		WHERE RECEIPTNUM = #{receiptNum}
 	</update>
+	
+	<!-- 0923 추가 -->
+	<select id="selectStoreListByCategory" resultType="Store" parameterType="string">
+		SELECT * FROM
+		STORE
+		<if test="category != 'all'">
+			WHERE CATEGORY = #{category}
+		</if>
+	</select>
 </mapper>
 

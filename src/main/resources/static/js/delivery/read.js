@@ -98,34 +98,59 @@ $(document).ready(function() {
 	}
 	
 	
-	function allOrder(data) {
+	function allOrder(orderData) {
 		let storeNum = getParameterByName('num');
-		
+		let loginUser = $("#loginUser").val();
+		let htmlStr = "";
 		$.ajax({
-			url : "allOrder",
+			url : "checkAddress",
 			type : "get",
-			data : {"data" : data, "storeNum" : storeNum},
+			data : {"loginUser" : loginUser},
 			success : function(data) {
-				console.log(data);
-				resultMenu();
-				//location.href="index"
-				if(data != "") {
-					let htmlStr = "<table id='orderList'>";
-					htmlStr += "<tr><th>주문서</th></tr>";
-					htmlStr += "<tr><th>잠시만 기다려주세요.</th></tr>";
-					htmlStr += "<tr><th>" + data.orderHistory + "</th></tr>";
-					htmlStr += "<tr><th>" + data.totalAmount + "원</th></tr>";
-					htmlStr += "</table>";
+				
+				htmlStr = "<h3>이 주소가 맞습니까?</h3>";
+				htmlStr += "<h4>" + data.address + "</h4>";
+				$("#receiptModal").html(htmlStr);
+				$("#staticBackdrop").modal('show');
+				
+				
+				
+				$("#checkBtn").click(function() {
 					
+					$.ajax({
+					url : "allOrder",
+					type : "get",
+					data : {"data" : orderData, "storeNum" : storeNum, "address" : data.address},
+					success : function(data) {
+						console.log(data);
+						resultMenu();
+						if(data != "") {
+							htmlStr = "<table id='orderList'>";
+							htmlStr += "<tr><th>주문서</th></tr>";
+							htmlStr += "<tr><th>잠시만 기다려주세요.</th></tr>";
+							htmlStr += "<tr><th>" + data.orderHistory + "</th></tr>";
+							htmlStr += "<tr><th>" + data.totalAmount + "원</th></tr>";
+							htmlStr += "</table>";
+							
+							
+							$("#receiptModal").html(htmlStr);
+							leftoverPoint();
+							$("#staticBackdrop").modal('show');
+						} else {
+							htmlStr = "<h3>잔액이 모자랍니다.</h3>"
+							
+							$("#receiptModal").html(htmlStr);
+							$("#staticBackdrop").modal('show');
+						}
+					}
+				});
 					
-					$("#receiptModal").html(htmlStr);
-					leftoverPoint();
-					$("#staticBackdrop").modal('show');
-				} else {
-					alert("잔액이 모자랍니다.");
-				}
+				})
 			}
 		});
+		
+		
+		
 	}
 	
 	

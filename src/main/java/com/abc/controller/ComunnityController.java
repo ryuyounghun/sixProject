@@ -33,8 +33,10 @@ import com.abc.domain.FreeBoard;
 import com.abc.domain.Member;
 import com.abc.domain.MyChatRoom;
 import com.abc.domain.Reply;
+import com.abc.domain.Store;
 import com.abc.service.ChatService;
 import com.abc.service.ClassBoardService;
+import com.abc.service.DeliveryService;
 import com.abc.service.FreeBoardService;
 import com.abc.service.MemberService;
 import com.abc.service.ReplyService;
@@ -65,6 +67,9 @@ public class ComunnityController{
 	
 	@Autowired
 	ReplyService rService; 
+	
+	@Autowired
+	private DeliveryService dService; 
 	
 	// page당 글 수
 	@Value("${user.board.page}")
@@ -140,6 +145,7 @@ public class ComunnityController{
 		
 		int mNum = member.getMemberNum();
 		cBoard.setMemberNum(mNum);
+		
 		
 		log.debug("write cBoard : {}", cBoard);
 		
@@ -456,5 +462,14 @@ public class ComunnityController{
 		ClassRoom cRoom = cService.selectClassRoomByMemberNum(member.getMemberNum());
 		
 		return cRoom;
+	}
+	
+	// 0923 추가
+	@GetMapping("/findStore")
+	public @ResponseBody List<Store> findStore(String category) {
+		
+		List<Store> sList = dService.selectStoreListByCategory(category);
+		
+		return sList;
 	}
 }

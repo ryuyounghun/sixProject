@@ -3,8 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
+	<style>
+		.storeTable{
+			border : 1px solid black;
+			background-color: aqua;
+		}
+	</style>
 </head>
 <body>
 
@@ -15,9 +22,15 @@
 				<td>
 					<input type="text" id="address_kakao" name="destination" readonly>
 				</td>
+				
 				<td>
 					<input type="button" value="지도 참고하기" onclick="openDestinationForm();">
 				</td>
+			</tr>
+			<tr>
+				<td>
+					<input type="button" value="가게찾기" onclick="showModal()">
+				</td>				
 			</tr>
 			<tr>
 				<th>제목</th>
@@ -32,7 +45,7 @@
 				</td>
 			</tr>
 			<tr>
-                	<input  type="hidden" name="classTag" id="tagList" value="">
+                <input  type="hidden" name="classTag" id="tagList" value="">
 				
 				<ul id="tag-list"></ul>
 
@@ -62,9 +75,89 @@
 	</form>
 	
 	
+	<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+	  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="staticBackdropLabel">가게 찾기</h5>
+	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+	      </div>
+	      <div class="modal-body">
+	      	
+	      	<div id="categoryModal">
+				<ul>
+					<li value="all" onclick="findStore('all')">전체보기</li>
+					<li value="1" onclick="findStore('1')">한식</li>
+					<li value="2" onclick="findStore('2')">중식</li>
+					<li value="3" onclick="findStore('3')">일식</li>
+					<li value="4" onclick="findStore('4')">양식</li>
+					<li value="5" onclick="findStore('5')">디저트</li>
+					<li value="6" onclick="findStore('6')">야식</li>
+					<li value="7" onclick="findStore('7')">도시락</li>				
+				</ul>	      	
+	      	</div>	
+	      	
+	      	<div id="storeListModal">
+	      	
+	      	</div>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+	        <button type="button" class="btn btn-primary">Understood</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	
 </body>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script>
+
+	$(document).ready(function() {
+		
+	});
+
+	function showModal() {
+		$("#staticBackdrop").modal("show");
+	}
+	
+	function setAddress(address) {
+		alert(address);
+		$("#address_kakao").val(address);
+	}
+	
+	function findStore(category) {
+		
+		$.ajax({
+			url : "findStore",
+			type : "get",
+			data : {"category" : category},
+			success : function(data) {
+				console.log(data);
+				
+				let htmlStr = "";
+				
+				$.each(data, function(index, item) {
+					htmlStr += "<table class='storeTable' onclick='setAddress('" + item.address + "\')'>";
+					htmlStr += "<tr><th>" + item.storeNum + "</th>";
+					htmlStr += "<th>" + item.storeName + "</th></tr>";
+					htmlStr += "</table>";
+				});
+				$("#storeListModal").html(htmlStr);
+				$("#categoryModal").hide();
+				$("#storeListModal").show();
+				
+			}
+		});		
+		
+		
+	}
+
+
+
+
+
+
 window.onload = function(){
     document.getElementById("address_kakao").addEventListener("click", function(){ //주소입력칸을 클릭하면
         //카카오 지도 발생

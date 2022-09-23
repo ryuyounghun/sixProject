@@ -27,6 +27,9 @@ public interface DeliveryDAO {
 	public List<Store> selectMemberOne(int num);
 	public List<Store> selectStoreRank();
 	
+	// 0923 추가
+	public List<Store> selectStoreListByCategory(String category);
+	
 	// 상품 등록 및 출력부분
 	public int insertItem(Item item);
 	public List<Item> selectItemSearch(Map<String, String> map);

@@ -448,6 +448,7 @@ public class DeliveryController {
 	
 	@GetMapping("/allOrder")
 	public @ResponseBody Receipt allOrder(int data, int storeNum,
+			String address,
 			@AuthenticationPrincipal UserDetails user) {
 		log.debug("allOrder() 시작");
 		Receipt receipt = new Receipt();
@@ -469,6 +470,9 @@ public class DeliveryController {
 		receipt.setTotalAmount(data);
 		receipt.setStoreNum(storeNum);
 		
+		// 0923 추가
+		receipt.setOrderAddress(address);
+		//
 		
 		int pay = 0;
 		log.debug("point : {}", member.getMemberPoint());
@@ -498,6 +502,18 @@ public class DeliveryController {
 		
 		return rList;
 	}
+	
+	////////////////////////////////////////////////
+	// 0923 추가
+	@GetMapping("/checkAddress")
+	public @ResponseBody Member checkAddress(String loginUser) {
+		Member member = mService.selectOneMember(loginUser);
+		
+		return member;
+	}
+	
+	
+	///////////////////////////////////////////////
 	
 	@GetMapping("/clickWish")
 	public @ResponseBody Store clickWish(int storeNum,

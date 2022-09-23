@@ -28,12 +28,10 @@
 			type : "get",
 			success : function(data) {
 				console.log(data.phone);
-
 				
 				if(data.phone == "다시 입력해 주세요" && data.address == "다시 입력해 주세요") {
 					$('#exampleModal').modal('show');
 				} 
-				
 				
 			}
 		});
@@ -87,7 +85,7 @@
 						</a>
 					</li>
 					<li sec:authorize="isAuthenticated">
-						<a href ="@{/member/mypage}">
+						<a th:href ="@{/member/mypage}">
 							회원정보
 						</a>
 					</li>

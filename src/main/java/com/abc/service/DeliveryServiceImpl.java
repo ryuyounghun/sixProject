@@ -274,5 +274,11 @@ public class DeliveryServiceImpl implements DeliveryService{
 		return dDao.updateReceiptByComplete(receiptNum);
 	}
 
+	@Override
+	public List<Store> selectStoreListByCategory(String category) {
+		// TODO Auto-generated method stub
+		return dDao.selectStoreListByCategory(category);
+	}
+
 
 }

@@ -22,6 +22,8 @@ public interface DeliveryService {
 	
 	public List<Store> selectMemberOne(int num);
 	public List<Store> selectStoreRank();
+	// 0923 추가
+	public List<Store> selectStoreListByCategory(String category);
 	
 	public int insertItem(Item item);
 	public List<Item> selectItemSearch(String title, String storeNum);

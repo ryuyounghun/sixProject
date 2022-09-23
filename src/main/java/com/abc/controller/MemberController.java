@@ -13,9 +13,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.abc.domain.ChatRoom;
 import com.abc.domain.GuestBook;
 import com.abc.domain.Member;
+import com.abc.domain.MyChatRoom;
 import com.abc.domain.MyCoupon;
+import com.abc.service.ChatService;
 import com.abc.service.MasterService;
 import com.abc.service.MemberService;
 
@@ -31,6 +34,11 @@ public class MemberController {
 	@Autowired
 	private MasterService mtService;
 	
+	// 0923 추가
+	@Autowired
+	private ChatService chatService;
+	
+	
 	@GetMapping("/join")
 	public String join() {
 		log.debug("join() 실행");
@@ -44,6 +52,16 @@ public class MemberController {
 		
 		// service에 Member 객체 전송
 		int result = mService.insertMember(member);
+		
+		// 채팅방 생성 0923 추가
+		MyChatRoom myCtRoom = new MyChatRoom();
+		ChatRoom ctRoom = chatService.createRoom(member.getMemberName());
+		
+    	myCtRoom.setRoomId(ctRoom.getRoomId());
+    	myCtRoom.setRoomName(ctRoom.getRoomName());
+    	
+    	chatService.insertMyChatRoom(myCtRoom);
+    	// 채팅방 생성 끝
 		
 		return "redirect:/";
 		

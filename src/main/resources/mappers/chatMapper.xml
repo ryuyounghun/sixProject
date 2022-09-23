@@ -38,6 +38,10 @@
 	</select>
 	
 	<insert id="insertMyChatRoom" parameterType="MyChatRoom">
+		<selectKey resultType="int" keyProperty="memberNum" order="BEFORE">
+			SELECT MAX(MEMBERNUM) FROM DELIVERY_MEMBER		
+		</selectKey>
+		
 		INSERT INTO MYCHATROOM(
 			MEMBERNUM,
 			ROOMID,
