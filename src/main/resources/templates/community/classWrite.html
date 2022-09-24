@@ -103,7 +103,7 @@
 	      </div>
 	      <div class="modal-footer">
 	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-	        <button type="button" class="btn btn-primary">Understood</button>
+	        <button type="button" class="btn btn-primary" onclick="showCategory()">뒤로</button>
 	      </div>
 	    </div>
 	  </div>
@@ -116,14 +116,34 @@
 	$(document).ready(function() {
 		
 	});
-
+	
+	// 0924 추가
 	function showModal() {
 		$("#staticBackdrop").modal("show");
 	}
 	
-	function setAddress(address) {
-		alert(address);
-		$("#address_kakao").val(address);
+	// 0924 추가
+	function showCategory() {
+		$("#storeListModal").hide();
+		$("#categoryModal").show();
+	}
+	
+	// 0924 추가
+	function setStore(storeNum) {
+		
+		$.ajax({
+			url : "setStore",
+			type : "get",
+			data : {"storeNum" : storeNum},
+			success : function(data) {
+				console.log(data);
+				
+				$("#address_kakao").val(data.address);
+				$("#title").val(data.storeName);
+				$("#staticBackdrop").modal("hide");
+			}
+		});
+		
 	}
 	
 	function findStore(category) {
@@ -136,17 +156,24 @@
 				console.log(data);
 				
 				let htmlStr = "";
+				if (data != "") {
 				
-				$.each(data, function(index, item) {
-					htmlStr += "<table class='storeTable' onclick='setAddress('" + item.address + "\')'>";
-					htmlStr += "<tr><th>" + item.storeNum + "</th>";
-					htmlStr += "<th>" + item.storeName + "</th></tr>";
-					htmlStr += "</table>";
-				});
-				$("#storeListModal").html(htmlStr);
-				$("#categoryModal").hide();
-				$("#storeListModal").show();
+					$.each(data, function(index, item) {
+						htmlStr += "<table class='storeTable' onclick='setStore(" + item.storeNum + ");'>";
+						htmlStr += "<tr><th>" + item.storeNum + "</th>";
+						htmlStr += "<th>" + item.storeName + "</th>";
+						htmlStr += "<th> ★ " + item.rating + "</th>";
+						htmlStr += "<th> ♥ " + item.wishlist + "</th></tr>";
+						htmlStr += "</table>";
+					});
+					
+				} else {
+					htmlStr += "<h4>해당 카테고리에는 상점이 없습니다.</h4>";
+				}
 				
+					$("#storeListModal").html(htmlStr);
+					$("#categoryModal").hide();
+					$("#storeListModal").show();
 			}
 		});		
 		

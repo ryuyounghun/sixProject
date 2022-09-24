@@ -37,4 +37,7 @@ public interface MemberDAO {
 	// 0923 추가 멤버넘으로 멤버찾기
 	public Member selectOneMemberByMemberNum(int memberNum);
 
+	// 0924 멤버에 룸아이디 추가
+	public int setRoomId(Member member);
+	
 }

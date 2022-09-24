@@ -85,8 +85,15 @@ public class ComunnityController{
 	
 	@GetMapping({"/","/index"})
 	public String communityIndex(Model model,
-			@RequestParam(name="page", defaultValue = "1" )int page) {
+			@RequestParam(name="page", defaultValue = "1" )int page,
+			// 0924 추가
+			@AuthenticationPrincipal UserDetails user) {
 		log.debug("index실행");
+		
+		// 0924 추가
+		Member member = mService.selectOneMember(user.getUsername());
+		model.addAttribute("member", member);
+		//
 		
 		List<ClassBoard> cbList = null;
 		List<FreeBoard> fbList = null;
@@ -222,10 +229,16 @@ public class ComunnityController{
 				
 	}
 	@GetMapping("/fbRead")
-	public String fbRead(int num, Model model) {
+	public String fbRead(int num, Model model,
+			// 0924 추가
+			@AuthenticationPrincipal UserDetails user) {
 		log.debug("fbread()");
 		log.debug("fbread() num : {} ", num);
-	
+		// 0924 추가
+		Member member = mService.selectOneMember(user.getUsername());
+		model.addAttribute("member", member);
+		
+		////////////
 		
 		//보드정보 호출
 		FreeBoard freeBoard = fService.selectOneFreeBoard(num);
@@ -404,6 +417,15 @@ public class ComunnityController{
 			@AuthenticationPrincipal UserDetails user) {
 		Member member = mService.selectOneMember(user.getUsername());
 		cService.withdrawalParty(member.getMemberNum(), classNum);
+		
+		// 0924 추가
+		List<ClassRoom> cRoom = cService.selectClassRoom(classNum);
+		log.debug("cRoom : {}", cRoom);
+		if(cRoom.isEmpty()) {
+			cService.deleteClassBoard(classNum);
+		}
+		///////////
+		
 	}
 	// 0923추가
 	@GetMapping("/realTimeParty")
@@ -471,5 +493,14 @@ public class ComunnityController{
 		List<Store> sList = dService.selectStoreListByCategory(category);
 		
 		return sList;
+	}
+	
+	// 0924 추가
+	@GetMapping("/setStore")
+	public @ResponseBody Store setStore(int storeNum) {
+		
+		Store store = dService.selectOneStore(storeNum);
+		
+		return store;
 	}
 }

@@ -29,9 +29,11 @@
 			success : function(data) {
 				console.log(data.phone);
 				
-				if(data.phone == "다시 입력해 주세요" && data.address == "다시 입력해 주세요") {
+				if(data.address == "다시 입력해 주세요" && data.phone == "다시 입력해 주세요") {
 					$('#exampleModal').modal('show');
-				} 
+				} else if (data.address == "다시 입력해 주세요") {
+					$('#exampleModal').modal('show');
+				}
 				
 			}
 		});

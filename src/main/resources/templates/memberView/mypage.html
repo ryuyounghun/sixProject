@@ -1,28 +1,53 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <title>마이페이지(수정 중)</title>
 <link rel="stylesheet" href="/css/member/mypage.css">
 <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  
+ 	<!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="/webjars/bootstrap/4.3.1/dist/css/bootstrap.min.css">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
+	
+
 <style>
-/* 	table {
-		border : 1px solid black;
-		background-color : aqua;
-		width:100%;
-		margin:10px;
-	}	 */
+	[v-cloak] {
+            display: none;
+        }
 	
 </style>
-<script>
+<script th:inline="javascript">
 	$(document).ready(function(){
 		
+		loadAllReply();	
 		$("#btnReply_write").on("click", function() { writeReply(); });
 		$("#btnReply_update").hide();
-		loadAllReply();	
+		// 0924 추가
+		$("#wishlist").click(function() { wishList(); });
+		$("#buyCoupon").hide();
+		$("#wishlistStore").hide();
+		$("#buyCoupons").click(function() {
+			$("#couponList").hide();
+			$("#wishlistStore").hide();
+			$("#buyCoupon").show();
+			$("#exampleModalLabel").text("쿠폰 구매하기");
+			$("#exampleModal").modal("show");
+		});
+		couponList();
+		myPoint();
+		$("#myCouponList").click(function() {
+			$("#wishlistStore").hide();
+			$("#buyCoupon").hide();
+			$("#couponList").show();
+			$("#exampleModalLabel").text("MyCoupon List");
+			$("#exampleModal").modal("show");
+		});
 	});
-	
 	
 	function getParameterByName(name) {
 		  name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
@@ -31,9 +56,129 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 		  return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
 	}
 	
-	function loadAllReply(){
+	
+	
+	
+	// 0924 추가
+	function wishList() {
+		$("#couponList").hide();
+		$("#buyCoupon").hide();
+		$("#wishlistStore").show();
+		let memberNum = getParameterByName('num');
+		
+		$.ajax({
+			url : "lookWishList",
+			type : "get",
+			data : {"memberNum" : memberNum},
+			success : function(data) {
+				console.log(data);
+				
+				/* <![CDATA[ */
+				let htmlStr = "";
+				
+				var goRead = [[@{/delivery/read}]];
+				
+				$.each(data, function(index, item) {
+					htmlStr += "<table border='1' class='menuTable'>";
+					htmlStr += "<tr>"; 
+					htmlStr += "<td><img src='storeDisplay?num=" + item.storeNum + "' width='80px;'></td>"; 
+					htmlStr += "<td class='nameTd'><a href='" + goRead + "?num=" + item.storeNum + "'>" + item.storeName + "</a></td>";
+					htmlStr += "<td> ★ " + item.rating + "</td>";
+					htmlStr += "<td> ♥ " + item.wishlist + "</td>";
+					htmlStr += "</tr>";
+					htmlStr += "</table>"
+				});
+				$("#exampleModalLabel").text("찜리스트");
+				$("#wishlistStore").html(htmlStr);
+				$("#exampleModal").modal("show");
+				/* ]]> */
+			}
+		});
+	}
+	
+	// 0924 추가
+	function buyCoupon(couponNum) {
+		
+		$.ajax({
+			url : "/master/buyOneCoupon",
+			type : "get",
+			data : {"couponNum" : couponNum},
+			success : function(data) {
+				alert("상품을 구입하셨습니다.");
+				couponList();
+			}
+		});
+	}
+	
+	// 0924 추가
+	function couponList() {
+		
+		$.ajax({
+			url : "myCouponList",
+			type : "get",
+			success : function(data) {
+				console.log(data);
+				
+				let htmlStr = "";
+				if(data == "") {
+					htmlStr += "<h1>남은 쿠폰이 없습니다....</h1>";
+				} else {
+					
+					$.each(data, function(index, item) {
+						htmlStr += "<table>";
+						htmlStr += "<tr><th>" + item.couponName + "</th></tr>";
+						htmlStr += "<tr><th>" + item.couponPoint + "</th></tr>";
+						htmlStr += "<tr><th><input type='button' value='사용' onclick='useCoupon(" + item.myCouponNum + ")'></th></tr>";
+						htmlStr += "</table>";
+					});
+				}
+				
+				$("#couponList").html(htmlStr);
+			}
+		});
+	}
+	
+	
+	// 0924 추가
+	function useCoupon(myCouponNum) {
+		
+		$.ajax({
+			url : "useCoupon",
+			type : "get",
+			data : {"myCouponNum" : myCouponNum},
+			success : function(data) {
+				alert("쿠폰을 사용하였습니다.");
+				console.log(data);
+				if(data == "") {
+					$("#couponList").text("남은 쿠폰이 없습니다....");
+				}
+				
+				couponList();
+				myPoint();
+			}
+		});
+	}
+	
+	// 0924 추가
+	function myPoint() {
+		let memberNum = getParameterByName('num');
+		$.ajax({
+			url : "myPoint",
+			type : "get",
+			data : {"memberNum" : memberNum},
+			success : function(data) {
+				console.log(data.memberPoint);
+				
+				let htmlStr = "<h1>잔여 포인트</h1>";
+				htmlStr += "<h1>" + data.memberPoint + "원</h1>";
+				
+				$("#point").html(htmlStr);
+			}
+		});
+	}
+	function loadAllReply() {
 		 let memberNum = getParameterByName('num');
-      
+	  
 		$.ajax({
 			url:"loadAllReply",	// 콘트롤러에서 메핑이랑 일치해야 함 (굳이 자바스크립트 함수이름과 같을 필요 없음)
 			type:"get",
@@ -47,16 +192,11 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 					htmlStr += "<td>" + value.inputdate + "</td>";
 					htmlStr += "</tr>";	
 				});
-				
 				htmlStr += "</table>";
 					
-				/* htmlStr += "<a href = 'javascript:loadAllReply();'>댓글 새로고침</a>" */
-					
 				$("#reList").html(htmlStr);
-					
 				}
 		});
-		
 	}
 	
 	function writeReply(){
@@ -76,6 +216,10 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 	      
 	      });
 	   }
+
+
+
+	
 </script>
 </head>
 <body>
@@ -120,10 +264,29 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 				<aside>
 					<div class="aside-left">
 						
-						<span class = "nameBox" th:object = "${guestbook}" ></span><br>
-						<span class = "intro">
-						<input type = "text" placeholder="자기소개를 입력해주세요.">
-						</span>
+						<h2 th:text="${memberPage.memberName}"></h2>
+						
+							
+						<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+						  채팅걸기
+						</button>
+						
+						<div id="point"></div>
+						
+						<div id="menuList">
+							<ul>메뉴
+								<li id="wishlist">
+									<a>찜리스트</a>
+								</li>
+								<li id="buyCoupons">
+									<a>쿠폰 구매</a>
+								</li>
+								<li id="myCouponList">
+									<a>내 쿠폰</a>
+								</li>
+							</ul>
+						</div>	
+						
 						
 					</div>
 				</aside>
@@ -136,13 +299,9 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 			<div class="aside-center">
 				<div class="section-center">
-					<div class="mapInfo">
-						<label for = "level">레벨</label>
-						<label for = "chat">채팅하기
-							<a th:href="@{/memberView/login}"></a>
-						</label>
-						<label for = "store">단골 가게</label>
-					</div><!-- mapInfo 부분 끝 -->
+				
+				<div id="mainMypage">
+					
 					
 					<div class = "expBar">
 						<span class = "expBar">경험치 바(임시)</span>
@@ -153,15 +312,13 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 							<span>참여한 모임</span>
 						</div> 
 					</div><!-- partyJoinOut 부분 끝 -->
-						<div class="partyJoinOut2">
-							<div class = "guestbook">
-								<span class = "guestbookTitle">방명록</span>
-								
+					<div class="partyJoinOut2">
+						<div class = "guestbook">
+							<span class = "guestbookTitle">방명록</span>
+							
 							<div id="reList" style="overflow:scroll; height:300px; width:650px;">
-							
-							
 							</div>
-							
+						
 							<div>
 								<input th:object = "${guestbook}" th:onclick = "${content}" name="content" id="content">
 								
@@ -169,15 +326,106 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 								<!-- <input type = "button" value = "수정하기" id = "btnReply_update"> -->
 								<input type = "hidden" id = "loginUser" th:value = "${#authentication.getPrincipal().getUsername()}">
 							</div>
-							
-							
-							</div><!-- guestbook 부분 끝 -->
-						</div>	<!-- partyJoinOut2 부분 끝 -->
+						</div><!-- guestbook 부분 끝 -->
+					</div>	<!-- partyJoinOut2 부분 끝 -->
+				</div><!-- mainMypage 끝 -->
+				
+				
+				
 				</div><!-- section-center  -->
 			</div><!--aside-center  -->
 		</div>
 		</section>
-
+		
+		
+		<!-- Modal -->
+		<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+		  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title" id="staticBackdropLabel">채팅</h5>
+		        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		      </div>
+		      <div class="modal-body">
+		        <div class="container" id="app" v-cloak>
+				    <div>
+				        <h2>{{room.roomName}}</h2>
+				    </div>
+				    
+				    <div class="input-group">
+				        <div class="input-group-prepend">
+				            <label class="input-group-text">내용</label>
+				        </div>
+				        <input type="text" class="form-control" v-model="message" v-on:keypress.enter="sendMessage">
+				        <div class="input-group-append">
+				            <button class="btn btn-primary" type="button" @click="sendMessage">보내기</button>
+				        </div>
+				    </div>
+				    <div id="messageDiv">
+					    <ul class="list-group">
+					        <li class="list-group-item" v-for="message in messages">
+					            {{message.sender}} - {{message.message}}
+					            <button v-on:click="reportMessage(message.sender)">신고하기</button>
+					        </li>
+					    </ul>
+				    </div>
+				    <div>
+				    	<input type="hidden" id="loginUser" th:value="${#authentication.getPrincipal().getUsername()}">
+				    	<input type="hidden" id="memberRoomId" th:value="${memberPage.roomId}">
+				    </div>
+				</div>
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+		        <button type="button" class="btn btn-primary">Understood</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+		
+		
+		
+		<!-- Modal -->
+		<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+		        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		      </div>
+		      <div class="modal-body">
+		        <div id="wishlistStore"></div>
+		        <div id="buyCoupon">
+		        <h2>쿠폰 구매하기</h2>
+						<div class = "couponCenter">
+							<table th:each="cList : ${cList}">
+								<tr>
+									<th th:text="${cList.couponNum}"></th>
+								</tr>
+								<tr>
+									<th th:text="${cList.couponName}"></th>
+								</tr>
+								<tr>
+									<th th:text="|${cList.couponPoint}원|"></th>
+								</tr>
+								<tr>
+									<th>
+										<input type="button" th:onclick="|buyCoupon(${cList.couponNum})|" value="button">
+									</th>
+								</tr>
+							</table>
+						</div><!-- couponCenter 부분 끝 -->
+		        </div><!-- buyCoupon 끝 -->
+		        <div id="couponList"></div>
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+		        <button type="button" class="btn btn-primary">Save changes</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+		
 	</div>
 
 	<footer>
@@ -193,7 +441,73 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
       }
     });
 </script>
-  
+<script src="/webjars/vue/2.5.16/dist/vue.min.js"></script>
+<script src="/webjars/axios/0.17.1/dist/axios.min.js"></script>
+<script src="/webjars/sockjs-client/1.1.2/sockjs.min.js"></script>
+<script src="/webjars/stomp-websocket/2.3.3-1/stomp.min.js"></script>
+<script>
+    //alert(document.title);
+    // websocket & stomp initialize
+    var sock = new SockJS("/ws/chat");
+    var ws = Stomp.over(sock);
+    var reconnect = 0;
+    // vue.js
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            roomId: '',
+            room: {},
+            sender: '',
+            message: '',
+            messages: []
+        },
+        created() {
+        	var rId = $("#memberRoomId").val();
+            var loginUser = $("#loginUser").val();
+            this.roomId = rId;
+            this.sender = loginUser;
+            	//localStorage.getItem('wschat.sender');
+            this.findRoom();
+        },
+        methods: {
+            findRoom: function() {
+                axios.get('/chat/room/'+this.roomId).then(response => { this.room = response.data; });
+            },
+            sendMessage: function() {
+                ws.send("/app/chat/message", {}, JSON.stringify({type:'TALK', roomId:this.roomId, sender:this.sender, message:this.message}));
+                this.message = '';
+            },
+            recvMessage: function(recv) {
+                this.messages.unshift({"type":recv.type,"sender":recv.type=='ENTER'?'[알림]':recv.sender,"message":recv.message})
+            },
+            reportMessage : function(sender) {
+                console.log(sender);
+                console.log($("#reporter").val());
+            }
+        }
+    });
+
+    function connect() {
+        // pub/sub event
+        ws.connect({}, function(frame) {
+            ws.subscribe("/topic/chat/room/"+vm.$data.roomId, function(message) {
+                var recv = JSON.parse(message.body);
+                vm.recvMessage(recv);
+            });
+            ws.send("/app/chat/message", {}, JSON.stringify({type:'ENTER', roomId:vm.$data.roomId, sender:vm.$data.sender}));
+        }, function(error) {
+            if(reconnect++ <= 5) {
+                setTimeout(function() {
+                    console.log("connection reconnect");
+                    sock = new SockJS("/ws/chat");
+                    ws = Stomp.over(sock);
+                    connect();
+                },10*1000);
+            }
+        });
+    }
+    connect();
+</script>
 
 </body>
 </html>

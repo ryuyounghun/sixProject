@@ -327,17 +327,15 @@ $(document).ready(function() {
 				
 				/* <![CDATA[ */
 					
-				/* var display = [[@{itemDisplay}]];
-				console.log(display); */
+				//var display = @{itemDisplay};
 				
 				let htmlStr = "";
 				
 				$.each(data, function(index, item) {
 					htmlStr += "<table border='1' class='menuTable'>";
 					htmlStr += "<tr>"; 
-					/* htmlStr += "<td><img src='" + display + "'></td>"; */
+					htmlStr += "<td><img src='itemDisplay?num=" + item.itemNum + "' width='80px;'></td>"; 
 					htmlStr += "<td><a>" + item.itemName + "</a></td>";
-					htmlStr += "<td>" + item.itemContent + "</td>";
 					htmlStr += "<td>" + item.itemPrice + "</td>";
 					htmlStr += "<td><input type='button' value='주문' id='item" + item.itemNum + "' onclick='checkItem(" + item.itemNum + ");'></td>";
 					htmlStr += "</tr>";

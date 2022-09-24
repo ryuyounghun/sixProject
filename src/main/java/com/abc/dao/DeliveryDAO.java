@@ -67,4 +67,7 @@ public interface DeliveryDAO {
 	public int insertWishlist(Wishlist wish);
 	public Wishlist selectWishlist(Map<Object, Object> map);
 	public int deleteWish(Map<Object, Object> map);
+	
+	// 0924 추가
+	public List<Wishlist> selectWishlistByMemberNum(int memberNum);
 }

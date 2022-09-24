@@ -108,5 +108,11 @@ public class MemberServiceImpl implements MemberService {
 		return mDao.selectOneMemberByMemberNum(memberNum);
 	}
 
+	@Override
+	public int setRoomId(Member member) {
+		// TODO Auto-generated method stub
+		return mDao.setRoomId(member);
+	}
+
 
 }

@@ -85,19 +85,17 @@
 					htmlStr += "<table class='storeTable'>";
 					
 					htmlStr += "<tr>"
+					htmlStr += "<td><img src='storeDisplay?num=" + item.storeNum + "' width='80px;'></td>"; 
 					htmlStr += "<td class='nameTd'><a href='" + goRead + "?num=" + item.storeNum + "'>" + item.storeName + "</a></td>";
 					htmlStr += "<td>★ " + item.rating + "</td>";
 					htmlStr += "<td>♥ " + item.wishlist + "</td>";
 					htmlStr += "</tr>";
 					htmlStr += "</table>";
 				});
-				
-				
 				$("#center-dv").html(htmlStr);
 				/* ]]> */
 			}
 		});
-		
 	}
 </script>
 

@@ -57,4 +57,7 @@ public interface DeliveryService {
 	public int insertWishlist(Wishlist wish);
 	public Wishlist selectWishlist(int storeNum, int memberNum);
 	public int deleteWish(int storeNum, int memberNum);
+	
+	// 0924 추가
+	public List<Wishlist> selectWishlistByMemberNum(int memberNum);
 }

@@ -347,5 +347,12 @@
 			WHERE CATEGORY = #{category}
 		</if>
 	</select>
+	
+	<!-- 0924 추가 -->
+	<select id="selectWishlistByMemberNum" resultType="Wishlist" parameterType="int">
+		SELECT * FROM
+		WISHLIST
+		WHERE MEMBERNUM = #{memberNum}
+	</select>
 </mapper>
 

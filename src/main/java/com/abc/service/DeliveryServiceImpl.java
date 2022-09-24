@@ -280,5 +280,11 @@ public class DeliveryServiceImpl implements DeliveryService{
 		return dDao.selectStoreListByCategory(category);
 	}
 
+	@Override
+	public List<Wishlist> selectWishlistByMemberNum(int memberNum) {
+		// TODO Auto-generated method stub
+		return dDao.selectWishlistByMemberNum(memberNum);
+	}
+
 
 }

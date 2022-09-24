@@ -59,7 +59,8 @@ $(document).ready(function() {
 			data : {"classNum" : classNum},
 			success : function() {
 				partyPeople();
-				alert("성공");
+				// 0924 추가
+				location.href="/community/index";
 			}
 		});
 	}

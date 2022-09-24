@@ -10,6 +10,17 @@
 		INSERT INTO DELIVERY_MEMBER (MEMBERNUM, MEMBERID, MEMBERPW, MEMBERNAME, NICKNAME, ADDRESS, PHONE)
 		VALUES (DELIVERY_MEMBER_SEQ.NEXTVAL, #{memberId}, #{memberPw}, #{memberName}, #{nickname}, #{address}, #{phone})
 	</insert>
+	<!-- 0924 추가 -->
+	<update id="setRoomId" parameterType="Member">
+		<selectKey resultType="int" keyProperty="memberNum" order="BEFORE">
+			SELECT MAX(MEMBERNUM) FROM DELIVERY_MEMBER		
+		</selectKey>
+	
+		UPDATE DELIVERY_MEMBER
+		SET ROOMID = #{roomId}
+		WHERE MEMBERNUM = #{memberNum}
+	</update>
+	
 	
 	<select id = "selectOneMember" parameterType = "string" resultType = "member">
 	 	SELECT * FROM DELIVERY_MEMBER

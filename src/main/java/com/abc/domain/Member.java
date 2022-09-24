@@ -24,6 +24,7 @@ public class Member implements UserDetails {
 	private String phone;
 	private int memberExp;		// 경험치
 	private int memberPoint;	// 포인트
+	private String roomId;
 	
 	// Spring Security를 위한 필드 지정
 	private boolean enabled;	// 계정 상태가 유효한지 확인하기 위한 변수 1 이면 유효, 0 이면 유효X

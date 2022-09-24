@@ -1,8 +1,19 @@
 package com.abc.controller;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -14,11 +25,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.abc.domain.ChatRoom;
+import com.abc.domain.Coupon;
 import com.abc.domain.GuestBook;
 import com.abc.domain.Member;
 import com.abc.domain.MyChatRoom;
 import com.abc.domain.MyCoupon;
+import com.abc.domain.Store;
+import com.abc.domain.Wishlist;
 import com.abc.service.ChatService;
+import com.abc.service.DeliveryService;
 import com.abc.service.MasterService;
 import com.abc.service.MemberService;
 
@@ -38,6 +53,14 @@ public class MemberController {
 	@Autowired
 	private ChatService chatService;
 	
+	@Autowired
+	private DeliveryService dService;
+	
+	// 첨부파일 업로드 패스 지정 0924 추가
+	@Value("${spring.servlet.multipart.location}")		// 설정파일(application 파일)의 속성을 가지고 오고 싶을떄 사용할 수 있는 annotation(spring)
+	private String uploadPath;
+	
+	
 	
 	@GetMapping("/join")
 	public String join() {
@@ -50,9 +73,8 @@ public class MemberController {
 	public String join(Member member) {
 		log.debug("member의 정보 : {}", member);
 		
-		// service에 Member 객체 전송
-		int result = mService.insertMember(member);
 		
+		int result = mService.insertMember(member);
 		// 채팅방 생성 0923 추가
 		MyChatRoom myCtRoom = new MyChatRoom();
 		ChatRoom ctRoom = chatService.createRoom(member.getMemberName());
@@ -62,7 +84,12 @@ public class MemberController {
     	
     	chatService.insertMyChatRoom(myCtRoom);
     	// 채팅방 생성 끝
-		
+    	// 0924 추가
+		member.setRoomId(ctRoom.getRoomId());
+		mService.setRoomId(member);
+    	///////////
+    	// service에 Member 객체 전송 
+    	
 		return "redirect:/";
 		
 	}
@@ -80,178 +107,265 @@ public class MemberController {
 	}
 	
 	
-		@PostMapping("/socialIdCheck")
-		public @ResponseBody Member kakaoIdCheck(String id) {
+	@PostMapping("/socialIdCheck")
+	public @ResponseBody Member kakaoIdCheck(String id) {
+		
+		Member member = mService.selectOneMember(id);
+		log.debug("member:{}", member);
+		return member;
+	}
+	
+	@PostMapping("/kakaoSignUp")
+	public @ResponseBody Member kakaoSignUp(String userid, String name, String email) {
+		
+		log.debug("signUp 시작");
+		
+		
+		Member member = new Member();
+		
+		member.setMemberId(email);
+		member.setMemberPw(userid);
+		member.setMemberName(name);
+		member.setNickname(name);
+		member.setAddress("다시 입력해 주세요");
+		member.setPhone("다시 입력해 주세요");
+		
+		mService.insertMember(member);
+		
+		// 채팅방 생성 0923 추가
+		MyChatRoom myCtRoom = new MyChatRoom();
+		ChatRoom ctRoom = chatService.createRoom(name);
+		
+    	myCtRoom.setRoomId(ctRoom.getRoomId());
+    	myCtRoom.setRoomName(ctRoom.getRoomName());
+    	
+    	chatService.insertMyChatRoom(myCtRoom);
+    	// 채팅방 생성 끝
+    	
+		// 0924 추가
+		member.setRoomId(ctRoom.getRoomId());
+		mService.setRoomId(member);
+    	///////////
+				
+		
+		member = mService.selectOneMember(email);
+		
+		log.debug("member:{}", member);
+		return member;
+	}
+	
+	@PostMapping("/naverSignUp")
+	public @ResponseBody Member naverSignUp(String userid, String name,
+			String email, String nickname, String phone) {
+		
+		log.debug("signUp 시작");
+		
+		Member member = new Member();
+		
+		member.setMemberId(email);
+		member.setMemberPw(userid);
+		member.setMemberName(name);
+		member.setNickname(name);
+		member.setAddress("다시 입력해 주세요");
+		member.setPhone(phone);
+		mService.insertMember(member);
+		
+		// 채팅방 생성 0923 추가
+		MyChatRoom myCtRoom = new MyChatRoom();
+		ChatRoom ctRoom = chatService.createRoom(name);
+		
+    	myCtRoom.setRoomId(ctRoom.getRoomId());
+    	myCtRoom.setRoomName(ctRoom.getRoomName());
+    	
+    	chatService.insertMyChatRoom(myCtRoom);
+    	// 채팅방 생성 끝
+		
+		// 0924 추가
+		member.setRoomId(ctRoom.getRoomId());
+		mService.setRoomId(member);
+    	///////////
+
+		
+		member = mService.selectOneMember(email);
+		
+		log.debug("member:{}", member);
+		return member;
+	}
+		
+	@GetMapping("/mypage")
+	public String mypage(Model model, int num,
+			@AuthenticationPrincipal UserDetails user) {
+		
+		Member member = mService.selectOneMember(user.getUsername());
+		Member memberPage = mService.selectOneMemberByMemberNum(num);
+		// 0924 추가
+		List<Coupon> cList = mtService.selectAllCoupon();
+		model.addAttribute("cList", cList);
+		///////////
+		model.addAttribute("member", member);
+		model.addAttribute("memberPage", memberPage);
+		
+		
+		return "memberView/mypage";
+	}
+	
+	@GetMapping("/myCoupons")
+	public String myCoupons() {
+		
+		return "memberView/myCoupons";
+	}
+	
+	@GetMapping("/myCouponList")
+	public @ResponseBody List<MyCoupon> myCouponList(
+			@AuthenticationPrincipal UserDetails user) {
+		Member member = mService.selectOneMember(user.getUsername());
+		
+		List<MyCoupon> myCList = mtService.selectAllMyCoupon(member.getMemberNum());
+		
+		log.debug("myCList : {}", myCList);
+		
+		
+		return myCList;
+	}
+	
+	@GetMapping("/useCoupon")
+	public @ResponseBody List<MyCoupon> useCoupon(int myCouponNum,
+			@AuthenticationPrincipal UserDetails user) {
+		Member member = mService.selectOneMember(user.getUsername());
+		MyCoupon myCoupon = mtService.useOneMyCoupon(myCouponNum);
+		
+		member.setMemberPoint(myCoupon.getCouponPoint());
+		
+		mService.updatePoint(member);
+		
+		mtService.deleteOneMyCoupon(myCouponNum);
+		
+		List<MyCoupon> myCList = mtService.selectAllMyCoupon(member.getMemberNum());
+		
+		return myCList;
+	}
+	
+	@GetMapping("/myPoint")
+	public @ResponseBody Member myPoint(int memberNum,
+			@AuthenticationPrincipal UserDetails user) {
+		
+		Member member = mService.selectOneMemberByMemberNum(memberNum);
+		
+		return member;
+		
+	}
+	
+	
+	// 회원정보 수정 화면 띄우기
+	@GetMapping("/updateInfo")
+	public String updateInfo(@AuthenticationPrincipal UserDetails user, Model model) {
+		
+		// 사용자 식별자
+		String memberId = user.getUsername();
+		
+		log.debug("memberId : {}", memberId);
+		
+		Member member = mService.selectOneMember(memberId);
+		
+		log.debug("member : {}", member);
+	
+		
+		model.addAttribute("member", member);
+		
+		return "memberView/updateInfo";
+	}
+	
+	// 회원정보 수정
+	@PostMapping("/updateInfo")
+	public String update(Member member, @AuthenticationPrincipal UserDetails user) { // 지금 로그인 되어있는 객체를 가져오는 @AuthenticationPrincipal
+	
+		log.debug("member : {}" , member);
+		log.debug("username : {}", user.getUsername());
+		member.setMemberId(user.getUsername()); 
+		int result = mService.updateMember(member);
+		log.debug("result : {}", result);
+		return "redirect:/";
+	}
+	
+	@PostMapping("/writeReply")
+	@ResponseBody
+	public void writeReply(String content, int memberNum, @AuthenticationPrincipal UserDetails user) {
+	
+		log.debug("content : {}", content);
+		log.debug("memberNum : {}", memberNum);
+		
+		GuestBook guestbook = new GuestBook();
+		
+		Member member = mService.selectOneMember(user.getUsername());
+		
+		guestbook.setNickname(member.getNickname());
+		guestbook.setContent(content);
+		guestbook.setWriterNum(member.getMemberNum());
+		guestbook.setMemberNum(memberNum);
+		
+		mService.insertMyPage(guestbook);
+		
+	}	
+	
+	@GetMapping("/loadAllReply") //writeId = memberId 
+	public @ResponseBody List<GuestBook> loadAllReply(int memberNum){
+		
+		
+		log.debug("마이페이지 주인 멤버넘 : {}", memberNum);
+		
+		List<GuestBook> gList = mService.selectAllReply(memberNum);
+		
+		log.debug("gList : {}", gList.size());
+		
+		return gList;
+	}
+	
+	// 0924 추가
+	@GetMapping("/lookWishList")
+	@ResponseBody 
+	public List<Store> lookWishList(int memberNum) {
+		List<Wishlist> wList = dService.selectWishlistByMemberNum(memberNum);
+		Store store;
+		List<Store> sList = new ArrayList<Store>();
+		
+		for (int i = 0; i < wList.size(); i++) {
+			store = dService.selectOneStore(wList.get(i).getStoreNum());
+			sList.add(store);
+		}
+		log.debug("sList : {}", sList);
+		return sList;
+	}
+	
+	// 0924 추가
+	@GetMapping("/storeDisplay")
+	public ResponseEntity<Resource> storeDisplay(int num) {
+		
+		log.debug("num : {}", num);
+		
+		Store store = dService.selectOneStore(num);
+		
+		Resource resource 
+			= new FileSystemResource(uploadPath + "/" + store.getSavedFile());
+	
+		// 파일이 존재하지 않을때
+		if(!resource.exists()) {
+			return new ResponseEntity<Resource>(HttpStatus.NOT_FOUND);
+		} 
+		
+		HttpHeaders header = new HttpHeaders();
+		
+		Path filePath = null;
+		
+		try {
+			filePath = Paths.get(uploadPath + "/" + store.getSavedFile());
 			
-			Member member = mService.selectOneMember(id);
-			log.debug("member:{}", member);
-			return member;
+			// response의 header에
+			// 제가 첨부한 내용의 타입은 파일이에요
+			header.add("Content-type", Files.probeContentType(filePath));
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 		
-		@PostMapping("/kakaoSignUp")
-		public @ResponseBody Member kakaoSignUp(String userid, String name, String email) {
-			
-			log.debug("signUp 시작");
-			
-			Member member = new Member();
-			
-			member.setMemberId(email);
-			member.setMemberPw(userid);
-			member.setMemberName(name);
-			member.setNickname(name);
-			member.setAddress("다시 입력해 주세요");
-			member.setPhone("다시 입력해 주세요");
-			
-			mService.insertMember(member);
-			
-			member = mService.selectOneMember(email);
-			
-			log.debug("member:{}", member);
-			return member;
-		}
-		
-		@PostMapping("/naverSignUp")
-		public @ResponseBody Member naverSignUp(String userid, String name,
-				String email, String nickname, String phone) {
-			
-			log.debug("signUp 시작");
-			
-			Member member = new Member();
-			
-			member.setMemberId(email);
-			member.setMemberPw(userid);
-			member.setMemberName(name);
-			member.setNickname(name);
-			member.setAddress("다시 입력해 주세요");
-			member.setPhone(phone);
-			
-			mService.insertMember(member);
-			
-			member = mService.selectOneMember(email);
-			
-			log.debug("member:{}", member);
-			return member;
-		}
-		
-		@GetMapping("/mypage")
-		public String mypage(Model model,
-				@AuthenticationPrincipal UserDetails user) {
-			
-			Member member = mService.selectOneMember(user.getUsername());
-			
-			model.addAttribute("member", member);
-			
-			return "memberView/mypage";
-		}
-		
-		@GetMapping("/myCoupons")
-		public String myCoupons() {
-			
-			return "memberView/myCoupons";
-		}
-		
-		@GetMapping("/myCouponList")
-		public @ResponseBody List<MyCoupon> myCouponList(
-				@AuthenticationPrincipal UserDetails user) {
-			Member member = mService.selectOneMember(user.getUsername());
-			
-			List<MyCoupon> myCList = mtService.selectAllMyCoupon(member.getMemberNum());
-			
-			log.debug("myCList : {}", myCList);
-			
-			
-			return myCList;
-		}
-		
-		@GetMapping("/useCoupon")
-		public @ResponseBody String useCoupon(int myCouponNum,
-				@AuthenticationPrincipal UserDetails user) {
-			Member member = mService.selectOneMember(user.getUsername());
-			MyCoupon myCoupon = mtService.useOneMyCoupon(myCouponNum);
-			
-			member.setMemberPoint(myCoupon.getCouponPoint());
-			
-			mService.updatePoint(member);
-			
-			mtService.deleteOneMyCoupon(myCouponNum);
-			
-			return "ㅇㅇ";
-		}
-		
-		@GetMapping("/myPoint")
-		public @ResponseBody Member myPoint(
-				@AuthenticationPrincipal UserDetails user) {
-			
-			Member member = mService.selectOneMember(user.getUsername());
-			
-			return member;
-			
-		}
-		
-		
-		// 회원정보 수정 화면 띄우기
-		@GetMapping("/updateInfo")
-		public String updateInfo(@AuthenticationPrincipal UserDetails user, Model model) {
-			
-			// 사용자 식별자
-			String memberId = user.getUsername();
-			
-			log.debug("memberId : {}", memberId);
-			
-			Member member = mService.selectOneMember(memberId);
-			
-			log.debug("member : {}", member);
-		
-			
-			model.addAttribute("member", member);
-			
-			return "memberView/updateInfo";
-		}
-		
-		// 회원정보 수정
-		@PostMapping("/updateInfo")
-		public String update(Member member, @AuthenticationPrincipal UserDetails user) { // 지금 로그인 되어있는 객체를 가져오는 @AuthenticationPrincipal
-		
-			log.debug("member : {}" , member);
-			log.debug("username : {}", user.getUsername());
-			member.setMemberId(user.getUsername()); 
-			int result = mService.updateMember(member);
-			log.debug("result : {}", result);
-			return "redirect:/";
-		}
-		
-		@PostMapping("/writeReply")
-		@ResponseBody
-		public void writeReply(String content, int memberNum, @AuthenticationPrincipal UserDetails user) {
-		
-			log.debug("content : {}", content);
-			log.debug("memberNum : {}", memberNum);
-			
-			GuestBook guestbook = new GuestBook();
-			
-			Member member = mService.selectOneMember(user.getUsername());
-			
-			guestbook.setNickname(member.getNickname());
-			guestbook.setContent(content);
-			guestbook.setWriterNum(member.getMemberNum());
-			guestbook.setMemberNum(memberNum);
-			
-			mService.insertMyPage(guestbook);
-			
-		}	
-		
-		@GetMapping("/loadAllReply") //writeId = memberId 
-		public @ResponseBody List<GuestBook> loadAllReply(int memberNum){
-			
-			
-			log.debug("마이페이지 주인 멤버넘 : {}", memberNum);
-			
-			List<GuestBook> gList = mService.selectAllReply(memberNum);
-			
-			log.debug("gList : {}", gList.size());
-			
-			return gList;
-			
-		}
-		
+		return new ResponseEntity<Resource>(resource, header, HttpStatus.OK);
+	}
 }
