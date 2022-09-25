@@ -354,5 +354,12 @@
 		WISHLIST
 		WHERE MEMBERNUM = #{memberNum}
 	</select>
+	
+	<!-- 0925 추가 -->
+	<select id="selectReviewListByMemberNum" parameterType="int" resultType="Review">
+		SELECT * FROM
+		REVIEW
+		WHERE MEMBERNUM = #{memberNum}
+	</select>
 </mapper>
 

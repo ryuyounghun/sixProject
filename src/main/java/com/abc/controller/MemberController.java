@@ -30,6 +30,8 @@ import com.abc.domain.GuestBook;
 import com.abc.domain.Member;
 import com.abc.domain.MyChatRoom;
 import com.abc.domain.MyCoupon;
+import com.abc.domain.Receipt;
+import com.abc.domain.Review;
 import com.abc.domain.Store;
 import com.abc.domain.Wishlist;
 import com.abc.service.ChatService;
@@ -439,9 +441,58 @@ public class MemberController {
 		
 		return "redirect:/";
 	}
+	// 0925 세련씨
 	
+	// 0925 추가
+	@GetMapping("/myOrderList")
+	public @ResponseBody List<Receipt> myOrderList(int memberNum) {
+		
+		List<Receipt> rList = dService.selectReceipt(memberNum);
+		log.debug("rList : {}", rList);
+		return rList;
+	}
 	
+	// 0925 추가
+	@PostMapping("/myCompleteOrderList")
+	public String myCompleteOrderList(Review review,
+			@AuthenticationPrincipal UserDetails user) {
+		
+		Member member = mService.selectOneMember(user.getUsername());
+		Receipt receipt = dService.selectReceiptByReceiptNum(review.getReceiptNum());
+		Store store = dService.selectOneStore(review.getStoreNum());
+		
+		review.setOrderHistory(receipt.getOrderHistory());
+		review.setMemberNum(member.getMemberNum());
+		review.setNickname(member.getNickname());
+		
+		log.debug("review : {}", review);
+		
+		dService.insertReview(review);
+		
+		List<Review> rList = dService.selectReviews(review.getStoreNum());
+
+		log.debug("rList : {}", rList);
+		int sum = 0;
+		for (int i = 0; i < rList.size(); i++) {
+			sum += rList.get(i).getRating();  
+		}
+		log.debug("sum : {}", sum);
+		double rate = sum / rList.size();
+		
+		store.setRating(rate);
+		
+		dService.updateRating(store);
+		
+		return "redirect:/";
+	}
 	
-	
+	// 0925 추가
+	@GetMapping("/myReviews")
+	@ResponseBody
+	public List<Review> myReviews(int memberNum) {
+		
+		List<Review> rList = dService.selectReviewListByMemberNum(memberNum);
+		return rList;
+	}
 	
 }

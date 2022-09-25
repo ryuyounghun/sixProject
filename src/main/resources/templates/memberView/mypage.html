@@ -19,6 +19,11 @@
 	[v-cloak] {
             display: none;
         }
+        
+    table {
+    	border : 1px solid black;
+    	background-color : aqua;
+    }
 	
 </style>
 <script th:inline="javascript">
@@ -28,30 +33,36 @@
 		$("#btnReply_write").on("click", function() { writeReply(); });
 		$("#btnReply_update").hide();
 		// 0924 추가
-		$("#wishlist").click(function() { wishList(); });
+		$("#wishlistBtn").click(function() { wishList(); });
 		$("#buyCoupon").hide();
 		$("#wishlistStore").hide();
-		$("#buyCoupons").click(function() {
+		$("#buyCouponsBtn").click(function() {
 			$("#couponList").hide();
 			$("#wishlistStore").hide();
+			$("#orderList").hide();
 			$("#buyCoupon").show();
 			$("#exampleModalLabel").text("쿠폰 구매하기");
 			$("#exampleModal").modal("show");
 		});
 		couponList();
 		myPoint();
-		$("#myCouponList").click(function() {
+		$("#myCouponListBtn").click(function() {
 			$("#wishlistStore").hide();
 			$("#buyCoupon").hide();
+			$("#orderList").hide();
 			$("#couponList").show();
 			$("#exampleModalLabel").text("MyCoupon List");
 			$("#exampleModal").modal("show");
 		});
 		
 		// 0925 추가
-		$("#buyCoupons").hide();
-		$("#myCouponList").hide();
+		$("#buyCouponsBtn").hide();
+		$("#myCouponListBtn").hide();
+		$("#orderListBtn").hide();
+		$("#reviewModal").hide();
 		showMenuList();
+		$("#orderListBtn").click(function() { myOrderList(); });
+		myReviews();
 	});
 	
 	function getParameterByName(name) {
@@ -68,15 +79,96 @@
 		console.log(memberNum);
 		console.log(loginMember);
 		if(memberNum == loginMember) {
-			$("#buyCoupons").show();
-			$("#myCouponList").show();
+			$("#buyCouponsBtn").show();
+			$("#myCouponListBtn").show();
+			$("#orderListBtn").show();
 		} 
 		
 	}
 	
+	function myOrderList() {
+		$("#couponList").hide();
+		$("#buyCoupon").hide();
+		$("#wishlistStore").hide();
+		let memberNum = getParameterByName('num');
+		
+		$.ajax({
+			url : "myOrderList",
+			type : "get",
+			data : {"memberNum" : memberNum},
+			success : function(data) {
+				console.log(data);
+				
+				let htmlStr = "";
+				
+				$.each(data, function(index, item) {
+					htmlStr += "<table>";
+					htmlStr += "<tr><th>" + item.receiptNum + "</th>";
+					htmlStr += "<th>" + item.totalAmount + "</th>";
+					htmlStr += "<th><input onclick='writeReview(" + item.storeNum + "," + item.receiptNum + ")' type='button' value='리뷰쓰기'></th></tr>";
+					htmlStr += "<tr><th>" + item.orderHistory + "</th></tr>";
+					htmlStr += "</table>";
+				});
+				
+				$("#orderList").html(htmlStr);
+				$("#exampleModalLabel").text("주문목록");
+				$("#orderList").show();
+				$("#exampleModal").modal("show");
+				
+			}
+		});
+	}
 	
+	// 0925 추가
+	function writeReview(storeNum, receiptNum) {
+		$("#hiddenStoreNum").val(storeNum);
+		$("#hiddenReceiptNum").val(receiptNum);
+		
+		endReview(receiptNum);
+	}
 	
+	// 0925 추가
+	function endReview(receiptNum) {
+		
+		$.ajax({
+			url : "/delivery/checkReview",
+			type : "get",
+			data : {"receiptNum" : receiptNum},
+			success : function(data) {
+				if(data == "") {
+					$("#orderList").hide();
+					$("#reviewModal").show();
+				} else {
+					alert("이미 리뷰 한 주문입니다.");
+				}
+			}
+		});
+	}
 	
+	// 0925 추가
+	function myReviews() {
+		let memberNum = getParameterByName('num');
+		
+		
+		$.ajax({
+			url : "myReviews",
+			type : "get",
+			data : {"memberNum" : memberNum},
+			success : function(data) {
+				console.log(data);
+				let htmlStr = "";
+				$.each(data, function(index, item) {
+					htmlStr += "<table>";
+					htmlStr += "<tr><th>" + item.nickname + "</th>";
+					htmlStr += "<th> ★" + item.rating + "</th></tr>";
+					htmlStr += "<tr><th colspan='2'>" + item.orderHistory + "</th></tr>";
+					htmlStr += "<tr><th colspan='2'>" + item.reviewContent + "</th></tr>";
+					htmlStr += "</table>";
+				});				
+				$("#myReviewList").html(htmlStr);
+			}
+		});
+	}
 	
 	
 	// 0924 추가
@@ -196,6 +288,8 @@
 			}
 		});
 	}
+	
+	
 	function loadAllReply() {
 		 let memberNum = getParameterByName('num');
 	  
@@ -295,15 +389,19 @@
 						
 						<div id="menuList">
 							<ul>메뉴
-								<li id="wishlist">
+								<li id="wishlistBtn">
 									찜리스트
 								</li>
-								<li id="buyCoupons">
+								<li id="buyCouponsBtn">
 									쿠폰 구매
 								</li>
-								<li id="myCouponList">
+								<li id="myCouponListBtn">
 									내 쿠폰
 								</li>
+								<li id="orderListBtn">
+									주문 리스트
+								</li>
+								
 							</ul>
 						</div>	
 						
@@ -328,8 +426,10 @@
 					</div>
 					
 					<div class="partyJoinOut">
-						<div>
-							<span>참여한 모임</span>
+						<div style="overflow:scroll; height:360px; width:300px;">
+							<span>리뷰 모음</span>
+							<div id="myReviewList" ></div>
+						
 						</div> 
 					</div><!-- partyJoinOut 부분 끝 -->
 					<div class="partyJoinOut2">
@@ -438,6 +538,35 @@
 						</div><!-- couponCenter 부분 끝 -->
 		        </div><!-- buyCoupon 끝 -->
 		        <div id="couponList"></div>
+		        <div id="orderList"></div>
+		        
+		        <div id="reviewModal">
+		        	<form action="myCompleteOrderList" method="post">
+				        <div id="starPoint">
+				        	<label for="oneStar">1</label>
+				        	<input type="radio" id="oneStar" value="1" name="rating">
+				        	<label for="twoStar">2</label>
+				        	<input type="radio" id="twoStar" value="2" name="rating"> 
+				        	<label for="threeStar">3</label>
+				        	<input type="radio" id="threeStar" value="3" name="rating">
+				        	<label for="fourStar">4</label>
+				        	<input type="radio" id="fourStar" value="4" name="rating">
+				        	<label for="fiveStar">5</label>
+				        	<input type="radio" id="fiveStar" value="5" name="rating">
+				        </div>
+				        <input type="hidden" id="hiddenStoreNum" value="" name="storeNum">
+				        <input type="hidden" id="hiddenReceiptNum" value="" name="receiptNum">
+				    	<div class="mb-3">
+				        	<label for="message-text" class="col-form-label">Content</label>
+				            <textarea class="form-control" id="message-text" name="reviewContent"></textarea>
+				        </div>
+					    <div class="modal-footer">
+					    	<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+					    	<button type="submit" class="btn btn-primary">리뷰남기기</button>
+					    </div>
+	        		</form>
+		        </div>
+		        
 		      </div>
 		      <div class="modal-footer">
 		        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

@@ -286,5 +286,11 @@ public class DeliveryServiceImpl implements DeliveryService{
 		return dDao.selectWishlistByMemberNum(memberNum);
 	}
 
+	@Override
+	public List<Review> selectReviewListByMemberNum(int memberNum) {
+		// TODO Auto-generated method stub
+		return dDao.selectReviewListByMemberNum(memberNum);
+	}
+
 
 }

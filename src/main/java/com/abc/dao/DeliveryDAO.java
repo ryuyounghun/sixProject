@@ -70,4 +70,7 @@ public interface DeliveryDAO {
 	
 	// 0924 추가
 	public List<Wishlist> selectWishlistByMemberNum(int memberNum);
+	
+	// 0925추가
+	public List<Review> selectReviewListByMemberNum(int memberNum);
 }
