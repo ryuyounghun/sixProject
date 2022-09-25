@@ -73,6 +73,10 @@ public class DeliveryController {
 	public String deliveryRead(Model model, int num,
 			@AuthenticationPrincipal UserDetails user) {
 		
+		// 0925 추가
+		Member member = mService.selectOneMember(user.getUsername());
+		model.addAttribute("member", member);
+		
 		Store store = dService.selectOneStore(num);
 		
 		log.debug("store : {}", store);

@@ -7,8 +7,8 @@
 
 	<!-- 회원정보 등록 쿼리 -->
 	<insert id = "insertMember" parameterType = "member">
-		INSERT INTO DELIVERY_MEMBER (MEMBERNUM, MEMBERID, MEMBERPW, MEMBERNAME, NICKNAME, ADDRESS, PHONE)
-		VALUES (DELIVERY_MEMBER_SEQ.NEXTVAL, #{memberId}, #{memberPw}, #{memberName}, #{nickname}, #{address}, #{phone})
+		INSERT INTO DELIVERY_MEMBER (MEMBERNUM, MEMBERID, MEMBERPW, MEMBERNAME, NICKNAME, ADDRESS, PHONE, PINNUMBER)
+		VALUES (DELIVERY_MEMBER_SEQ.NEXTVAL, #{memberId}, #{memberPw}, #{memberName}, #{nickname}, #{address}, #{phone}, #{pinNumber})
 	</insert>
 	<!-- 0924 추가 -->
 	<update id="setRoomId" parameterType="Member">
@@ -102,5 +102,38 @@
 		DELIVERY_MEMBER
 		WHERE MEMBERNUM = #{memberNum}
 	</select>
+	
+	
+	<!-- 0925 세련씨 -->
+	<!-- 회원 탈퇴하기  -->
+	<update id = "blockLogin" parameterType="member">
+		UPDATE DELIVERY_MEMBER
+		SET ENABLED = 0
+		WHERE MEMBERID = #{memberId}
+	</update>
+	
+	<select id = "checkPnum" parameterType="string" resultType="int">
+		SELECT COUNT(PINNUMBER) FROM DELIVERY_MEMBER
+		WHERE PINNUMBER = #{pinNumber}
+	</select>
+	
+	<!-- ID 찾기 -->
+	<select id = "findMemberId" parameterType="string" resultType="string">
+		SELECT MEMBERID FROM DELIVERY_MEMBER
+		WHERE PINNUMBER = #{pinNumber}
+	</select>
+	
+	<!-- Pin받아서 Pw 수정하기 -->
+	<update id = "updatePw" parameterType="member">
+		UPDATE DELIVERY_MEMBER
+		SET
+			MEMBERPW = #{memberPw}
+		WHERE
+			PINNUMBER = #{pinNumber}
+	</update>
+	
+	
+	
+	
 </mapper>
 

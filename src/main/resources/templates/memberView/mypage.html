@@ -47,6 +47,11 @@
 			$("#exampleModalLabel").text("MyCoupon List");
 			$("#exampleModal").modal("show");
 		});
+		
+		// 0925 추가
+		$("#buyCoupons").hide();
+		$("#myCouponList").hide();
+		showMenuList();
 	});
 	
 	function getParameterByName(name) {
@@ -55,6 +60,21 @@
 		  results = regex.exec(location.search);
 		  return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
 	}
+	
+	// 0925 추가
+	function showMenuList() {
+		let memberNum = getParameterByName('num');
+		let loginMember = $("#loginMember").val();
+		console.log(memberNum);
+		console.log(loginMember);
+		if(memberNum == loginMember) {
+			$("#buyCoupons").show();
+			$("#myCouponList").show();
+		} 
+		
+	}
+	
+	
 	
 	
 	
@@ -276,13 +296,13 @@
 						<div id="menuList">
 							<ul>메뉴
 								<li id="wishlist">
-									<a>찜리스트</a>
+									찜리스트
 								</li>
 								<li id="buyCoupons">
-									<a>쿠폰 구매</a>
+									쿠폰 구매
 								</li>
 								<li id="myCouponList">
-									<a>내 쿠폰</a>
+									내 쿠폰
 								</li>
 							</ul>
 						</div>	
@@ -372,6 +392,7 @@
 				    <div>
 				    	<input type="hidden" id="loginUser" th:value="${#authentication.getPrincipal().getUsername()}">
 				    	<input type="hidden" id="memberRoomId" th:value="${memberPage.roomId}">
+				    	<input type="hidden" id="loginMember" th:value="${member.memberNum}">
 				    </div>
 				</div>
 		      </div>

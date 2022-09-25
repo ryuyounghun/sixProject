@@ -114,5 +114,29 @@ public class MemberServiceImpl implements MemberService {
 		return mDao.setRoomId(member);
 	}
 
+	@Override
+	public int blockLogin(Member member) {
+		// TODO Auto-generated method stub
+		return mDao.blockLogin(member);
+	}
+
+	@Override
+	public int checkPnum(String pinNumber) {
+		// TODO Auto-generated method stub
+		return mDao.checkPnum(pinNumber);
+	}
+
+	@Override
+	public String findMemberId(String pinNumber) {
+		// TODO Auto-generated method stub
+		return mDao.findMemberId(pinNumber);
+	}
+
+	@Override
+	public int updatePw(Member member) {
+		// TODO Auto-generated method stub
+		return mDao.updatePw(member);
+	}
+
 
 }

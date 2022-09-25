@@ -101,6 +101,55 @@ public class MemberController {
 		return result;
 	}
 	
+	// 0925 세련씨
+	// pinNumber 중복체크(ajax)
+	@PostMapping("/checkPnum")
+	@ResponseBody
+	public int checkPnum(@RequestParam("pnum") String pnum) {
+		int result = mService.checkPnum(pnum);
+		return result;
+	}
+	
+	@GetMapping("/findIdPw")
+	public String findIdPw(){
+		
+		return "memberView/findIdPw";
+	}	
+	
+	@PostMapping("/findMemberId")
+	@ResponseBody
+	public String findMemberId(String pinNumber) {
+		log.debug("pinNumber:{}", pinNumber );
+		
+		String result = mService.findMemberId(pinNumber);
+		return result;
+	}
+		
+
+	
+	//Post
+	@PostMapping("/updatePw")
+	@ResponseBody
+	public int updatePw(String pw, String pnum) {
+		
+		Member member = new Member();
+		//핀번호에 맞는 mdId 찾고
+		String memberId = mService.findMemberId(pnum);
+		member = mService.selectOneMember(memberId);
+		member.setMemberPw(pw);
+		
+		//set 비밀번호 위에 파라미터에 담긴거 저장하기 그 다음 업데이트해주기
+		int result = mService.updatePw(member);
+		//비밀번호 암호화 잊지말기(-> serviceImpl에서 해줌)
+		
+		return result;
+	}
+	
+	
+	// 세련씨
+	
+	
+	
 	@GetMapping("/login")
 	public String login() {
 		return "memberView/login";
@@ -368,4 +417,31 @@ public class MemberController {
 		
 		return new ResponseEntity<Resource>(resource, header, HttpStatus.OK);
 	}
+	
+	
+	// 0925 세련씨
+	
+	@GetMapping("/blockLogin")//Model은 무조건 html로 데이터를 보내주는 상자 
+	public String blockLogin(Member member, Model model, @AuthenticationPrincipal UserDetails user) {
+		
+		log.debug("memberId의 값: {}" , member);
+		member = mService.selectOneMember(user.getUsername());
+		//"${member}"와 아래 "member" 같은 거임. (이름 무좍권 같게 해야한다!!!!!!!!!!!)
+		model.addAttribute("member", member);
+		
+		return "memberView/blockLogin"; 
+	}
+	
+	@PostMapping("/blockLogin")
+	public String blockLogin(@AuthenticationPrincipal UserDetails user) {
+		Member member = mService.selectOneMember(user.getUsername());
+		mService.blockLogin(member);
+		
+		return "redirect:/";
+	}
+	
+	
+	
+	
+	
 }

@@ -37,4 +37,16 @@ public interface MemberService {
 	
 	// 0924 멤버에 룸아이디 추가
 	public int setRoomId(Member member);
+	
+	// 0925 세련씨
+	public int blockLogin(Member member);
+	
+	// checkPnum
+	public int checkPnum(String pinNumber);
+	// 멤버ID 찾기
+	public String findMemberId(String pinNumber);
+	// 멤버Pw 찾기
+	public int updatePw(Member member);
+
+
 }

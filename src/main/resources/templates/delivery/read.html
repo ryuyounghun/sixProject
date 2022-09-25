@@ -59,7 +59,7 @@
 						</a>
 					</li>
 					<li sec:authorize="isAuthenticated">
-						<a th:href ="@{/member/mypage}">
+						<a th:href="|@{/member/mypage}?num=${member.memberNum}|">
 							회원정보
 						</a>
 					</li>
