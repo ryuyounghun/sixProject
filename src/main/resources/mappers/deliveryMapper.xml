@@ -361,5 +361,12 @@
 		REVIEW
 		WHERE MEMBERNUM = #{memberNum}
 	</select>
+	
+	<!-- 0925 추가 -->
+	<select id="selectStoreByStoreName" parameterType="string" resultType="Store">
+		SELECT * FROM
+		STORE
+		WHERE STORENAME = #{storeName}
+	</select>
 </mapper>
 

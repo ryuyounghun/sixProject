@@ -468,12 +468,13 @@ public class ComunnityController{
 
 	// 0923 추가
 	@PostMapping("/deleteBoard")
-	public String deleteBoard(int classNum, String roomId) {
+	@ResponseBody
+	public void deleteBoard(int classNum, String roomId) {
 		
 		cService.deleteClassBoard(classNum);
 		chatService.deleteOneRoom(roomId);
 		
-		return "/community/index";
+		
 	}
 	
 	// 0923 추가
@@ -502,5 +503,50 @@ public class ComunnityController{
 		Store store = dService.selectOneStore(storeNum);
 		
 		return store;
+	}
+	
+	// 0925 추가
+	@GetMapping("/storeInfo")
+	@ResponseBody
+	public Store storeInfo(int classNum) {
+		
+		ClassBoard cBoard = cService.selectOneClassBoard(classNum);
+		
+		Store store = dService.selectStoreByStoreName(cBoard.getTitle());
+		
+		return store;
+	}
+	
+	// 0925 추가
+	@GetMapping("/storeDisplay")
+	public ResponseEntity<Resource> storeDisplay(int num) {
+		
+		log.debug("num : {}", num);
+		
+		Store store = dService.selectOneStore(num);
+		
+		Resource resource 
+			= new FileSystemResource(uploadPath + "/" + store.getSavedFile());
+	
+		// 파일이 존재하지 않을때
+		if(!resource.exists()) {
+			return new ResponseEntity<Resource>(HttpStatus.NOT_FOUND);
+		} 
+		
+		HttpHeaders header = new HttpHeaders();
+		
+		Path filePath = null;
+		
+		try {
+			filePath = Paths.get(uploadPath + "/" + store.getSavedFile());
+			
+			// response의 header에
+			// 제가 첨부한 내용의 타입은 파일이에요
+			header.add("Content-type", Files.probeContentType(filePath));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return new ResponseEntity<Resource>(resource, header, HttpStatus.OK);
 	}
 }

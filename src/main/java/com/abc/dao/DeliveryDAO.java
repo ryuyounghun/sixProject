@@ -73,4 +73,5 @@ public interface DeliveryDAO {
 	
 	// 0925추가
 	public List<Review> selectReviewListByMemberNum(int memberNum);
+	public Store selectStoreByStoreName(String storeName);
 }

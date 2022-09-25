@@ -205,9 +205,9 @@ $(document).ready(function () {
 	    
     // 입력한 값을 태그로 생성한다.
     function addTag (value) {
-        tag[counter] = value;
+    	// 0925 추가
+        tag[counter] = "#" + value;
         counter++; 
-    	
     }
 
     function marginTag () {

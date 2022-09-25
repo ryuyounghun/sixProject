@@ -3,6 +3,7 @@ $(document).ready(function() {
 		partyPeople();
 		$("#btn").on("click",function() { mmaapp(); });
 		deleteClassBoard();
+		storeInfo();
 	});
 	
 	function getParameterByName(name) {
@@ -11,6 +12,31 @@ $(document).ready(function() {
 		  results = regex.exec(location.search);
 		  return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
 	}
+	
+	// 0925 추가
+	function storeInfo() {
+		let classNum = getParameterByName('num');
+		$.ajax({
+			url : "storeInfo",
+			type : "get",
+			data : {"classNum" : classNum},
+			success : function(data) {
+				console.log(data);
+				let htmlStr = "<p></p>";
+				if(data != null) {
+					htmlStr = "<table>";
+					htmlStr += "<tr><th><img src='storeDisplay?num=" + data.storeNum + "'></th>";
+					htmlStr += "<th><a href='/delivery/read?num=" + data.storeNum + "'>" + data.storeName + "</a></th></tr>";
+				} else {
+					htmlStr = "<p>지정된 가게는 없습니다.</p>";
+				}
+				$("#storeInfo").html(htmlStr);
+			}
+			
+		});
+	}
+	
+	
 	
 	// 0923 추가
 	function deleteBoard() {
@@ -22,7 +48,7 @@ $(document).ready(function() {
 			data : {"classNum" : classNum, "roomId" : roomId},
 			success : function() {
 				console.log("a;sdklfj");
-				location.href="/community/index";
+				location.href="index";
 			}
 		});
 	}
@@ -168,11 +194,11 @@ $(document).ready(function() {
 			// 마커를 표시할 위치와 내용을 가지고 있는 객체 배열입니다 
 			var positions = [
 			    {
-			        content: '<div>목적지</div>', 
+			        content: '<div>우리집</div>', 
 			        latlng: new kakao.maps.LatLng(dX, dY)
 			    },
 			    {
-			        content: '<div>우리집</div>', 
+			        content: '<div>목적지</div>', 
 			        latlng: new kakao.maps.LatLng(sX, sY)
 			    },
 			    {
@@ -219,7 +245,7 @@ $(document).ready(function() {
 			}
 			
 			var polyline = new daum.maps.Polyline({
-				/* map:map, */
+				map:map,
 				path : [
 				new daum.maps.LatLng(sX, sY),
 				new daum.maps.LatLng(dX, dY)
@@ -227,7 +253,7 @@ $(document).ready(function() {
 			 strokeWeight: 2,
 			 strokeColor: '#FF00FF',
 			 strokeOpacity: 0.8,
-			 strokeStyle: 'dashed'
+			 strokeStyle: 'solid'
 			});
 
 			//return getTimeHTML(polyline.getLength());//미터단위로 길이 반환;
@@ -235,6 +261,5 @@ $(document).ready(function() {
 			
 			$("#m").text(polyline.getLength()+"미터");
 			return polyline.getLength();			    
-			
 	}	
 	
