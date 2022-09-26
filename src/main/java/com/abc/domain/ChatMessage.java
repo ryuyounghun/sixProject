@@ -1,14 +1,16 @@
-package com.abc.model;
+package com.abc.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class ChatMessage {
     public enum MessageType {
         ENTER, TALK
@@ -21,4 +23,6 @@ public class ChatMessage {
     private String sender;
     //내용
     private String message;
+    
+    private String inputdate;
 }

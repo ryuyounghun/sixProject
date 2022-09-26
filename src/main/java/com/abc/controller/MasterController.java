@@ -12,9 +12,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.abc.domain.BannedMember;
 import com.abc.domain.Coupon;
 import com.abc.domain.Member;
+import com.abc.domain.MessageReport;
 import com.abc.domain.MyCoupon;
+import com.abc.service.ChatMessageService;
 import com.abc.service.MasterService;
 import com.abc.service.MemberService;
 
@@ -26,6 +29,8 @@ import lombok.extern.slf4j.Slf4j;
 public class MasterController {
 
 	String m = "master/";
+	@Autowired
+	private ChatMessageService cmService;
 	
 	@Autowired
 	private MasterService mtService;
@@ -85,5 +90,50 @@ public class MasterController {
 		mtService.insertMyCoupon(myCoupon);
 		
 		return "akak";
+	}
+	
+	@GetMapping("/reportHandling")
+	public String reportHandling(Model model){
+		
+		List<MessageReport> cmList = cmService.selectAllReportMessage();
+		
+		model.addAttribute("cmList",cmList);
+		return m+"/reportHandling";
+	}
+	@GetMapping("/handleReport")
+	public String handleReport(int reportNum) {
+		log.debug("{}",reportNum);
+		MessageReport mr = mtService.selectOneReport(reportNum);
+		log.debug("mr : {}", mr.getMessage());
+		log.debug("mr : {}", mr.getSender());
+		
+		mtService.banMember(mr.getSender());
+		BannedMember bm = new BannedMember();
+		
+		bm.setMemberId(mr.getSender());
+		bm.setMessage(mr.getMessage());
+		bm.setReporter(mr.getReporter());
+		
+		mtService.insertBanListMember(bm);
+		return "redirect:/master/reportHandling";
+	}
+	
+	@GetMapping("/bannedList")
+	public String bannedList(Model model){
+		
+		List<Member> bannedList = mtService.selectAllBannedList();
+		
+		
+		model.addAttribute("bannedList",bannedList);
+		
+		return m+"/bannedList";
+	}
+	@GetMapping("/unbanMember")
+	public String unbanMember(String memberId) {
+		
+		mtService.unBanMember(memberId);
+		mtService.deleteBanMember(memberId);
+		
+		return "redirect:/master/bannedList";
 	}
 }

@@ -13,18 +13,11 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class ClassBoard {
+public class MyChatRoom {
 
-	private int classNum;
-	private String classTag;
+	
 	private int memberNum;
-	private String destination;
-	private int totalMember;
-	private String nickname;
-	private String title;
-	private String content;
-	private String inputdate;
 	private String roomId;
-	private String originalFile;	 
-	private String savedFile;
+	private String roomName;
+	private String inputdate;
 }

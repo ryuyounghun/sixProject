@@ -1,0 +1,52 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.abc.dao.ChatDAO">
+
+	<insert id="insertChatRoom" parameterType="map">
+		INSERT INTO CHATROOM(
+			ROOMID,
+			ROOMNAME
+		)VALUES(
+			#{roomId},
+			#{roomName}
+		)
+	</insert>
+	
+	<select id="findAllRoom" resultType="ChatRoom" parameterType="map">
+		SELECT * FROM
+		CHATROOM
+		<if test="searchKeyword != null">
+			<where>
+				ROOMNAME LIKE '%'||#{searchKeyword}||'%'
+			</where>
+		</if>
+		
+		ORDER BY INPUTDATE DESC
+	</select>
+	
+	<delete id="deleteRoom" parameterType="string">
+		DELETE FROM CHATROOM
+		WHERE ROOMID = #{roomId}
+	</delete>
+	
+	<select id="findOneRoom" resultType="ChatRoom">
+		SELECT * FROM
+		CHATROOM
+		WHERE ROOMID = #{roomId}
+	</select>
+	
+	<insert id="insertMyChatRoom" parameterType="MyChatRoom">
+		INSERT INTO MYCHATROOM(
+			MEMBERNUM,
+			ROOMID,
+			ROOMNAME		
+		)VALUES(
+			#{memberNum},
+			#{roomId},
+			#{roomName}
+		)
+	</insert>
+</mapper>
+

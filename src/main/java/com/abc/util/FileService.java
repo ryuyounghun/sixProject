@@ -31,7 +31,7 @@ public class FileService {
 		//저장 폴더가 없으면 생성
 		File path = new File(uploadPath);
 		if (!path.isDirectory()) {
-			path.mkdirs();
+				path.mkdirs();
 		}
 		
 		//원본 파일명

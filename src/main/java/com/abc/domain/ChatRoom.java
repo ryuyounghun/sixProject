@@ -1,4 +1,4 @@
-package com.abc.model;
+package com.abc.domain;
 
 import java.util.UUID;
 
@@ -13,6 +13,7 @@ public class ChatRoom {
 
     private String roomId;
     private String roomName;
+    private String inputdate;
 
 
     public static ChatRoom create(String name) {

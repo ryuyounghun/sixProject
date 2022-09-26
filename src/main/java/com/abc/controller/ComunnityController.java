@@ -25,13 +25,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.abc.domain.ChatRoom;
 import com.abc.domain.ClassBoard;
 import com.abc.domain.ClassRoom;
 import com.abc.domain.FileDTO;
 import com.abc.domain.FreeBoard;
 import com.abc.domain.Member;
+import com.abc.domain.MyChatRoom;
 import com.abc.domain.Reply;
-
+import com.abc.service.ChatService;
 import com.abc.service.ClassBoardService;
 import com.abc.service.FreeBoardService;
 import com.abc.service.MemberService;
@@ -51,6 +53,9 @@ public class ComunnityController{
 
 	@Autowired
 	ClassBoardService cService; 
+	
+	@Autowired
+	private ChatService chatService;
 	
 	
 	@Autowired
@@ -74,10 +79,18 @@ public class ComunnityController{
 	@Value("${user.board.group}")
 	private int pagePerGroup;
 	
+	// 경험치 추가 공통메서드
+	private void addExp(String memberId) {
+			
+		
+	}
+
+	
 	@GetMapping({"/","/index"})
 	public String communityIndex(Model model,
 			@RequestParam(name="page", defaultValue = "1" )int page) {
 		log.debug("index실행");
+		
 		
 		List<ClassBoard> cbList = null;
 		PageNavigator cbNavi = cService.getPageNavigator(
@@ -137,8 +150,23 @@ public class ComunnityController{
 		cBoard.setMemberNum(mNum);
 		
 		log.debug("write cBoard : {}", cBoard);
-		cService.insertClassBoard(cBoard);
 		
+		// 채팅방 생성
+		MyChatRoom myCtRoom = new MyChatRoom();
+		ChatRoom ctRoom = chatService.createRoom(cBoard.getTitle());
+		
+		myCtRoom.setMemberNum(member.getMemberNum());
+    	myCtRoom.setRoomId(ctRoom.getRoomId());
+    	myCtRoom.setRoomName(ctRoom.getRoomName());
+    	
+    	chatService.insertMyChatRoom(myCtRoom);
+    	// 채팅방 생성 끝
+		
+		// 파티 생성
+		cBoard.setRoomId(ctRoom.getRoomId());
+		cService.insertClassBoard(cBoard);
+		// 파티생성 완료
+		    	
 		// 파티원객체 생성
 		cRoom.setClassNum(cBoard.getClassNum());
 		cRoom.setMemberNum(member.getMemberNum());
