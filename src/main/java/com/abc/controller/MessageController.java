@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.abc.domain.ChatMessage;
 import com.abc.domain.Member;
+import com.abc.domain.MessageReport;
+import com.abc.service.ChatMessageService;
 import com.abc.service.ChatService;
 import com.abc.service.MemberService;
 
@@ -23,8 +25,9 @@ public class MessageController {
 
     private final SimpMessageSendingOperations sendingOperations;
 
+    
     @Autowired
-    private ChatService chatService;
+    private ChatMessageService cmService;
     
     @Autowired
     private MemberService mService;
@@ -40,5 +43,17 @@ public class MessageController {
         sendingOperations.convertAndSend("/topic/chat/room/"+message.getRoomId(),message);
     }
     
-    
+    @MessageMapping("/chat/report")
+    public String reportMessage(MessageReport mr) {
+    	log.debug("신고정보");
+    	log.debug(mr.getReporter());
+    	log.debug(mr.getMessage());
+    	log.debug(mr.getSender());
+    	log.debug(mr.getRoomId());
+    	log.debug("========");
+    	
+    	cmService.insertReportMessage(mr);
+    	
+    	return "";
+    }
 }
