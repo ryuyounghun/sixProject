@@ -14,10 +14,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.abc.domain.BannedMember;
 import com.abc.domain.Coupon;
+import com.abc.domain.ExpBoard;
 import com.abc.domain.Member;
 import com.abc.domain.MessageReport;
 import com.abc.domain.MyCoupon;
 import com.abc.service.ChatMessageService;
+import com.abc.service.ExpBoardService;
 import com.abc.service.MasterService;
 import com.abc.service.MemberService;
 
@@ -38,6 +40,9 @@ public class MasterController {
 	
 	@Autowired
 	private MemberService mService;
+	
+	@Autowired
+	private ExpBoardService expService;
 	
 	@GetMapping({ "/", "/index" })
 	public String index() {
@@ -136,5 +141,14 @@ public class MasterController {
 		mtService.deleteBanMember(memberId);
 		
 		return "redirect:/master/bannedList";
+	}
+	
+	@PostMapping("/insertExp")
+	public String insertExp(ExpBoard exp) {
+		
+		log.debug("insertExpBoard : {}", exp);
+		expService.insertExpBoard(exp);
+		
+		return "redirect:./";
 	}
 }

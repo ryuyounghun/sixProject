@@ -67,12 +67,10 @@
 					<div class="section-center">
 						<h1>관리자 페이지</h1>
 						
-					  		<a th:href="@{/delivery/inputStore}"><input value = "가게등록 승인" class="btn btn-primary" type="button"></a>
-						  	<a th:href="@{/master/insertCoupon}"><input value = "쿠폰등록" class="btn btn-primary" type="button"></a>
-						  	<a th:href="@{/exp/insertExp}"><input value = "레벨 관리" class="btn btn-primary" type="button"></a>
+						  	<input value = "쿠폰등록" class="btn btn-primary" type="button" id="insertCouponBtn">
+						  	<input value = "레벨 관리" class="btn btn-primary" type="button" id="insertExpBtn">
 						  	<a th:href="@{/master/reportHandling}"><input value = "채팅 신고 처리" class="btn btn-primary" type="button"></a>
 						  	<a th:href="@{/master/bannedList}"><input value = "계정 복구" class="btn btn-primary" type="button"></a>
-					
 					</div>
 				</div>	
 			</div>		
@@ -84,5 +82,175 @@
 	<footer>
 		
 	</footer>
+	
+	
+	<!-- Modal -->
+	<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	  <div class="modal-dialog odal-dialog-centered modal-dialog-scrollable">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+	      </div>
+	      <div class="modal-body">
+	      	<div id="insertCoupon">
+				<form action = "insertCoupon" method = "post" onsubmit="return checkValues();">
+					<div class = "section-center">
+						<!-- 쿠폰명 -->
+						<label for = "insertCoupon_name">쿠폰명</label>
+						<div class = "joinIdWrap">
+						<input type = "text" id = "couponId" name = "couponName" placeholder="쿠폰명을 입력해주세요." required>
+						<input type = "hidden" id = "couponIdCheck" value = 0><br>
+						<span id = "text1"></span>
+						</div> <!-- joinIdWrap 부분 끝 -->
+						
+						<!-- 쿠폰 금액 -->
+						<label for = "insertCoupon_title">쿠폰 금액</label>
+						<div class = "joinIdWrap">
+						<select id = "couponBill" name = "couponPoint" required style="font-size:30px;">
+							<option>금액을 고르세요.</option>
+							<option value=1000>1000</option>
+							<option value=5000>5000</option>
+							<option value=10000>10000</option>
+							<option value=50000>50000</option>
+							<option value=100000>100000</option>								
+						</select>
+						<input type = "hidden" id = "couponBillCheck" value = 0><br>
+						<span id = "text2"></span>
+						</div> <!-- joinIdWrap 부분 끝 -->
+						
+						<!-- 버튼 -->
+						<div class = "buttons">
+							<button type = "submit">등록하기</button>&nbsp;&nbsp;&nbsp;
+							<button type = "reset">취소하기</button>
+						</div>
+						</div><!-- section-center 부분 끝 -->
+					</form>
+	      	</div>
+			<div class = "ExpContent" id="insertExp">
+		<h2>레벨 관리하기</h2>
+				<form action = "insertExp" method = "post">
+					<div class = "section-center">
+						<fieldset class = "requiredInfo">
+						<span id = "userLevelBox">사용자 Level 지정하기</span>
+						<select name = "userLevel" class = "selectbox">
+							<option value = "" class = "level-option">레벨을 선택해주세요.</option>
+							<option value = "2" class = "level-option">2</option>
+							<option value = "3" class = "level-option">3</option>
+							<option value = "4" class= "level-option">4</option>
+							<option value = "5" class = "level-option">5</option>
+							<option value = "6" class = "level-option">6</option>
+							<option value = "7" class = "level-option">7</option>
+							<option value = "8" class = "level-option">8</option>
+							<option value = "9" class = "level-option">9</option>
+							<option value = "10" class = "level-option">10</option>
+						</select>
+						<span id = "userExpBox">사용자 Exp 지정하기</span>
+							<input type = "text" name = "userExp" placeholder="내용을 입력해주세요." required> 
+						</fieldset>
+						<div id = "buttonBox">
+							<button type = "submit" id = "rightBtn">등록하기</button>&nbsp;&nbsp;&nbsp;
+							<button type = "reset" id = "cancelBtn">취소하기</button>
+						</div>
+					</div><!-- section-center 부분 끝 -->
+				</form>
+			</div>	
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+	        <button type="button" class="btn btn-primary">Save changes</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	<script>
+	
+	$(document).ready(function(){
+		checkCouponName();
+		$("#insertCoupon").hide();
+		$("#insertExp").hide();
+		$("#insertCouponBtn").click(function() { insertCoupon(); });
+		$("#insertExpBtn").click(function() { insertExp(); });
+	});
+	
+	function insertCoupon() {
+		let htmlStr = "<h2>쿠폰 등록하기</h2>";
+		$("#exampleModalLabel").html(htmlStr);
+		$("#insertCoupon").show();
+		$("#exampleModal").modal("show");
+	}
+	
+	function insertExp() {
+		let htmlStr = "<h2>레벨 관리</h2>";
+		$("#exampleModalLabel").html(htmlStr);
+		$("#insertExp").show();
+		$("#exampleModal").modal("show");
+	}
+	
+	
+	function checkCouponName() {
+		$("#couponId").on("blur", function(){
+			let cpId = $("#couponId").val();
+			let nameExp = /[가-힣]{3,21}/;
+			
+			if(cpId.length < 3 || cpId.length > 21){
+				$("#text1").text("쿠폰명은 3~20자리 이내로 입력해주세요.").css("color", "red");
+				$("#couponIdCheck").val("0");
+			} else if(!nameExp.test(cpId)){
+				$("#text1").text("쿠폰명은 한글로만 입력해주세요.").css("color", "red");
+				$("#couponIdCheck").val("0");
+			} else {
+				$("#text1").text("멋진 쿠폰명입니다!").css("color", "green");
+				$("#couponIdCheck").val("1");
+			}
+		});
+	}
+	
+	function checkValues() {
+		let couponId = document.getElementById('couponId');
+		let nameExp = /^[가-힣]{3,21}$/;
+		
+		if(couponId.value.trim().length == 0){
+			alert('쿠폰명을 입력해주세요.');
+			couponId.focus();
+			return false;
+		} else if(couponId.value.trim().length < 3 || couponId.value.trim().length > 21){
+			alert('쿠폰명은 3~12글자 사이로 입력해주세요.');
+			couponId.focus();
+			return false;
+		} else if (!nameExp.test(couponId.value)){
+			alert('쿠폰명은 한글로1만 입력해주세요. ');
+			couponId.focus();
+			return false;
+		} 
+		
+		let couponBill = document.getElementById('couponBill');	
+		
+		if(couponBill.value.trim().length == 0){
+			alert('쿠폰금액을 입력해주세요.');
+			couponBill.focus();
+			return false;
+		} else if(couponBill.value.trim().length < 3 || couponBill.value.trim().length > 7){
+			alert('쿠폰금액 3~7글자 사이로 입력해주세요.');
+			couponBill.focus();
+			return false;
+		} 
+		
+
+		let couponIdCheck = document.getElementById("couponIdCheck");
+		if(couponIdCheck.value == 0) {
+			return false;
+		} else {
+			return true;
+		}
+		
+		let couponBillCheck = document.getElementById("couponBillCheck");
+		if(couponBillCheck.value == 0){
+			return false;
+		} else {
+			return true;
+		}
+	} 
+	</script>
 </body>
 </html>

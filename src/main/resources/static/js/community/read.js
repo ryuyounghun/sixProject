@@ -23,7 +23,7 @@ $(document).ready(function() {
 			success : function(data) {
 				console.log(data);
 				let htmlStr = "<p></p>";
-				if(data != null) {
+				if(data != "") {
 					htmlStr = "<table>";
 					htmlStr += "<tr><th><img src='storeDisplay?num=" + data.storeNum + "'></th>";
 					htmlStr += "<th><a href='/delivery/read?num=" + data.storeNum + "'>" + data.storeName + "</a></th></tr>";
@@ -47,7 +47,6 @@ $(document).ready(function() {
 			type : "post",
 			data : {"classNum" : classNum, "roomId" : roomId},
 			success : function() {
-				console.log("a;sdklfj");
 				location.href="index";
 			}
 		});
@@ -132,7 +131,6 @@ $(document).ready(function() {
 				console.log(data);
 				
 				let htmlStr = "";
-				
 				$.each(data, function(index, item) {
 					htmlStr += "<table><tr>";
 					htmlStr += "<td>" + item.memberNum + "</td>";

@@ -122,7 +122,11 @@ public class DeliveryController {
 	}
 	
 	@GetMapping("/storeList")
-	public String storeList() {
+	public String storeList(Model model,
+			@AuthenticationPrincipal UserDetails user) {
+		Member member = mService.selectOneMember(user.getUsername());
+		
+		model.addAttribute("member", member);
 		return d + "/storeList";
 	}
 	

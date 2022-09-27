@@ -4,7 +4,7 @@
 	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<title>마이페이지(수정 중)</title>
+<title>마이페이지</title>
 <link rel="stylesheet" href="/css/member/mypage.css">
 <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
@@ -60,9 +60,13 @@
 		$("#myCouponListBtn").hide();
 		$("#orderListBtn").hide();
 		$("#reviewModal").hide();
+		$("#sellerPageBtn").hide();
 		showMenuList();
 		$("#orderListBtn").click(function() { myOrderList(); });
 		myReviews();
+		
+		// 0927 추가 
+		$("#sellerPageBtn").click(function() { location.href="/delivery/sellerPage"; });
 	});
 	
 	function getParameterByName(name) {
@@ -82,6 +86,7 @@
 			$("#buyCouponsBtn").show();
 			$("#myCouponListBtn").show();
 			$("#orderListBtn").show();
+			$("#sellerPageBtn").show();
 		} 
 		
 	}
@@ -379,7 +384,9 @@
 					<div class="aside-left">
 						
 						<h2 th:text="${memberPage.memberName}"></h2>
-						
+						<div class = "expBar">
+							<span class = "expBar"></span>
+						</div>
 							
 						<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
 						  채팅걸기
@@ -401,7 +408,9 @@
 								<li id="orderListBtn">
 									주문 리스트
 								</li>
-								
+								<li id="sellerPageBtn">
+									판매자 페이지
+								</li>
 							</ul>
 						</div>	
 						
@@ -421,9 +430,7 @@
 				<div id="mainMypage">
 					
 					
-					<div class = "expBar">
-						<span class = "expBar">경험치 바(임시)</span>
-					</div>
+					
 					
 					<div class="partyJoinOut">
 						<div style="overflow:scroll; height:360px; width:300px;">

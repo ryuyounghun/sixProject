@@ -369,7 +369,8 @@ public class ComunnityController{
 	}
 
 	@PostMapping("/fbWriteReply")
-	public String fbWriteReply(Reply reply, @AuthenticationPrincipal UserDetails user) {
+	public String fbWriteReply(Reply reply,
+			@AuthenticationPrincipal UserDetails user) {
 		log.debug("reply : {}", reply);
 		
 		String memberId = user.getUsername();
@@ -437,7 +438,12 @@ public class ComunnityController{
 	@GetMapping("/partyIndex")
 	public String partyIndex(Model model,
 			@RequestParam(name = "page", defaultValue="1") int page,
-			String searchWord) {
+			String searchWord,
+			@AuthenticationPrincipal UserDetails user) {
+		
+		Member member = mService.selectOneMember(user.getUsername());
+		
+		model.addAttribute("member", member);
 		
 		log.debug(searchWord);
 		List<ClassBoard> cbList = null;

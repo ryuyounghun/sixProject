@@ -72,9 +72,7 @@
 						</a>
 					</li>
 					<li sec:authorize="isAuthenticated">
-						<a th:href ="@{/member/mypage}">
-							회원정보
-						</a>
+						<a th:href="|@{/member/mypage}?num=${member.memberNum}|"> 회원정보 </a>
 					</li>
 				</ui>
 
@@ -131,6 +129,7 @@
 						<div class="menuImg">
 							<div id="storeInfo"></div>
 							<div th:text="${cBoard.classTag}"></div>
+							<div id="roomContent" th:text="${cBoard.content}"></div>
 						</div>
 						
 						<div class="participient">

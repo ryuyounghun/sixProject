@@ -7,8 +7,29 @@
 
 	<!-- 회원정보 등록 쿼리 -->
 	<insert id = "insertMember" parameterType = "member">
-		INSERT INTO DELIVERY_MEMBER (MEMBERNUM, MEMBERID, MEMBERPW, MEMBERNAME, NICKNAME, ADDRESS, PHONE, PINNUMBER)
-		VALUES (DELIVERY_MEMBER_SEQ.NEXTVAL, #{memberId}, #{memberPw}, #{memberName}, #{nickname}, #{address}, #{phone}, #{pinNumber})
+		INSERT INTO DELIVERY_MEMBER (
+			MEMBERNUM, 
+			MEMBERID, 
+			MEMBERPW, 
+			MEMBERNAME, 
+			NICKNAME, 
+			ADDRESS, 
+			PHONE
+			<if test="pinNumber != null"> 
+				,PINNUMBER
+			</if>
+		)VALUES (
+			DELIVERY_MEMBER_SEQ.NEXTVAL, 
+			#{memberId}, 
+			#{memberPw}, 
+			#{memberName}, 
+			#{nickname}, 
+			#{address}, 
+			#{phone} 
+			<if test="pinNumber != null">
+				,#{pinNumber}
+			</if>
+		)
 	</insert>
 	<!-- 0924 추가 -->
 	<update id="setRoomId" parameterType="Member">
