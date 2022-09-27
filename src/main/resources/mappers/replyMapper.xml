@@ -12,7 +12,8 @@
 				BOARDNUM,
 				MEMBERNUM,
 				NICKNAME,
-				CONTENT
+				CONTENT,
+				MEMBERLEVEL
 			)
 		VALUES
 			(
@@ -22,7 +23,8 @@
 				(SELECT NICKNAME 
 				FROM DELIVERY_MEMBER
 				WHERE MEMBERNUM = #{memberNum}),
-				#{content}
+				#{content},
+				#{memberLevel}
 			)
 		
 	</insert>	

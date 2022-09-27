@@ -28,6 +28,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.abc.domain.ChatRoom;
 import com.abc.domain.ClassBoard;
 import com.abc.domain.ClassRoom;
+import com.abc.domain.ExpBoard;
 import com.abc.domain.FileDTO;
 import com.abc.domain.FreeBoard;
 import com.abc.domain.Member;
@@ -35,6 +36,7 @@ import com.abc.domain.MyChatRoom;
 import com.abc.domain.Reply;
 import com.abc.service.ChatService;
 import com.abc.service.ClassBoardService;
+import com.abc.service.ExpBoardService;
 import com.abc.service.FreeBoardService;
 import com.abc.service.MemberService;
 import com.abc.service.ReplyService;
@@ -66,7 +68,10 @@ public class ComunnityController{
 	
 	@Autowired
 	ReplyService rService; 
-	
+
+	@Autowired
+	ExpBoardService expService;
+
 	// page당 글 수
 	@Value("${user.board.page}")
 	private int countPerPage;
@@ -79,18 +84,53 @@ public class ComunnityController{
 	@Value("${user.board.group}")
 	private int pagePerGroup;
 	
-	// 경험치 추가 공통메서드
+	// 글 쓸 떄 경험치 추가 공통메서드
 	private void addExp(String memberId) {
 			
+		mService.addExp(memberId);
+	}
+	
+	// 댓글 쓸 떄 경험치 추가 공통메서드
+	private void addExpByReply(String memberId) {
+		
+		mService.addExpByReply(memberId);
 		
 	}
-
+	// 레벨 계산 메서드
+	public int calcLevel(int exp) {
+		List<ExpBoard> list = expService.getLevelList();
+		int mExp = exp;
+		int mLevel = 1;
+		log.debug("mExp: {}", mExp);
+		for ( int i = 0; i< list.size(); i++) {
+			if ( i == list.size()-1){
+				log.debug("레벨2 : {}", i);
+				log.debug("레벨2 : {}", list.get(i).getUserLevel());
+				log.debug("레벨2 : {}", list.get(i).getUserExp());
+				mLevel = list.get(i).getUserLevel();
+				
+			}
+			else if (list.get(i).getUserExp() <= mExp 
+					|| list.get(i+1).getUserExp() > mExp ) {
+				
+				log.debug("레벨1 : {}",list.get(i).getUserExp());
+				log.debug("레벨1 : {}",list.get(i).getUserLevel());
+				mLevel = list.get(i).getUserLevel();
+				break;
+			}
+		}
+		log.debug("레벨5 : {}", mLevel);
+		return mLevel;
+		
+	}
 	
 	@GetMapping({"/","/index"})
 	public String communityIndex(Model model,
-			@RequestParam(name="page", defaultValue = "1" )int page) {
+			@RequestParam(name="pagem", defaultValue = "1" )int page
+			) {
 		log.debug("index실행");
 		
+			
 		
 		List<ClassBoard> cbList = null;
 		PageNavigator cbNavi = cService.getPageNavigator(
@@ -137,15 +177,23 @@ public class ComunnityController{
 	@PostMapping("/classWrite")
 	public String classWrite(ClassBoard cBoard,
 			@AuthenticationPrincipal UserDetails user) {
-
 		log.debug("Post classWrite()시작");
 		ClassRoom cRoom = new ClassRoom();
 		Member member = mService.selectOneMember(user.getUsername());	
+		
+		log.debug( "레벨3:{}",member.getMemberLevel());
+		log.debug( "경험치:{}",member.getMemberExp());
+		log.debug( "레벨4:{}",member.getMemberLevel());
 
+		// 레벨 추가 패치
+		addExp(user.getUsername());
+		member.setMemberLevel( calcLevel(member.getMemberExp()) );
+		cBoard.setMemberLevel(member.getMemberLevel());
+		
 		// 게시판 객체 설정
 		String mNickname = member.getNickname();
 		cBoard.setNickname(mNickname);
-		
+
 		int mNum = member.getMemberNum();
 		cBoard.setMemberNum(mNum);
 		
@@ -212,6 +260,14 @@ public class ComunnityController{
 		Member m = mService.selectOneMember(user.getUsername());
 		fBoard.setMemberNum(m.getMemberNum());
 		fBoard.setNickname(m.getNickname());
+		fBoard.setMemberLevel(m.getMemberLevel());
+		
+		// 레벨 추가 패치
+		addExp(user.getUsername());
+		m.setMemberLevel( calcLevel(m.getMemberExp()) );
+		fBoard.setMemberLevel(m.getMemberLevel());
+				
+		
 		log.debug("FreeBoard : {}", fBoard);
 		
 		if ( files.length > 0 ) {
@@ -226,7 +282,6 @@ public class ComunnityController{
 		else { //파일 없을 때의 등록
 			fService.registerBoard(fBoard);
 		}
-		
 		return "redirect:./index"; // .../board/
 				
 	}
@@ -298,7 +353,13 @@ public class ComunnityController{
 		
 		reply.setMemberNum(member.getMemberNum());
 		
+		// 레벨 추가 패치
+		addExpByReply(user.getUsername());
+		member.setMemberLevel( calcLevel(member.getMemberExp()) );
+		reply.setMemberLevel(member.getMemberLevel());
+
 		rService.insertReply(reply);
+				
 		
 		// 하나의 메소드를 최대한 활용하기위ㅐ 쿼리스트링으로 보내주기
 		// #(id값) : 해당 id로 포커스()

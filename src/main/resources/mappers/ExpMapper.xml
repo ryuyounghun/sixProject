@@ -16,5 +16,13 @@
 			#{userExp}
 		)
 	</insert>
+	
+	<select id="getLevelList" resultType="ExpBoard">
+		SELECT 
+			*
+		FROM
+			EXP_TABLE
+		ORDER BY USERLEVEL DESC
+	</select>
 </mapper>
 

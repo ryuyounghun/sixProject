@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.abc.domain.ExpBoard;
 import com.abc.domain.Member;
 import com.abc.domain.MyCoupon;
+import com.abc.service.ExpBoardService;
 import com.abc.service.MasterService;
 import com.abc.service.MemberService;
 
@@ -30,17 +32,20 @@ public class MemberController {
 	@Autowired
 	private MasterService mtService;
 	
+	
 	@GetMapping("/join")
 	public String join() {
 		log.debug("join() 실행");
 		return "memberView/join";
 	}
 	
+	
+	
+	
 	// 회원가입을 실행하는 기능
 	@PostMapping("/join")
 	public String join(Member member) {
 		log.debug("member의 정보 : {}", member);
-		
 		// service에 Member 객체 전송
 		int result = mService.insertMember(member);
 		
@@ -120,7 +125,9 @@ public class MemberController {
 			
 			Member member = mService.selectOneMember(user.getUsername());
 			
+			
 			model.addAttribute("member", member);
+			
 			
 			return "memberView/mypage";
 		}

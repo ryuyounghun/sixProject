@@ -19,4 +19,9 @@ public interface MemberDAO {
 	public int checkId(String memberId);
 	//회원정보 수정하기
 	public int updateMember(Member member);
+	// 글 쓸 때 경험치 추가하기
+	public int addExp(String memberId);
+	// 댓글 쓰면 경치 추가
+	public int addExpByReply(String memberId);
+
 }

@@ -5,6 +5,8 @@
 <meta charset="UTF-8">
 <title>레벨 관리하기(관리자용_수정중)</title>
 <link rel="stylesheet" href="/css/exp/insertExp_style.css">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
 </head>
 <body>
 	<div id="headerAndSection-wrapper">
@@ -74,10 +76,11 @@
 										<option value = "7" class = "level-option">7</option>
 										<option value = "8" class = "level-option">8</option>
 										<option value = "9" class = "level-option">9</option>
+										<option value = "10" class = "level-option">10</option>
 										<option value = "0" class = "level-option">직접입력</option>
 									</select>
-									<span id = "userExpBox">사용자 Exp 지정하기</span>
-										<input type = "text" name = "userExp" placeholder="내용을 입력해주세요." required> 
+									<span id = "userExpBox">레벨을 위한 필요 Exp 지정하기</span>
+										<input id="userExp" type = "text" name = "userExp" placeholder="내용을 입력해주세요." required> 
 									</fieldset>
 									<div id = "buttonBox">
 										<button type = "submit" id = "rightBtn">등록하기</button>&nbsp;&nbsp;&nbsp;
@@ -93,5 +96,16 @@
 		<!-- 풋터 시작  -->
 		<footer>
 		</footer>
+		<script type="text/javascript">
+			function checkValues(){
+				let userExp = $("#userExp").val();
+					
+				if ( isNaN(userExp)){
+					alert("필요한 Exp 칸은 숫자만 입력해주세요");
+					$("#userExp").focus();
+					return false;
+				}
+			}
+		</script>
 </body>
 </html>

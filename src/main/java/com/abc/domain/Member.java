@@ -7,11 +7,15 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Setter
+@Getter
 public class Member implements UserDetails {
 
 	private int memberNum;
@@ -23,6 +27,8 @@ public class Member implements UserDetails {
 	private String address;
 	private String phone;
 	private int memberExp;		// 경험치
+	// 레벨용 추가
+	private int memberLevel;		// 레벨
 	private int memberPoint;	// 포인트
 	
 	// Spring Security를 위한 필드 지정
@@ -33,6 +39,46 @@ public class Member implements UserDetails {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	
+	/**
+	public int calcLevel(int memberExp) {
+		int exp = this.memberExp;
+		int level = 0;
+		if ( exp <= 1000) {
+			level = 1;
+		}
+		else if ( exp <= 2000) {
+			level = 2;
+		}
+		else if ( exp <= 5000) {
+			level = 3;
+		}
+		else if ( exp <= 10000) {
+			level = 4;
+		}
+		else if ( exp <= 15000) {
+			level = 5;
+		}
+		else if ( exp <= 16000) {
+			level = 6;
+		}
+		else if ( exp <= 17000) {
+			level = 7;
+		}
+		else if ( exp <= 18000) {
+			level = 8;
+		}
+		else if ( exp <= 19000) {
+			level = 9;
+		}
+		else if ( exp <= 20000) {
+			level = 10;
+		}
+		return this.memberLevel = level;
+	}
+	*/
+	
 	@Override
 	public String getPassword() {
 		// TODO Auto-generated method stub

@@ -66,8 +66,14 @@
 								<th th:text="*{title}"></th>
 							</tr>
 							<tr>
-								<td th:text="*{nickname}"></td>
-								<td><p>|</p></td>
+								<!-- 레벨별 뱃지 -->
+								<td>
+									<img id="levelImg" src="">
+									<input type="hidden" id="memberLevel" th:value="*{memberLevel}">
+								</td>
+								<td>
+									<span  th:text="*{nickname}"> </span>
+								</td>
 								<td th:text="*{inputdate}"></td>
 							</tr>
 							<tr>
@@ -101,12 +107,27 @@
 					<script>
 						
 						$(document).ready(function(){
-							$("#btnReplyWrite").on("click", function(){
+								$("#btnReplyWrite").on("click", function(){
 								writeReply();
 							});
 							
 							getAllfbReply();
+							
+							badge();
 						});
+						// 레벨별 뱃지추가하기
+						function badge(){
+								let memberLevel = $("#memberLevel").val();
+								
+								for ( let i =0; i <= 10; i++){
+									if(memberLevel == i){
+										img_src = "/images/levelBadges/lv"+ i + ".png";
+									}
+								}
+								
+								document.getElementById("levelImg").src=img_src;
+						}
+						
 						function getAllfbReply(){
 							let bNum = $("#boardNum").val();
 							let loginMemberNum = $("#memberNum").val();

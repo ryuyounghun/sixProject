@@ -75,5 +75,18 @@ public class MemberServiceImpl implements MemberService {
 		return cnt;
 	}
 
+	@Override
+	public int addExp(String memberId) {
+		log.debug("경험치 대상 : {}", memberId);
+		return mDao.addExp(memberId);
+	}
+
+	
+	@Override
+	public int addExpByReply(String memberId) {
+		log.debug("경험치 대상 : {}", memberId);
+		return mDao.addExpByReply(memberId);
+	}
+
 
 }

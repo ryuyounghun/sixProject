@@ -1,5 +1,7 @@
 package com.abc.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +20,12 @@ public class ExpBoardServiceImpl implements ExpBoardService{
 	@Override
 	public int insertExpBoard(ExpBoard exp) {
 		return expDAO.insertExpBoard(exp);
+	}
+
+	@Override
+	public List<ExpBoard> getLevelList() {
+
+		return expDAO.getLevelList();
 	}
 	
 }

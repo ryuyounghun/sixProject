@@ -11,11 +11,12 @@
 		<div class="list">
 			<table>
 				<tr>
-					<th>제목</th>
+					<th colspan="2">작성자</th>
 					<th>작성자</th>
 					<th>작성일</th>
 				</tr>
 				<tr th:each="list : ${fbList}">
+					<td th:text="${list.memberLevel}" th:value="${list.memberLevel}" class="memberLevel"></td>
 					<td th:text="${list.nickname}"></td>
 					<td>
 						<a th:href="@{|fbRead?num=${list.boardNum}|}">

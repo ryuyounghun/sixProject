@@ -28,9 +28,12 @@ public class ExpBoardController {
 	@PostMapping("/insertExp")
 	public String insertExp(ExpBoard exp) {
 		
+		
+		
 		log.debug("insertExpBoard : {}", exp);
 		expService.insertExpBoard(exp);
-		
-		return "exp/insertExp";
+		return "redirect:/exp/insertExp";
+	
+	
 	}
 }

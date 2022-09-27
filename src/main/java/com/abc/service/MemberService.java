@@ -17,4 +17,11 @@ public interface MemberService {
 	
 	// checkID
 	public int checkId(String memberId);
+	
+	// 일반 글 경험치 추가 메서드
+	public int addExp(String memberId);
+
+	// 댓글 쓰면 경험치 추가 메서드
+	public int addExpByReply(String memberId);
+
 }

@@ -56,5 +56,17 @@
 		WHERE MEMBERID = #{memberId}
 	</update>
 	
+	<update id="addExp" parameterType="String">
+		UPDATE DELIVERY_MEMBER
+		SET MEMBEREXP = MEMBEREXP + 1000
+		WHERE MEMBERID = #{memberId}
+	</update>
+	<update id="addExpByReply" parameterType="String">
+		UPDATE DELIVERY_MEMBER
+		SET MEMBEREXP = MEMBEREXP + 300
+		WHERE MEMBERID = #{memberId}
+	</update>
+	
+		
 </mapper>
 

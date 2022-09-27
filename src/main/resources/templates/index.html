@@ -73,23 +73,23 @@
 				</a>
 			
 				<ui class="header-logMenuList"> <!-- 로그인 및 로그아웃 링크 -->
-					<li sec:authorize ="not isAuthenticated">
-						<a th:href="@{/member/login}">
-							로그인
+					<li sec:authorize ="not isAuthenticated" >
+						<a th:href="@{/member/login}" class="logMenu1">
+						로그인
 						</a>
 					</li>
-					<li sec:authorize="not isAuthenticated">
-						<a th:href ="@{/member/join}">
-							회원가입
+					<li sec:authorize="not isAuthenticated" >
+						<a th:href ="@{/member/join}" class="logMenu2">
+						회원가입
 						</a>
 					</li>
 					<li sec:authorize="isAuthenticated">
-						<a th:href ="@{/logout}">
+						<a th:href ="@{/logout}" class="logMenu1">
 							로그아웃
 						</a>
 					</li>
 					<li sec:authorize="isAuthenticated">
-						<a th:href ="@{/member/mypage}">
+						<a th:href ="@{/member/mypage}" class="logMenu2">
 							회원정보
 						</a>
 					</li>
@@ -100,16 +100,16 @@
 		<section>
 			<div class="box-wrapper" id="player">
 			
-			
-			
+				<h1 class= "title">Group Up</h1>
+				<h3 class="subtitle">좋은 인연과 좋은 음식 <br>그리고 즐거운 하루</h3>
 				<a th:href="@{/delivery/index}">
 					<aside class="deliveryBox" >
-					<p>배고프덩</p>
+						<p>배달</p>
 					</aside>
 				</a>
 				<a th:href="@{/community/index}">
 					<aside class="communityBox">
-						<p>심심하덩</p>
+						<p>놀러가기</p>
 					</aside>
 				</a>				
 			</div>
@@ -119,11 +119,6 @@
 		</section>
 	</div>
 
-	<footer>
-		
-	</footer>
-
-	
 	<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	  <div class="modal-dialog">
 	    <div class="modal-content">

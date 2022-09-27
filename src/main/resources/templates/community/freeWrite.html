@@ -57,7 +57,21 @@ function addFile() {
 
 	fdIdx++;
 	fileIdx++;
+
+	alert(fileIdx);
+	prev = fileIdx-1;
+	let prevFileIdx = $("#file_" + prev).val().length;
+	alert( prevFileIdx );
 	
+	if ( prevFileIdx == 0 ){
+		alert("파일을 추가해 주세요.");
+		fdIdx--;
+		fileIdx--;
+
+		return false;
+	}else{
+		
+	}
 	let fileHtml = `
 		<div name="fileDiv" id= "fdIdx_${fdIdx}">
 			<input type="file" name="files" id="file_${fileIdx}" />
@@ -73,7 +87,12 @@ function addFile() {
 }
 
 function removeFile(param){
-
+	
+	if ( $("#file_0").val().length >= 0 ){
+		alert("첫 번째 파일칸은 지울 수 없습니다.");
+		return false;
+	}
+	
 	console.log(param);
 	let p = param;
 	let element = "#" + p;

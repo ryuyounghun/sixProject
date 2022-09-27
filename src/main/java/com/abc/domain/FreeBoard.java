@@ -22,7 +22,8 @@ public class FreeBoard {
 	private String title;
 	private String content;
 	private String inputdate;
-	
+	// 레벨용 추가
+	private int memberLevel;		// 레벨
 	private String originalFile;	 
 	private String savedFile;
 }

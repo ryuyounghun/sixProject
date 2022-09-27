@@ -15,7 +15,8 @@
 				NICKNAME,
 				CATEGORY,
 				TITLE,
-				CONTENT
+				CONTENT,
+				MEMBERLEVEL
 			)
 			VALUES (
 				BOARDNUM_SEQ.NEXTVAL,
@@ -23,7 +24,8 @@
 				#{nickname},
 				#{category},
 				#{title},
-				#{content}
+				#{content},
+				#{memberLevel}
 			)
 		</insert>
 		

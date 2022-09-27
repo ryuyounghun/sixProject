@@ -25,6 +25,9 @@ public class ClassBoard {
 	private String content;
 	private String inputdate;
 	private String roomId;
+	
+	// 레벨용 아이디
+	private int memberLevel;
 	private String originalFile;	 
 	private String savedFile;
 }
