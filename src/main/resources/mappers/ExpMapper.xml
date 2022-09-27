@@ -16,5 +16,13 @@
 			#{userExp}
 		)
 	</insert>
+	<!-- 0927 용석씨 추가 -->
+	<select id="getLevelList" resultType="ExpBoard">
+		SELECT 
+			*
+		FROM
+			EXP_TABLE
+		ORDER BY USERLEVEL DESC
+	</select>
 </mapper>
 

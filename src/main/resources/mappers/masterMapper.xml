@@ -71,8 +71,8 @@
 	
 	<select id="selectAllBannedList" resultType="BannedMember">
 		SELECT * 
-		FROM banList, DELIVERY_MEMBER DM
-		WHERE DM.ENABLED = 0
+		FROM banList b, DELIVERY_MEMBER DM
+		WHERE DM.ENABLED = 0 AND b.MEMBERID = dm.MEMBERID
 		
 	</select>
 		

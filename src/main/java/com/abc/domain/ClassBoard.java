@@ -28,4 +28,7 @@ public class ClassBoard {
 	
 	private String originalFile;	 
 	private String savedFile;
+	
+	// 레벨용 아이디
+	private int memberLevel;
 }

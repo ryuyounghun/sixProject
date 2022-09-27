@@ -22,8 +22,8 @@
 	
 	<select id="selectAllReportMessage" resultType="MessageReport">
 		SELECT *
-		FROM MESSAGEREPORT, delivery_member dm
-        WHERE dm.enabled = 1
+      FROM MESSAGEREPORT m, delivery_member dm
+        WHERE dm.enabled = 1 AND m.sender = dm.MEMBERID
 	</select>
 </mapper>
 

@@ -26,6 +26,17 @@ public class Member implements UserDetails {
 	private int memberPoint;	// 포인트
 	private String roomId;
 	
+	// 레벨용 추가
+	private int memberLevel;	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	// Spring Security를 위한 필드 지정
 	private boolean enabled;	// 계정 상태가 유효한지 확인하기 위한 변수 1 이면 유효, 0 이면 유효X
 	private String roleName;	// 사용자 계정 권한을 구분, ROLE_USER와 ROLE_ADMIN이 있음

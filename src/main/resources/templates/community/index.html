@@ -128,8 +128,12 @@
 				<aside>
 					<div class="aside-left">
 						<ul>
-							<li>카</li>
-							<li>테</li>
+							<li>
+								<a th:href="@{/community/partyIndex}">모임 게시판</a>
+							</li>
+							<li>
+								<a th:href="@{/community/freeIndex}">자유 게시판</a>
+							</li>
 							<li>고</li>
 							<li>리</li>
 						</ul>
@@ -158,9 +162,12 @@
 				<div class="aside-center">
 					<div class="section-center">
 						<div class="boardBox">
-							<div>실시간 모임 구직</div>
-
-							<div>실시간 게시글</div>
+							<a th:href="@{partyIndex}">
+								<div>실시간 모임 구직</div>
+							</a>
+							<a th:href="@{freeIndex}">
+								<div>실시간 게시글</div>
+							</a>
 						</div>
 						<!--  ajax로 글보여주기 -->
 						<div class="write-container">
@@ -208,9 +215,11 @@
 							</div>
 						</div>
 					</div>
-					<!-- 0923 수정 -->
-					<input type="button" value="글쓰기" class="write-btn" onclick="checkJoinedParty()">
+					<input type="button" value="글쓰기" class="write-btn" onclick="javascript:location.href='classWrite'">
 				</div>
+				
+				
+			</div>
 				
 				
 			</div>

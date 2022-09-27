@@ -25,4 +25,7 @@ public class FreeBoard {
 	
 	private String originalFile;	 
 	private String savedFile;
+	
+	// 레벨용 추가
+	private int memberLevel;
 }

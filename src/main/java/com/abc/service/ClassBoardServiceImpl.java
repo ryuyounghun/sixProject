@@ -22,39 +22,48 @@ public class ClassBoardServiceImpl implements ClassBoardService{
 	@Autowired
 	private ClassBoardDAO cDAO;
 
-	@Override
-	public int insertClassBoard(ClassBoard cb) {
-
-		return cDAO.insertClassBoard(cb);
-	}
 	
-	@Override
-	public List<ClassBoard> selectAllClassBoard(PageNavigator navi) {
-		Map<String, String> map = new HashMap<>();
-
-		// "시작 레코드"부터 "한 페이지의 글" 단위만큼 선택
-		RowBounds rb = new RowBounds(navi.getStartRecord(), navi.getCountPerPage());
-		
-		return cDAO.selectAllClassBoard(rb);
-	}
-
 	@Override
 	public PageNavigator getPageNavigator(int pagePerGroup, int countPerPage, int Page) {
 		Map<String, String> map = new HashMap<>();
 		
 		int total= cDAO.countAllClassBoard(map);
 		
+		
+		
 		PageNavigator navi =
 				new PageNavigator(pagePerGroup, countPerPage, Page, total);
 		
 		return navi;
 	}
-
+	@Override
+	public PageNavigator getPageNavigator(int pagePerGroup, int countPerPage, int Page, String searchWord) {
+		
+		Map<String, String> map = new HashMap<>();
+		map.put("searchWord", searchWord);
+		
+		int total = cDAO.countAllClassBoard(map);
+		
+		PageNavigator navi =
+				new PageNavigator(pagePerGroup, countPerPage, Page, total);
+		
+		return navi;
+	}
 	@Override
 	public List<ClassBoard> selectAllClassBoardNoParameter() {
 		// TODO Auto-generated method stub
 		return cDAO.selectAllClassBoardNoParameter();
 	}
+	
+	
+	
+	
+	@Override
+	public int insertClassBoard(ClassBoard cb) {
+
+		return cDAO.insertClassBoard(cb);
+	}
+	
 
 	@Override
 	public ClassBoard selectOneClassBoard(int classNum) {
@@ -107,5 +116,24 @@ public class ClassBoardServiceImpl implements ClassBoardService{
 		// TODO Auto-generated method stub
 		return cDAO.deleteClassBoard(classNum);
 	}
+	
+	@Override
+	public List<ClassBoard> selectAllClassBoard(PageNavigator navi, String searchWord) {
+		Map<String, String> map = new HashMap<>();
+		map.put("searchWord", searchWord);
+		
+		RowBounds rb = new RowBounds(navi.getStartRecord(), navi.getCountPerPage());
+		
+		return cDAO.selectAllClassBoard(map, rb);
+	}
+
+	@Override
+	public List<ClassBoard> selectAllClassBoard(PageNavigator navi) {
+		Map<String, String> map = new HashMap<>();
+		// "시작 레코드"부터 "한 페이지의 글" 단위만큼 선택
+		RowBounds rb = new RowBounds(navi.getStartRecord(), navi.getCountPerPage());
+		return cDAO.selectAllClassBoard(map, rb);
+	}
+
 
 }

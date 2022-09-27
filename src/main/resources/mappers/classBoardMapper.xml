@@ -43,16 +43,36 @@
 			)
 		</insert>
 	<!-- 모임 게시판 글 불러오기 -->
-	<select id="selectAllClassBoard" resultType="ClassBoard">
+	<!-- 모임 게시판 글 불러오기 -->
+	<select id="selectAllClassBoard" resultType="ClassBoard" parameterType="map">
 		SELECT 
-			*
+		*
 		FROM CLASS_BOARD
+		<if test="searchWord != null">
+			<where>
+				TITLE LIKE '%'||#{searchWord}||'%'
+				OR 
+				DESTINATION LIKE '%'||#{searchWord}||'%'
+				OR
+				CLASSTAG LIKE '%'||#{searchWord}||'%'
+			</where>
+		</if>
 		ORDER BY CLASSNUM DESC
 	</select>
+	
 	<select id = "countAllClassBoard" parameterType="map" resultType = "int">
 		SELECT
 			count(*)
 		FROM CLASS_BOARD
+		<if test="searchWord != null">
+			<where>
+				TITLE LIKE '%'||#{searchWord}||'%'
+				OR 
+				DESTINATION LIKE '%'||#{searchWord}||'%'
+				OR
+				CLASSTAG LIKE '%'||#{searchWord}||'%'
+			</where>
+		</if>
 	</select>
 	<select id="selectAllClassBoardNoParameter" resultType="ClassBoard">
 		SELECT 

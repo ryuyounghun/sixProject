@@ -50,6 +50,10 @@ public interface MemberDAO {
 	// 멤버Pw 찾기
 	public int updatePw(Member member);
 	
-	
+	// 0927 용석씨 추가
+	// 글 쓸 때 경험치 추가하기
+	public int addExp(String memberId);
+	// 댓글 쓰면 경치 추가
+	public int addExpByReply(String memberId);
 	
 }

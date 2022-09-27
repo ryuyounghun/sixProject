@@ -97,7 +97,7 @@ public class MasterController {
 	public String reportHandling(Model model){
 		
 		List<MessageReport> cmList = cmService.selectAllReportMessage();
-		
+		log.debug("cmList : {}", cmList);
 		model.addAttribute("cmList",cmList);
 		return m+"/reportHandling";
 	}

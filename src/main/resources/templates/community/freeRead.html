@@ -65,7 +65,12 @@
 							<tr>
 								<th th:text="*{title}"></th>
 							</tr>
+							
 							<tr>
+								<td>
+									<img id="levelImg" src="">
+									<input type="hidden" id="memberLevel" th:value="*{memberLevel}">
+								</td>
 								<td th:text="*{nickname}"></td>
 								<td><p>|</p></td>
 								<td th:text="*{inputdate}"></td>
@@ -106,7 +111,23 @@
 							});
 							
 							getAllfbReply();
+							badge();
 						});
+						
+						// 레벨별 뱃지추가하기
+						function badge(){
+								let memberLevel = $("#memberLevel").val();
+								
+								for ( let i =0; i <= 10; i++){
+									if(memberLevel == i){
+										img_src = "/images/levelBadges/lv"+ i + ".png";
+									}
+								}
+								
+								document.getElementById("levelImg").src=img_src;
+						}
+						
+						
 						function getAllfbReply(){
 							let bNum = $("#boardNum").val();
 							let loginMemberNum = $("#memberNum").val();

@@ -46,8 +46,9 @@
 	    </ul>
     </div>
     <div>
-    	<input type="hidden" th:value="${member.memberNum}" id="memberNum">
+    	<input type="hidden" th:value="${member.memberId}" id="memberId">
     	<input type="hidden" id="loginUser" th:value="${#authentication.getPrincipal().getUsername()}">
+    	<input type="hidden" th:value="${#authentication.getPrincipal().getUsername()}" name="reporter" id="reporter">
     </div>
 </div>
 <!-- JavaScript -->
@@ -81,8 +82,6 @@
                 axios.get('/chat/room/'+this.roomId).then(response => { this.room = response.data; });
             },
             sendMessage: function() {
-            	var loginUser = $("#loginUser").val();
-            	console.log(loginUser);
                 ws.send("/app/chat/message", {}, JSON.stringify({type:'TALK', roomId:this.roomId, sender:this.sender, message:this.message}));
                 this.message = '';
             },
@@ -96,7 +95,6 @@
                 console.log(reporter);
                 ws.send("/app/chat/report", {}, JSON.stringify({type:'TALK', roomId:this.roomId, sender:this.sender, message:message, reporter:reporter}));
                 this.message='';
-                
             }
         }
     });

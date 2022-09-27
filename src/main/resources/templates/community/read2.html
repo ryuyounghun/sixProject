@@ -180,13 +180,14 @@
 				    <ul class="list-group">
 				        <li class="list-group-item" v-for="message in messages">
 				            {{message.sender}} - {{message.message}}
-				            <button v-on:click="reportMessage(message.sender)">신고하기</button>
+				            <button  v-on:click="reportMessage(message.sender, message.message)">신고하기</button>
 				        </li>
 				    </ul>
 			    </div>
 			    <div>
 			    	<input type="hidden" id="loginUser" th:value="${#authentication.getPrincipal().getUsername()}">
 			    	<input type="hidden" id="cRoomId" th:value="${cBoard.roomId}">
+			    	<input type="hidden" th:value="${#authentication.getPrincipal().getUsername()}" name="reporter" id="reporter">
 			    </div>
 			</div>
 	      </div>
@@ -239,9 +240,13 @@
             recvMessage: function(recv) {
                 this.messages.unshift({"type":recv.type,"sender":recv.type=='ENTER'?'[알림]':recv.sender,"message":recv.message})
             },
-            reportMessage : function(sender) {
+            reportMessage : function(sender, message) {
                 console.log(sender);
-                console.log($("#reporter").val());
+                console.log(message);
+                let reporter = $("#reporter").val();
+                console.log(reporter);
+                ws.send("/app/chat/report", {}, JSON.stringify({type:'TALK', roomId:this.roomId, sender:this.sender, message:message, reporter:reporter}));
+                this.message='';
             }
         }
     });

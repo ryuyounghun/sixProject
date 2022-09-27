@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+		xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<div class="infinite">
+		<div class="list">
+			<table>
+				<tr>
+					<th colspan="2">작성자</th>
+					<th>작성자</th>
+					<th>작성일</th>
+				</tr>
+				<tr th:each="list : ${fbList}">
+					<td th:text="${list.memberLevel}" th:value="${list.memberLevel}" class="memberLevel"></td>
+					<td th:text="${list.nickname}"></td>
+					<td>
+						<a th:href="@{|fbRead?num=${list.boardNum}|}">
+							<span th:text="${list.title}"
+							style="display: inline-block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 13ch;">
+							</span>
+						</a>
+					</td>
+					<td th:text="${list.inputdate}"></td>
+				</tr>
+			</table>
+			<input type="button" value="글쓰기" class="write-btn" onclick="javascript:location.href='freeWrite'">
+		</div>
+	</div>
+	<div class="pagination">페이지네이션</div>
+</body>
+
+</html>

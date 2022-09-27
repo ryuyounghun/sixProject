@@ -21,4 +21,7 @@ public class Reply {
 	private String nickname;
 	private String content;
 	private String inputdate;
+	
+	// 레벨용 추가
+	private int memberLevel;
 }

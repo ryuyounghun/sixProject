@@ -28,6 +28,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.abc.domain.ChatRoom;
 import com.abc.domain.ClassBoard;
 import com.abc.domain.ClassRoom;
+import com.abc.domain.ExpBoard;
 import com.abc.domain.FileDTO;
 import com.abc.domain.FreeBoard;
 import com.abc.domain.Member;
@@ -37,6 +38,7 @@ import com.abc.domain.Store;
 import com.abc.service.ChatService;
 import com.abc.service.ClassBoardService;
 import com.abc.service.DeliveryService;
+import com.abc.service.ExpBoardService;
 import com.abc.service.FreeBoardService;
 import com.abc.service.MemberService;
 import com.abc.service.ReplyService;
@@ -69,6 +71,9 @@ public class ComunnityController{
 	ReplyService rService; 
 	
 	@Autowired
+	ExpBoardService expService;
+	
+	@Autowired
 	private DeliveryService dService; 
 	
 	// page당 글 수
@@ -82,6 +87,50 @@ public class ComunnityController{
 	// 그룹 당 page 수
 	@Value("${user.board.group}")
 	private int pagePerGroup;
+	
+	
+	
+	// 글 쓸 떄 경험치 추가 공통메서드
+	private void addExp(String memberId) {
+			
+		mService.addExp(memberId);
+	}
+	
+	// 댓글 쓸 떄 경험치 추가 공통메서드
+	private void addExpByReply(String memberId) {
+		
+		mService.addExpByReply(memberId);
+		
+	}
+	// 레벨 계산 메서드
+	public int calcLevel(int exp) {
+		List<ExpBoard> list = expService.getLevelList();
+		int mExp = exp;
+		int mLevel = 1;
+		log.debug("mExp: {}", mExp);
+		for ( int i = 0; i< list.size(); i++) {
+			if ( i == list.size()-1){
+				log.debug("레벨2 : {}", i);
+				log.debug("레벨2 : {}", list.get(i).getUserLevel());
+				log.debug("레벨2 : {}", list.get(i).getUserExp());
+				mLevel = list.get(i).getUserLevel();
+				
+			}
+			else if (list.get(i).getUserExp() <= mExp 
+					|| list.get(i+1).getUserExp() > mExp ) {
+				
+				log.debug("레벨1 : {}",list.get(i).getUserExp());
+				log.debug("레벨1 : {}",list.get(i).getUserLevel());
+				mLevel = list.get(i).getUserLevel();
+				break;
+			}
+		}
+		log.debug("레벨5 : {}", mLevel);
+		return mLevel;
+		
+	}
+
+	
 	
 	@GetMapping({"/","/index"})
 	public String communityIndex(Model model,
@@ -146,6 +195,13 @@ public class ComunnityController{
 		ClassRoom cRoom = new ClassRoom();
 		Member member = mService.selectOneMember(user.getUsername());	
 
+		
+		// 레벨 추가 패치
+		addExp(user.getUsername());
+		member.setMemberLevel( calcLevel(member.getMemberExp()) );
+		cBoard.setMemberLevel(member.getMemberLevel());
+		
+		
 		// 게시판 객체 설정
 		String mNickname = member.getNickname();
 		cBoard.setNickname(mNickname);
@@ -188,7 +244,18 @@ public class ComunnityController{
 		return "redirect:./index"; // .../board/
 	}
 	
-	
+	@GetMapping("/freeIndex")
+	public String freeIndex(Model model,
+			@RequestParam(name="page", defaultValue = "1" )int page) {
+		
+		List<FreeBoard> fbList = null;
+		PageNavigator fbNavi = fService.getPageNavigator(
+				pagePerGroup, countPerPage, page); 
+		fbList = fService.selectAllFreeBoard(fbNavi);
+
+		model.addAttribute("fbList",fbList);
+		return c + "freeIndex";
+	}
 	@GetMapping("/freeWrite")
 	public String freeWrite() {
 		log.debug("freeWrite() 실행");
@@ -210,7 +277,15 @@ public class ComunnityController{
 		Member m = mService.selectOneMember(user.getUsername());
 		fBoard.setMemberNum(m.getMemberNum());
 		fBoard.setNickname(m.getNickname());
+		fBoard.setMemberLevel(m.getMemberLevel());
 		log.debug("FreeBoard : {}", fBoard);
+		
+		
+		// 레벨 추가 패치
+		addExp(user.getUsername());
+		m.setMemberLevel( calcLevel(m.getMemberExp()) );
+		fBoard.setMemberLevel(m.getMemberLevel());
+		
 		
 		if ( files.length > 0 ) {
 			try {
@@ -302,6 +377,11 @@ public class ComunnityController{
 		
 		reply.setMemberNum(member.getMemberNum());
 		
+		// 레벨 추가 패치
+		addExpByReply(user.getUsername());
+		member.setMemberLevel( calcLevel(member.getMemberExp()) );
+		reply.setMemberLevel(member.getMemberLevel());
+		
 		rService.insertReply(reply);
 		
 		// 하나의 메소드를 최대한 활용하기위ㅐ 쿼리스트링으로 보내주기
@@ -353,18 +433,72 @@ public class ComunnityController{
 		
 		return "redirect:./fbRead?num="+reply.getBoardNum();
 	}
+	
 	@GetMapping("/partyIndex")
-	public String partyIndex() {
+	public String partyIndex(Model model,
+			@RequestParam(name = "page", defaultValue="1") int page,
+			String searchWord) {
+		
+		log.debug(searchWord);
+		List<ClassBoard> cbList = null;
+		PageNavigator navi = cService.getPageNavigator(
+				pagePerGroup, 
+				countPerPage,
+				page,
+				searchWord);
+		log.debug("페이지 : {}", navi.getCurrentPage());
+		log.debug("페이지 : {}", navi.getEndPageGroup());
+		
+		// ------------------------------
+		if ( searchWord == null || searchWord.trim().length() == 0 ) {
+			
+			// 나중에 10개씩 출력하는걸로 바꾸기
+			// cbList =  cService.selectAllClassBoardNoParameter();
 
+			cbList = cService.selectAllClassBoard(navi);
+		
+		}else {
+			
+			
+			cbList = cService.selectAllClassBoard(navi, searchWord);
+		}
+		
+		model.addAttribute("cbList" , cbList);
+		model.addAttribute("navi" , navi);
 		return c + "partyIndex";
 	}
 
 	@GetMapping("/setPartBox")
-	public @ResponseBody List<ClassBoard> setPartBox() {
+	public @ResponseBody List<ClassBoard> setPartBox(
+			String searchWord,
+			@RequestParam(name = "page", defaultValue="1") int page
+			,Model model) {
 
-		List<ClassBoard> cList = cService.selectAllClassBoardNoParameter();
+		
+		log.debug(searchWord);
+		List<ClassBoard> cbList = null;
+		PageNavigator navi = cService.getPageNavigator(
+				pagePerGroup, 
+				countPerPage,
+				page,
+				searchWord);
+		log.debug("페이지 : {}", navi.getCurrentPage());
+		log.debug("페이지 : {}", navi.getEndPageGroup());
+		
+		// ------------------------------
+		if ( searchWord == null || searchWord.trim().length() == 0 ) {
+			
+			// 나중에 10개씩 출력하는걸로 바꾸기
+			// cbList =  cService.selectAllClassBoardNoParameter();
 
-		return cList;
+			cbList = cService.selectAllClassBoard(navi);
+		
+		}else {
+			
+			
+			cbList = cService.selectAllClassBoard(navi, searchWord);
+		}
+		return cbList;
 	}
 
 	@GetMapping("/partyPeople")
