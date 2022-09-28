@@ -9,7 +9,16 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
-
+<style type="text/css">
+	#exampleModalToggledialog {
+		--bs-modal-width: 1000px;
+		--bs-modal-margin: 0.5rem;
+	} 
+	#exampleModalToggledialog2 {
+		--bs-modal-width: 1000px;
+		--bs-modal-margin: 0.5rem;
+	} 
+</style>
 </head>
 <body>
 	<div id="headerAndSection-wrapper">
@@ -69,8 +78,7 @@
 						
 						  	<input value = "쿠폰등록" class="btn btn-primary" type="button" id="insertCouponBtn">
 						  	<input value = "레벨 관리" class="btn btn-primary" type="button" id="insertExpBtn">
-						  	<a th:href="@{/master/reportHandling}"><input value = "채팅 신고 처리" class="btn btn-primary" type="button"></a>
-						  	<a th:href="@{/master/bannedList}"><input value = "계정 복구" class="btn btn-primary" type="button"></a>
+						  	<a class="btn btn-primary" data-bs-toggle="modal" href="#exampleModalToggle" role="button">계정정지 및 복구</a>
 					</div>
 				</div>	
 			</div>		
@@ -86,7 +94,7 @@
 	
 	<!-- Modal -->
 	<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-	  <div class="modal-dialog odal-dialog-centered modal-dialog-scrollable">
+	  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
 	    <div class="modal-content">
 	      <div class="modal-header">
 	        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
@@ -128,7 +136,6 @@
 					</form>
 	      	</div>
 			<div class = "ExpContent" id="insertExp">
-		<h2>레벨 관리하기</h2>
 				<form action = "insertExp" method = "post">
 					<div class = "section-center">
 						<fieldset class = "requiredInfo">
@@ -155,6 +162,7 @@
 					</div><!-- section-center 부분 끝 -->
 				</form>
 			</div>	
+			
 	      </div>
 	      <div class="modal-footer">
 	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -163,7 +171,101 @@
 	    </div>
 	  </div>
 	</div>
-	<script>
+	
+	<div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+	  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" id="exampleModalToggledialog">
+	    <div class="modal-content" id="exampleModalToggleContent">
+	      <div class="modal-header" id="exampleModalToggleHeader">
+	        <h5 class="modal-title" id="exampleModalToggleLabel">Modal 1</h5>
+	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+	      </div>
+	      <div class="modal-body" id="exampleModalToggleBody">
+	        
+	        <div id="reportModal">
+				<table>
+					<tr>
+						<th>신고번호</th>
+						<th>처벌대상ID</th>
+						<th>메세지</th>
+						<th>신고자</th>
+						<th>방ID</th>
+						<th>신고일시</th>
+					</tr>
+					<tr th:each="list : ${cmList}">
+							<td th:text="${list.reportNum}" ></td>
+							<td th:text="${list.sender}" ></td>
+							<td th:text="${list.message}" ></td>
+							<td th:text="${list.reporter}" ></td>
+							<td th:text="${list.roomId}"></td>
+							<td th:text="${list.inputdate}"></td>
+							<td>
+								<a th:href="@{|/master/handleReport?reportNum=${list.reportNum}|}">계정정지</a>
+							</td>
+					</tr>
+					<tr th:if = "${cmList.size()==0}">
+						<td  colspan="6">
+							<p>신고리스트가 없습니다</p>
+						</td>
+					</tr>
+				</table>
+			</div>
+	        
+	      </div>
+	      <div class="modal-footer" id="exampleModalToggleFooter1">
+	        <button class="btn btn-primary" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal">계정 복구</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	<div class="modal fade" id="exampleModalToggle2" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+	  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" id="exampleModalToggledialog2">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="exampleModalToggleLabel2">Modal 2</h5>
+	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+	      </div>
+	      <div class="modal-body">
+
+	        <div>
+	        	<table>
+					<tr>
+						<th>계정</th>
+						<th>신고사유</th>
+						<th>신고자</th>
+						<th>정지일</th>
+					</tr>
+					<tr th:each="list : ${bannedList}">
+							<td th:text="${list.memberId}" ></td>
+							<td th:text="${list.message}" ></td>
+							<td th:text="${list.reporter}" ></td>
+							<td th:text="${list.inputdate}" ></td>
+							<td>
+								 <a th:href="@{|/master/unbanMember?memberId=${list.memberId}|}">계정복구</a>
+							</td>
+					</tr>
+					<tr th:if = "${bannedList.size()==0}">
+						<td  colspan="6">
+							<p>밴 리스트가 없습니다</p>
+						</td>
+					</tr>
+				</table>
+	        </div>
+
+	      </div>
+	      <div class="modal-footer">
+	        <button class="btn btn-primary" data-bs-target="#exampleModalToggle" data-bs-toggle="modal">계정 정지하기</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	
+		
+		
+		
+	
+	
+	
+<script>
 	
 	$(document).ready(function(){
 		checkCouponName();
@@ -176,6 +278,7 @@
 	function insertCoupon() {
 		let htmlStr = "<h2>쿠폰 등록하기</h2>";
 		$("#exampleModalLabel").html(htmlStr);
+		$("#insertExp").hide();
 		$("#insertCoupon").show();
 		$("#exampleModal").modal("show");
 	}
@@ -183,6 +286,7 @@
 	function insertExp() {
 		let htmlStr = "<h2>레벨 관리</h2>";
 		$("#exampleModalLabel").html(htmlStr);
+		$("#insertCoupon").hide();
 		$("#insertExp").show();
 		$("#exampleModal").modal("show");
 	}
@@ -251,6 +355,6 @@
 			return true;
 		}
 	} 
-	</script>
+</script>
 </body>
 </html>

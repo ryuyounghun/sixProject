@@ -150,4 +150,10 @@ public class MemberServiceImpl implements MemberService {
 		log.debug("경험치 대상 : {}", memberId);
 		return mDao.addExpByReply(memberId);
 	}
+
+	@Override
+	public int updateMyImage(Member member) {
+		// TODO Auto-generated method stub
+		return mDao.updateMyImage(member);
+	}
 }

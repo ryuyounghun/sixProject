@@ -45,7 +45,19 @@ public class MasterController {
 	private ExpBoardService expService;
 	
 	@GetMapping({ "/", "/index" })
-	public String index() {
+	public String index(Model model) {
+		
+		// 0928 추가 리폿
+		List<MessageReport> cmList = cmService.selectAllReportMessage();
+		log.debug("cmList : {}", cmList);
+		model.addAttribute("cmList",cmList);
+		// 리폿 th
+		
+		// ban List 0928 추가
+		List<Member> bannedList = mtService.selectAllBannedList();
+		model.addAttribute("bannedList",bannedList);
+		// ban List
+		
 		return m + "index";
 	}
 	
@@ -121,7 +133,7 @@ public class MasterController {
 		bm.setReporter(mr.getReporter());
 		
 		mtService.insertBanListMember(bm);
-		return "redirect:/master/reportHandling";
+		return "redirect:/master/index";
 	}
 	
 	@GetMapping("/bannedList")
@@ -140,7 +152,7 @@ public class MasterController {
 		mtService.unBanMember(memberId);
 		mtService.deleteBanMember(memberId);
 		
-		return "redirect:/master/bannedList";
+		return "redirect:/master/index";
 	}
 	
 	@PostMapping("/insertExp")

@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.abc.domain.ChatRoom;
 import com.abc.domain.Coupon;
@@ -38,6 +39,7 @@ import com.abc.service.ChatService;
 import com.abc.service.DeliveryService;
 import com.abc.service.MasterService;
 import com.abc.service.MemberService;
+import com.abc.util.FileService;
 
 import lombok.extern.slf4j.Slf4j;
 @Slf4j
@@ -495,4 +497,65 @@ public class MemberController {
 		return rList;
 	}
 	
+	// 0924 추가
+		@GetMapping("/memberDisplay")
+		public ResponseEntity<Resource> memberDisplay(int num) {
+			
+			log.debug("num : {}", num);
+			
+			Member member = mService.selectOneMemberByMemberNum(num);
+			Resource resource 
+				= new FileSystemResource(uploadPath + "/" + member.getSavedFile());
+		
+			// 파일이 존재하지 않을때
+			if(!resource.exists()) {
+				return new ResponseEntity<Resource>(HttpStatus.NOT_FOUND);
+			} 
+			
+			HttpHeaders header = new HttpHeaders();
+			
+			Path filePath = null;
+			
+			try {
+				filePath = Paths.get(uploadPath + "/" + member.getSavedFile());
+				
+				// response의 header에
+				// 제가 첨부한 내용의 타입은 파일이에요
+				header.add("Content-type", Files.probeContentType(filePath));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
+			return new ResponseEntity<Resource>(resource, header, HttpStatus.OK);
+		}
+	
+		// 0928 추가
+		@GetMapping("/mypageImage")
+		@ResponseBody 
+		public Member mypageImage(int memberNum) {
+			
+			Member member = mService.selectOneMemberByMemberNum(memberNum);
+			
+			return member;
+		}
+
+		// 0928 추가
+		@PostMapping("/updateImage")
+		public String updateImage(@RequestParam MultipartFile file,
+				Member member) {
+			
+			if(!file.isEmpty()) {
+				// 저장할 파일명 생성
+				String savedFile = FileService.saveFile(file, uploadPath);
+				log.debug("savedFuke : {}", savedFile);
+				member.setSavedFile(savedFile);
+				member.setOriginalFile(file.getOriginalFilename());
+				
+			}
+			log.debug("member : {}", member);
+			
+			mService.updateMyImage(member);
+			return "redirect:/";
+		}
+
 }

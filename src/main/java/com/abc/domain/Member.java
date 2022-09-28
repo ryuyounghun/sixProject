@@ -29,11 +29,9 @@ public class Member implements UserDetails {
 	// 레벨용 추가
 	private int memberLevel;	
 	
-	
-	
-	
-	
-	
+	// 0928 마이페이지 이미지용 추가
+	private String originalFile;	 
+	private String savedFile;
 	
 	
 	

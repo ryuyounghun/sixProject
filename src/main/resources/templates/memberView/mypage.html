@@ -28,7 +28,10 @@
 </style>
 <script th:inline="javascript">
 	$(document).ready(function(){
-		
+		// 0928 추가
+		let loginUser = $("#loginUser").val();
+		$("#hiddenMypage").val(loginUser);
+		console.log(typeof memberNumber);
 		loadAllReply();	
 		$("#btnReply_write").on("click", function() { writeReply(); });
 		$("#btnReply_update").hide();
@@ -40,6 +43,7 @@
 			$("#couponList").hide();
 			$("#wishlistStore").hide();
 			$("#orderList").hide();
+			$("#profileModal").hide();
 			$("#buyCoupon").show();
 			$("#exampleModalLabel").text("쿠폰 구매하기");
 			$("#exampleModal").modal("show");
@@ -50,6 +54,7 @@
 			$("#wishlistStore").hide();
 			$("#buyCoupon").hide();
 			$("#orderList").hide();
+			$("#profileModal").hide();
 			$("#couponList").show();
 			$("#exampleModalLabel").text("MyCoupon List");
 			$("#exampleModal").modal("show");
@@ -58,16 +63,60 @@
 		// 0925 추가
 		$("#buyCouponsBtn").hide();
 		$("#myCouponListBtn").hide();
-		$("#orderListBtn").hide();
 		$("#reviewModal").hide();
 		$("#sellerPageBtn").hide();
+		$("#updateMemberInfoBtn").hide();
+		$("#profileBtn").hide();
 		showMenuList();
 		$("#orderListBtn").click(function() { myOrderList(); });
 		myReviews();
 		
 		// 0927 추가 
 		$("#sellerPageBtn").click(function() { location.href="/delivery/sellerPage"; });
+	
+		// 0928 추가
+		mypageImage();
+		
+		$("#profileBtn").click(function() { profileImage(); })
 	});
+	
+	// 0928 추가
+	function profileImage() {
+		$("#couponList").hide();
+		$("#buyCoupon").hide();
+		$("#orderList").hide();
+		$("#wishlistStore").hide();
+		$("#profileModal").show();
+		
+		$("#exampleModalLabel").text("프로필사진");
+		
+		$("#exampleModal").modal("show");
+	}
+	
+	
+	// 0928 추가
+	function mypageImage() {
+		let memberNum = getParameterByName('num');
+		
+		$.ajax({
+			url : "mypageImage",
+			type : "get",
+			data : {"memberNum" : memberNum},
+			success : function(data) {
+				console.log(data.savedFile);
+				let htmlStr = "";
+				
+				if(data.savedFile != null) {
+					htmlStr += "<img src='memberDisplay?num=" + memberNum + "' width='100px'>";
+				} else if (data.savedFile == null){
+					htmlStr += "<img src='/images/rabbit.jpg' width='100px'>";
+				}
+				$("#mainImage").html(htmlStr);
+			}
+		})
+		
+		
+	}
 	
 	function getParameterByName(name) {
 		  name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
@@ -85,8 +134,9 @@
 		if(memberNum == loginMember) {
 			$("#buyCouponsBtn").show();
 			$("#myCouponListBtn").show();
-			$("#orderListBtn").show();
 			$("#sellerPageBtn").show();
+			$("#updateMemberInfoBtn").show();
+			$("#profileBtn").show();
 		} 
 		
 	}
@@ -95,6 +145,7 @@
 		$("#couponList").hide();
 		$("#buyCoupon").hide();
 		$("#wishlistStore").hide();
+		$("#profileModal").hide();
 		let memberNum = getParameterByName('num');
 		
 		$.ajax({
@@ -102,18 +153,20 @@
 			type : "get",
 			data : {"memberNum" : memberNum},
 			success : function(data) {
-				console.log(data);
-				
 				let htmlStr = "";
 				
-				$.each(data, function(index, item) {
-					htmlStr += "<table>";
-					htmlStr += "<tr><th>" + item.receiptNum + "</th>";
-					htmlStr += "<th>" + item.totalAmount + "</th>";
-					htmlStr += "<th><input onclick='writeReview(" + item.storeNum + "," + item.receiptNum + ")' type='button' value='리뷰쓰기'></th></tr>";
-					htmlStr += "<tr><th>" + item.orderHistory + "</th></tr>";
-					htmlStr += "</table>";
-				});
+				if(data == "") {
+					htmlStr += "<h1>주문 목록이 없습니다...</h1>";
+				} else {
+					$.each(data, function(index, item) {
+						htmlStr += "<table>";
+						htmlStr += "<tr><th>" + item.receiptNum + "</th>";
+						htmlStr += "<th>" + item.totalAmount + "</th>";
+						htmlStr += "<th><input onclick='writeReview(" + item.storeNum + "," + item.receiptNum + ")' type='button' value='리뷰쓰기'></th></tr>";
+						htmlStr += "<tr><th>" + item.orderHistory + "</th></tr>";
+						htmlStr += "</table>";
+					});
+				}
 				
 				$("#orderList").html(htmlStr);
 				$("#exampleModalLabel").text("주문목록");
@@ -180,6 +233,8 @@
 	function wishList() {
 		$("#couponList").hide();
 		$("#buyCoupon").hide();
+		$("#profileModal").hide();
+		$("#orderList").hide();
 		$("#wishlistStore").show();
 		let memberNum = getParameterByName('num');
 		
@@ -286,8 +341,8 @@
 			success : function(data) {
 				console.log(data.memberPoint);
 				
-				let htmlStr = "<h1>잔여 포인트</h1>";
-				htmlStr += "<h1>" + data.memberPoint + "원</h1>";
+				let htmlStr = "<h5>잔여 포인트</h5>";
+				htmlStr += "<h5>" + data.memberPoint + "point</h5>";
 				
 				$("#point").html(htmlStr);
 			}
@@ -368,11 +423,6 @@
 							로그아웃
 						</a>
 					</li>
-					<li sec:authorize="isAuthenticated">
-						<a th:href ="@{/memberView/mypage}">
-							회원정보
-						</a>
-					</li>
 				</ui>
 
 			</div>
@@ -382,7 +432,9 @@
 			<div class= "section-container">
 				<aside>
 					<div class="aside-left">
-						
+						<div id="mainImage">
+							
+						</div>
 						<h2 th:text="${memberPage.memberName}"></h2>
 						<div class = "expBar">
 							<span class = "expBar"></span>
@@ -395,9 +447,12 @@
 						<div id="point"></div>
 						
 						<div id="menuList">
-							<ul>메뉴
+							<ul>
 								<li id="wishlistBtn">
 									찜리스트
+								</li>
+								<li id="orderListBtn">
+									주문 리스트
 								</li>
 								<li id="buyCouponsBtn">
 									쿠폰 구매
@@ -405,11 +460,16 @@
 								<li id="myCouponListBtn">
 									내 쿠폰
 								</li>
-								<li id="orderListBtn">
-									주문 리스트
-								</li>
 								<li id="sellerPageBtn">
 									판매자 페이지
+								</li>
+								<li id="updateMemberInfoBtn">
+									<a th:href ="@{/member/updateInfo}">
+										회원정보 수정
+									</a>
+								</li>
+								<li id="profileBtn">
+									프로필 변경
 								</li>
 							</ul>
 						</div>	
@@ -574,7 +634,13 @@
 					    </div>
 	        		</form>
 		        </div>
-		        
+		        <div id="profileModal">
+		        	<form action="updateImage" method="post" enctype="multipart/form-data">
+		        		<input type="file" name="file" id="uploadFile">
+		        		<input type="hidden" value="" id="hiddenMypage" name="memberId">
+		        		<input type="submit" value="업로드" id="uploadBtn">
+		        	</form>
+		        </div>
 		      </div>
 		      <div class="modal-footer">
 		        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

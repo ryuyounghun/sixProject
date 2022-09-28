@@ -56,4 +56,8 @@ public interface MemberDAO {
 	// 댓글 쓰면 경치 추가
 	public int addExpByReply(String memberId);
 	
+	
+	// 0928 추가
+	public int updateMyImage(Member member);
+	
 }
