@@ -32,7 +32,6 @@ import com.abc.domain.ExpBoard;
 import com.abc.domain.FileDTO;
 import com.abc.domain.FreeBoard;
 import com.abc.domain.Member;
-import com.abc.domain.MyChatRoom;
 import com.abc.domain.Reply;
 import com.abc.domain.Store;
 import com.abc.service.ChatService;
@@ -108,6 +107,7 @@ public class ComunnityController{
 		int mExp = exp;
 		int mLevel = 1;
 		log.debug("mExp: {}", mExp);
+		log.debug("list toString : {}", list.toString());
 		for ( int i = 0; i< list.size(); i++) {
 			if ( i == list.size()-1){
 				log.debug("레벨2 : {}", i);
@@ -116,8 +116,8 @@ public class ComunnityController{
 				mLevel = list.get(i).getUserLevel();
 				
 			}
-			else if (list.get(i).getUserExp() <= mExp 
-					|| list.get(i+1).getUserExp() > mExp ) {
+			else if ( list.get(i).getUserExp() <= mExp
+					 && list.get(i+1).getUserExp() > mExp ) {
 				
 				log.debug("레벨1 : {}",list.get(i).getUserExp());
 				log.debug("레벨1 : {}",list.get(i).getUserLevel());
@@ -127,7 +127,6 @@ public class ComunnityController{
 		}
 		log.debug("레벨5 : {}", mLevel);
 		return mLevel;
-		
 	}
 
 	
@@ -216,14 +215,8 @@ public class ComunnityController{
 		
 		
 		// 채팅방 생성
-		MyChatRoom myCtRoom = new MyChatRoom();
 		ChatRoom ctRoom = chatService.createRoom(cBoard.getTitle());
 		
-		myCtRoom.setMemberNum(member.getMemberNum());
-    	myCtRoom.setRoomId(ctRoom.getRoomId());
-    	myCtRoom.setRoomName(ctRoom.getRoomName());
-    	
-    	chatService.insertMyChatRoom(myCtRoom);
     	// 채팅방 생성 끝
     	
     	// 파티 생성

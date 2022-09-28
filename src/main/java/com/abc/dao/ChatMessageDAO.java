@@ -7,7 +7,6 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.abc.domain.ChatRoom;
 import com.abc.domain.MessageReport;
-import com.abc.domain.MyChatRoom;
 
 
 @Mapper

@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 import com.abc.dao.ChatDAO;
 import com.abc.domain.ChatMessage;
 import com.abc.domain.ChatRoom;
-import com.abc.domain.MyChatRoom;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -72,11 +71,6 @@ public class ChatService {
     	return result;
     }
     
-    // 내 채팅방에 추가
-    public int insertMyChatRoom(MyChatRoom myChatRoom) {
-    	int result = chatDao.insertMyChatRoom(myChatRoom);
-    	return result;
-    }
     
     // 0923 추가 
     public int deleteOneRoom(String roomId) {

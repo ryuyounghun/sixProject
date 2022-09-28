@@ -52,7 +52,7 @@
 						<em>탈퇴하기</em>
 					</h2>
 					<span>탈퇴하시면 어쩌구 저쩌구 할 수 없습니다.<br>정말로 탈퇴하시겠습니까?</span>
-					<form action = "blockLogin" method = "post" th:object = "${member}" onsubmit = "return checkValues();">
+					<form action = "blockLogin" method = "post" th:object = "${member}">
 					<div class = "section-center">
 					<div class = "blockLoginlist">
 					<label for = "memberId">아이디</label>

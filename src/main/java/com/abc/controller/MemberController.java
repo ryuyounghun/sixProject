@@ -27,9 +27,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.abc.domain.ChatRoom;
 import com.abc.domain.Coupon;
+import com.abc.domain.ExpBoard;
 import com.abc.domain.GuestBook;
 import com.abc.domain.Member;
-import com.abc.domain.MyChatRoom;
 import com.abc.domain.MyCoupon;
 import com.abc.domain.Receipt;
 import com.abc.domain.Review;
@@ -37,6 +37,7 @@ import com.abc.domain.Store;
 import com.abc.domain.Wishlist;
 import com.abc.service.ChatService;
 import com.abc.service.DeliveryService;
+import com.abc.service.ExpBoardService;
 import com.abc.service.MasterService;
 import com.abc.service.MemberService;
 import com.abc.util.FileService;
@@ -60,9 +61,41 @@ public class MemberController {
 	@Autowired
 	private DeliveryService dService;
 	
+	@Autowired
+	private ExpBoardService expService;
+	
 	// 첨부파일 업로드 패스 지정 0924 추가
 	@Value("${spring.servlet.multipart.location}")		// 설정파일(application 파일)의 속성을 가지고 오고 싶을떄 사용할 수 있는 annotation(spring)
 	private String uploadPath;
+	
+	// 레벨 계산 메서드
+	public int calcLevel(int exp) {
+		List<ExpBoard> list = expService.getLevelList();
+		int mExp = exp;
+		int mLevel = 1;
+		log.debug("mExp: {}", mExp);
+		log.debug("list toString : {}", list.toString());
+		for ( int i = 0; i< list.size(); i++) {
+			if ( i == list.size()-1){
+				log.debug("레벨2 : {}", i);
+				log.debug("레벨2 : {}", list.get(i).getUserLevel());
+				log.debug("레벨2 : {}", list.get(i).getUserExp());
+				mLevel = list.get(i).getUserLevel();
+				
+			}
+			else if ( list.get(i).getUserExp() <= mExp
+					 && list.get(i+1).getUserExp() > mExp ) {
+				
+				log.debug("레벨1 : {}",list.get(i).getUserExp());
+				log.debug("레벨1 : {}",list.get(i).getUserLevel());
+				mLevel = list.get(i).getUserLevel();
+				break;
+			}
+		}
+		log.debug("레벨5 : {}", mLevel);
+		return mLevel;
+	}
+
 	
 	
 	
@@ -80,13 +113,8 @@ public class MemberController {
 		
 		int result = mService.insertMember(member);
 		// 채팅방 생성 0923 추가
-		MyChatRoom myCtRoom = new MyChatRoom();
 		ChatRoom ctRoom = chatService.createRoom(member.getMemberName());
 		
-    	myCtRoom.setRoomId(ctRoom.getRoomId());
-    	myCtRoom.setRoomName(ctRoom.getRoomName());
-    	
-    	chatService.insertMyChatRoom(myCtRoom);
     	// 채팅방 생성 끝
     	// 0924 추가
 		member.setRoomId(ctRoom.getRoomId());
@@ -186,13 +214,8 @@ public class MemberController {
 		mService.insertMember(member);
 		
 		// 채팅방 생성 0923 추가
-		MyChatRoom myCtRoom = new MyChatRoom();
 		ChatRoom ctRoom = chatService.createRoom(name);
 		
-    	myCtRoom.setRoomId(ctRoom.getRoomId());
-    	myCtRoom.setRoomName(ctRoom.getRoomName());
-    	
-    	chatService.insertMyChatRoom(myCtRoom);
     	// 채팅방 생성 끝
     	
 		// 0924 추가
@@ -224,13 +247,8 @@ public class MemberController {
 		mService.insertMember(member);
 		
 		// 채팅방 생성 0923 추가
-		MyChatRoom myCtRoom = new MyChatRoom();
 		ChatRoom ctRoom = chatService.createRoom(name);
 		
-    	myCtRoom.setRoomId(ctRoom.getRoomId());
-    	myCtRoom.setRoomName(ctRoom.getRoomName());
-    	
-    	chatService.insertMyChatRoom(myCtRoom);
     	// 채팅방 생성 끝
 		
 		// 0924 추가
@@ -255,6 +273,11 @@ public class MemberController {
 		List<Coupon> cList = mtService.selectAllCoupon();
 		model.addAttribute("cList", cList);
 		///////////
+		
+		int level = calcLevel(member.getMemberExp());
+		member.setMemberLevel(level);
+		log.debug("level : {}", member.getMemberLevel());
+		
 		model.addAttribute("member", member);
 		model.addAttribute("memberPage", memberPage);
 		

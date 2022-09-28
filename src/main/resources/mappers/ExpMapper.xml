@@ -22,7 +22,7 @@
 			*
 		FROM
 			EXP_TABLE
-		ORDER BY USERLEVEL DESC
+		ORDER BY USERLEVEL ASC
 	</select>
 </mapper>
 

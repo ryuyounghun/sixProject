@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.abc.domain.ChatRoom;
 import com.abc.domain.Member;
-import com.abc.domain.MyChatRoom;
 import com.abc.service.ChatService;
 import com.abc.service.MemberService;
 
@@ -65,15 +64,8 @@ public class ChatRoomController {
     public ChatRoom createRoom(@RequestParam String name,
     		@AuthenticationPrincipal UserDetails user) {
     	log.debug("name : {}" , name);
-    	MyChatRoom myCtRoom = new MyChatRoom();
     	Member member = mService.selectOneMember(user.getUsername());
     	ChatRoom ctRoom = chatService.createRoom(name);
-    	
-    	myCtRoom.setMemberNum(member.getMemberNum());
-    	myCtRoom.setRoomId(ctRoom.getRoomId());
-    	myCtRoom.setRoomName(ctRoom.getRoomName());
-    	
-    	chatService.insertMyChatRoom(myCtRoom);
     	
         return ctRoom;
     }
