@@ -42,7 +42,7 @@
 				
 					<div class="searchBar-wrapper">
 						
-						<form th:action="@{partyIndex}" type="get" id="pagingForm">
+						<form th:action="@{partyIndex}" method="get" id="pagingForm">
 							<input type="hidden" id="page" name="page" value="">
 							<div class="container-searchBar">
 								<input class="searchBar" type="text" name="searchWord"
@@ -94,22 +94,22 @@
 					</div>
 					
 					<div id="navigator">
-				<!-- 페이지 이동 링크 -->
-				<!-- 이전 그룹으로 이동 -->
-				<a th:href = "|javascript:pagingFormSubmit(${navi.currentPage - navi.pagePerGroup})|" th:text ="|◁◁|"></a>
-				<a th:href = "|javascript:pagingFormSubmit(${navi.currentPage - 1})|" th:text ="|◀|" id="prevPage"></a>
-				<!-- 다음 그룹으로 이동 -->
-				<span th:each="counter : ${#numbers.sequence(navi.startPageGroup, navi.endPageGroup)}">
-					<th:block th:if = "${counter == navi.currentPage}"><b>
-						<a th:text ="${counter}" th:href = "|javascript:pagingFormSubmit(${counter})|"></a>
-					</th:block>
-					<th:block th:if = "${counter == navi.currentPage}"></b></th:block>
-				</span>
-				<!-- 다음페이지 그룹으로 이동 -->
-				<a th:href = "|javascript:pagingFormSubmit(${navi.currentPage + 1})|" th:text ="|▶|"  id="nextPage"></a>
-				<a th:href = "|javascript:pagingFormSubmit(${navi.currentPage + navi.pagePerGroup})|" th:text ="|▷▷|"></a>
-				<!-- 다음 그룹으로 이동 -->
-				</div>
+						<!-- 페이지 이동 링크 -->
+						<!-- 이전 그룹으로 이동 -->
+						<a th:href = "|javascript:pagingFormSubmit(${navi.currentPage - navi.pagePerGroup})|" th:text ="|◁◁|"></a>
+						<a th:href = "|javascript:pagingFormSubmit(${navi.currentPage - 1})|" th:text ="|◀|" id="prevPage"></a>
+						<!-- 다음 그룹으로 이동 -->
+						<span th:each="counter : ${#numbers.sequence(navi.startPageGroup, navi.endPageGroup)}">
+							<th:block th:if = "${counter == navi.currentPage}"><b>
+								<a th:text ="${counter}" th:href = "|javascript:pagingFormSubmit(${counter})|"></a>
+							</th:block>
+							<th:block th:if = "${counter == navi.currentPage}"></b></th:block>
+						</span>
+						<!-- 다음페이지 그룹으로 이동 -->
+						<a th:href = "|javascript:pagingFormSubmit(${navi.currentPage + 1})|" th:text ="|▶|"  id="nextPage"></a>
+						<a th:href = "|javascript:pagingFormSubmit(${navi.currentPage + navi.pagePerGroup})|" th:text ="|▷▷|"></a>
+						<!-- 다음 그룹으로 이동 -->
+					</div>
 				
 					
 				</div>

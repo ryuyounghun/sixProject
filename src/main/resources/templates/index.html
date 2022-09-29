@@ -72,21 +72,22 @@
 			
 				<ui class="header-logMenuList"> <!-- 로그인 및 로그아웃 링크 -->
 					<li sec:authorize = "hasRole('ADMIN')">
-						<a th:href = "@{/master/index}">관리자</a>
-					</li>
-					
-					<li sec:authorize ="not isAuthenticated">
-						<a th:href="@{/member/login}">
-							로그인
+						<a th:href = "@{/master/index}" class="logMenu2">
+							관리자
 						</a>
 					</li>
-					<li sec:authorize="not isAuthenticated">
-						<a th:href ="@{/member/join}">
+					<li sec:authorize ="not isAuthenticated" >
+						<a th:href="@{/member/login}" class="logMenu1">
+						로그인
+						</a>
+					</li>
+					<li sec:authorize="not isAuthenticated" >
+						<a th:href ="@{/member/join}" class="logMenu2">
 							회원가입
 						</a>
 					</li>
 					<li sec:authorize="isAuthenticated">
-						<a th:href ="@{/logout}">
+						<a th:href ="@{/logout}" class="logMenu1">
 							로그아웃
 						</a>
 					</li>
@@ -95,18 +96,20 @@
 		</header>
 	
 		<section>
-			<div class="box-wrapper">
-				<aside class="deliveryBox" >
-					<a th:href="@{/delivery/index}">
-						배달주소
-					</a>
-				</aside>
-					
-				<aside class="communityBox">
-					<a th:href="@{/community/index}">
-						커뮤니티로
-					</a>				
-				</aside>
+			<div class="box-wrapper" id="player">
+			
+				<h1 class= "title">Group Up</h1>
+				<h3 class="subtitle">좋은 인연과 좋은 음식 <br>그리고 즐거운 하루</h3>
+				<a th:href="@{/delivery/index}">
+					<aside class="deliveryBox" >
+						<p>배달</p>
+					</aside>
+				</a>
+				<a th:href="@{/community/index}">
+					<aside class="communityBox">
+						<p>놀러가기</p>
+					</aside>
+				</a>				
 			</div>
 			<div sec:authorize ="isAuthenticated">
 				<input type="hidden" id="loginUser" th:value="${#authentication.getPrincipal().getUsername()}">

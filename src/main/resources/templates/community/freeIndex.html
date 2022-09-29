@@ -7,6 +7,13 @@
 <title>Insert title here</title>
 </head>
 <body>
+
+	<div class="searchBar-wrapper">
+		<form th:action="@{freeIndex}" method="get" id="pagingForm">
+			<input type="hidden" id="page" name="page" value="">
+		</form>
+	</div>
+	
 	<div class="infinite">
 		<div class="list">
 			<table>
@@ -31,7 +38,35 @@
 			<input type="button" value="글쓰기" class="write-btn" onclick="javascript:location.href='freeWrite'">
 		</div>
 	</div>
-	<div class="pagination">페이지네이션</div>
+	<div id="navigator">
+		<!-- 페이지 이동 링크 -->
+		<!-- 이전 그룹으로 이동 -->
+		<a th:href = "|javascript:pagingFormSubmit(${navi.currentPage - navi.pagePerGroup})|" th:text ="|◁◁|"></a>
+		<a th:href = "|javascript:pagingFormSubmit(${navi.currentPage - 1})|" th:text ="|◀|" id="prevPage"></a>
+		<!-- 다음 그룹으로 이동 -->
+		<span th:each="counter : ${#numbers.sequence(navi.startPageGroup, navi.endPageGroup)}">
+			<th:block th:if = "${counter == navi.currentPage}"><b>
+				<a th:text ="${counter}" th:href = "|javascript:pagingFormSubmit(${counter})|"></a>
+			</th:block>
+			<th:block th:if = "${counter == navi.currentPage}"></b></th:block>
+		</span>
+		<!-- 다음페이지 그룹으로 이동 -->
+		<a th:href = "|javascript:pagingFormSubmit(${navi.currentPage + 1})|" th:text ="|▶|"  id="nextPage"></a>
+		<a th:href = "|javascript:pagingFormSubmit(${navi.currentPage + navi.pagePerGroup})|" th:text ="|▷▷|"></a>
+		<!-- 다음 그룹으로 이동 -->
+	</div>
+	
+	
+	<script type="text/javascript">
+		function pagingFormSubmit(currentPage){
+			let form = document.getElementById("pagingForm");
+			let page = document.getElementById("page");
+			
+			
+			page.value = currentPage;
+			form.submit();
+		}
+	</script>
 </body>
 
 </html>

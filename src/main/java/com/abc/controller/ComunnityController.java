@@ -55,22 +55,22 @@ public class ComunnityController{
 	String c = "community/";
 
 	@Autowired
-	ClassBoardService cService; 
+	private ClassBoardService cService; 
 	
 	@Autowired
 	private ChatService chatService;
 	
 	@Autowired
-	FreeBoardService fService; 
+	private FreeBoardService fService; 
 	
 	@Autowired
-	MemberService mService; 
+	private MemberService mService; 
 	
 	@Autowired
-	ReplyService rService; 
+	private ReplyService rService; 
 	
 	@Autowired
-	ExpBoardService expService;
+	private ExpBoardService expService;
 	
 	@Autowired
 	private DeliveryService dService; 
@@ -174,7 +174,7 @@ public class ComunnityController{
 		model.addAttribute("cBoard", cBoard);
 		model.addAttribute("member", member);
 		log.debug("cBoard id : {}", cBoard.getRoomId());
-		return c  + "read2"; 
+		return c  + "read"; 
 	}
     
 	@GetMapping("/classWrite")
@@ -242,10 +242,11 @@ public class ComunnityController{
 			@RequestParam(name="page", defaultValue = "1" )int page) {
 		
 		List<FreeBoard> fbList = null;
-		PageNavigator fbNavi = fService.getPageNavigator(
+		PageNavigator navi = fService.getPageNavigator(
 				pagePerGroup, countPerPage, page); 
-		fbList = fService.selectAllFreeBoard(fbNavi);
+		fbList = fService.selectAllFreeBoard(navi);
 
+		model.addAttribute("navi" , navi);
 		model.addAttribute("fbList",fbList);
 		return c + "freeIndex";
 	}
