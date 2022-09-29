@@ -15,7 +15,7 @@ public interface FreeBoardService {
 	// 글등록하기
 	public int registerBoard(FreeBoard fb);
 	public boolean registerBoard(FreeBoard fb, MultipartFile[] files);
-	
+	public boolean registerBoard(int num, MultipartFile[] files);
 	// freeboard객체 하나 가져오기
 	public FreeBoard selectOneFreeBoard(int boardNum);
 	
@@ -33,4 +33,8 @@ public interface FreeBoardService {
 	public PageNavigator getPageNavigator(int pagePerGroup, int countPerPage, int Page);
 	public List<FreeBoard> selectAllFreeBoard(PageNavigator navi);
 
+	
+	
+	// 0929 추가 수정기능
+	public int updateFreeBoard(FreeBoard fb);
 }

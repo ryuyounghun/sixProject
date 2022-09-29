@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<meta charset="UTF-8">
+<title>자유게시판 글쓰기</title>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+</head>
+<body >
+
+	<form action = "updateFreeWrite" method = "POST" onsubmit = "return checkValues();" enctype = "multipart/form-data">
+		<table>
+			<tr>
+				<th>
+					제목: <input type="text" name="title" th:value="${fBoard.title}">
+				</th>
+			</tr>
+			<tr>
+				<td colspan="2">
+					<textarea name="content" th:text="${fBoard.content}"></textarea>
+					<input type="hidden" th:value="${fBoard.boardNum}" name="boardNum">
+				</td>
+			</tr>
+			<tr colspan="2">
+				<td>
+					<input type="submit" value = "제출">
+				</td>
+			</tr>
+		</table>
+			<div name="fileDiv" id= "fdIdx_0">
+					<input type="file" name="files" id="file_0"/>
+					<button type="button" onclick="addFile()" >
+						+
+					</button>
+					<button type="button" onclick="removeFile('fdIdx_0')" >
+						-
+					</button>
+			</div>
+			<div id="fileboxForPlusFile"></div>
+	</form>
+	
+	
+</body>
+<script >
+	
+	
+	
+	let fdIdx = 0;
+	let fileIdx = 0; 
+	
+	function addFile() {
+	
+		fdIdx++;
+		fileIdx++;
+	
+		alert(fileIdx);
+		prev = fileIdx-1;
+		let prevFileIdx = $("#file_" + prev).val().length;
+		alert( prevFileIdx );
+		
+		if ( prevFileIdx == 0 ){
+			alert("파일을 추가해 주세요.");
+			fdIdx--;
+			fileIdx--;
+	
+			return false;
+		}else{
+			
+		}
+		let fileHtml = `
+			<div name="fileDiv" id= "fdIdx_${fdIdx}">
+				<input type="file" name="files" id="file_${fileIdx}" />
+				<button type="button" onclick="addFile()" >
+					+
+				</button>
+				<button type="button" onclick="removeFile('fdIdx_${fdIdx}')" >
+					-
+				</button>
+			</div>
+		`;
+		$('#fileboxForPlusFile').before(fileHtml);
+	}
+	
+	function removeFile(param){
+		
+		if ( $("#file_0").val().length >= 0 ){
+			alert("첫 번째 파일칸은 지울 수 없습니다.");
+			return false;
+		}
+		
+		console.log(param);
+		let p = param;
+		let element = "#" + p;
+		$(element).children().remove();
+	}
+	
+	function checkValues(){
+		let title = document.getElementById('title');
+		let content = document.getElementById('content');
+	
+		if ( title.value.trim().length == 0){
+			alert('제목을 입력해 주세요.');
+			title.focus();
+			return false;
+		
+		}
+		if ( content.value.trim().length == 0){
+			alert('내용을 입력해 주세요.');
+			content.focus();
+			return false;
+		}
+	}
+
+</script>
+</html>

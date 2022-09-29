@@ -41,10 +41,12 @@ import com.abc.service.ExpBoardService;
 import com.abc.service.FreeBoardService;
 import com.abc.service.MemberService;
 import com.abc.service.ReplyService;
+import com.abc.util.FileService;
 import com.abc.util.PageNavigator;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import oracle.jdbc.proxy.annotation.Post;
 
 @Slf4j
 @Controller
@@ -74,6 +76,7 @@ public class ComunnityController{
 	
 	@Autowired
 	private DeliveryService dService; 
+	
 	
 	// page당 글 수
 	@Value("${user.board.page}")
@@ -250,6 +253,7 @@ public class ComunnityController{
 		model.addAttribute("fbList",fbList);
 		return c + "freeIndex";
 	}
+	
 	@GetMapping("/freeWrite")
 	public String freeWrite() {
 		log.debug("freeWrite() 실행");
@@ -295,8 +299,8 @@ public class ComunnityController{
 		}
 		
 		return "redirect:./index"; // .../board/
-				
 	}
+	
 	@GetMapping("/fbRead")
 	public String fbRead(int num, Model model,
 			// 0924 추가
@@ -682,5 +686,55 @@ public class ComunnityController{
 		}
 		
 		return new ResponseEntity<Resource>(resource, header, HttpStatus.OK);
+	}
+	
+	// 0929 추가 자유게시판 
+	@GetMapping("/updateFreeWrite")
+	public String updateFreeWrite(int boardNum, Model model) {
+		FreeBoard fBoard = fService.selectOneFreeBoard(boardNum);
+		log.debug("fBoard : {}", fBoard);
+		model.addAttribute("fBoard",fBoard);
+		
+		List<FileDTO> fileList = fService.selectFileList(boardNum);
+		log.debug("fileList : {}", fileList);
+		
+		model.addAttribute("fileList", fileList);
+		
+		return c + "updateFreeWrite";
+	}
+	
+	// 0929 추가 자유게시판 수정
+	@PostMapping("/updateFreeWrite")
+	public String updateFreeWrite(FreeBoard fBoard,
+			@AuthenticationPrincipal UserDetails user,
+			@RequestParam MultipartFile[] files) {
+		log.debug("fBoard : {}", fBoard);
+		List<FileDTO> fileList = fService.selectFileList(fBoard.getBoardNum());
+		int num = fBoard.getBoardNum();
+		log.debug("num : {}", num);
+		if (files.length > 0) {
+			try {
+				boolean isRegistered = fService.registerBoard(num, files); //파일 있을 때의 등록
+				fService.updateFreeBoard(fBoard);
+			} catch  ( Exception e) {
+				e.printStackTrace();
+				System.out.println("등록실패");
+				
+			}
+		}
+		else { //파일 없을 때의 등록
+			fService.updateFreeBoard(fBoard);
+		}
+		
+		return "redirect:./index";
+	}
+	
+	// 0929 추가
+	@GetMapping("/viewUpdateBtn")
+	@ResponseBody
+	public FreeBoard viewUpdateBtn(int fBoardNum) {
+		FreeBoard fBoard = fService.selectOneFreeBoard(fBoardNum);
+		
+		return fBoard;
 	}
 }

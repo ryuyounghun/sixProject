@@ -16,7 +16,7 @@ public interface FreeBoardDAO {
 	// 등록
 	public int insertFreeBoard(FreeBoard fb);
 	
-	// 수정
+	// 0929 추가 수정기능
 	public int updateFreeBoard(FreeBoard fb);
 	
 	// 지우기
@@ -34,4 +34,7 @@ public interface FreeBoardDAO {
 
 	public List<FreeBoard> selectAllFreeBoard(RowBounds rb);
 	public int countAllFreeBoard(Map<String, String> map);
+	
+	
+	
 }

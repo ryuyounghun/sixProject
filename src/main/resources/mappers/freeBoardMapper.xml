@@ -13,7 +13,6 @@
 				BOARDNUM,
 				MEMBERNUM,
 				NICKNAME,
-				CATEGORY,
 				TITLE,
 				CONTENT,
 				MEMBERLEVEL
@@ -22,7 +21,6 @@
 				BOARDNUM_SEQ.NEXTVAL,
 				#{memberNum},
 				#{nickname},
-				#{category},
 				#{title},
 				#{content},
 				#{memberLevel}
@@ -50,6 +48,12 @@
 		WHERE BOARDNUM = #{boardNum} 
 	</select>
 	
+	<!-- 0929 추가 -->
+	<update id="updateFreeBoard" parameterType="FreeBoard">
+		UPDATE FREE_BOARD
+		SET TITLE = #{title}, CONTENT = #{content}
+		WHERE BOARDNUM = #{boardNum}
+	</update>
 	
 </mapper>
 

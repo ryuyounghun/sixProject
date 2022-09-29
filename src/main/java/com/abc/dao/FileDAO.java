@@ -21,4 +21,6 @@ public interface FileDAO {
 
 	public int selectFileTotalCount(int boardNum);
 	
+	// 0928 추가
+	public int updateFile(FileDTO fd);
 }

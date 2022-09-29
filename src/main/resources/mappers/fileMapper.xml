@@ -39,14 +39,12 @@
 			FILENUM = #{fileNum}
 	</select>
 
-	<update id="deleteFile" parameterType="long">
-		UPDATE multi_file_table_of_free_board
-		SET
-			  delete_yn = 'Y'
-			, delete_time = SYSDATE
+	<delete id="deleteFile" parameterType="int">
+		delete multi_file_table_of_free_board
+		
 		WHERE
 			boardNum = #{boardNum}
-	</update>
+	</delete>
 
 	<select id="selectFileList" parameterType="int" resultType="FileDTO">
 		SELECT
@@ -73,6 +71,6 @@
 		AND
 			boardNum = #{boardNum}
 	</select>
-
+	
 </mapper>
 

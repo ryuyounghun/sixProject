@@ -18,7 +18,6 @@ public class FreeBoard {
 	private int boardNum;
 	private int memberNum;
 	private String nickname;
-	private String category;
 	private String title;
 	private String content;
 	private String inputdate;

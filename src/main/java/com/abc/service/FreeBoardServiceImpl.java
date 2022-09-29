@@ -63,6 +63,24 @@ public class FreeBoardServiceImpl implements FreeBoardService{
 
 
 	@Override
+	public boolean registerBoard(int num, MultipartFile[] files) {
+		
+		fileDAO.deleteFile(num);
+		
+		int result = 1;
+		
+		List<FileDTO> fileList = fileUtils.uploadFiles(files);
+		
+		for ( int i = 0; i<fileList.size(); i++ ) {
+			fileDAO.insertFile(fileList.get(i));
+			log.debug(fileList.get(i).toString());
+		}	
+		
+		return result > 0;
+	}
+
+	
+	@Override
 	public int deleteBoard(Long fileNum) {
 			
 		return fbDAO.deleteBoard(fileNum);
@@ -110,6 +128,13 @@ public class FreeBoardServiceImpl implements FreeBoardService{
 	@Override
 	public FileDTO selectOneFile(Long fileNum) {
 		return fileDAO.selectOneFile(fileNum);
+	}
+
+
+	@Override
+	public int updateFreeBoard(FreeBoard fb) {
+		// TODO Auto-generated method stub
+		return fbDAO.updateFreeBoard(fb);
 	}
 
 	
