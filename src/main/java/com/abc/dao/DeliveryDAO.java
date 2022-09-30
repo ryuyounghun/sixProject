@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.session.RowBounds;
 
 import com.abc.domain.Item;
 import com.abc.domain.Order;
@@ -60,4 +61,11 @@ public interface DeliveryDAO {
 	public int insertWishlist(Wishlist wish);
 	public Wishlist selectWishlist(Map<Object, Object> map);
 	public int deleteWish(Map<Object, Object> map);
+
+	// 페이징 관련 9월 29일
+	public List<Store> selectAllStore(Map<String, String> map, RowBounds rb);
+	public int countAllStore(Map<String, String> map);
+	
+	
 }
+	

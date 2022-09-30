@@ -118,6 +118,9 @@ public class ComunnityController{
 				mLevel = list.get(i).getUserLevel();
 				break;
 			}
+			else if (list.get(0).getUserExp() > mExp ) {
+				mLevel = list.get(0).getUserLevel();
+			}
 		}
 		log.debug("레벨5 : {}", mLevel);
 		return mLevel;

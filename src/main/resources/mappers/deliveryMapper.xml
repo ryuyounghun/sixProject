@@ -327,7 +327,38 @@
 		WHERE STORENUM = #{storeNum}
 	</update>
 	
+	<!-- 9월 29일 -->
+	<select id="selectAllStore" resultType="Store" parameterType="map">
+		SELECT 
+		*
+		FROM STORE
+		<if test="searchWord != null">
+			<where>
+				STORENAME LIKE '%'||#{searchWord}||'%'
+				OR 
+				ADDRESS LIKE '%'||#{searchWord}||'%'
+				OR
+				CATEGORY LIKE '%'||#{searchWord}||'%'
+			</where>
+		</if>
+		ORDER BY STORENAME DESC
+	</select>
 	
+	<select id = "countAllStore" parameterType="map" resultType = "int">
+		SELECT
+			count(*)
+		FROM STORE
+		<if test="searchWord != null">
+			<where>
+				STORENAME LIKE '%'||#{searchWord}||'%'
+				OR 
+				ADDRESS LIKE '%'||#{searchWord}||'%'
+				OR
+				CATEGORY LIKE '%'||#{searchWord}||'%'
+			</where>
+		</if>
+		ORDER BY STORENAME DESC
+	</select>
 	
 	
 </mapper>

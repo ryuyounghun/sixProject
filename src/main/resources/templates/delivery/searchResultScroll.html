@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+		xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" href="/css/delivery/deliveryRead.css">
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+<script type="text/javascript">
+	$(document).ready(function(){
+		$(document).on( "click",function(){
+			onScroll();
+		});
+	});
+	function getParameterByName(name) {
+		  name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+		  var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+		  results = regex.exec(location.search);
+		  return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+		  
+		}
+	
+	/**
+	function load() {
+		let title = $("#searchWord").val();
+		var searchWord = getParameterByName('searchWord');
+		$("#searchWord").val(searchWord);
+		$.ajax({
+			url : "searchResultScrollAjax",
+			type : "get",
+			data : {
+				"searchWord" : searchWord
+								
+			},
+			success : function(data) {
+			let htmlStr = "";
+			htmlStr += "<table th:each='list:${sList}'>"
+			htmlStr += "<tr>";
+			htmlStr += "<td>♥ " + list.wishlist + "</td>";
+			htmlStr += "</tr>";
+			htmlStr += "</table>";
+			
+
+			
+		
+		
+		
+	}
+	*/
+	function onScroll(){
+		var searchWord = getParameterByName('searchWord');
+		let pagination = $("#pagination");
+		let storeList = $("#storeList");
+		let screenHeight = screen.height;
+		let pageY = pageYOffset;
+		let currentPage = $("#currentPage").val();
+		let nextPage = $("#nextPage").val();
+		console.log(nextPage);
+		// <a th:href = "|javascript:pagingFormSubmit(${navi.currentPage + 1})|" th:text ="|▶|"  id="nextPage"></a>
+		
+		$.ajax({
+			url : "searchResultScrollAjax",
+			type : "get",
+			data : {
+				"page" : nextPage,
+				"searchWord" : searchWord
+			},
+			success : function(data) {
+				let htmlStr = "";
+				$.each(data,function(index,item){
+					
+					htmlStr += "<table  class='storeTable'>"
+					htmlStr += "<tr>";
+					htmlStr += "<td  class='nameTd'><a href='/delivery/read?num="+item.storeNum+"'>"+ item.storeName +"</a></td>";
+					htmlStr += "<td>★" + item.rating + "</td>";
+					htmlStr += "<td>♥" + item.wishlist + "</td>";
+					htmlStr += "</tr>";
+					htmlStr += "</table>";
+									
+				});
+				
+				htmlStr += "</table>";
+				$("#storeList").append(htmlStr);
+				$("#nextPage").val(parseInt(nextPage)+1)
+				alert($("#nextPage").val());
+			}
+		});
+	}
+	
+
+</script>
+<style>
+	.storeTable {
+		margin : 20px;
+		width : 40%;
+		color : black;
+		border : 1px solid black;
+		display : inline-block;
+	}
+	
+	.storeTable td {
+		padding : 15px;
+	}
+	
+	.storeTable a {
+		color : black;
+		text-decoration : none;
+	}
+	
+	.storeTable .nameTd {
+		padding-top : 30px;
+		padding-bottom : 30px;
+		width : 120px;
+		text-align : center;
+		
+	}
+	
+</style>
+</head>
+<body>
+<body>
+	<div id="headerAndSection-wrapper">
+		<header>
+			<div class="header-container">
+				<a href="/" class="header-logo"> asd </a> <a
+					th:href="@{/community/index}" class="header-toAnother"> 커뮤니티로~
+				</a>
+
+				<ui class="header-logMenuList"> <!-- 로그인 및 로그아웃 링크 -->
+				<li sec:authorize="not isAuthenticated"><a
+					th:href="@{/member/login}"> 로그인 </a></li>
+				<li sec:authorize="not isAuthenticated"><a
+					th:href="@{/member/join}"> 회원가입 </a></li>
+				<li sec:authorize="isAuthenticated"><a th:href="@{/logout}">
+						로그아웃 </a></li>
+				<li sec:authorize="isAuthenticated"><a
+					th:href="@{/member/mypage}"> 회원정보 </a></li>
+				</ui>
+
+			</div>
+		</header>
+
+		<section>
+			<div class="section-container">
+
+				<div class="searchBar-wrapper">
+					<div class="container-searchBar">
+						<input class="searchBar" type="text" name="searchWord"
+							th:value="${searchWord}" id="searchWord" placeholder="가게검색">
+						검색
+					</div>
+				</div>
+
+
+				<aside>
+					<div class="aside-left">
+				</aside>
+
+				<aside>
+					<div class="aside-right"></div>
+				</aside>
+				<div class="aside-center">
+					<div class="section-center">
+						<div id="storeList">
+							<table>
+								<tr th:each='list:${sList}' class="storeTable">
+									<td class='nameTd'><a
+										th:href="@{|read?num=${list.storeNum}|}"
+										th:text='${list.storeName}'> </a></td>
+									<td>★ <span th:text="${list.rating}"></span>
+									</td>
+									<td>♥ <span th:text="${list.wishlist}"></span>
+									</td>
+								</tr>
+							</table>
+						</div>
+
+						<input type="hidden" th:value="${navi.currentPage}" id="currentPage">
+						<input type="hidden" th:value="${navi.currentPage+1}" id="nextPage">
+						<div id="navigator">
+							<span
+								th:each="counter : ${#numbers.sequence(navi.startPageGroup, navi.endPageGroup)}">
+								<th:block th:if="${counter == navi.currentPage}">
+								</th:block>
+							</span>
+						</div>
+					</div>
+				</div>
+		</section>
+
+	</div>
+
+	<footer> </footer>
+</body>
+</html>

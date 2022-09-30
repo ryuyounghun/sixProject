@@ -19,7 +19,6 @@ public interface ClassBoardService {
 	// 메인 인덱스용 페이지 네비게이터
 	public PageNavigator getPageNavigator(int pagePerGroup, int countPerPage, int Page, String searchWord);
 	// 검색어 있음
-	
 	public List<ClassBoard> selectAllClassBoard(PageNavigator navi, String searchWord);
 
 	// 파라미터 없이 다 추력

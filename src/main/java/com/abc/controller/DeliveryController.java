@@ -36,6 +36,7 @@ import com.abc.domain.Wishlist;
 import com.abc.service.DeliveryService;
 import com.abc.service.MemberService;
 import com.abc.util.FileService;
+import com.abc.util.PageNavigator;
 
 import lombok.extern.slf4j.Slf4j;
 import oracle.jdbc.proxy.annotation.Post;
@@ -56,6 +57,12 @@ public class DeliveryController {
 	// 첨부파일 업로드 패스 지정
 	@Value("${spring.servlet.multipart.location}")		// 설정파일(application 파일)의 속성을 가지고 오고 싶을떄 사용할 수 있는 annotation(spring)
 	private String uploadPath;
+	
+	@Value("${user.board.page}")
+	private int countPerPage;
+	
+	@Value("${user.board.group}")
+	private int pagePerGroup;
 	
 	
 	@GetMapping("/index")
@@ -118,7 +125,8 @@ public class DeliveryController {
 	}
 	
 	@GetMapping("/storeList")
-	public String storeList() {
+	public String storeList(String searchWord, Model model) {
+		model.addAttribute("searchWord",searchWord);
 		return d + "/storeList";
 	}
 	
@@ -130,6 +138,80 @@ public class DeliveryController {
 		List<Store> list = dService.selectSearch(title, category);
 		return list;
 	}
+
+	// 9월 29일 작업
+	@GetMapping("/searchResultScroll")
+	public String searchResultScroll(Model model,
+			@RequestParam(name = "page", defaultValue="1") int page,
+			String searchWord) {
+		
+			PageNavigator navi =  dService.getPageNavigator(
+					pagePerGroup, countPerPage, page, searchWord);
+		List<Store> sList = null;
+			
+		sList = dService.selectAllStore(navi, searchWord);
+		navi =  dService.getPageNavigator(
+			pagePerGroup, countPerPage, page, searchWord);
+		
+		model.addAttribute("sList",sList);
+		model.addAttribute("navi",navi);
+		
+		return d + "/searchResultScroll";
+	}
+	
+	@GetMapping("/searchResultScrollAjax")
+	public @ResponseBody List<Store> searchStore( String searchWord,
+			@RequestParam(name = "page", defaultValue="1") int page) {
+
+			List<Store> sList = null;
+			PageNavigator navi =  dService.getPageNavigator(
+					pagePerGroup, countPerPage, page, searchWord);
+			
+			sList = dService.selectAllStore(navi, searchWord);
+			
+			
+			
+			return sList;
+	}
+	/*
+	
+	@GetMapping("/searchResultScrollAjax")
+	public @ResponseBody PageNavigator navi( String searchWord,
+			@RequestParam(name = "page", defaultValue="1") int page) {
+		
+		PageNavigator navi =  dService.getPageNavigator(
+				pagePerGroup, countPerPage, page, searchWord);
+		
+		return navi;
+	}
+	@GetMapping("/searchResultScrollAjaxPage")
+	public @ResponseBody PageNavigator navi ( String searchWord,
+			@RequestParam(name = "page", defaultValue="1") int page) {
+		
+		log.debug("여기까지 굿");
+		PageNavigator navi =  dService.getPageNavigator(
+				pagePerGroup, countPerPage, page, searchWord);
+		
+		log.debug("navi : {}",navi);
+		
+		
+		return navi;
+	}
+	*/
+	@GetMapping("/storeListPaging")
+	public @ResponseBody List<Store> storeListPaging ( String searchWord,
+			@RequestParam(name = "page", defaultValue="1") int page) {
+		
+		log.debug("여기까지 굿");
+		PageNavigator navi =  dService.getPageNavigator(
+				pagePerGroup, countPerPage, page, searchWord);
+		
+		log.debug("여기까지 완료");
+		List<Store> slist = dService.selectAllStore(navi, searchWord);
+		
+		return slist;
+	}
+	
 	
 	@GetMapping("/storeDisplay")
 	public ResponseEntity<Resource> storeDisplay(int num) {
@@ -563,6 +645,5 @@ public class DeliveryController {
 		log.debug("sList : {}", sList);
 		return sList;
 	}
-	
 	
 }
