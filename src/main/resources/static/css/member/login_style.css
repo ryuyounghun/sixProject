@@ -12,23 +12,26 @@ body{
 .header-container{
 		width: 100%;
 		height: 100px;
-		background-color: fuchsia;
+		background-color: #F0F0EF;
 		position: relative;
 }
 
 .header-logo{
 	position : absolute;
-	height : 75px;
-	width : 75px;
-	background-color: blue;
-	top: 10%;
-	left : 10%;
+	height : 100px;
+	width : 170px;
+	left : 5%;
+	top: -2%;
+	float: left;
+	background: url(/../images/logo_height.png) no-repeat center;
+	background-size: contain;
 }
 .header-toAnother{
 	position : absolute;
 	height : 75px;
 	top: 10%;
 	left : 16%;
+	margin-left: 20px;
 	
 }
 .header-logMenuList{
@@ -50,33 +53,39 @@ body{
 	본문 섹션 css
  */
 .loginContainer {
-	width:780px; height: 550px; 
+	width:760px; height: 550px; 
 	margin: 0 auto; 
 	
 }
 
-/* loginTitle */
-.loginContainer .loginTitle h2 { 
+
+
+ /* loginTitle */
+ .loginContainer .loginTitle { 
 	width: 100%; 
-	height: 100px; 
+	height: 200px; 
 	line-height: 45px;
-	margin-top: 50px;
 	text-align: center;
 	padding-top: 20px;
     box-sizing: border-box;
     font-size: 30px;
-    color: #787775;
+    background: url(/../images/logo_width.png) no-repeat center;
+}  
+
+.logo{
+    background: url(/../images/logo450.png) no-repeat center;
+    width: 300px;
+    height: 140px;
+    line-height: 100px;
 }
-em {color: #6b402d; font-size: 50px;}
+
 
 form {
 	width:100%;
+	text-align:center;
 	height:450px;
-	padding: 25px 100px;
+	padding: 0px 100px;
 	box-sizing: border-box;
-	margin-left: 50px;
-	margin-top: 20px;
-	
 }
 
 fieldset{
@@ -95,29 +104,44 @@ legend{
 }
 
 input {
-	display: block;
-	width: 80%; height: 50px;
+	display: inline-block;
+	font-size: 18px;
+	width: 80%;
+	height: 50px;
+	border: 1px #b8b8b8 solid;
+	text-align: left;
 	margin-bottom: 20px;
-	border: medium;
-	background-color: #f5f7be;
+	/* background-color: #fcf3bd; */
 	padding: 0 30px;
 	box-sizing: border-box; /* 패딩수치를 인사이드 처리 */
 }
 
+
 .elseBox{
+    list-style: none;
+    text-align: center;
+  	padding-top: 30px;
+    font-size: 17px;
+}
+
+.elseText{color: #9e9b9b;}
+.txt_bar{color: #9e9b9b;}
+
+/* .elseBox{
 	margin-bottom: 50px;
 	display: inline-block;
 	text-align: center;
+} */
+.socialLogin{
+	padding-top: 20px;
+	padding-bottom: 20px;
 }
-
  button {
 	border: none;
 	height: 50px;
 	width: 80%;
     padding: 15px 30px;
-    border-radius: 15px;
     font-family: "paybooc-Light", sans-serif;
-    box-shadow: 0 15px 35px rgb(0 0 0 / 20%);
     font-weight: 600;
     transition: 0.25s;
     background-color: #6b402d;
@@ -130,11 +154,13 @@ button:hover {
     transform: scale(1.2);
     cursor: pointer;
 }
+
+
 /* 본문 css 끝  */
 
  .section-container{
  	width : 100%;
- 	height : 72.3vh;
+ 	min-height: 95vh;
  	margin-bottom: 50px;
  	margin-top: 30px;
  }
@@ -154,7 +180,7 @@ button:hover {
  }
  .aside-left{
  	position : absolute;
- 	background-color: red;
+ 	/* background-color: red; */
  	width : 15%;
  	height: 60vh;
  	left : 5%;
@@ -162,7 +188,7 @@ button:hover {
  
  .aside-right{
  	position : absolute;
- 	background-color: blue;
+ 	/* background-color: blue; */
  	width : 15%;
  	height: 60vh;
  	right : 5%;
@@ -219,9 +245,10 @@ button:hover {
 }
 
 footer{
-	bottom: 0;
+	position: relative;
+	margin-top: 10px;
 	width : 100%;
-	height : 100px;
+	min-height : 100px;
 	background-color : lime;
 	
 }
