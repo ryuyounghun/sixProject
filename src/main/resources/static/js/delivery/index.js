@@ -18,7 +18,6 @@
 					
 					if(index <= 9) {
 						if ( index <=2 ){
-							
 							htmlStr += "";
 							htmlStr += "<li class='top3Stores'>"+  "<img src='' id='storeRank" + index + "'>  "  + "<span >" + item.storeName +"</span>" + "</li>";
 						}else {
@@ -33,7 +32,7 @@
 				
 				for ( let i =0; i<=2; i++){
 					let img_src = "/images/rank/rank"+ (i+1) + ".png";
-					document.getElementById("storeRank"+i).src= img_src;
+					document.getElementById("storeRank"+i).src = img_src;
 					document.getElementById("storeRank"+i).style.width="30px";
 					document.getElementById("storeRank"+i).style.width="30px";
 				}				

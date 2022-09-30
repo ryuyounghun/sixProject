@@ -740,4 +740,13 @@ public class ComunnityController{
 		
 		return fBoard;
 	}
+	
+	// 0930 추가
+	@GetMapping("/realtimeboard")
+	@ResponseBody
+	public List<FreeBoard> realtimeboard() {
+		List<FreeBoard> fList = fService.selectFreeBoardRank();
+		
+		return fList;
+	}
 }

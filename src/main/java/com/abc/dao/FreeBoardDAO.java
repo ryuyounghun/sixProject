@@ -37,5 +37,6 @@ public interface FreeBoardDAO {
 	
 	// 0930 추가
 	public int updateViewCount(int boardNum);
+	public List<FreeBoard> selectFreeBoardRank();
 	
 }

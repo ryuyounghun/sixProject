@@ -62,5 +62,12 @@
 		SET VIEWCOUNT = VIEWCOUNT + 1
 		WHERE BOARDNUM = #{boardNum}
 	</update>
+	
+	<!-- 0930 추가 -->
+	<select id="selectFreeBoardRank" resultType="FreeBoard">
+		SELECT * FROM
+		FREE_BOARD
+		ORDER BY VIEWCOUNT DESC
+	</select>
 </mapper>
 

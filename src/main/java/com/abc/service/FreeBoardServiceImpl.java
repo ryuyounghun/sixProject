@@ -143,6 +143,12 @@ public class FreeBoardServiceImpl implements FreeBoardService{
 		return fbDAO.updateViewCount(boardNum);
 	}
 
+	@Override
+	public List<FreeBoard> selectFreeBoardRank() {
+		// TODO Auto-generated method stub
+		return fbDAO.selectFreeBoardRank();
+	}
+
 	
 
 
