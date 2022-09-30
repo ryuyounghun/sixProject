@@ -6,98 +6,7 @@
 <title>로그인</title>
 <link rel = "stylesheet" href = "/css/member/login_style.css">
 <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
-<script type="text/javascript">
-		
-		$(document).ready(function() {
-			
-		});
-	
-</script>
 
-<!-- 네이버 스크립트 -->
-<script src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js" charset="utf-8"></script>
-
-	<script>
-	function naverLogin() {
-
-	var naverLogin = new naver.LoginWithNaverId(
-			{
-				clientId: "s5XCnW0BhF7BUw9Zhr9s", //내 애플리케이션 정보에 cliendId를 입력해줍니다.
-				callbackUrl: "http://localhost:1123/member/login", // 내 애플리케이션 API설정의 Callback URL 을 입력해줍니다.
-				isPopup: false,
-				callbackHandle: true
-			}
-		);	
-	
-	naverLogin.init();
-		naverLogin.getLoginStatus(function (status) {
-			if (status) {
-				let email = "N" + naverLogin.user.getEmail(); // 필수로 설정할것을 받아와 아래처럼 조건문을 줍니다.
-				let id = naverLogin.user.getId();
-	    		let name = naverLogin.user.getName();
-				let nickname = naverLogin.user.getNickName();
-				let phone = naverLogin.user.getMobile();
-				
-				console.log(naverLogin.user); 
-				console.log(phone);
-	            
-				$.ajax({
-	        		 url : "socialIdCheck",
-	        		 type : "post",
-	        		 data : {"id" : email},
-	        		 success : function(data) {
-	        			 console.log(data);
-						if(data != ""){
-							
-							LoginForm(email, id);
-							
-						} else {
-							$.ajax({
-		    					url : '/member/naverSignUp',
-								type : "post",
-		    					data : {"userid" : id,
-		    						    "name": name,
-		    						    "email": email,
-		    						    "nickname" : nickname,
-		    						    "phone" : phone},
-		    					dataType :"json",
-		    					success : function(data){
-		    						console.log(data);
-		    						if(data != ""){
-		    							// 로그인
-		    							LoginForm(email, id);		    							
-		    						} else {
-		    							alert('네이버 회원가입 실패. 일반계정으로 로그인하시기 바랍니다.');
-		    						}
-		    					}
-							});
-						}
-	        		 
-	        		 }
-	        	  }); 
-			}
-		});
-			
-	}			
-	
-	
-	var testPopUp;
-	function openPopUp() {
-	    testPopUp= window.open("https://nid.naver.com/nidlogin.logout", "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,width=1,height=1");
-	}
-	function closePopUp(){
-	    testPopUp.close();
-	}
-	
-	function naverLogout() {
-		openPopUp();
-		setTimeout(function() {
-			closePopUp();
-			}, 1000);
-		
-		
-	}
-	</script>
 </head>
 <body>
 	<div id="headerAndSection-wrapper">
@@ -204,7 +113,90 @@
 	   	<footer>
 		</footer> 
 	    <!-- //section 끝 -->
+<!-- 네이버 스크립트 -->
+<script src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js" charset="utf-8"></script>
+	<script>
+	function naverLogin() {
 
+	var naverLogin = new naver.LoginWithNaverId(
+			{
+				clientId: "s5XCnW0BhF7BUw9Zhr9s", //내 애플리케이션 정보에 cliendId를 입력해줍니다.
+				callbackUrl: "http://localhost:1123/member/login", // 내 애플리케이션 API설정의 Callback URL 을 입력해줍니다.
+				isPopup: false,
+				callbackHandle: true
+			}
+		);	
+	
+	naverLogin.init();
+		naverLogin.getLoginStatus(function (status) {
+				console.log(status)
+			if (status) {
+				let email = "N" + naverLogin.user.getEmail(); // 필수로 설정할것을 받아와 아래처럼 조건문을 줍니다.
+				let id = naverLogin.user.getId();
+	    		let name = naverLogin.user.getName();
+				let nickname = naverLogin.user.getNickName();
+				let phone = naverLogin.user.getMobile();
+				
+				console.log(naverLogin.user); 
+				console.log(phone);
+	            
+				$.ajax({
+	        		 url : "socialIdCheck",
+	        		 type : "post",
+	        		 data : {"id" : email},
+	        		 success : function(data) {
+	        			 console.log(data);
+						if(data != ""){
+							
+							LoginForm(email, id);
+							
+						} else {
+							$.ajax({
+		    					url : '/member/naverSignUp',
+								type : "post",
+		    					data : {"userid" : id,
+		    						    "name": name,
+		    						    "email": email,
+		    						    "nickname" : nickname,
+		    						    "phone" : phone},
+		    					dataType :"json",
+		    					success : function(data){
+		    						console.log(data);
+		    						if(data != ""){
+		    							// 로그인
+		    							LoginForm(email, id);		    							
+		    						} else {
+		    							alert('네이버 회원가입 실패. 일반계정으로 로그인하시기 바랍니다.');
+		    						}
+		    					}
+							});
+						}
+	        		 
+	        		 }
+	        	  }); 
+			}
+		});
+			
+	}			
+	
+	
+	var testPopUp;
+	function openPopUp() {
+	    testPopUp= window.open("https://nid.naver.com/nidlogin.logout", "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,width=1,height=1");
+	}
+	function closePopUp(){
+	    testPopUp.close();
+	}
+	
+	function naverLogout() {
+		openPopUp();
+		setTimeout(function() {
+			closePopUp();
+			}, 1000);
+		
+		
+	}
+	</script>
 <!-- 카카오 스크립트 -->
 	<script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
 	<script>

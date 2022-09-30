@@ -310,8 +310,11 @@ public class ComunnityController{
 		// 0924 추가
 		Member member = mService.selectOneMember(user.getUsername());
 		model.addAttribute("member", member);
-		
 		////////////
+		
+		// 0930 추가
+		fService.updateViewCount(num);
+		///////////
 		
 		//보드정보 호출
 		FreeBoard freeBoard = fService.selectOneFreeBoard(num);

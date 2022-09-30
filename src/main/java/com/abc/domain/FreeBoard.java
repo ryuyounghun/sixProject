@@ -21,6 +21,7 @@ public class FreeBoard {
 	private String title;
 	private String content;
 	private String inputdate;
+	private int viewCount;
 	
 	private String originalFile;	 
 	private String savedFile;

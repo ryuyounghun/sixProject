@@ -35,6 +35,7 @@ public interface FreeBoardDAO {
 	public List<FreeBoard> selectAllFreeBoard(RowBounds rb);
 	public int countAllFreeBoard(Map<String, String> map);
 	
-	
+	// 0930 추가
+	public int updateViewCount(int boardNum);
 	
 }

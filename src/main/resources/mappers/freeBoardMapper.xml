@@ -55,5 +55,12 @@
 		WHERE BOARDNUM = #{boardNum}
 	</update>
 	
+	
+	<!-- 0930 추가 -->
+	<update id="updateViewCount" parameterType="int">
+		UPDATE FREE_BOARD
+		SET VIEWCOUNT = VIEWCOUNT + 1
+		WHERE BOARDNUM = #{boardNum}
+	</update>
 </mapper>
 

@@ -110,6 +110,7 @@ $(document).ready(function() {
 			success : function(data) {
 				partyPeople();
 				alert(data);
+				
 			}
 		});
 	}

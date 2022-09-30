@@ -72,12 +72,12 @@ body{
     background: url(/../images/logo_width.png) no-repeat center;
 }  
 
-.logo{
+/* .logo{
     background: url(/../images/logo450.png) no-repeat center;
     width: 300px;
     height: 140px;
     line-height: 100px;
-}
+} */
 
 
 form {

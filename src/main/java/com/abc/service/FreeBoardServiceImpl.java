@@ -137,6 +137,12 @@ public class FreeBoardServiceImpl implements FreeBoardService{
 		return fbDAO.updateFreeBoard(fb);
 	}
 
+	@Override
+	public int updateViewCount(int boardNum) {
+		// TODO Auto-generated method stub
+		return fbDAO.updateViewCount(boardNum);
+	}
+
 	
 
 

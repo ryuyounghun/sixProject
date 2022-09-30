@@ -37,4 +37,7 @@ public interface FreeBoardService {
 	
 	// 0929 추가 수정기능
 	public int updateFreeBoard(FreeBoard fb);
+	
+	// 0930 추가
+	public int updateViewCount(int boardNum);
 }

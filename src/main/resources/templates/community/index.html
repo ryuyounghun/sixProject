@@ -12,6 +12,15 @@
    			party();
    		});
    		
+   		// 0930 추가
+   		function realtimeboard() {
+   			
+   			
+   			$("#realtime").html(htmlStr);
+   		}
+   		
+   		
+   		
    		function checkJoinedParty() {
    			let memberId = $("#loginUser").val();
    			console.log(memberId);
@@ -144,11 +153,11 @@
 				<aside>
 					<div class="aside-right">
 						<!-- 실시간 키워드(aJax)  -->
-						<div>
-							
+						<div id="realtime">
 							실시간 키워드(aJax)
+						</div>
 						
-							<div id="party">
+						<div id="party">
 								<h2>파티현황</h2>
 								<h3 id="partyTitle"></h3>
 								<span id="realTimeParty">
@@ -157,8 +166,6 @@
 								<span>/</span>
 								<span id="fullParty"></span>
 							</div>
-							
-						</div>
 					</div>
 				</aside>
 
@@ -200,6 +207,7 @@
 										<th>작성자</th>
 										<th>제목</th>
 										<th>작성일</th>
+										<th>조회수</th>
 									</tr>
 									<tr th:each="list : ${fbList}">
 										<td th:text="${list.nickname}"></td>
@@ -213,6 +221,7 @@
 											</a>
 										</td>
 										<td th:text="${list.inputdate}"></td>
+										<td th:text="${list.viewCount}"></td>
 									</tr>
 								</table>
 							</div>

@@ -19,8 +19,9 @@
 			<table>
 				<tr>
 					<th colspan="2">작성자</th>
-					<th>작성자</th>
+					<th>제목</th>
 					<th>작성일</th>
+					<th>조회수</th>
 				</tr>
 				<tr th:each="list : ${fbList}">
 					<td th:text="${list.memberLevel}" th:value="${list.memberLevel}" class="memberLevel"></td>
@@ -33,6 +34,7 @@
 						</a>
 					</td>
 					<td th:text="${list.inputdate}"></td>
+					<td th:text="${list.viewCount}"></td>
 				</tr>
 			</table>
 			<input type="button" value="글쓰기" class="write-btn" onclick="javascript:location.href='freeWrite'">
