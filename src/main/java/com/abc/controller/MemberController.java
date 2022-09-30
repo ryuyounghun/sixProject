@@ -111,6 +111,10 @@ public class MemberController {
 		log.debug("member의 정보 : {}", member);
 		
 		
+		if (member.getNickname().isEmpty()) {
+			member.setNickname(member.getMemberName());
+		}
+		
 		int result = mService.insertMember(member);
 		// 채팅방 생성 0923 추가
 		ChatRoom ctRoom = chatService.createRoom(member.getMemberName());

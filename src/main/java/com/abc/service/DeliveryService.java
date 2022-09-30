@@ -9,6 +9,7 @@ import com.abc.domain.Receipt;
 import com.abc.domain.Review;
 import com.abc.domain.Store;
 import com.abc.domain.Wishlist;
+import com.abc.util.PageNavigator;
 
 public interface DeliveryService {
 
@@ -64,4 +65,8 @@ public interface DeliveryService {
 	// 0925추가
 	public List<Review> selectReviewListByMemberNum(int memberNum);
 	public Store selectStoreByStoreName(String storeName);
+	
+	// 9월 29일 작업
+	public PageNavigator getPageNavigator(int pagePerGroup, int countPerPage, int Page, String searchWord);
+	public List<Store> selectAllStore(PageNavigator navi, String searchWord);
 }

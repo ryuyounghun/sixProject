@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +15,7 @@ import com.abc.domain.Receipt;
 import com.abc.domain.Review;
 import com.abc.domain.Store;
 import com.abc.domain.Wishlist;
+import com.abc.util.PageNavigator;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -298,5 +300,29 @@ public class DeliveryServiceImpl implements DeliveryService{
 		return dDao.selectStoreByStoreName(storeName);
 	}
 
+	// 9월 29일 작업
+	@Override
+	public PageNavigator getPageNavigator(int pagePerGroup, int countPerPage, int Page, String searchWord) {
+		
+		Map<String, String> map = new HashMap<>();
+		map.put("searchWord", searchWord);
+		
+		int total = dDao.countAllStore(map);
+		
+		PageNavigator navi =
+				new PageNavigator(pagePerGroup, countPerPage, Page, total);
+		
+		return navi;
+	}
+
+	@Override
+	public List<Store> selectAllStore(PageNavigator navi, String searchWord) {
+		Map<String, String> map = new HashMap<>();
+		map.put("searchWord", searchWord);
+		
+		RowBounds rb = new RowBounds(navi.getStartRecord(), navi.getCountPerPage());
+		
+		return dDao.selectAllStore(map, rb);
+	}
 
 }

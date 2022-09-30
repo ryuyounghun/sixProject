@@ -12,17 +12,31 @@
 			type : "get",
 			success : function(data) {
 				
-				let htmlStr = "<h1 style='text-align:center'>가게 랭킹</h1><ol type='1'>";
-				
+				// 9월 29일 랭킹뱃지 추가작업 
+				let htmlStr = "<h1 style='text-align:center'>가게 랭킹</h1><ul>";
 				$.each(data, function(index, item) {
 					
 					if(index <= 9) {
-						htmlStr += "<li>" + item.storeName + "</li>";
+						if ( index <=2 ){
+							
+							htmlStr += "";
+							htmlStr += "<li class='top3Stores'>"+  "<img src='' id='storeRank" + index + "'>  "  + "<span >" + item.storeName +"</span>" + "</li>";
+						}else {
+							
+							htmlStr += "<li>" + (index+1)+"위 " +item.storeName + "</li>";
+						}
 					}
+					
 				});
-				htmlStr += "</ol>";
-				
+				htmlStr += "</ul>";
 				$("#storeRank").html(htmlStr);
+				
+				for ( let i =0; i<=2; i++){
+					let img_src = "/images/rank/rank"+ (i+1) + ".png";
+					document.getElementById("storeRank"+i).src= img_src;
+					document.getElementById("storeRank"+i).style.width="30px";
+					document.getElementById("storeRank"+i).style.width="30px";
+				}				
 			}
 			
 		});
@@ -31,7 +45,8 @@
 	
 	function button() {
 		
-		let a = $("#myAddress").text();
+		let a = $("#myAddress").val();
+		console.log(a);
 		$.ajax({           
 			url:'https://dapi.kakao.com/v2/local/search/address.json?query='+encodeURIComponent(a),
 			type:'GET',           
@@ -244,18 +259,25 @@
 							break;
 						}
 					} else {
+						// 9월28일 추가 작업   
 						switch (sky) {
 						case '1':
-							$('.in0').append(" / 맑음");
+							$('.in0').append(" / 맑음");	
+							$(".weatherIcon").css({"background-image" : "url(/images/weather/sunny.gif)"});
+							
 							break;
 						case '2':
 							$('.in0').append(" / 구름조금");
+							$(".weatherIcon").css({"background-image" : "url(/images/weather/cloud.gif)"});
 							break;
 						case '3':
-							$('.in0').append(" / 구름많음");
+							$('.in0').append(" / 구름많음>");
+							$(".weatherIcon").css({"background-image" : "url(/images/weather/foggy.gif)"});
+							
 							break;
 						case '4':
 							$('.in0').append(" / 흐림");
+							$(".weatherIcon").css({"background-image" : "url(/images/weather/hurim.gif)"});
 							break;
 						}
 					}
@@ -270,5 +292,11 @@
 			}
 	});
 	}
-	
+	function getMyAddress(){
+		let myAddress = $("#myAddress").val();
+		if ( myAddress == null || myAddress.trim().length == 0){
+			alert("회원님의 등록된 주소가 없습니다.")
+		}
+		$("#searchWord").val(myAddress);
+	}
     //-->

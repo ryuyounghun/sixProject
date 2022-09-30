@@ -47,94 +47,93 @@
 	
 		<section>
 			<div class="section-container">
-				
+				<!-- 9월29일 추가작업 -->
 				<div class="searchBar-wrapper">
 					<div class="container-searchBar">
-						<input class = "searchBar" type = "text" name="searchWord" th:value="${searchWord}" id="searchWord" placeholder="메뉴검색">
-						검색
+						<form th:action="@{/delivery/searchResultScroll}" method="get">
+							<input type="hidden" th:value="${member.address}" id="myAddress">
+							<input type="button" onclick="getMyAddress();" class="placeholder">
+							<input class = "searchBar" type = "text" name="searchWord" th:value="${searchWord}" id="searchWord" placeholder="위치검색">
+							<input type = "submit" th:value="검색" id="searchWord" placeholder="위치검색">
+						</form>
 					</div>
 				</div>
 				
 				
 				<aside>
+					<!-- 9월28일 추가  -->
 					<div class="aside-left">
 						<div class="vis-weather">
-							<h1>집주변 날씨</h1>
+							<h1 class="homeweather" >집주변 날씨</h1>
 							<h5 th:text="${member.address}" id="myAddress"></h5>
 							
 							<div class="list-group list-group-flush weather" style="font-weight: 600;"></div>
 							<div id="weatherRecommendFood"></div>
 						</div>
+						<div class="weatherIcon" >
+						</div>
 					</div>
+						
 				</aside>
 				
 				<aside>
 					<div class="aside-right">
 						<div id="storeRank">
-							
-						</div>
+
 					</div>
 				</aside>
 
 				<div class="aside-center">
 					<div class="section-center">
 						<ul class="foodList">
-							<li>
-								<div>
-									<a th:href = "|@{storeList}?category=all|">
-										전체보기
-									</a>
-								</div>							
-							</li>
-							<li>
-								<div>
-									<a th:href="|@{storeList}?category=1|">
-										한식
-									</a>
-								</div>
-							</li>
-							<li>	
-								<div>
-									<a th:href="|@{storeList}?category=2|">
-										중식
-									</a>
-								</div>
-							</li>
-							<li>
-								<div>
-									<a th:href="|@{storeList}?category=3|">
-										일식
-									</a>
-								</div>
-							</li>
-							<li>
-								<div>
-									<a th:href="|@{storeList}?category=4|">
-										양식
-									</a>
-								</div>
-							</li>
-							<li>
-								<div>
-									<a th:href="|@{storeList}?category=5|">
-										디저트
-									</a>
-								</div>
-							</li>
-							<li>
-								<div>
-									<a th:href="|@{storeList}?category=6|">
-										야식
-									</a>
-								</div>
-							</li>
-							<li>
-								<div>
-									<a th:href="|@{storeList}?category=7|">
-										도시락
-									</a>
-								</div>
-							</li>
+							<a th:href = "|@{storeList}?category=all|">
+								<li>
+									<span>전체보기</span>
+									<img alt="" src="/images/deliveryImages/menu.png" class="menu1">
+								</li>
+							</a>
+							<a th:href="|@{storeList}?category=1|">
+								<li>
+									<span>한식</span>
+									<img alt="" src="/images/deliveryImages/bibimbap.png">
+								</li>
+							</a>
+							<a th:href="|@{storeList}?category=2|">
+								<li>	
+									<span>중식</span>
+									<img alt="" src="/images/deliveryImages/jajangmyeon.png">
+								</li>
+							</a>
+							<a th:href="|@{storeList}?category=3|">
+								<li>
+									<span>일식</span>
+									<img alt="" src="/images/deliveryImages/sushi.png">
+								</li>
+							</a>
+							<a th:href="|@{storeList}?category=4|">
+								<li>
+									<span>양식</span>
+									<img alt="" src="/images/deliveryImages/pasta.png">
+								</li>
+							</a>
+							<a th:href="|@{storeList}?category=5|">
+								<li>
+									<span>디저트</span>
+									<img alt="" src="/images/deliveryImages/dessert.png">
+								</li>
+							</a>
+							<a th:href="|@{storeList}?category=6|">
+								<li>
+									<span>야식</span>
+									<img alt="" src="/images/deliveryImages/night.png">
+								</li>
+							</a>
+							<a th:href="|@{storeList}?category=7|">
+								<li>
+									<span>도시락</span>
+									<img alt="" src="/images/deliveryImages/bento.png">
+								</li>
+							</a>
 						</ul>
 					</div>
 				</div>	
@@ -143,9 +142,9 @@
 		</section>
 
 	</div>
-
+	
 	<footer>
-		
+		<a href="https://www.flaticon.com/free-icons/menu" title="menu icons">icons created by srip, justicon, Nhor Phai, Freepik, Vichanon Chaimsuk Flat Icons - Flaticon</a>
 	</footer>
 </body>
 </html>

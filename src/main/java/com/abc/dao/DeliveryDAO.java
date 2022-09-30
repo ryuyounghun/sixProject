@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.session.RowBounds;
 
 import com.abc.domain.Item;
 import com.abc.domain.Order;
@@ -74,4 +75,11 @@ public interface DeliveryDAO {
 	// 0925추가
 	public List<Review> selectReviewListByMemberNum(int memberNum);
 	public Store selectStoreByStoreName(String storeName);
+	
+	
+	// 페이징 관련 9월 29일
+	public List<Store> selectAllStore(Map<String, String> map, RowBounds rb);
+	public int countAllStore(Map<String, String> map);
+		
+	
 }
