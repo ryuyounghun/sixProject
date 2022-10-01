@@ -156,4 +156,22 @@ public class MemberServiceImpl implements MemberService {
 		// TODO Auto-generated method stub
 		return mDao.updateMyImage(member);
 	}
+
+	@Override
+	public GuestBook selectGuestBookByNum(int guestBookNum) {
+		// TODO Auto-generated method stub
+		return mDao.selectGuestBookByNum(guestBookNum);
+	}
+
+	@Override
+	public int updateGuestBook(GuestBook guestBook) {
+		// TODO Auto-generated method stub
+		return mDao.updateGuestBook(guestBook);
+	}
+
+	@Override
+	public int deleteGuestBook(int guestBookNum) {
+		// TODO Auto-generated method stub
+		return mDao.deleteGuestBook(guestBookNum);
+	}
 }

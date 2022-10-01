@@ -11,6 +11,7 @@ $(document).ready(function(){
 		$("#buyCoupon").hide();
 		$("#wishlistStore").hide();
 		$("#buyCouponsBtn").click(function() {
+			$("#reviewModal").hide();
 			$("#couponList").hide();
 			$("#wishlistStore").hide();
 			$("#orderList").hide();
@@ -23,11 +24,14 @@ $(document).ready(function(){
 		myPoint();
 		$("#myCouponListBtn").click(function() {
 			$("#wishlistStore").hide();
+			$("#reviewModal").hide();
 			$("#buyCoupon").hide();
 			$("#orderList").hide();
 			$("#profileModal").hide();
 			$("#couponList").show();
-			$("#exampleModalLabel").text("MyCoupon List");
+			//0930 세련 수정함
+			//쿠폰 목록(모달창)켰을 때 보일 이름 바꿨음.
+			$("#exampleModalLabel").text("나의 쿠폰 목록");
 			$("#exampleModal").modal("show");
 		});
 		
@@ -50,6 +54,9 @@ $(document).ready(function(){
 		mypageImage();
 		badge();
 		$("#profileBtn").click(function() { profileImage(); })
+		
+		// 1001 추가
+		$("#btnReply_update").hide();
 	});
 	
 	
@@ -69,12 +76,13 @@ $(document).ready(function(){
 	// 0928 추가
 	function profileImage() {
 		$("#couponList").hide();
+		$("#reviewModal").hide();
 		$("#buyCoupon").hide();
 		$("#orderList").hide();
 		$("#wishlistStore").hide();
 		$("#profileModal").show();
 		
-		$("#exampleModalLabel").text("프로필사진");
+		$("#exampleModalLabel").text("프로필 사진 바꾸기");
 		
 		$("#exampleModal").modal("show");
 	}
@@ -131,6 +139,7 @@ $(document).ready(function(){
 	function myOrderList() {
 		$("#couponList").hide();
 		$("#buyCoupon").hide();
+		$("#reviewModal").hide();
 		$("#wishlistStore").hide();
 		$("#profileModal").hide();
 		let memberNum = getParameterByName('num');
@@ -146,17 +155,18 @@ $(document).ready(function(){
 					htmlStr += "<h1>주문 목록이 없습니다...</h1>";
 				} else {
 					$.each(data, function(index, item) {
-						htmlStr += "<table>";
-						htmlStr += "<tr><th>" + item.receiptNum + "</th>";
-						htmlStr += "<th>" + item.totalAmount + "</th>";
-						htmlStr += "<th><input onclick='writeReview(" + item.storeNum + "," + item.receiptNum + ")' type='button' value='리뷰쓰기'></th></tr>";
-						htmlStr += "<tr><th>" + item.orderHistory + "</th></tr>";
-						htmlStr += "</table>";
+						// 0930 세련 수정함
+						htmlStr += "<div class = 'title1'>";
+						htmlStr += "<span class = 'first1'>" + item.receiptNum + "</span>";
+						htmlStr += "<span class = 'first1'>" + item.totalAmount + "</span>";
+						htmlStr += "<span class= 'first1'>" + item.orderHistory + "</span>";
+						htmlStr += "<span><input onclick='writeReview(" + item.storeNum + "," + item.receiptNum + ")' type='button' class = 'btn1' value='리뷰쓰기'></span>";
+						htmlStr += "</div>";
 					});
 				}
 				
 				$("#orderList").html(htmlStr);
-				$("#exampleModalLabel").text("주문목록");
+				$("#exampleModalLabel").text("주문 리스트");
 				$("#orderList").show();
 				$("#exampleModal").modal("show");
 				
@@ -169,7 +179,21 @@ $(document).ready(function(){
 		$("#hiddenStoreNum").val(storeNum);
 		$("#hiddenReceiptNum").val(receiptNum);
 		
-		endReview(receiptNum);
+		$.ajax({
+			url : "checkComplete",
+			type : "get",
+			data : {"receiptNum" : receiptNum},
+			success : function(data) {
+				console.log(data.complete);
+				if(data.complete == 'Y') {
+					endReview(receiptNum);
+				}else {
+					alert("아직 주문이 완료되지 않았습니다.");
+				}
+				
+			}
+			
+		});
 	}
 	
 	// 0925 추가
@@ -203,12 +227,13 @@ $(document).ready(function(){
 				console.log(data);
 				let htmlStr = "";
 				$.each(data, function(index, item) {
-					htmlStr += "<table>";
-					htmlStr += "<tr><th>" + item.nickname + "</th>";
-					htmlStr += "<th> ★" + item.rating + "</th></tr>";
-					htmlStr += "<tr><th colspan='2'>" + item.orderHistory + "</th></tr>";
-					htmlStr += "<tr><th colspan='2'>" + item.reviewContent + "</th></tr>";
-					htmlStr += "</table>";
+					// 0930 세련 수정함
+					htmlStr += "<div class = 'title2'>";
+					htmlStr += "<span class = 'second1'>" + item.nickname + "</span>";
+					htmlStr += "<span class = 'second1'> ★" + item.rating + "</span>";
+					htmlStr += "<span class = 'second1'>" + item.orderHistory + "</span>";
+					htmlStr += "<span class = 'second1'>" + item.reviewContent + "<span>";
+					htmlStr += "</div>";
 				});				
 				$("#myReviewList").html(htmlStr);
 			}
@@ -220,6 +245,7 @@ $(document).ready(function(){
 	function wishList() {
 		$("#couponList").hide();
 		$("#buyCoupon").hide();
+		$("#reviewModal").hide();
 		$("#profileModal").hide();
 		$("#orderList").hide();
 		$("#wishlistStore").show();
@@ -237,16 +263,16 @@ $(document).ready(function(){
 				
 				
 				$.each(data, function(index, item) {
-					htmlStr += "<table border='1' class='menuTable'>";
-					htmlStr += "<tr>"; 
-					htmlStr += "<td><img src='storeDisplay?num=" + item.storeNum + "' width='80px;'></td>"; 
-					htmlStr += "<td class='nameTd'><a href='/delivery/read" + "?num=" + item.storeNum + "'>" + item.storeName + "</a></td>";
-					htmlStr += "<td> ★ " + item.rating + "</td>";
-					htmlStr += "<td> ♥ " + item.wishlist + "</td>";
-					htmlStr += "</tr>";
-					htmlStr += "</table>"
+					// 0930 세련 수정함 타이틀1(수정예정)
+					// 1001 세련 img 높이 설정 추가
+					htmlStr += "<div class='title1'>";
+					htmlStr += "<span class = 'thrid1'><img src='storeDisplay?num=" + item.storeNum + "' width='80px;' height='45px;'></span>"; 
+					htmlStr += "<span class = 'thrid1'><a href='/delivery/read" + "?num=" + item.storeNum + "'>" + item.storeName + "</a></span>";
+					htmlStr += "<span class = 'thrid1'> ★ " + item.rating + "</span>";
+					htmlStr += "<span class = 'thrid1'> ♥ " + item.wishlist + "</span>";
+					htmlStr += "</div>"
 				});
-				$("#exampleModalLabel").text("찜리스트");
+				$("#exampleModalLabel").text("찜 리스트");
 				$("#wishlistStore").html(htmlStr);
 				$("#exampleModal").modal("show");
 				/* ]]> */
@@ -279,15 +305,16 @@ $(document).ready(function(){
 				
 				let htmlStr = "";
 				if(data == "") {
-					htmlStr += "<h1>남은 쿠폰이 없습니다....</h1>";
+					htmlStr += "<span class = 'couponTitle'>남은 쿠폰이 없습니다.</span>";
 				} else {
 					
 					$.each(data, function(index, item) {
-						htmlStr += "<table>";
-						htmlStr += "<tr><th>" + item.couponName + "</th></tr>";
-						htmlStr += "<tr><th>" + item.couponPoint + "</th></tr>";
-						htmlStr += "<tr><th><input type='button' value='사용' onclick='useCoupon(" + item.myCouponNum + ")'></th></tr>";
-						htmlStr += "</table>";
+						//0930 세련 수정함
+						htmlStr += "<div class = 'title4'>";
+						htmlStr += "<span class = 'fourth1'> 『 " + item.couponName + " 』</span>";
+						htmlStr += "<span class = 'fourth1'>" + item.couponPoint + "원</span>";
+						htmlStr += "<span class = 'fourth1'><input type='button' class = 'btn1' value='사용하기' onclick='useCoupon(" + item.myCouponNum + ")'></span>";
+						htmlStr += "</div>";
 					});
 				}
 				
@@ -308,7 +335,7 @@ $(document).ready(function(){
 				alert("쿠폰을 사용하였습니다.");
 				console.log(data);
 				if(data == "") {
-					$("#couponList").text("남은 쿠폰이 없습니다....");
+					$("#couponList").text("남은 쿠폰이 없습니다.");
 				}
 				
 				couponList();
@@ -328,7 +355,7 @@ $(document).ready(function(){
 				console.log(data.memberPoint);
 				
 				let htmlStr = "<h5>잔여 포인트</h5>";
-				htmlStr += "<h5>" + data.memberPoint + "point</h5>";
+				htmlStr += "<h5>" + data.memberPoint + " point</h5>";
 				
 				$("#point").html(htmlStr);
 			}
@@ -338,7 +365,7 @@ $(document).ready(function(){
 	
 	function loadAllReply() {
 		 let memberNum = getParameterByName('num');
-	  
+	 	 let loginMember = $("#loginMember").val();
 		$.ajax({
 			url:"loadAllReply",	// 콘트롤러에서 메핑이랑 일치해야 함 (굳이 자바스크립트 함수이름과 같을 필요 없음)
 			type:"get",
@@ -350,12 +377,63 @@ $(document).ready(function(){
 					htmlStr += "<td>" + value.content + "</td>";
 					htmlStr += "<td>" + value.nickname + "</td>";
 					htmlStr += "<td>" + value.inputdate + "</td>";
+					// 1001 추가
+					if(loginMember == value.writerNum){
+						htmlStr += "<td><a href='javascript:updateCheckGuestbook("+ value.guestBookNum+");'>수정</a>";
+						htmlStr += " | ";
+						htmlStr += "<a href='javascript:deleteGuestbook("+ value.guestBookNum+");'>삭제</a></td>";
+					}
 					htmlStr += "</tr>";	
 				});
 				htmlStr += "</table>";
 					
 				$("#reList").html(htmlStr);
 				}
+		});
+	}
+	
+	// 1001 추가
+	function updateCheckGuestbook(guestBookNum) {
+		
+		$.ajax({
+			url : "updateCheckGuestbook",
+			type : "get",
+			data : {"guestBookNum" : guestBookNum},
+			success : function(data) {
+				data.content
+				$("#content").val(data.content);
+				$("#btnReply_write").hide();
+				$("#btnReply_update").show();
+				$("#btnReply_update").click( function() { updateGuestbook(data.guestBookNum) } );
+			}
+		});
+	}
+	// 1001 추가
+	function updateGuestbook(guestBookNum) {
+		let content = $("#content").val();
+		$.ajax({
+			url : "updateGuestbook",
+			type : "get",
+			data : {"guestBookNum" : guestBookNum, "content" : content},
+			success : function() {
+				loadAllReply();
+				$("#btnReply_write").show();
+				$("#btnReply_update").hide();
+				$("#content").val("");
+			}
+		});
+	}
+	
+	// 1001 추가
+	function deleteGuestbook(guestBookNum) {
+		
+		$.ajax({
+			url : "deleteGuestbook",
+			type : "get",
+			data : {"guestBookNum" : guestBookNum},
+			success : function() {
+				loadAllReply();
+			}
 		});
 	}
 	

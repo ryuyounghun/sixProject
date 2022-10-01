@@ -4,6 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<link rel="stylesheet" href="/css/style.css">
 <link rel="stylesheet" href="/css/delivery/deliveryIndex.css">
 <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 
@@ -12,38 +13,41 @@
 <body>
 	<div id="headerAndSection-wrapper">
 		<header>
-			<div class="header-container">
-				<a href="/" class="header-logo" >
-					asd
-				</a>
-				<a th:href="@{/community/index}" class="header-toAnother" >
-					커뮤니티로~
-				</a>
-				<ui class="header-logMenuList"> <!-- 로그인 및 로그아웃 링크 -->
-					<li sec:authorize ="not isAuthenticated">
-						<a th:href="@{/member/login}">
-							로그인
-						</a>
-					</li>
-					<li sec:authorize="not isAuthenticated">
-						<a th:href ="@{/member/join}">
-							회원가입
-						</a>
-					</li>
-					<li sec:authorize="isAuthenticated">
-						<a th:href ="@{/logout}">
-							로그아웃
-						</a>
-					</li>
-					<li sec:authorize="isAuthenticated">
-						<a th:href ="|@{/member/mypage}?num=${member.memberNum}|">
-							회원정보
-						</a>
-					</li>
-				</ui>
+         <div class="header-container">
+            <a href="/" class="header-logo" >
+            </a>
+            
+            
+            <ui class="header-logMenuList"> <!-- 로그인 및 로그아웃 링크 -->
+               <li sec:authorize ="not isAuthenticated">
+                  <a th:href="@{/member/login}">
+                     로그인
+                  </a>
+               </li>
+               <li sec:authorize="not isAuthenticated">
+                  <a th:href ="@{/member/join}">
+                     회원가입
+                  </a>
+               </li>
+               <li sec:authorize="isAuthenticated">
+                  <a th:href ="@{/logout}">
+                     로그아웃
+                  </a>
+               </li>
+               <li sec:authorize="isAuthenticated">
+                  <a th:href="|@{/member/mypage}?num=${member.memberNum}|">
+                     회원정보
+                  </a>
+               </li>
+               <li>
+                  <a th:href="@{/community/index}" class="header-toAnother" >
+                  커뮤니티
+                  </a>
+               </li>
+            </ui>
 
-			</div>
-		</header>
+         </div>
+      </header>
 	
 		<section>
 			<div class="section-container">
@@ -54,7 +58,7 @@
 							<input type="hidden" th:value="${member.address}" id="myAddress">
 							<input type="button" onclick="getMyAddress();" class="placeholder">
 							<input class = "searchBar" type = "text" name="searchWord" th:value="${searchWord}" id="searchWord" placeholder="위치검색">
-							<input type = "submit" th:value="검색" id="searchWord" placeholder="위치검색">
+							<input type = "submit" th:value="검색" id="searchBar" placeholder="위치검색">
 						</form>
 					</div>
 				</div>

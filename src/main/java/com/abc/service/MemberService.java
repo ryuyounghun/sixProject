@@ -57,4 +57,9 @@ public interface MemberService {
 
 	// 0928 추가
 	public int updateMyImage(Member member);
+	
+	//1001 추가
+	public GuestBook selectGuestBookByNum(int guestBookNum);
+	public int updateGuestBook(GuestBook guestBook);
+	public int deleteGuestBook(int guestBookNum);
 }

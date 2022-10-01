@@ -99,13 +99,15 @@
 	<insert id = "insertMyPage" parameterType="GuestBook">
 		INSERT INTO GUESTBOOK
 		(
+			GUESTBOOKNUM,
 			MEMBERNUM,
 			WRITERNUM,
 			NICKNAME,
 			CONTENT
 		)
 	VALUES
-		(
+		(	
+			GUESTBOOK_SEQ.NEXTVAL,
 			#{memberNum},
 			#{writerNum},
 			#{nickname},
@@ -116,6 +118,7 @@
 	<select id = "selectAllReply" resultType="GuestBook" parameterType="int">
 		SELECT * FROM GUESTBOOK
 		WHERE MEMBERNUM = #{memberNum}
+		ORDER BY INPUTDATE DESC
 	</select>
 	
 	<!-- 0923 추가 / 멤버번호로 멤버찾기 -->
@@ -174,6 +177,26 @@
 		UPDATE DELIVERY_MEMBER
 		SET ORIGINALFILE = #{originalFile}, SAVEDFILE = #{savedFile}
 		WHERE MEMBERID = #{memberId}
+	</update>
+	
+	<!-- 1001 추가 마이페이지 방명록 업데이트 확인 -->
+	<select id="selectGuestBookByNum" parameterType="int" resultType="GuestBook">
+		SELECT * FROM
+		GUESTBOOK
+		WHERE GUESTBOOKNUM = #{guestBookNum} 
+	</select>
+	
+	<!-- 1001 추가 마이페이지 방명록 수정 -->
+	<update id="updateGuestBook" parameterType="GuestBook">
+		UPDATE GUESTBOOK
+		SET CONTENT = #{content}
+		WHERE GUESTBOOKNUM = #{guestBookNum}
+	</update>
+	
+	<!-- 1001 추가 마이페이지 방명록 삭제 -->
+	<update id="deleteGuestBook" parameterType="int">
+		DELETE GUESTBOOK
+		WHERE GUESTBOOKNUM = #{guestBookNum}
 	</update>
 </mapper>
 

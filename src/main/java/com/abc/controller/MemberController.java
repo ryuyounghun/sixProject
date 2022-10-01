@@ -585,4 +585,37 @@ public class MemberController {
 			return "redirect:/";
 		}
 
+		// 1001 추가
+		@GetMapping("/checkComplete")
+		@ResponseBody
+		public Receipt checkComplete(int receiptNum) {
+			Receipt receipt = dService.selectReceiptByReceiptNum(receiptNum);
+			
+			return receipt;
+		}
+		
+		// 1001 추가
+		@GetMapping("/updateCheckGuestbook")
+		@ResponseBody
+		public GuestBook updateCheckGuestbook(int guestBookNum) {
+			GuestBook gBook = mService.selectGuestBookByNum(guestBookNum);
+			
+			return gBook;
+		}
+		
+		// 1001 추가
+		@GetMapping("/updateGuestbook")
+		@ResponseBody
+		public void updateGuestbook(int guestBookNum, String content) {
+			GuestBook gBook = mService.selectGuestBookByNum(guestBookNum);
+			gBook.setContent(content);
+			mService.updateGuestBook(gBook);
+		}
+		
+		// 1001 추가
+		@GetMapping("/deleteGuestbook")
+		@ResponseBody
+		public void deleteGuestbook(int guestBookNum) {
+			mService.deleteGuestBook(guestBookNum);
+		}
 }

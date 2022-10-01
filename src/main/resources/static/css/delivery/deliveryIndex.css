@@ -1,27 +1,21 @@
 @charset "UTF-8";
-
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@500&display=swap');
+* { font-family: 'Noto Sans KR', sans-serif;}
 body{
-	margin : 0;
-	padding : 0;
+   margin : 0;
+   padding : 0;
 }
 
 /*
-	헤더css
+   헤더css
 */
 .header-container{
-		width: 100%;
-		height: 100px;
-		background-color: #F9F7F7;
-		position: relative;
+      width: 100%;
+      height: 100px;
+      background-color: #F9F7F7;
+      position: relative;
 }
 
-.header-toAnother{
-	position : absolute;
-	height : 75px;
-	top: 10%;
-	left : 16%;
-	margin-left: 20px;
-}
 .header-logo{
    position : absolute;
    height : 100px;
@@ -34,126 +28,166 @@ body{
 }
 
 .header-logMenuList{
-	position: absolute;
-	display : flex;
-	right : 10%;
-	list-style: none;
-	top: 10%;
+   position: absolute;
+   display : flex;
+   right : 10%;
+   list-style: none;
+   top: 10%;
 }
 .header-logMenuList li {
-	margin-right : 20px;
+   margin-right : 20px;
 }
 .header-logMenuList a {
-	text-decoration: none;
-	
+   text-decoration: none;
+   
+}
+.header-logMenuList a:hover {
+   text-decoration: underline;
+   
 }
 /* 
-	본문 섹션 css
+   본문 섹션 css
  */
  .section-container{
- 	width : 100%;
- 	height : 72.3vh;
- 	margin-bottom: 50px;
- 	margin-top: 30px;
+    width : 100%;
+    height : 72.3vh;
+    margin-bottom: 50px;
+    margin-top: 30px;
  }
  .searchBar-wrapper{
- 	width :  100%;
- 	margin:  auto;
- 	padding : 0;
- 	text-align : center;
+    width :  100%;
+    margin:  auto;
+    padding : 0;
+    text-align : center;
  }
  /* 9월 29일 추가 작업 */
  .placeholder{
- 	position:absolute;
- 	width : 40px;
- 	height : 42px;
- 	background: url(/images/deliveryImages/placeholder.png);
- 	background-size: contain;
- 	background-repeat:no-repeat;
- 	background-size : contain;
- 	cursor : pointer;
- 	border: none;
- 	transform : translate(-40px);
+    position:absolute;
+    width : 40px;
+    height : 42px;
+    background: url(/images/deliveryImages/placeholder.png);
+    background-size: contain;
+    background-repeat:no-repeat;
+    background-size : contain;
+    cursor : pointer;
+    border: none;
+    transform : translate(-50px);
+    
  }
- .searchBar{
- 	border : 5px solid #874C62;
- 	width: 300px;
- 	height: 30px;
+ #searchWord{
+    border : 5px solid #874C62;
+    width: 300px;
+    height: 30px;
+ }
+ #searchBar{
+    width: 52px;
+    height : 42px;
+    background-color: #874C62;
+    border : 5px solid #874C62;
+    color : white;
+    transform : translate(10px);
  }
  .aside-left, .aside-right, .aside-center{
  }
  
  .aside-left{
- 	position : absolute;
- 	left : 3%;
- 	background-color: #F2D388;
- 	box-shadow: 1px 1px 5px 0;
- 	
+    position : absolute;
+    left : 3%;
+    background-color: #F2D388;
+    box-shadow: 1px 1px 5px 0;
+    
  }
  .weatherIcon{
- 	width: 220px;
- 	height : 140px;
- 	background-size: contain;
- 	background-repeat: no-repeat;
+    width: 220px;
+    height : 140px;
+    background-size: contain;
+    background-repeat: no-repeat;
  }
  .aside-right{
- 	position : absolute;
- 	background-color: blue;
- 	width : 15%;
- 	height: 60vh;
- 	right : 3%;
- 	
+    position : absolute;
+    background-color: #874C62;
+    border : 5px solid #C98474;
+    color : white;
+    width : 15%;
+    height: 60vh;
+    right : 3%;
+    
  }
  ul {
- 	list-style: none;
+    list-style: none;
+ }
+ /*
+ .rankTitle::after {
+    position : absolute;
+    content:"---------------------------";
+    top :40px;
+    left : 10px;
+ }
+   */
+ .rankTitle{
+    padding-bottom : 8px;
+    border-bottom: 3px dashed #C98474;
  }
  .top3Stores span{
- 	position : absolute;
- 	display : inline-block;
- 	font-weight: bold;	
+    position : absolute;
+    display : inline-block;
+    font-weight: bold;
+    margin-top:5px;   
+}
+.underTop3 {
+   margin-top : 5px;
 }
  .aside-center{
- 	position:absolute;
- 	left : 20%;
- 	right : 20%;
- 	width :900px;
+    position:absolute;
+    left : 20%;
+    right : 20%;
+    width :900px;
  }
  .aside-center .section-center{
- 	min-height: 60vh;
- 	justify-content: center; 
+    min-height: 60vh;
+    justify-content: center; 
  }
 
  .foodList{
- 	display: flex;
- 	flex-direction : row;
- 	flex-wrap : wrap;
- 	list-style: none;
- 	
+    display: flex;
+    flex-direction : row;
+    flex-wrap : wrap;
+    list-style: none;
+    
  }
 .foodList a{
-	text-decoration: none; 	
-	position: relative;
+   text-decoration: none;    
+   position: relative;
+   display : block;
 }
  .foodList li{
- 	margin-right : 10px;
- 	margin-bottom : 10px;
-	width: 200px;
-	height: 200px;
-	border : 1px solid grey;
-	overflow: hidden;
+    
+    /*
+    background-color : #C98474;
+      */
+   box-shadow : 1px 1px 6px black;    
+    margin-right : 10px;
+    margin-bottom : 10px;
+   width: 200px;
+   height: 200px;
+   border : 1px solid grey;
+   overflow: hidden;
+   font-size: 25px;
+   font-weight: bold;
+   color : black;
  }
 .foodList img{
-	position : absolute;
-	width: 100px;
-	height : 100px;
-	bottom : 20px;
-	right : 20px;
+   position : absolute;
+   width: 100px;
+   height : 100px;
+   bottom : 20px;
+   right : 20px;
 }
 footer{
-	position : relative;
-	margin-top : 10px;
-	width : 100%;
-	height : 100px;
-	background-color : #F9F7F7;;
-	
+   position : relative;
+   margin-top : 10px;
+   width : 100%;
+   height : 100px;
+   background-color : #F9F7F7;;
+   
 }
