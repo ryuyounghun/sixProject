@@ -139,9 +139,16 @@
                th:href="@{/member/join}"> 회원가입 </a></li>
             <li sec:authorize="isAuthenticated"><a th:href="@{/logout}">
                   로그아웃 </a></li>
-            <li sec:authorize="isAuthenticated"><a
-               th:href="@{/member/mypage}"> 회원정보 </a></li>
-            </ui>
+            <li sec:authorize="isAuthenticated">
+              <a th:href="|@{/member/mypage}?num=${member.memberNum}|">
+                 회원정보
+              </a>
+           </li>
+           <li>
+              <a th:href="@{/community/index}" class="header-toAnother" >
+              커뮤니티
+              </a>
+           </li>
 
          </div>
       </header>

@@ -132,8 +132,15 @@
 						</a>
 					</li>
 					<li sec:authorize="isAuthenticated">
-						<a th:href="|@{/member/mypage}?num=${member.memberNum}|"> 회원정보 </a>
-					</li>
+	                  <a th:href="|@{/member/mypage}?num=${member.memberNum}|">
+	                     회원정보
+	                  </a>
+	               </li>
+	               <li>
+	                  <a th:href="@{/community/index}" class="header-toAnother" >
+	                  	커뮤니티
+	                  </a>
+	               </li>
 				</ui>
 
 			</div>

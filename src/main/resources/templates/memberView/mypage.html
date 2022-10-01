@@ -5,6 +5,7 @@
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <title>마이페이지</title>
+<link rel="stylesheet" href="/css/style.css">
 <link rel="stylesheet" href="/css/member/mypage.css">
 <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
@@ -92,9 +93,7 @@
 			<div class="header-container">
 				<a href="/" class="header-logo" >
 				</a>
-				<a th:href="@{/delivery/index}" class="header-toAnother" >
-					배달로~
-				</a>
+				
 				
 				<ui class="header-logMenuList"> <!-- 로그인 및 로그아웃 링크 -->
 					<li sec:authorize ="not isAuthenticated">

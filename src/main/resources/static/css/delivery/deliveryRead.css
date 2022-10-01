@@ -23,13 +23,13 @@ body{
 	top: 10%;
 	left : 10%;
 }
-.header-toAnother{
+/* .header-toAnother{
 	position : absolute;
 	height : 75px;
 	top: 10%;
 	left : 16%;
 	
-}
+} */
 .header-logMenuList{
 	position: absolute;
 	display : flex;

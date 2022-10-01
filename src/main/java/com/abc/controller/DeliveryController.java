@@ -480,8 +480,14 @@ public class DeliveryController {
 		
 		String orderItems = "";
 		for (int i = 0; i < oList.size(); i++) {
-			orderItems += oList.get(i).getItemName() + " " + oList.get(i).getQuantity() + "개, ";
-			dService.completeOrder(oList.get(i).getOrderNum());
+			// 1001 추가
+			if (i == oList.size() - 1) {
+				orderItems += oList.get(i).getItemName() + " " + oList.get(i).getQuantity() + "개 ";
+				dService.completeOrder(oList.get(i).getOrderNum());
+			} else {
+				orderItems += oList.get(i).getItemName() + " " + oList.get(i).getQuantity() + "개, ";
+				dService.completeOrder(oList.get(i).getOrderNum());
+			}
 		}
 		log.debug("orderItems : {}", orderItems);
 		
