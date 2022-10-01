@@ -90,8 +90,6 @@ $(document).ready(function() {
 					htmlStr += "</tr>";
 					htmlStr += "</table>"
 				});
-				
-				
 				$("#review").html(htmlStr);
 			}
 		});
@@ -112,8 +110,6 @@ $(document).ready(function() {
 				htmlStr += "<h4>" + data.address + "</h4>";
 				$("#receiptModal").html(htmlStr);
 				$("#staticBackdrop").modal('show');
-				
-				
 				
 				$("#checkBtn").click(function() {
 					
@@ -219,7 +215,6 @@ $(document).ready(function() {
 				resultMenu();
 			}
 		});
-		
 	}
 	
 	
@@ -230,7 +225,6 @@ $(document).ready(function() {
 			type : "get",
 			data : {"orderNum" : orderNum},
 			success : function(data) {
-				
 				resultMenu();
 				orderPrice();
 			}
@@ -243,7 +237,6 @@ $(document).ready(function() {
 			type : "get",
 			data : {"orderNum" : orderNum},
 			success : function(data) {
-				
 				resultMenu();
 				orderPrice();
 			}
@@ -255,7 +248,7 @@ $(document).ready(function() {
 		  var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
 		  results = regex.exec(location.search);
 		  return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
-		}
+	}
 	
 	function orderMenu(num) {
 		let storeNum = getParameterByName('num');
@@ -267,13 +260,12 @@ $(document).ready(function() {
 			itemNum = num;
 		}
 		
-		
 		$.ajax({
 			url : "orderListAjax",
 			type : "get",
 			data : {"storeNum" : storeNum, "itemNum" : itemNum},
 			success : function(data) {
-				
+				console.log(data);
 				resultMenu();
 			}
 		});
@@ -327,8 +319,6 @@ $(document).ready(function() {
 				
 				/* <![CDATA[ */
 					
-				//var display = @{itemDisplay};
-				
 				let htmlStr = "";
 				
 				$.each(data, function(index, item) {
@@ -357,7 +347,7 @@ $(document).ready(function() {
 			type : "get",
 			data : {"storeNum" : storeNum, "itemNum" : itemNum},
 			success : function(data) {
-				
+				console.log("checkItem 시작");
 				console.log(data);
 				
 				if(data == "") {

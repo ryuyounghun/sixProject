@@ -310,6 +310,7 @@ public class DeliveryController {
 			Item item = dService.selectOneItem(itemNum);
 			
 			if (list.isEmpty()) {
+				log.debug("list.isEmpty() 실행");
 				order.setMemberNum(member.getMemberNum());
 				order.setItemName(item.getItemName());
 				order.setItemPrice(item.getItemPrice());
@@ -317,12 +318,14 @@ public class DeliveryController {
 				order.setStoreNum(storeNum);
 				
 				dService.insertOrder(order);
-			}
+			} 
 			
 			for (int i = 0; i < list.size(); i++) {
 				if (list.get(i).getItemNum() == itemNum && list.get(i).getMemberNum() == member.getMemberNum()) {
+					log.debug("list plusOrder() 실행");
 					dService.plusOrder(list.get(i));
 				} else {
+					log.debug("for else set() 실행");
 					order.setMemberNum(member.getMemberNum());
 					order.setItemName(item.getItemName());
 					order.setItemPrice(item.getItemPrice());
@@ -330,6 +333,7 @@ public class DeliveryController {
 					order.setStoreNum(storeNum);
 					
 					dService.insertOrder(order);
+					break;
 				}
 			}
 			list = dService.selectMyOrder(member.getMemberNum(), storeNum);

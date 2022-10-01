@@ -96,7 +96,7 @@
 		        					<img src = "/images/kakao.png">
 		        				</label>&nbsp;&nbsp;&nbsp;
 		        				<label onclick = "naverLogin();">
-		        					<img src = "/images/naver.png" height="45" width="185">
+		        					<img src = "/images/naver.png" height="45" width="185" id="naverIdLogin_loginButton">
 		        				</label>
 		        				</div><!-- social 부분 끝 -->
 		        				
@@ -115,6 +115,7 @@
 	    <!-- //section 끝 -->
 <!-- 네이버 스크립트 -->
 <script src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js" charset="utf-8"></script>
+
 	<script>
 	function naverLogin() {
 
@@ -122,14 +123,16 @@
 			{
 				clientId: "s5XCnW0BhF7BUw9Zhr9s", //내 애플리케이션 정보에 cliendId를 입력해줍니다.
 				callbackUrl: "http://localhost:1123/member/login", // 내 애플리케이션 API설정의 Callback URL 을 입력해줍니다.
-				isPopup: false,
+				isPopup: true,
 				callbackHandle: true
 			}
 		);	
 	
 	naverLogin.init();
+	
+	console.log(naverLogin);
 		naverLogin.getLoginStatus(function (status) {
-				console.log(status)
+			console.log(status);
 			if (status) {
 				let email = "N" + naverLogin.user.getEmail(); // 필수로 설정할것을 받아와 아래처럼 조건문을 줍니다.
 				let id = naverLogin.user.getId();
@@ -176,7 +179,6 @@
 	        	  }); 
 			}
 		});
-			
 	}			
 	
 	
@@ -197,6 +199,8 @@
 		
 	}
 	</script>
+
+	
 <!-- 카카오 스크립트 -->
 	<script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
 	<script>
