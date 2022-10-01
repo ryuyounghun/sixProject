@@ -14,17 +14,72 @@
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
 	
-
 <style>
 	[v-cloak] {
             display: none;
         }
         
     table {
-    	border : 1px solid black;
-    	background-color : aqua;
+    	border-bottom : 1px solid #F9F7F7;
+    	border-spacing: 5px;
     }
+    
+	td {
+    width: 200px;
+    padding-bottom: 7px;	
+	}
 	
+	tr {
+	margin-top: 20px;
+	border-bottom: 1px solid #a8a8a8;
+	} 
+	
+.title1{
+	width: 100%;
+	padding-top: 12px;
+   padding-bottom: 12px;
+   border-bottom: 1px solid #a8a8a8;
+ 
+}
+.title4{
+	width: 100%;
+   	border-bottom: 1px solid #a8a8a8;
+ 
+}
+/* 리뷰쓰기 버튼 */
+.btn1{
+	font-size: 13px;
+	margin: 10px;
+	font-size: 15px;
+}
+	
+.first1 {
+    padding-right: 6px;
+    font-size: 14px;
+}
+
+.second1 {
+	font-size: 13px;
+}
+
+.thrid1 {
+    padding-right: 6px;
+    font-size: 14px;
+}
+.fourth1{
+ 	padding-right: 6px;
+    font-size: 14px;
+}
+
+.fifth1{
+	padding-top:5px;
+	padding-right: 6px;
+    font-size: 14px;
+}
+	
+.first{
+	margin: 20px;
+}
 </style>
 <script th:inline="javascript" src="/js/member/mypage.js">
 </script>
@@ -34,7 +89,6 @@
 		<header>
 			<div class="header-container">
 				<a href="/" class="header-logo" >
-					ㄹ고
 				</a>
 				<a th:href="@{/delivery/index}" class="header-toAnother" >
 					배달로~
@@ -70,98 +124,81 @@
 						</div>
 						<img id="levelImg" src="">
 						<input type="hidden" id="memberLevel" th:value="${member.memberLevel}">
-						<h2 th:text="${memberPage.memberName}"></h2>
+						<h2 th:text="${memberPage.memberName}" class = "mbName"></h2>
 						<div class = "expBar">
 							<span class = "expBar"></span>
 						</div>
 							
 						<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-						  채팅걸기
+						  채팅걸기&#x1F4AC;
 						</button>
 						
-						<div id="point"></div>
+						<div id="point">
+						</div>
 						
-						<div id="menuList" style="overflow:scroll; height:200px; width:220px;">
-							<ul>
-								<li id="wishlistBtn">
-									찜리스트
+						<div id="menuList">
+							<ul style="list-style-type:none;">
+								<li id="wishlistBtn" class = "listul">
+									찜 리스트
 								</li>
-								<li id="orderListBtn">
+								<li id="orderListBtn" class = "listul">
 									주문 리스트
 								</li>
-								<li id="buyCouponsBtn">
+								<li id="buyCouponsBtn" class = "listul">
 									쿠폰 구매
 								</li>
-								<li id="myCouponListBtn">
-									내 쿠폰
+								<!-- 0930 세련 수정함 내 쿠폰 -> 나의 쿠폰으로 변경 -->
+								<li id="myCouponListBtn" class = "listul">
+									나의 쿠폰
 								</li>
-								<li id="sellerPageBtn">
+								<li id="sellerPageBtn" class = "listul">
 									판매자 페이지
 								</li>
-								<li id="profileBtn">
+								<li id="profileBtn"class = "listul">
 									프로필 변경
 								</li>
-								<li id="updateMemberInfoBtn">
+								<li id="updateMemberInfoBtn" class = "listul">
 									<a th:href ="@{/member/updateInfo}">
 										회원정보 수정
 									</a>
 								</li>
-								<li id="blockUserBtn">
+								<li id="blockUserBtn" class = "listul">
 									<a th:href ="@{/member/blockLogin}">
 										탈퇴하기
 									</a>
 								</li>
 							</ul>
 						</div>	
-						
-						
 					</div>
 				</aside>
-				
-				<!-- <aside>
-					<div class="aside-right">
-
-					</div>
-				</aside> -->
-
-			<div class="aside-center">
-				<div class="section-center">
-				
-				<div id="mainMypage">
-					
-					
-					
-					
-					<div class="partyJoinOut">
-						<div style="overflow:scroll; height:360px; width:300px;">
-							<span>리뷰 모음</span>
-							<div id="myReviewList" ></div>
-						
-						</div> 
-					</div><!-- partyJoinOut 부분 끝 -->
-					<div class="partyJoinOut2">
-						<div class = "guestbook">
-							<span class = "guestbookTitle">방명록</span>
+			<div class ="mainMypage">	
+				<div class="aside-center">
+					<div class="section-center">
+						<h2 class= "mpTitle">마이페이지</h2>
+							<div class="partyJoinOut">
+								<div style="overflow:scroll; height:360px; width:300px;">
+									<span class = "sectitle">리뷰 모음</span>
+									<div id="myReviewList" ></div>
+								</div> 
+							</div><!-- partyJoinOut 부분 끝 -->
 							
-							<div id="reList" style="overflow:scroll; height:300px; width:650px;">
-							</div>
-						
-							<div>
-								<input th:object = "${guestbook}" th:onclick = "${content}" name="content" id="content">
-								
-								<button id = "btnReply_write">작성하기</button>
-								<!-- <input type = "button" value = "수정하기" id = "btnReply_update"> -->
-								<input type = "hidden" id = "loginUser" th:value = "${#authentication.getPrincipal().getUsername()}">
-							</div>
-						</div><!-- guestbook 부분 끝 -->
-					</div>	<!-- partyJoinOut2 부분 끝 -->
-				</div><!-- mainMypage 끝 -->
-				
-				
-				
-				</div><!-- section-center  -->
-			</div><!--aside-center  -->
-		</div>
+							<div class="partyJoinOut2">
+									<span class = "sectitle">방명록</span>
+									<br>
+									<div id="reList" class= "replyList" style="overflow:scroll; height:300px; width:650px;">
+									
+									</div>
+									<div class = "contentBox">
+										<input th:object = "${guestbook}" th:onclick = "${content}" name="content" id="content" class="content">
+										<button id = "btnReply_write" class = "btnBox">작성하기</button>
+										<!-- <input type = "button" value = "수정하기" id = "btnReply_update"> -->
+										<input type = "hidden" id = "loginUser" th:value = "${#authentication.getPrincipal().getUsername()}">
+									</div>
+							</div><!-- partyJoinOut2 부분 끝 -->
+					</div><!-- section-center  -->
+				</div><!--aside-center  -->
+			</div>
+		</div><!-- section-container -->
 		</section>
 		
 		
@@ -225,24 +262,13 @@
 		      <div class="modal-body">
 		        <div id="wishlistStore"></div>
 		        <div id="buyCoupon">
-		        <h2>쿠폰 구매하기</h2>
-						<div class = "couponCenter">
-							<table th:each="cList : ${cList}">
-								<tr>
-									<th th:text="${cList.couponNum}"></th>
-								</tr>
-								<tr>
-									<th th:text="${cList.couponName}"></th>
-								</tr>
-								<tr>
-									<th th:text="|${cList.couponPoint}원|"></th>
-								</tr>
-								<tr>
-									<th>
-										<input type="button" th:onclick="|buyCoupon(${cList.couponNum})|" value="button">
-									</th>
-								</tr>
-							</table>
+		        <!-- 쿠폰 구매하기 -->
+		        <!-- 0930 세련 수정함 table -> div / td -> span-->
+						<div class = "couponCenter" th:each="cList : ${cList}">
+									<span class = "fifth1" th:text="${cList.couponNum}"></span>
+									<span class = "fifth1" th:text="|『${cList.couponName}』|"></span>
+									<span class = "fifth1" th:text="|${cList.couponPoint}원|"></span>
+									<input type="button" class= "cpBtn" th:onclick="|buyCoupon(${cList.couponNum})|" value="구매하기">
 						</div><!-- couponCenter 부분 끝 -->
 		        </div><!-- buyCoupon 끝 -->
 		        <div id="couponList"></div>

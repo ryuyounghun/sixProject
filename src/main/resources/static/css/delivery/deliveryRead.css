@@ -47,6 +47,10 @@ body{
 /* 
 	본문 섹션 css
  */
+ 
+ .storename{
+ 	font-size: 25px;
+ }
  .section-container{
  	width : 100%;
  	height : 72.3vh;

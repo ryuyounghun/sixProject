@@ -90,11 +90,6 @@ public class MemberServiceImpl implements MemberService {
 		return mDao.insertMyPage(guestbook);
 	}
 
-	@Override
-	public int selectOneReply(GuestBook guestbook) {
-		// TODO Auto-generated method stub
-		return mDao.selectOneReply(guestbook);
-	}
 
 	@Override
 	public List<GuestBook> selectAllReply(int memberNum) {
@@ -155,5 +150,16 @@ public class MemberServiceImpl implements MemberService {
 	public int updateMyImage(Member member) {
 		// TODO Auto-generated method stub
 		return mDao.updateMyImage(member);
+	}
+	// 0930 마이페이지 댓글 삭제하기
+	@Override
+	public int deleteReply(int memberNum) {
+		return mDao.deleteReply(memberNum);
+	}
+
+	// 0930 마이페이지 댓글 하나 선택 (수정함)
+	@Override
+	public int selectOneReply(int writeNum) {
+		return mDao.selectOneReply(writeNum);
 	}
 }

@@ -157,7 +157,6 @@ public class MemberController {
 		return result;
 	}
 		
-
 	
 	//Post
 	@PostMapping("/updatePw")
@@ -179,9 +178,6 @@ public class MemberController {
 	
 	
 	// 세련씨
-	
-	
-	
 	@GetMapping("/login")
 	public String login() {
 		return "memberView/login";
@@ -395,6 +391,7 @@ public class MemberController {
 		
 		return gList;
 	}
+	
 	
 	// 0924 추가
 	@GetMapping("/lookWishList")

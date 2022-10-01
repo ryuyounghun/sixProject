@@ -16,4 +16,5 @@ public interface ReplyDAO {
 	public List<Reply> selectReplyByBoardNum( int boardNum);
 	public int deleteReply(int replyNum);
 	public int updateReply(Reply reply);
+	
 }

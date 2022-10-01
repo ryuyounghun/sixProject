@@ -28,6 +28,13 @@
 	#orderList {
 		text-align : center;
 	}
+	
+	.img {
+  width: 80px;
+  height: auto;
+  object-fit: cover;
+}
+
 </style>
 
 </head>
@@ -139,7 +146,7 @@
 						<div class="storeThumbnail">
 							<span class="storename" th:text="${store.storeName}">&nbsp;&nbsp;</span>
 							<div>
-								<img th:src="@{storeDisplay(num = ${store.storeNum})}" class="brandImg">
+								<img th:src="@{storeDisplay(num = ${store.storeNum})} " class="brandImg">
 								<span class="storeInfo" th:text="|${store.rating}점|"></span><br>
 								<span class="storeInfo" th:text="${store.storeContent}"></span><br>
 								<input class="storeInfo" type="button" value="♡" id="wish"><br>

@@ -27,7 +27,9 @@ $(document).ready(function(){
 			$("#orderList").hide();
 			$("#profileModal").hide();
 			$("#couponList").show();
-			$("#exampleModalLabel").text("MyCoupon List");
+			//0930 세련 수정함
+			//쿠폰 목록(모달창)켰을 때 보일 이름 바꿨음.
+			$("#exampleModalLabel").text("나의 쿠폰 목록");
 			$("#exampleModal").modal("show");
 		});
 		
@@ -73,8 +75,9 @@ $(document).ready(function(){
 		$("#orderList").hide();
 		$("#wishlistStore").hide();
 		$("#profileModal").show();
-		
-		$("#exampleModalLabel").text("프로필사진");
+		// 0930 세련 수정함
+		// 프로필 사진 변경 시 모달에 나오는 이름 바꿈. ↓
+		$("#exampleModalLabel").text("프로필 사진 바꾸기");
 		
 		$("#exampleModal").modal("show");
 	}
@@ -146,17 +149,18 @@ $(document).ready(function(){
 					htmlStr += "<h1>주문 목록이 없습니다...</h1>";
 				} else {
 					$.each(data, function(index, item) {
-						htmlStr += "<table>";
-						htmlStr += "<tr><th>" + item.receiptNum + "</th>";
-						htmlStr += "<th>" + item.totalAmount + "</th>";
-						htmlStr += "<th><input onclick='writeReview(" + item.storeNum + "," + item.receiptNum + ")' type='button' value='리뷰쓰기'></th></tr>";
-						htmlStr += "<tr><th>" + item.orderHistory + "</th></tr>";
-						htmlStr += "</table>";
+						// 0930 세련 수정함
+						htmlStr += "<div class = 'title1'>";
+						htmlStr += "<span class = 'first1'>" + item.receiptNum + "</span>";
+						htmlStr += "<span class = 'first1'>" + item.totalAmount + "</span>";
+						htmlStr += "<span class= 'first1'>" + item.orderHistory + "</span>";
+						htmlStr += "<span><input onclick='writeReview(" + item.storeNum + "," + item.receiptNum + ")' type='button' class = 'btn1' value='리뷰쓰기'></span>";
+						htmlStr += "</div>";
 					});
 				}
 				
 				$("#orderList").html(htmlStr);
-				$("#exampleModalLabel").text("주문목록");
+				$("#exampleModalLabel").text("주문 리스트");
 				$("#orderList").show();
 				$("#exampleModal").modal("show");
 				
@@ -203,12 +207,13 @@ $(document).ready(function(){
 				console.log(data);
 				let htmlStr = "";
 				$.each(data, function(index, item) {
-					htmlStr += "<table>";
-					htmlStr += "<tr><th>" + item.nickname + "</th>";
-					htmlStr += "<th> ★" + item.rating + "</th></tr>";
-					htmlStr += "<tr><th colspan='2'>" + item.orderHistory + "</th></tr>";
-					htmlStr += "<tr><th colspan='2'>" + item.reviewContent + "</th></tr>";
-					htmlStr += "</table>";
+					// 0930 세련 수정함
+					htmlStr += "<div class = 'title2'>";
+					htmlStr += "<span class = 'second1'>" + item.nickname + "</span>";
+					htmlStr += "<span class = 'second1'> ★" + item.rating + "</span>";
+					htmlStr += "<span class = 'second1'>" + item.orderHistory + "</span>";
+					htmlStr += "<span class = 'second1'>" + item.reviewContent + "<span>";
+					htmlStr += "</div>";
 				});				
 				$("#myReviewList").html(htmlStr);
 			}
@@ -237,16 +242,17 @@ $(document).ready(function(){
 				
 				
 				$.each(data, function(index, item) {
-					htmlStr += "<table border='1' class='menuTable'>";
-					htmlStr += "<tr>"; 
-					htmlStr += "<td><img src='storeDisplay?num=" + item.storeNum + "' width='80px;'></td>"; 
-					htmlStr += "<td class='nameTd'><a href='/delivery/read" + "?num=" + item.storeNum + "'>" + item.storeName + "</a></td>";
-					htmlStr += "<td> ★ " + item.rating + "</td>";
-					htmlStr += "<td> ♥ " + item.wishlist + "</td>";
-					htmlStr += "</tr>";
-					htmlStr += "</table>"
+					// 0930 세련 수정함 타이틀1(수정예정)
+					// 1001 세련 img 높이 설정 추가
+					htmlStr += "<div class='title1'>";
+					htmlStr += "<span class = 'thrid1'><img src='storeDisplay?num=" + item.storeNum + "' width='80px;' height='45px;'></span>"; 
+					htmlStr += "<span class = 'thrid1'><a href='/delivery/read" + "?num=" + item.storeNum + "'>" + item.storeName + "</a></span>";
+					htmlStr += "<span class = 'thrid1'> ★ " + item.rating + "</span>";
+					htmlStr += "<span class = 'thrid1'> ♥ " + item.wishlist + "</span>";
+					htmlStr += "</div>"
 				});
-				$("#exampleModalLabel").text("찜리스트");
+				
+				$("#exampleModalLabel").text("찜 리스트");
 				$("#wishlistStore").html(htmlStr);
 				$("#exampleModal").modal("show");
 				/* ]]> */
@@ -279,15 +285,16 @@ $(document).ready(function(){
 				
 				let htmlStr = "";
 				if(data == "") {
-					htmlStr += "<h1>남은 쿠폰이 없습니다....</h1>";
+					htmlStr += "<span class = 'couponTitle'>남은 쿠폰이 없습니다.</span>";
 				} else {
 					
 					$.each(data, function(index, item) {
-						htmlStr += "<table>";
-						htmlStr += "<tr><th>" + item.couponName + "</th></tr>";
-						htmlStr += "<tr><th>" + item.couponPoint + "</th></tr>";
-						htmlStr += "<tr><th><input type='button' value='사용' onclick='useCoupon(" + item.myCouponNum + ")'></th></tr>";
-						htmlStr += "</table>";
+						//0930 세련 수정함
+						htmlStr += "<div class = 'title4'>";
+						htmlStr += "<span class = 'fourth1'> 『 " + item.couponName + " 』</span>";
+						htmlStr += "<span class = 'fourth1'>" + item.couponPoint + "원</span>";
+						htmlStr += "<span class = 'fourth1'><input type='button' class = 'btn1' value='사용하기' onclick='useCoupon(" + item.myCouponNum + ")'></span>";
+						htmlStr += "</div>";
 					});
 				}
 				
@@ -308,7 +315,7 @@ $(document).ready(function(){
 				alert("쿠폰을 사용하였습니다.");
 				console.log(data);
 				if(data == "") {
-					$("#couponList").text("남은 쿠폰이 없습니다....");
+					$("#couponList").text("남은 쿠폰이 없습니다.");
 				}
 				
 				couponList();
@@ -328,7 +335,7 @@ $(document).ready(function(){
 				console.log(data.memberPoint);
 				
 				let htmlStr = "<h5>잔여 포인트</h5>";
-				htmlStr += "<h5>" + data.memberPoint + "point</h5>";
+				htmlStr += "<h5>" + data.memberPoint + " point</h5>";
 				
 				$("#point").html(htmlStr);
 			}

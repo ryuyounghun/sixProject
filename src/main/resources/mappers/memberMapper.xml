@@ -111,6 +111,7 @@
 			#{nickname},
 			#{content}
 		)
+		
 	</insert>
 	<!-- 마이페이지 댓글 전체 보기 -->
 	<select id = "selectAllReply" resultType="GuestBook" parameterType="int">
@@ -118,6 +119,15 @@
 		WHERE MEMBERNUM = #{memberNum}
 	</select>
 	
+	<select id = "selectOneReply" parameterType="int"  resultType="GuestBook">
+		SELECT * FROM GUESTBOOK
+		WHERE WIRTENUM = #{writeNum}
+	</select>
+	
+	<delete id = "deleteReply" parameterType="int">
+		DELETE FROM GUESTBOOK
+		WHERE MEMBERNUM = #{memberNum}
+	</delete>
 	<!-- 0923 추가 / 멤버번호로 멤버찾기 -->
 	<select id="selectOneMemberByMemberNum" resultType="Member" parameterType="int">
 		SELECT * FROM

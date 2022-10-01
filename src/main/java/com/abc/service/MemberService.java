@@ -26,11 +26,14 @@ public interface MemberService {
 	// 마이페이지 댓글작성
 	public int insertMyPage(GuestBook guestbook);
 	
-	// 마이페이지 댓글 하나 보기
-	public int selectOneReply(GuestBook guestbook);
+	// 마이페이지 댓글 하나 보기(수정)
+	public int selectOneReply(int writeNum);
 	
 	// 마이페이지 댓글 전체 보기
 	public List<GuestBook> selectAllReply(int memberNum);
+	
+	// 마이페이지 댓글 삭제하기
+	public int deleteReply(int memberNum);
 	
 	// 0923 추가 멤버넘으로 멤버찾기
 	public Member selectOneMemberByMemberNum(int memberNum);
