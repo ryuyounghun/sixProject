@@ -4,12 +4,13 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<link rel="stylesheet" href="/css/delivery/deliveryIndex.css">
+<link rel="stylesheet" href="/css/delivery/sellerPage.css">
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 <script type="text/javascript">
+
 	$(document).ready(function() {
 		selectMyStore();
 		$("#sellerOrderListModal").hide();
@@ -21,7 +22,8 @@
 	})
 	
 	function inputStore() {
-		let htmlStr = "<h1>가게등록</h1>";
+		/* 1001 세련 수정함 <h1> 내용 살짝 수정*/
+		let htmlStr = "<h1>가게 등록하기</h1>";
 		$("#staticBackdropLabel").html(htmlStr);
 		$("#sellerOrderListModal").hide();
 		$("#inputItemModal").hide();
@@ -30,7 +32,8 @@
 	}
 	
 	function inputItem() {
-		let htmlStr = "<h1>상품등록</h1>";
+		/* 1001 세련 수정함 <h1> 내용 살짝 수정*/
+		let htmlStr = "<h1>상품 등록하기</h1>";
 		$("#staticBackdropLabel").html(htmlStr);		
 		$("#inputStoreModal").hide();
 		$("#sellerOrderListModal").hide();
@@ -39,7 +42,8 @@
 	}
 	
 	function sellerOrderList() {
-		let htmlStr = "<h1>주문목록</h1>";
+		/* 1001 세련 수정함 <h1> 내용 살짝 수정*/
+		let htmlStr = "<h1>주문목록 보기</h1>";
 		$("#staticBackdropLabel").html(htmlStr);		
 		$("#inputStoreModal").hide();
 		$("#inputItemModal").hide();
@@ -56,7 +60,8 @@
 				console.log(data);
 				
 				let htmlStr = "<select onchange='loadSellerOrderList(this.value)'>";
-				htmlStr += "<option>주문을 확인할 가게를 선택해 주세요.</option>";
+				// 1001 세련 option 문구 수정함.
+				htmlStr += "<option>주문확인 할 가게를 선택해 주세요.</option>";
 				$.each(data, function(index, item) {
 					htmlStr += "<option value='" + item.storeNum + "'>" + item.storeName + "</option>";
 				});
@@ -79,13 +84,17 @@
 				
 				let htmlStr = "";
 				$.each(data, function(index, item) {
-					htmlStr += "<table border='1'>";
-					htmlStr += "<tr><th>" + item.receiptNum + "</th>";
-					htmlStr += "<th>" + item.totalAmount + "원</th><tr>";
-					htmlStr += "<tr><th colspan='2'>" + item.orderHistory + "</th></tr>";
-					htmlStr += "<tr><th><input type='button' value='주문확인' onclick='checkOrder(" + item.receiptNum + ")'></th>";
-					htmlStr += "<th><input type='button' value='배달시작' onclick='startDelivery(" + item.receiptNum + ")'</th></tr>";
-					htmlStr += "</table>";
+					// 1001 세련 수정함
+					htmlStr += "<div class = 'orderListBox'>";
+					htmlStr += "<span>" + item.receiptNum + "번 </span>";
+					htmlStr += "<span>" + item.totalAmount + "원 </span>";
+					htmlStr += "<span>" + item.orderHistory + "</span><br>";
+					htmlStr += "</div>";
+					htmlStr += "<div class = 'orderListBtnBox'>";
+					htmlStr += "<span class = 'orderBtn'><input type='button' value='주문확인' onclick='checkOrder(" + item.receiptNum + ")'></span>";
+					htmlStr += "&nbsp;<span class = 'orderBtn'><input type='button' value='배달시작' onclick='startDelivery(" + item.receiptNum + ")'</span>";
+					htmlStr += "</div>";
+					
 				});
 				
 				$("#center-dv2").html(htmlStr);
@@ -102,11 +111,11 @@
 			success : function(data) {
 				console.log(data.waiting);
 				if(data.waiting == "Y") {
-					let alarm = "<h1>이미 승인한 주문입니다.</h1>";
+					let alarm = "<p class = 'alreadyOrder'>이미 승인한 주문입니다.</p>";
 					$("#alarm").html(alarm);
 					$("#exampleModal").modal('show');					
 				} else {
-					let alarm = "<h1>" + receiptNum + "번의 주문이 승인되었습니다.</h1>";
+					let alarm = "<p class = 'chkOrder'>&#128276; " + receiptNum + "번의 주문이 승인되었습니다.</p>";
 					$("#alarm").html(alarm);
 					$("#exampleModal").modal('show');	
 				}
@@ -135,6 +144,18 @@
 		});
 	}
 </script>
+<style>
+
+.requiredInfo{
+	border: 1px solid black;
+	padding-bottom: 20px;
+}
+.optionInfo{
+	border: 1px solid black;
+}
+
+
+</style>
 </head>
 <body>
 	<div id="headerAndSection-wrapper">
@@ -163,15 +184,10 @@
 						</a>
 					</li>
 					<li sec:authorize="isAuthenticated">
-	                  <a th:href="|@{/member/mypage}?num=${member.memberNum}|">
-	                     회원정보
-	                  </a>
-	               </li>
-	               <li>
-	                  <a th:href="@{/community/index}" class="header-toAnother" >
-	                  커뮤니티
-	                  </a>
-	               </li>
+						<a th:href ="@{/member/mypage}">
+							회원정보
+						</a>
+					</li>
 				</ui>
 
 			</div>
@@ -195,17 +211,18 @@
 
 				<div class="aside-center">
 					<div class="section-center">
-						<h1>판매자 페이지</h1>
-						
+					<!-- 1001 세련 수정함 --> 
+						<h1 class = "sellerTitle">판매자 페이지</h1>
+						<div class = "elseBox"></div>
 						<div class="d-grid gap-2">
 					  		<input value = "가게등록" class="btn btn-primary" type="button" id="inputStoreBtn">
 						  	<input value = "상품등록" class="btn btn-primary" type="button" id="inputItemBtn">
 						  	<input value = "주문목록" class="btn btn-primary" type="button" id="sellerOrderListBtn">
 						</div>
 					
-					</div>
-				</div>	
-			</div>		
+					</div><!--  section-center 부분 끝-->
+				</div><!-- aside-center 부분 끝 -->
+			</div><!-- section-container 부분 끝 -->
 		
 		</section>
 
@@ -215,11 +232,11 @@
 		
 	</footer>
 	
-	<!-- Button trigger modal -->
+<!-- 	 Button trigger modal 
 	<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
 	  Launch static backdrop modal
 	</button>
-	
+	 -->
 	<!-- Modal -->
 	<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
 	  <div class="modal-dialog">
@@ -234,12 +251,13 @@
 	        	<form action="inputStore" method="post" enctype="multipart/form-data">
 					<!-- 상품등록 기본정보 -->
 					<fieldset class = "requiredInfo">
-						<legend>가게정보</legend>
+						<h3>가게정보 입력</h3><p style="color: red;"> (*부분은 필수입력입니다.)</p>
 							<!-- 가게 이름 -->
+							<!--1001 세련 수정함 placeholder 부분에 온점 추가했습니다.  -->
 							
-							<label for = "joinStore">상호명</label><br>
+							<label for = "joinStore">* 상호명</label><br>
 							<div class = "joinIdWrap">
-		        				<input type = "text" name="storeName" id = "joinStore" placeholder = "상호명을 입력해주세요" required>
+		        				<input type = "text" name="storeName" id = "joinStore" placeholder = "상호명을 입력해주세요." required>
 		        				<select id="change" onchange="selectBoxChangeStore(this.value);">
 		        					<option>선택</option>
 		        					<option value="1">한식</option>
@@ -254,41 +272,40 @@
 		        			</div>
 							
 							<!-- 전화번호 -->
-							<label for = "phone">전화번호</label><br>
-	        				<input type = "text" id = "phone" name = "phone" placeholder = "전화번호를 입력해주세요" required>
+							<label for = "phone">* 전화번호</label><br>
+	        				<input type = "text" id = "phone" name = "phone" placeholder = "전화번호를 입력해주세요." required>
 							
 							<!-- 가게 설명 -->
-		        			<br><label for = "content">가게 설명</label><br>
-		        			<textarea id = "content" name = "storeContent" placeholder = "가게에 대한 설명을 적어주세요."></textarea>
+		        			<br><label for = "content">* 가게 설명</label><br>
+		        			<textarea id = "content" name = "storeContent" class = "storeContent" placeholder = "가게에 대한 설명을 적어주세요."></textarea>
 		        			
-		        			<!-- 가게 썸네일 -->
-		        			<br><label for = "content">가게 썸네일</label><br>
-		        			<input type="file" name="file">
-		        			
-					</fieldset>
-					
-					<fieldset class = "optionalInfo">
-						<legend>주소 등록</legend>
+		        			<!-- 1001 세련 수정함 -->
+		        			<!--  가게 썸네일 -> 가게 이미지 설정 -->
+		        			<!-- 가게 이미지 설정하기 -->
+		        			<br><label for = "content">* 가게 이미지 설정</label><br>
+		        			<input type="file" name="file" class = "file">
+		        			<br>
+		        			<!-- 주소 -->
+		        			<span class = "inputAddress" style="font-size: 17px; font-weight: bold;">* 주소 등록</span>
+		        			<br>
+		        			<!-- 1001 세련 수정함  -->
+		        			<!-- placeholder 부분 온점 추가함~  -->
+		        			<!-- fieldset 두 개로 나뉘어져 있는 걸 하나로 합쳤습니다.  -->
+		        			<input type = "text" id = "sample4_roadAddress" class = "address1" name = "address" placeholder = "주소찾기를 눌러주세요." readonly>
+		        			<input type = "button" value = "주소찾기" class = "addressFind" onclick="sample4_execDaumPostcode()">
+							<br><input type = "text" class = "address1" id="sample4_detailAddress" placeholder = "상세 주소를 입력해주세요.">
 						
-						<!-- 주소 -->
-	        			<input type = "text" id = "sample4_roadAddress" class = "address1" name = "address" placeholder = "주소찾기를 눌러주세요" readonly>
-	        			<input type = "button" value = "주소찾기" class = "addressFind" onclick="sample4_execDaumPostcode()">
-						<br><input type = "text" class = "address1" id="sample4_detailAddress" placeholder = "상세 주소를 입력해주세요">
-					
-	        			<input type="hidden" id="sample4_postcode" placeholder="우편번호">
-						<input type="hidden" id="sample4_jibunAddress" placeholder="지번주소">
-						<span id="guide" style="color:#999;display:none"></span>
-						<input type="hidden" id="sample4_extraAddress" placeholder="참고항목">
-						
+		        			<input type="hidden" id="sample4_postcode" placeholder="우편번호">
+							<input type="hidden" id="sample4_jibunAddress" placeholder="지번주소">
+							<span id="guide" style="color:#999;display:none"></span>
+							<input type="hidden" id="sample4_extraAddress" placeholder="참고항목">
 					</fieldset>
-							
 					
 					<!-- 버튼 -->
-					<fieldset class = "buttons">
-						<legend>확인</legend>
-						<button type = "submit">등록하기</button>
-						<button type = "reset">취소하기</button>
-					</fieldset>
+					<div class = "buttons">
+						<button type = "submit" class = "btn1">등록하기</button>&nbsp;&nbsp;&nbsp;
+						<button type = "reset" class = "btn2">취소하기</button>
+					</div>
 				</form>
 	        </div> <!-- 상점등록 끝-->
 	        
@@ -297,12 +314,15 @@
 	        	<form action="inputItem" method="post" enctype="multipart/form-data">
 					<!-- 상품등록 기본정보 -->
 					<fieldset class = "requiredInfo">
-						<legend>상품정보</legend>
+						<h3>상품정보 입력</h3><p style="color: red;"> (*부분은 필수입력입니다.)</p>
 						
 							<!-- 상품 이름 -->
-							<label for = "ItemName">상품명</label><br>
+							<!--  1001 세련 수정함 -->
+							<!-- placeholder 부분 온점 추가 -->
+							<!-- 상품 썸네일 => 상품 이미지로 변경 -->
+							<label for = "ItemName">* 상품명</label><br>
 							<div class = "joinIdWrap">
-		        				<input type = "text" name="itemName" id = "ItemName" placeholder = "상품명을 입력해주세요" required>
+		        				<input type = "text" name="itemName" id = "ItemName" placeholder = "상품명을 입력해주세요." required>
 		        				<select id="changeStore" onchange="selectBoxChangeItem(this.value);">
 		        					<option>선택</option>
 		        					<option th:each="storeList : ${storeList}"
@@ -314,24 +334,24 @@
 		        			</div>
 							
 							<!-- 가격 -->
-							<label for = "price">상품가격</label><br>
-	        				<input type = "text" id = "price" name = "itemPrice" placeholder = "상품 가격을 입력해주세요" required>
+							<label for = "price">* 상품가격</label><br>
+	        				<input type = "text" id = "price" name = "itemPrice" placeholder = "상품 가격을 입력해주세요." required>
 							
 							<!-- 상품 설명 -->
-		        			<br><label for = "content">상품내용</label><br>
-		        			<textarea id = "content" name = "itemContent" placeholder = "상품에 대한 설명을 적어주세요."></textarea>
+		        			<br><label for = "content">* 상품내용</label><br>
+		        			<textarea id = "content" name = "itemContent" class = "storeContent" placeholder = "상품에 대한 설명을 적어주세요."></textarea>
 		        			
-		        			<!-- 상품 썸네일 -->
-		        			<br><label for = "content">상품 썸네일</label><br>
+		        			<!-- 상품 이미지 -->
+		        			<br><label for = "content">* 상품 이미지</label><br>
 		        			<input type="file" name="file">
 		        			
 					</fieldset>
 					<!-- 버튼 -->
-					<fieldset class = "buttons">
-						<legend>확인</legend>
-						<button type = "submit">등록하기</button>
-						<button type = "reset">취소하기</button>
-					</fieldset>
+					
+					<div class = "buttons">
+						<button type = "submit" class = "btn1" >등록하기</button>&nbsp;&nbsp;&nbsp;
+						<button type = "reset" class = "btn2" >취소하기</button>
+					</div>
 				</form>
 	        </div><!-- 상품등록 끝 -->
 	        
@@ -343,7 +363,7 @@
 	      </div>
 	      <div class="modal-footer">
 	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-	        <button type="button" class="btn btn-primary">Understood</button>
+	        <!-- <button type="button" class="btn btn-primary">Understood</button> -->
 	      </div>
 	    </div>
 	  </div>
@@ -361,7 +381,7 @@
 	      </div>
 	      <div class="modal-footer">
 	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-	        <button type="button" class="btn btn-primary">Save changes</button>
+	        <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
 	      </div>
 	    </div>
 	  </div>

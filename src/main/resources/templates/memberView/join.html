@@ -34,7 +34,7 @@
 			}
 			
 			if(pw1.length < 8 || pw1.length > 16){
-				$("#text2").text("비밀번호는 8~16자리 이내로 입력해주세요.").css("color", "red");
+				$("#text2").text("비밀번호는 8~15자리 이내로 입력해주세요.").css("color", "red");
 				$("#doublePw").val("0");
 			} else if(pw1 == 0){
 				$("#text2").text("비밀번호는 공백없이 입력해주세요.").css("color", "red");
@@ -63,7 +63,7 @@
 			}
 			
 			if(pw2.length < 8 || pw2.length > 16){
-				$("#text2").text("비밀번호는 8~16자리 이내로 입력해주세요.").css("color", "red");
+				$("#text2").text("비밀번호는 8~15자리 이내로 입력해주세요.").css("color", "red");
 				$("#doublePw").val("0");
 			} else if(pw2 == 0){
 				$("#text2").text("비밀번호는 공백없이 입력해주세요.").css("color", "red");
@@ -224,8 +224,8 @@
 					$('.id_already2').text("핀번호에는 한글을 사용할 수 없습니다.").css("color", "red");
 					$('.id_already2').show();
 					$("#pinNumberCheck").val("0");
-				} else if (pnum.length < 5 || pnum.length > 7) {
-					$('.id_already2').text("핀번호는 6자입니다.").css("color", "red");
+				} else if (pnum.length < 3 || pnum.length > 13) {
+					$('.id_already2').text("핀번호는 3~12글자 사이로 입력해주세요.").css("color", "red");
 					$('.id_already2').show();
 					$("#pinNumberCheck").val("0");
 				} else if (num < 0 || eng < 0){

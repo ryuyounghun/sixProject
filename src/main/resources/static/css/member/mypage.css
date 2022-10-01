@@ -51,6 +51,14 @@ body{
 	text-decoration: none;
 	
 }
+.orderListBox{
+	height: 60px;
+	width: 466px;
+}
+#center-dv2{
+	padding-top: 20px;
+}
+
 /* 
 	본문 섹션 css
  */
@@ -81,6 +89,9 @@ ul {
 	cursor: pointer;	
 }
 
+/* label {
+	margin: 150px; 
+ } */
  
 .sectitle{
 	font-size: 20px;
@@ -159,6 +170,10 @@ ul {
 .content{
 	width: 500px;
     height: 50px;
+}
+
+.reviewScore{
+	
 }
 
 /* 쿠폰 div 하나 */
