@@ -10,7 +10,7 @@
 	.storeTable {
 		margin : 20px;
 		width : 40%;
-		color : white;
+		color : black;
 		border : 1px solid black;
 		display : inline-block;
 	}
@@ -20,7 +20,7 @@
 	}
 	
 	.storeTable a {
-		color : white;
+		color : black;
 		text-decoration : none;
 	}
 	
@@ -107,11 +107,8 @@
 		<header>
 			<div class="header-container">
 				<a href="/" class="header-logo" >
-					asd
 				</a>
-				<a th:href="@{/community/index}" class="header-toAnother" >
-					커뮤니티로~
-				</a>
+				
 				
 				<ui class="header-logMenuList"> <!-- 로그인 및 로그아웃 링크 -->
 					<li sec:authorize ="not isAuthenticated">
@@ -132,6 +129,11 @@
 					<li sec:authorize="isAuthenticated">
 						<a th:href ="@{/member/mypage}">
 							회원정보
+						</a>
+					</li>
+					<li>
+						<a th:href="@{/community/index}" class="header-toAnother" >
+						커뮤니티
 						</a>
 					</li>
 				</ui>

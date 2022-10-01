@@ -16,9 +16,7 @@
 				<a href="/" class="header-logo" >
 				</a>
 				
-				<a th:href="@{/community/index}" class="header-toAnother" >
-					커뮤니티로~
-				</a>
+				
 				<ui class="header-logMenuList"> <!-- 로그인 및 로그아웃 링크 -->
 					<li sec:authorize ="not isAuthenticated">
 						<a th:href="@{/member/login}">
@@ -40,6 +38,11 @@
 							회원정보
 						</a>
 					</li>
+					<li >
+						<a th:href="@{/community/index}">
+						커뮤니티
+						</a>
+					</li>
 				</ui>
 
 			</div>
@@ -54,7 +57,7 @@
 							<input type="hidden" th:value="${member.address}" id="myAddress">
 							<input type="button" onclick="getMyAddress();" class="placeholder">
 							<input class = "searchBar" type = "text" name="searchWord" th:value="${searchWord}" id="searchWord" placeholder="위치검색">
-							<input type = "submit" th:value="검색" id="searchWord" placeholder="위치검색">
+							<input type = "submit" th:value="검색" id="searchBar">
 						</form>
 					</div>
 				</div>

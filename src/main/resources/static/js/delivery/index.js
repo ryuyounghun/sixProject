@@ -13,17 +13,17 @@
 			success : function(data) {
 				
 				// 9월 29일 랭킹뱃지 추가작업 
-				let htmlStr = "<h1 style='text-align:center'>가게 랭킹</h1><ul>";
+				let htmlStr = "<h1 style='text-align:center' class='rankTitle'>가게 랭킹</h1><ul>";
 				$.each(data, function(index, item) {
 					
 					if(index <= 9) {
 						if ( index <=2 ){
 							
 							htmlStr += "";
-							htmlStr += "<li class='top3Stores'>"+  "<img src='' id='storeRank" + index + "'>  "  + "<span >" + item.storeName +"</span>" + "</li>";
+							htmlStr += "<li class='top3Stores'>"+  "<img src='' id='storeRank" + index + "'>  "  + "<span style='display: inline-block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 13ch;' >" + item.storeName +"</span>" + "</li>";
 						}else {
 							
-							htmlStr += "<li>" + (index+1)+"위 " +item.storeName + "</li>";
+							htmlStr += "<li class='underTop3'>" + (index+1)+"위 " +item.storeName + "</li>";
 						}
 					}
 					

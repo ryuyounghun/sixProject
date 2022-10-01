@@ -55,7 +55,13 @@
 		let pageY = pageYOffset;
 		let currentPage = $("#currentPage").val();
 		let nextPage = $("#nextPage").val();
+		let endPage =$("#endPage").val();
+		
+		console.log("끄테이지" +endPage);
 		console.log(nextPage);
+		if ( endPage < nextPage){
+			return false;
+		}
 		// <a th:href = "|javascript:pagingFormSubmit(${navi.currentPage + 1})|" th:text ="|▶|"  id="nextPage"></a>
 		
 		$.ajax({
@@ -177,6 +183,8 @@
 
 						<input type="hidden" th:value="${navi.currentPage}" id="currentPage">
 						<input type="hidden" th:value="${navi.currentPage+1}" id="nextPage">
+						<input type="hidden" th:value="${navi.endPageGroup}" id="endPage">
+				
 						<div id="navigator">
 							<span
 								th:each="counter : ${#numbers.sequence(navi.startPageGroup, navi.endPageGroup)}">
