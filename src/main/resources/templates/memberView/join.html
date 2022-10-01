@@ -34,7 +34,7 @@
 			}
 			
 			if(pw1.length < 8 || pw1.length > 16){
-				$("#text2").text("비밀번호는 8~16자리 이내로 입력해주세요.").css("color", "red");
+				$("#text2").text("비밀번호는 8~15자리 이내로 입력해주세요.").css("color", "red");
 				$("#doublePw").val("0");
 			} else if(pw1 == 0){
 				$("#text2").text("비밀번호는 공백없이 입력해주세요.").css("color", "red");
@@ -63,7 +63,7 @@
 			}
 			
 			if(pw2.length < 8 || pw2.length > 16){
-				$("#text2").text("비밀번호는 8~16자리 이내로 입력해주세요.").css("color", "red");
+				$("#text2").text("비밀번호는 8~15자리 이내로 입력해주세요.").css("color", "red");
 				$("#doublePw").val("0");
 			} else if(pw2 == 0){
 				$("#text2").text("비밀번호는 공백없이 입력해주세요.").css("color", "red");

@@ -3,8 +3,8 @@
 	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
-<link rel="stylesheet" href="/css/delivery/deliveryIndex.css">
+<title>관리자 페이지</title>
+<link rel="stylesheet" href="/css/master/masterIndex.css">
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
@@ -74,11 +74,12 @@
 
 				<div class="aside-center">
 					<div class="section-center">
-						<h1>관리자 페이지</h1>
-						
-						  	<input value = "쿠폰등록" class="btn btn-primary" type="button" id="insertCouponBtn">
-						  	<input value = "레벨 관리" class="btn btn-primary" type="button" id="insertExpBtn">
-						  	<a class="btn btn-primary" data-bs-toggle="modal" href="#exampleModalToggle" role="button">계정정지 및 복구</a>
+						<h2 class = "masterTitle">관리자 페이지</h2>
+							<div class = "masterIndex">
+							  	<input value = "쿠폰등록하기" class="btn btn-primary" type="button" id="insertCouponBtn">
+							  	<input value = "레벨관리하기" class="btn btn-primary" type="button" id="insertExpBtn">
+							  	<a class="btn btn-primary" data-bs-toggle="modal" href="#exampleModalToggle" role="button">계정정지 및 복구 관리하기</a>
+							</div>
 					</div>
 				</div>	
 			</div>		
@@ -91,7 +92,7 @@
 		
 	</footer>
 	
-	
+	<!-- 1001 세련 수정함 -->
 	<!-- Modal -->
 	<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
@@ -103,19 +104,22 @@
 	      <div class="modal-body">
 	      	<div id="insertCoupon">
 				<form action = "insertCoupon" method = "post" onsubmit="return checkValues();">
-					<div class = "section-center">
-						<!-- 쿠폰명 -->
-						<label for = "insertCoupon_name">쿠폰명</label>
-						<div class = "joinIdWrap">
-						<input type = "text" id = "couponId" name = "couponName" placeholder="쿠폰명을 입력해주세요." required>
-						<input type = "hidden" id = "couponIdCheck" value = 0><br>
-						<span id = "text1"></span>
-						</div> <!-- joinIdWrap 부분 끝 -->
+					<div class = "">
+						<h3>쿠폰정보 입력</h3><span style="color: red;">(* 표시한 부분은 필수입력입니다.)</span>
+						<div class = "elseBox"></div>
 						
-						<!-- 쿠폰 금액 -->
-						<label for = "insertCoupon_title">쿠폰 금액</label>
+						<!-- 쿠폰명 -->
 						<div class = "joinIdWrap">
-						<select id = "couponBill" name = "couponPoint" required style="font-size:30px;">
+							<label for = "insertCoupon_name" class = "cpName">* 쿠폰명</label><br>
+							<input type = "text" id = "couponId" name = "couponName" placeholder="쿠폰명을 입력해주세요." required>
+							<input type = "hidden" id = "couponIdCheck" value = 0><br>
+							<span id = "text1"></span>
+						</div>
+						<div class = "elseBox"></div>
+						<!-- 쿠폰 금액 -->
+						<div class = "joinIdWrap">
+						<label for = "insertCoupon_title" class = "cpPrice">* 쿠폰 금액</label><br>
+						<select id = "couponBill" name = "couponPoint" required style="width: 238.4px; height: 30px;">
 							<option>금액을 고르세요.</option>
 							<option value=1000>1000</option>
 							<option value=5000>5000</option>
@@ -125,21 +129,23 @@
 						</select>
 						<input type = "hidden" id = "couponBillCheck" value = 0><br>
 						<span id = "text2"></span>
-						</div> <!-- joinIdWrap 부분 끝 -->
+					</div> <!-- joinIdWrap 부분 끝 -->
 						
 						<!-- 버튼 -->
 						<div class = "buttons">
-							<button type = "submit">등록하기</button>&nbsp;&nbsp;&nbsp;
-							<button type = "reset">취소하기</button>
+							<button type = "submit" class = "btn1">등록하기</button>&nbsp;&nbsp;&nbsp;
+							<button type = "reset" class = "btn2">취소하기</button>
 						</div>
 						</div><!-- section-center 부분 끝 -->
 					</form>
-	      	</div>
+	      	</div><!-- insertCoupon -->
 			<div class = "ExpContent" id="insertExp">
 				<form action = "insertExp" method = "post">
-					<div class = "section-center">
+					<div class = "insertLevel">
+					<h3>레벨정보 입력</h3><span style="color: red;">(* 표시한 부분은 필수입력입니다.)</span>
+						<div class = "elseBox"></div>
 						<fieldset class = "requiredInfo">
-						<span id = "userLevelBox">사용자 Level 지정하기</span>
+						<span class = "userLevelBox">* 사용자 Level 지정하기</span><br>
 						<select name = "userLevel" class = "selectbox">
 							<option value = "" class = "level-option">레벨을 선택해주세요.</option>
 							<option value = "2" class = "level-option">2</option>
@@ -152,14 +158,15 @@
 							<option value = "9" class = "level-option">9</option>
 							<option value = "10" class = "level-option">10</option>
 						</select>
-						<span id = "userExpBox">사용자 Exp 지정하기</span>
+						<div class = elseBox></div>
+						<span class = "userExpBox">* 사용자의 Exp 지정하기</span><br>
 							<input type = "text" name = "userExp" placeholder="내용을 입력해주세요." required> 
 						</fieldset>
-						<div id = "buttonBox">
-							<button type = "submit" id = "rightBtn">등록하기</button>&nbsp;&nbsp;&nbsp;
-							<button type = "reset" id = "cancelBtn">취소하기</button>
+						<div class = "buttons">
+							<button type = "submit" id = "rightBtn" class = "btn1">등록하기</button>&nbsp;&nbsp;&nbsp;
+							<button type = "reset" id = "cancelBtn" class = "btn2">취소하기</button>
 						</div>
-					</div><!-- section-center 부분 끝 -->
+					</div><!-- insertLevel 부분 끝 -->
 				</form>
 			</div>	
 			
@@ -176,20 +183,20 @@
 	  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" id="exampleModalToggledialog">
 	    <div class="modal-content" id="exampleModalToggleContent">
 	      <div class="modal-header" id="exampleModalToggleHeader">
-	        <h5 class="modal-title" id="exampleModalToggleLabel">Modal 1</h5>
+	        <h5 class="modal-title" id="exampleModalToggleLabel">사용자 관리하기</h5>
 	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 	      </div>
 	      <div class="modal-body" id="exampleModalToggleBody">
 	        
 	        <div id="reportModal">
-				<table>
+				<table style="width: 100%;">
 					<tr>
-						<th>신고번호</th>
-						<th>처벌대상ID</th>
-						<th>메세지</th>
-						<th>신고자</th>
-						<th>방ID</th>
-						<th>신고일시</th>
+						<th style="width:15%;">신고번호</th>
+						<th style="width:15%;">처벌대상 ID</th>
+						<th style="width:15%;">메세지</th>
+						<th style="width:15%;">신고자</th>
+						<th style="width:15%;">방 ID</th>
+						<th style="width:15%;">신고일시</th>
 					</tr>
 					<tr th:each="list : ${cmList}">
 							<td th:text="${list.reportNum}" ></td>
@@ -221,18 +228,18 @@
 	  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" id="exampleModalToggledialog2">
 	    <div class="modal-content">
 	      <div class="modal-header">
-	        <h5 class="modal-title" id="exampleModalToggleLabel2">Modal 2</h5>
+	        <h5 class="modal-title" id="exampleModalToggleLabel2">사용자 계정 복구하기</h5>
 	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 	      </div>
 	      <div class="modal-body">
 
 	        <div>
-	        	<table>
+	        	<table style="width: 100%;">
 					<tr>
-						<th>계정</th>
-						<th>신고사유</th>
-						<th>신고자</th>
-						<th>정지일</th>
+						<th style="width:15%;">계정</th>
+						<th style="width:15%;">신고사유</th>
+						<th style="width:15%;">신고자</th>
+						<th style="width:15%;">정지일</th>
 					</tr>
 					<tr th:each="list : ${bannedList}">
 							<td th:text="${list.memberId}" ></td>
@@ -311,7 +318,7 @@
 	}
 	
 	function checkValues() {
-		let couponId = document.getElementById('couponId');
+		/* let couponId = document.getElementById('couponId');
 		let nameExp = /^[가-힣]{3,21}$/;
 		
 		if(couponId.value.trim().length == 0){
@@ -326,7 +333,7 @@
 			alert('쿠폰명은 한글로1만 입력해주세요. ');
 			couponId.focus();
 			return false;
-		} 
+		}  */
 		
 		let couponBill = document.getElementById('couponBill');	
 		
