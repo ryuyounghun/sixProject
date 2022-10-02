@@ -10,12 +10,6 @@ body{
 /*
 	헤더css
 */
-.header-container{
-		width: 100%;
-		height: 100px;
-		background-color: fuchsia;
-		position: relative;
-}
 
 .header-toAnother{
 	position : absolute;
@@ -23,14 +17,6 @@ body{
 	top: 10%;
 	left : 16%;
 	
-}
-.header-logo{
-	position : absolute;
-	height : 75px;
-	width : 75px;
-	background-color: blue;
-	top: 10%;
-	left : 10%;
 }
 
 .header-logMenuList{
@@ -61,9 +47,17 @@ body{
 }
 .elseBox{padding-bottom: 70px;}
 
-.btn-primary{
+.btn-primary {
 	width: 450px;
-	margin-left: 180px;
+	margin-left: 170px;
+	background: #dedede;
+	border: none;
+	border-radius: 20px;
+	padding: 13px 30px;
+}
+
+.section-center .gap-2 .seller {
+	background-color : red;
 }
 
 label{
@@ -129,6 +123,10 @@ label{
 
 
 /* 여기까지 1001 세련 수정한 부분*/
+ .alreadyMsg{font-size: 20px;}
+ .readyMsg{font-size: 20px;}
+ .msg{font-size: 20px;}
+ 
 .section-container{
  	width : 100%;
  	height : 72.3vh;
@@ -192,10 +190,3 @@ label{
 	overflow: hidden; 	
  }
 
-footer{
-	bottom: 0;
-	width : 100%;
-	height : 100px;
-	background-color : lime;
-	
-}

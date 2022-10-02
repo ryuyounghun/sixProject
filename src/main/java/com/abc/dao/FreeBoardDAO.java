@@ -9,6 +9,7 @@ import org.apache.ibatis.session.RowBounds;
 import com.abc.domain.ClassBoard;
 import com.abc.domain.FileDTO;
 import com.abc.domain.FreeBoard;
+import com.abc.domain.Store;
 
 @Mapper
 public interface FreeBoardDAO {
@@ -31,12 +32,14 @@ public interface FreeBoardDAO {
 	public List<FreeBoard> selectBoardList(FreeBoard fb);
 
 	public int selectBoardTotalCount(FreeBoard fb);
-
-	public List<FreeBoard> selectAllFreeBoard(RowBounds rb);
+	//1002 수정 
+	public List<FreeBoard> selectAllFreeBoard(Map<String, String> map, RowBounds rb);
 	public int countAllFreeBoard(Map<String, String> map);
 	
 	// 0930 추가
 	public int updateViewCount(int boardNum);
 	public List<FreeBoard> selectFreeBoardRank();
+	
+
 	
 }

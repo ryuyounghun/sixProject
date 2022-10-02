@@ -31,7 +31,8 @@ public interface FreeBoardService {
 
 	
 	public PageNavigator getPageNavigator(int pagePerGroup, int countPerPage, int Page);
-	public List<FreeBoard> selectAllFreeBoard(PageNavigator navi);
+	public PageNavigator getPageNavigator(int pagePerGroup, int countPerPage, int Page, String searchWord);
+	public List<FreeBoard> selectAllFreeBoard(PageNavigator navi, String searchWord);
 
 	
 	

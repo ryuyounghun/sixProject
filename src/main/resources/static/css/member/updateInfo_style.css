@@ -1,6 +1,7 @@
 @charset "UTF-8";
-
- * {font-family: 'Noto Sans KR', sans-serif;}
+/* 1002 세련 글꼴 추가함 */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@500&display=swap');
+* { font-family: 'Noto Sans KR', sans-serif;}
 
 body{
 	margin : 0;
@@ -134,11 +135,11 @@ body{
  
  
 .addressFind{
-	background-color: #a87742;
+	border:none;
+	background-color: #66442b;
     color: white; 
   	padding: 10px 150px;
   	display: inline-block;
-  	border: 1px solid rgba(0,0,0,0.21);
 	
 }
 
@@ -149,16 +150,18 @@ body{
   position: relative;
 }
  
+ /* 1002 세련 수정함 */
 .buttonBox{
-	padding-top: 10px;	
-	padding-bottom: 10px;
+	padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 50px;
 } 
 .btn-two {
-	background-color: #a87742;
+	border: none;
+	background-color: #66442b;
     color: white; 
   	padding: 10px 150px;
-  	display: inline-block;
-  	border: 1px solid rgba(0,0,0,0.21);
+  	display: inline-block;;
 	
 }
     

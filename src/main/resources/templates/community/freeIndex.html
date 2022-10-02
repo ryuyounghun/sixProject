@@ -5,61 +5,203 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
+
+<link rel="stylesheet" href="/css/community/freeIndex.css">
+<link rel="stylesheet" href="/css/style.css">
+
+<style>
+	#myTable {
+		
+    	border : 1px solid black;
+		width:100%;
+	}
+	
+	#myTable tr {
+		border-bottom:1px solid black;
+	}
+	#myTable tbody tr:hover {
+		text-decoration: underline;
+		font-weight: bold;
+	}
+	
+	#myTable tbody tr td {
+		padding : 10px;
+	}
+	
+	#navigation {
+		width:100%;
+	}
+</style>
+
 </head>
 <body>
-
-	<div class="searchBar-wrapper">
-		<form th:action="@{freeIndex}" method="get" id="pagingForm">
-			<input type="hidden" id="page" name="page" value="">
-		</form>
-	</div>
-	
-	<div class="infinite">
-		<div class="list">
-			<table>
-				<tr>
-					<th colspan="2">작성자</th>
-					<th>제목</th>
-					<th>작성일</th>
-					<th>조회수</th>
-				</tr>
-				<tr th:each="list : ${fbList}">
-					<td th:text="${list.memberLevel}" th:value="${list.memberLevel}" class="memberLevel"></td>
-					<td th:text="${list.nickname}"></td>
-					<td>
-						<a th:href="@{|fbRead?num=${list.boardNum}|}">
-							<span th:text="${list.title}"
-							style="display: inline-block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 13ch;">
-							</span>
+	<div id="headerAndSection-wrapper">
+		<header>
+			<div class="header-container">
+				<a href="/" class="header-logo" >
+					
+				</a>
+				
+				<ui class="header-logMenuList"> <!-- 로그인 및 로그아웃 링크 -->
+					<li sec:authorize ="not isAuthenticated">
+						<a th:href="@{/member/login}">
+							로그인
 						</a>
-					</td>
-					<td th:text="${list.inputdate}"></td>
-					<td th:text="${list.viewCount}"></td>
-				</tr>
-			</table>
-			<input type="button" value="글쓰기" class="write-btn" onclick="javascript:location.href='freeWrite'">
-		</div>
-	</div>
-	<div id="navigator">
-		<!-- 페이지 이동 링크 -->
-		<!-- 이전 그룹으로 이동 -->
-		<a th:href = "|javascript:pagingFormSubmit(${navi.currentPage - navi.pagePerGroup})|" th:text ="|◁◁|"></a>
-		<a th:href = "|javascript:pagingFormSubmit(${navi.currentPage - 1})|" th:text ="|◀|" id="prevPage"></a>
-		<!-- 다음 그룹으로 이동 -->
-		<span th:each="counter : ${#numbers.sequence(navi.startPageGroup, navi.endPageGroup)}">
-			<th:block th:if = "${counter == navi.currentPage}"><b>
-				<a th:text ="${counter}" th:href = "|javascript:pagingFormSubmit(${counter})|"></a>
-			</th:block>
-			<th:block th:if = "${counter == navi.currentPage}"></b></th:block>
-		</span>
-		<!-- 다음페이지 그룹으로 이동 -->
-		<a th:href = "|javascript:pagingFormSubmit(${navi.currentPage + 1})|" th:text ="|▶|"  id="nextPage"></a>
-		<a th:href = "|javascript:pagingFormSubmit(${navi.currentPage + navi.pagePerGroup})|" th:text ="|▷▷|"></a>
-		<!-- 다음 그룹으로 이동 -->
-	</div>
+					</li>
+					<li sec:authorize="not isAuthenticated">
+						<a th:href ="@{/member/join}">
+							회원가입
+						</a>
+					</li>
+					<li sec:authorize="isAuthenticated">
+						<a th:href ="@{/logout}">
+							로그아웃
+						</a>
+					</li>
+					<li sec:authorize="isAuthenticated">
+						<a th:href ="|@{/member/mypage}?num=${member.memberNum}|">
+							회원정보
+						</a>
+					</li>
+					<li>
+						<a th:href="@{/delivery/index}">배달</a>
+					</li>
+				</ui>
+
+			</div>
+		</header>
 	
+	
+	
+	<section>
+			<div class="section-container">
+				
+				<aside>
+					<div class="aside-left">
+						<ul>
+							<li><b>이동하기</b></li>
+							<li>
+								<a th:href="@{/community/partyIndex}">모임 게시판</a>
+							</li>
+							<li>
+								<a th:href="@{/community/freeIndex}">자유 게시판</a>
+							</li>
+						</ul>
+					</div>
+				</aside>
+				
+				<aside>
+					<div class="aside-right">
+
+					</div>
+				</aside>
+
+				<div class="aside-center">
+					<div class="section-center">
+	
+						<div class="infinite">
+							<div class="list">
+								<table id="myTable">
+									<thead>
+										<tr>
+											<th>글번호</th>
+											<th>제목</th>
+											<th colspan="2">작성자</th>
+											<th>조회수</th>
+											<th>작성일</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr th:each="list : ${fbList}" th:onClick="|selectBoard(${list.boardNum});|">
+											<td th:text="${list.boardNum}"></td>									
+											<td>
+												<span th:text="${list.title}"
+												style="display: inline-block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 13ch;">
+												</span>
+											</td>
+											<td th:text="${list.nickname}"></td>
+											<td >
+												<img id="levelImg" th:src="|/images/levelBadges/lv${list.memberLevel}.png|">
+											</td>
+											<td th:text="${list.viewCount}"></td>
+											<td th:text="${list.inputdate}"></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<div class="position-absolute bottom-0 end-40">
+							</div>
+							
+							<div id="navigation">
+								<nav aria-label="Page navigation example">
+								  <ul class="pagination justify-content-center" >
+								  	<li class="page-item">
+								      <a class="page-link" th:href = "|javascript:pagingFormSubmit(${navi.currentPage - navi.pagePerGroup})|" aria-label="Previous">
+								        <span aria-hidden="true">&laquo;</span>
+								      </a>
+								    </li>
+								    <li class="page-item"><a class="page-link" th:href = "|javascript:pagingFormSubmit(${navi.currentPage - 1})|" id="prevPage">Previous</a></li>
+					  		  		<li class="page-item" th:each="counter : ${#numbers.sequence(navi.startPageGroup, navi.endPageGroup)}">
+						    			<a class="page-link" th:text ="${counter}" th:href = "|javascript:pagingFormSubmit(${counter})|"></a>
+						    		</li>
+								    <li class="page-item"><a class="page-link" th:href = "|javascript:pagingFormSubmit(${navi.currentPage + 1})|" id="nextPage">Next</a></li>
+							  	  	<li class="page-item">
+								      <a class="page-link" th:href = "|javascript:pagingFormSubmit(${navi.currentPage + navi.pagePerGroup})|" aria-label="Next">
+								        <span aria-hidden="true">&raquo;</span>
+								      </a>
+						 			</li>
+								  
+								  </ul>
+								</nav>
+							</div>
+							
+							
+							
+							
+							
+							<div class="searchBar-wrapper">
+								<form th:action="@{freeIndex}" method="get" id="pagingForm">
+									<div class="container-searchBar">
+										<input class = "searchBar" type = "text" name="searchWord" th:value="${searchWord}" id="searchWord" placeholder="검색">
+										<input type="submit" value="검색" id="searchB">
+										<input type="button" value="글쓰기" class="write-btn" onclick="javascript:location.href='freeWrite'">
+									</div>
+									<input type="hidden" id="page" name="page" value="">
+								</form>
+							</div>
+							
+							
+						</div>
+						
+						
+				</div>
+			</div>
+		</div>
+	</section>
+	</div>
+	<footer></footer>
 	
 	<script type="text/javascript">
+	
+		$(document).ready(function() {
+			$("#searchB").click(function() {});
+		});
+	
+		function searchBoard() {
+			let searchWord = $("#searchWord").val();
+			
+			$.ajax({
+				url : "searchFreeBoard",
+				type : "get",
+				data : {"searchWord" : searchWord},
+				success : function(data) {
+					
+				}
+			});
+		}
+		
 		function pagingFormSubmit(currentPage){
 			let form = document.getElementById("pagingForm");
 			let page = document.getElementById("page");
@@ -67,6 +209,10 @@
 			
 			page.value = currentPage;
 			form.submit();
+		}
+		
+		function selectBoard(boardNum) {
+			location.href="fbRead?num="+boardNum;
 		}
 	</script>
 </body>

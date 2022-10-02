@@ -14,7 +14,12 @@
    			realtimeboard();
    		});
    		
-   		// 0930 추가
+   		// 1002 추가
+   		function goFbRead(boardNum) {
+   			location.href="fbRead?num=" + boardNum;
+   		}
+   		
+   		// 0930 추가 1002 추가
    		function realtimeboard() {
    			
    			$.ajax({
@@ -22,15 +27,29 @@
    				type : "get",
    				success : function(data) {
    					
-					let htmlStr = "";
+					let htmlStr = "<h1 style='text-align:center' class='rankTitle'>조회수 순위</h1><ul>";
 					
 					$.each(data, function(index, item) {
-						if(index < 10) {
-							htmlStr += "<a href='fbRead?num=" + item.boardNum + "'>" + item.title + "</a>";
-						}
+						if(index <= 9) {
+			                  if ( index <=2 ){
+			                     
+			                     htmlStr += "";
+			                     htmlStr += "<li class='top3Stores' onclick='goFbRead(" + item.boardNum + ")'>"+  "<img src='' id='realtime" + index + "'>  "  + "<span style='display: inline-block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 13ch;' >" + item.title +"</span>" + "</li>";
+			                  }else {
+			                     
+			                     htmlStr += "<li class='underTop3' onclick='goFbRead(" + item.boardNum + ")'>" + (index+1)+"위 " +item.title + "</li>";
+			                  }
+			               }
 					});
-   					
+					htmlStr += "</ul>";
 	   				$("#realtime").html(htmlStr);
+	   				
+	   				for ( let i =0; i<=2; i++){
+						let img_src = "/images/rank/rank"+ (i+1) + ".png";
+						document.getElementById("realtime"+i).src = img_src;
+						document.getElementById("realtime"+i).style.width="30px";
+						document.getElementById("realtime"+i).style.width="30px";
+					}	
    				}
    			});
    			
@@ -122,9 +141,7 @@
 	<div id="headerAndSection-wrapper">
 		<header>
 			<div class="header-container">
-				<a href="/" class="header-logo"> asdxx </a> <a
-					th:href="@{/delivery/index}" class="header-toAnother"> 배달로~qwe
-				</a>
+				<a href="/" class="header-logo"></a> 
 				<ui class="header-logMenuList"> <!-- 로그인 및 로그아웃 링크 -->
 				<li sec:authorize="not isAuthenticated"><a
 					th:href="@{/member/login}"> 로그인 </a></li>
@@ -134,6 +151,9 @@
 						로그아웃 </a></li>
 				<li sec:authorize="isAuthenticated">
 					<a th:href="|@{/member/mypage}?num=${member.memberNum}|"> 회원정보 </a>
+				</li>
+				<li>	
+					<a th:href="@{/delivery/index}"> 배달</a>
 				</li>
 				</ui>
 
@@ -161,9 +181,17 @@
 							<li>
 								<a th:href="@{/community/freeIndex}">자유 게시판</a>
 							</li>
-							<li>고</li>
-							<li>리</li>
+							
 						</ul>
+						<div id="party">
+								<h2>파티현황</h2>
+								<h3 id="partyTitle"></h3>
+								<span id="realTimeParty">
+								
+								</span>
+								<span>/</span>
+								<span id="fullParty"></span>
+						</div>
 					</div>
 				</aside>
 
@@ -174,15 +202,7 @@
 							실시간 키워드(aJax)
 						</div>
 						
-						<div id="party">
-								<h2>파티현황</h2>
-								<h3 id="partyTitle"></h3>
-								<span id="realTimeParty">
-								
-								</span>
-								<span>/</span>
-								<span id="fullParty"></span>
-						</div>
+						
 					</div>
 				</aside>
 
@@ -224,7 +244,6 @@
 										<th>작성자</th>
 										<th>제목</th>
 										<th>작성일</th>
-										<th>조회수</th>
 									</tr>
 									<tr th:each="list : ${fbList}">
 										<td th:text="${list.nickname}"></td>
@@ -238,13 +257,12 @@
 											</a>
 										</td>
 										<td th:text="${list.inputdate}"></td>
-										<td th:text="${list.viewCount}"></td>
 									</tr>
 								</table>
 							</div>
 						</div>
 					</div>
-					<input type="button" value="글쓰기" class="write-btn" onclick="javascript:location.href='classWrite'">
+					
 				</div>
 				
 				

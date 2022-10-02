@@ -1,5 +1,7 @@
 @charset "UTF-8";
-
+@import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@500&display=swap');
+* { font-family: 'Noto Sans KR', sans-serif;}
 body{
 	margin : 0;
 	padding : 0;
@@ -83,25 +85,31 @@ body{
  	background-repeat: no-repeat;
  	background-size: 100% 100%;
  }
+ /* 1002 세련 패딩 값 수정함 */
  .title {
  	width: 100%;
  	margin : auto;
  	text-align: center;
- 	font-size : 70px;
+ 	font-size : 90px;
+ 	font-weight:bold;
  	font-style: normal;
  	color : #FFFFFF;
- 	padding-top : 70px;
+ 	padding-top : 180px;
+ 	padding-bottom: 50px;
  	text-shadow:1px 1px 1px #000;
+ 	
+ 	
 }
  .subtitle {
- 	width: 100%;
- 	margin : auto;
- 	text-align: center;
- 	font-size : 30px;
- 	font-style: normal;
- 	padding-top:30px;
- 	color : #FFFFFF;
- 	text-shadow:1px 1px 1px #000;
+    width: 100%;
+    margin: auto;
+    text-align: center;
+    font-size: 35px;
+    font-style: oblique;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    color: #FFFFFF;
+    text-shadow: 1px 1px 1px #000;
 }
  .deliveryBox{
  	position : absolute;

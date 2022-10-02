@@ -618,4 +618,21 @@ public class MemberController {
 		public void deleteGuestbook(int guestBookNum) {
 			mService.deleteGuestBook(guestBookNum);
 		}
+		
+		//1002 추가
+		@PostMapping("/checkPin")
+		@ResponseBody int checkPin(String checkPin,
+				@AuthenticationPrincipal UserDetails user) {
+			Member member = mService.selectOneMember(user.getUsername());
+			int answer = 0;
+			log.debug("checkPin1 : {}", checkPin);
+			log.debug("checkPin2 : {}", member.getPinNumber());
+			if (member.getPinNumber().equals(checkPin)) {
+				answer = 1;
+			} else {
+				answer = 0;
+			}
+			return answer;
+		}
+
 }

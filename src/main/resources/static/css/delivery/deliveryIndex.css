@@ -86,6 +86,7 @@ body{
     border : 5px solid #874C62;
     color : white;
     transform : translate(10px);
+	cursor: pointer;
  }
  .aside-left, .aside-right, .aside-center{
  }

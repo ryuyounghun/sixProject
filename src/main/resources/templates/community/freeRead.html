@@ -5,6 +5,7 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel="stylesheet" href="/css/community/communityIndex.css">
+<link rel="stylesheet" href="/css/style.css">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 </head>
 <body>
@@ -12,10 +13,7 @@
 		<header>
 			<div class="header-container">
 				<a href="/" class="header-logo" >
-					ㄹ고
-				</a>
-				<a th:href="@{/delivery/indexqwe}" class="header-toAnother" >
-					배달로~
+					
 				</a>
 				
 				<ui class="header-logMenuList"> <!-- 로그인 및 로그아웃 링크 -->
@@ -38,6 +36,9 @@
 						<a th:href ="|@{/member/mypage}?num=${member.memberNum}|">
 							회원정보
 						</a>
+					</li>
+					<li>
+						<a th:href="@{/delivery/indexqwe}">배달</a>
 					</li>
 				</ui>
 
@@ -107,7 +108,15 @@
 						<input type="hidden" id="boardNum" name="boardNum" th:value="${board.boardNum}"> 		
 						<input type="hidden" id="memberNum" th:value="${member.memberNum}"> 		
 					</div>
-					<script>
+					
+					
+					
+				</div>
+			</div>		
+		</section>
+	</div>
+		
+	<script>
 						
 						$(document).ready(function(){
 							$("#btnReplyWrite").on("click", function(){
@@ -292,12 +301,5 @@
 							
 						}
 					</script>
-					
-					
-				</div>
-			</div>		
-		</section>
-	</div>
-		
 </body>
 </html>

@@ -22,6 +22,7 @@
 	<select id="selectAllCoupon" resultType="Coupon">
 		SELECT * FROM
 		COUPON
+		ORDER BY COUPONNUM ASC
 	</select>
 	
 	<select id="selectCoupon" parameterType="int" resultType="Coupon">

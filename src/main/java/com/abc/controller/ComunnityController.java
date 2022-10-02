@@ -153,7 +153,7 @@ public class ComunnityController{
 		
 		PageNavigator fbNavi = fService.getPageNavigator(
 				pagePerGroup, countPerPage, page); 
-		fbList = fService.selectAllFreeBoard(fbNavi);
+		fbList = fService.selectAllFreeBoard(fbNavi, null);
 		cbList = cService.selectAllClassBoard(cbNavi);
 		// fbList = fService.selectAllClassBoard (navi);
 		log.debug("cbList의 길이 : {}",cbList.size());
@@ -240,15 +240,19 @@ public class ComunnityController{
 		return "redirect:./index"; // .../board/
 	}
 	
+	// 1002 추가 추가
 	@GetMapping("/freeIndex")
-	public String freeIndex(Model model,
+	public String freeIndex(Model model, String searchWord,
+			@AuthenticationPrincipal UserDetails user,
 			@RequestParam(name="page", defaultValue = "1" )int page) {
-		
+		Member member = mService.selectOneMember(user.getUsername());
 		List<FreeBoard> fbList = null;
 		PageNavigator navi = fService.getPageNavigator(
-				pagePerGroup, countPerPage, page); 
-		fbList = fService.selectAllFreeBoard(navi);
-
+				pagePerGroup, countPerPage, page, searchWord); 
+		fbList = fService.selectAllFreeBoard(navi, searchWord);
+		
+		model.addAttribute("searchWord", searchWord);
+		model.addAttribute("member", member);
 		model.addAttribute("navi" , navi);
 		model.addAttribute("fbList",fbList);
 		return c + "freeIndex";
@@ -298,7 +302,7 @@ public class ComunnityController{
 			fService.registerBoard(fBoard);
 		}
 		
-		return "redirect:./index"; // .../board/
+		return "redirect:./freeIndex"; // .../board/
 	}
 	
 	@GetMapping("/fbRead")
@@ -749,4 +753,6 @@ public class ComunnityController{
 		
 		return fList;
 	}
+	
+
 }

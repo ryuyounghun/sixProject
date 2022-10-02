@@ -271,7 +271,7 @@
 							$(".weatherIcon").css({"background-image" : "url(/images/weather/cloud.gif)"});
 							break;
 						case '3':
-							$('.in0').append(" / 구름많음>");
+							$('.in0').append(" / 구름많음");
 							$(".weatherIcon").css({"background-image" : "url(/images/weather/foggy.gif)"});
 							
 							break;

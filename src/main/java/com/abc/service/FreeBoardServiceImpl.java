@@ -116,13 +116,13 @@ public class FreeBoardServiceImpl implements FreeBoardService{
 	}
 
 	@Override
-	public List<FreeBoard> selectAllFreeBoard(PageNavigator navi) {
+	public List<FreeBoard> selectAllFreeBoard(PageNavigator navi, String searchWord) {
 		Map<String, String> map = new HashMap<>();
-
-		// "시작 레코드"부터 "한 페이지의 글" 단위만큼 선택
+		map.put("searchWord", searchWord);
+		
 		RowBounds rb = new RowBounds(navi.getStartRecord(), navi.getCountPerPage());
 		
-		return fbDAO.selectAllFreeBoard(rb);
+		return fbDAO.selectAllFreeBoard(map, rb);
 	}
 
 	@Override
@@ -147,6 +147,20 @@ public class FreeBoardServiceImpl implements FreeBoardService{
 	public List<FreeBoard> selectFreeBoardRank() {
 		// TODO Auto-generated method stub
 		return fbDAO.selectFreeBoardRank();
+	}
+
+	// 1002 추가
+	@Override
+	public PageNavigator getPageNavigator(int pagePerGroup, int countPerPage, int Page, String searchWord) {
+		Map<String, String> map = new HashMap<>();
+		map.put("searchWord", searchWord);
+		
+		int total= fbDAO.countAllFreeBoard(map);
+		
+		PageNavigator navi =
+				new PageNavigator(pagePerGroup, countPerPage, Page, total);
+		
+		return navi;
 	}
 
 	

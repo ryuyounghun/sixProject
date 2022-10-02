@@ -44,9 +44,45 @@
 	$(document).ready(function() {
 		$("#searchWord").on("keyup", function() { load(); });
 		load();
+		rank();
 		
 	});
-	
+	function rank() {
+		
+		$.ajax({
+			url : "storeRank",
+			type : "get",
+			success : function(data) {
+				
+				// 9월 29일 랭킹뱃지 추가작업 
+            let htmlStr = "<h1 style='text-align:center' class='rankTitle'>가게 랭킹</h1><ul>";
+            $.each(data, function(index, item) {
+               
+               if(index <= 9) {
+                  if ( index <=2 ){
+                     
+                     htmlStr += "";
+                     htmlStr += "<li class='top3Stores'>"+  "<img src='' id='storeRank" + index + "'>  "  + "<span style='display: inline-block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 13ch;' >" + item.storeName +"</span>" + "</li>";
+                  }else {
+                     
+                     htmlStr += "<li class='underTop3'>" + (index+1)+"위 " +item.storeName + "</li>";
+                  }
+               }
+               
+            });
+				htmlStr += "</ul>";
+				$("#storeRank").html(htmlStr);
+				
+				for ( let i =0; i<=2; i++){
+					let img_src = "/images/rank/rank"+ (i+1) + ".png";
+					document.getElementById("storeRank"+i).src = img_src;
+					document.getElementById("storeRank"+i).style.width="30px";
+					document.getElementById("storeRank"+i).style.width="30px";
+				}				
+			}
+			
+		});
+	}
 	function plusWish(storeNum){
 		
 		$.ajax({
@@ -89,12 +125,15 @@
 				// 0930 세련 수정함.
 				// table -> div로 & 사진 크기 높이 지정함.
 				$.each(data, function(index, item) {
+					
+					htmlStr += "<a href='" + goRead + "?num=" + item.storeNum + "'>"; 
 					htmlStr += "<div class='storeTable'>";
 					htmlStr += "<span class = 'first1'><img src='storeDisplay?num=" + item.storeNum + "' width='80px; '' height='60px; '></span>"; 
-					htmlStr += "<span class = 'first1'><a href='" + goRead + "?num=" + item.storeNum + "'>" + item.storeName + "</a></span>";
+					htmlStr += "<span class='first1'>" + item.storeName + "</span>";
 					htmlStr += "<span class = 'first1'>★ " + item.rating + "</span>";
 					htmlStr += "<span class = 'first1'>♥ " + item.wishlist + "</span>";
 					htmlStr += "</div>";
+					htmlStr += "</a>"
 				});
 				$("#center-dv").html(htmlStr);
 				/* ]]> */
@@ -109,11 +148,8 @@
 		<header>
 			<div class="header-container">
 				<a href="/" class="header-logo" >
-					asd
 				</a>
-				<a th:href="@{/community/index}" class="header-toAnother" >
-					커뮤니티로~
-				</a>
+				
 				
 				<ui class="header-logMenuList"> <!-- 로그인 및 로그아웃 링크 -->
 					<li sec:authorize ="not isAuthenticated">
@@ -132,15 +168,13 @@
 						</a>
 					</li>
 					<li sec:authorize="isAuthenticated">
-	                  <a th:href="|@{/member/mypage}?num=${member.memberNum}|">
-	                     회원정보
-	                  </a>
-	               </li>
-	               <li>
-	                  <a th:href="@{/community/index}" class="header-toAnother" >
-	                  	커뮤니티
-	                  </a>
-	               </li>
+						<a th:href="|@{/member/mypage}?num=${member.memberNum}|"> 회원정보 </a>
+					</li>
+					<li>
+						<a th:href="@{/community/index}" class="header-toAnother" >
+							커뮤니티
+						</a>
+					</li>
 				</ui>
 
 			</div>
@@ -151,8 +185,12 @@
 				
 				<div class="searchBar-wrapper">
 					<div class="container-searchBar">
-						<input class = "searchBar" type = "text" name="searchWord" th:value="${searchWord}" id="searchWord" placeholder="가게검색">
-						검색
+						<form th:action="@{/delivery/searchResultScroll}" method="get">
+							<input type="hidden" th:value="${member.address}" id="myAddress">
+							<input type="button" onclick="getMyAddress();" class="placeholder">
+							<input class = "searchBar" type = "text" name="searchWord" th:value="${searchWord}" id="searchWord" placeholder="위치검색">
+							<input type = "submit" th:value="검색" id="searchBar" placeholder="위치검색">
+						</form>
 					</div>
 				</div>
 				
@@ -206,7 +244,7 @@
 				
 				<aside>
 					<div class="aside-right">
-
+						<div id="storeRank">
 					</div>
 				</aside>
 

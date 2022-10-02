@@ -28,16 +28,34 @@
 		</insert>
 		
 	<!-- 자유 게시판 글 불러오기 -->
-	<select id="selectAllFreeBoard" resultType="FreeBoard">
+	<select id="selectAllFreeBoard" resultType="FreeBoard" parameterType="map">
 		SELECT 
 			*
 		FROM FREE_BOARD
+		<if test="searchWord != null">
+			<where>
+				TITLE LIKE '%'||#{searchWord}||'%'
+				OR 
+				CONTENT LIKE '%'||#{searchWord}||'%'
+				OR
+				NICKNAME LIKE '%'||#{searchWord}||'%'
+			</where>
+		</if>
 		ORDER BY BOARDNUM DESC
 	</select>
 	<select id = "countAllFreeBoard" parameterType="map" resultType = "int">
 		SELECT
 			count(*)
 		FROM FREE_BOARD
+			<if test="searchWord != null">
+			<where>
+				TITLE LIKE '%'||#{searchWord}||'%'
+				OR 
+				CONTENT LIKE '%'||#{searchWord}||'%'
+				OR
+				NICKNAME LIKE '%'||#{searchWord}||'%'
+			</where>
+			</if>
 	</select>
 	
 	

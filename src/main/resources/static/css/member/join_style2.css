@@ -1,5 +1,4 @@
 @charset "UTF-8";
-
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@500&display=swap');
 * { font-family: 'Noto Sans KR', sans-serif;}
 
@@ -15,18 +14,22 @@ body{
 .header-container{
 		width: 100%;
 		height: 100px;
-		background-color: #ffe208; /* #fcf5b3; */
+		background-color: #F0F0EF;
 		position: relative;
 }
 
+
 .header-logo{
 	position : absolute;
-	height : 75px;
-	width : 75px;
-	background-color: blue;
-	top: 10%;
-	left : 10%;
+	height : 100px;
+	width : 170px;
+	left : 5%;
+	top: -2%;
+	float: left;
+	background: url(/../images/logo_height.png) no-repeat center;
+	background-size: contain;
 }
+
 .header-toAnother{
 	position : absolute;
 	height : 75px;
@@ -53,7 +56,7 @@ body{
 	본문 섹션 css
  */
 
- .joinContainer .joinTitle { 
+/*  .joinContainer .joinTitle { 
 	width: 100%; 
 	height: 200px; 
 	line-height: 45px;
@@ -61,9 +64,8 @@ body{
 	padding-top: 20px;
     box-sizing: border-box;
     font-size: 30px;
-    background: url(/../images/logo_width.png) no-repeat center;
 }  
-
+ */
 .joinTitle{
 	padding-top: 20px;
 }
@@ -143,11 +145,11 @@ body{
  
  
 .addressFind{
-	background-color: #a87742;
+	border:none;
+	background-color: #66442b;
     color: white; 
   	padding: 10px 150px;
   	display: inline-block;
-  	border: 1px solid rgba(0,0,0,0.21);
 	
 }
 
@@ -169,11 +171,11 @@ body{
 	padding-left: 50px;
 } 
 .btn-two {
-	background-color: #a87742;
+	border: none;
+	background-color: #66442b;
     color: white; 
   	padding: 10px 150px;
   	display: inline-block;
-  	border: 1px solid rgba(0,0,0,0.21);
 	
 }
     
