@@ -130,6 +130,11 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public int updatePw(Member member) {
 		// TODO Auto-generated method stub
+		// 1002 세련 수정함
+		String encodePw = passwordEncoder.encode(member.getMemberPw());
+		
+		member.setMemberPw(encodePw); 
+		
 		return mDao.updatePw(member);
 	}
 

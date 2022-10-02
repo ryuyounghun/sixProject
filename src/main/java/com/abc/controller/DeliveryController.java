@@ -559,10 +559,16 @@ public class DeliveryController {
 	}
 	
 	@GetMapping("/sellerPage")
-	public String sellerPage() {
-		
-		return d + "/sellerPage";
-	}
+	   public String sellerPage(Model model,
+	         @AuthenticationPrincipal UserDetails user) {
+	         Member member = mService.selectOneMember(user.getUsername());
+	         List<Store> storeList = dService.selectMemberOne(member.getMemberNum());
+	         
+	         model.addAttribute("storeList", storeList);
+	      
+	      
+	      return d + "/sellerPage";
+	   }
 	
 	@GetMapping("/sellerOrderList")
 	public String sellerOrderList() {

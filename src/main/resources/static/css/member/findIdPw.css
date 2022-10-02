@@ -119,13 +119,21 @@ legend{
 	box-sizing: border-box; 패딩수치를 인사이드 처리
 }
  */
+ 
+#insertPinNum{
+	width:60%;
+}
+
+
 #changePw{
-	width: 80%;
+	width:60%;
 	
 }
 #changePwCheck{
-	width: 80%;
+	width:60%;
 }
+
+
 .elseBox{
     list-style: none;
     text-align: center;
@@ -146,18 +154,43 @@ legend{
 	padding-bottom: 20px;
 }
 
-.buttons{
-	text-align: center;	
+.buttons{ 
+	padding-top: 20px;
+    text-align: center;
+    padding-bottom: 20px;
 }
+.btn1{
+    padding: 8px 20px;
+    background: #27d613;
+    color: #ffffff;
+    border: none;
+    font-size: 15px;
+    border-radius: 20px;
+}
+
+.btn2{
+	background:#fa1414;
+	padding: 8px 20px;
+    color: #ffffff;
+    border: none;
+    font-size: 15px;
+    border-radius: 20px;
+}
+
 .elseBox1{
 	padding-top: 45px;
 }
 .elseBox2{
 	padding-bottom: 20px;
 }
- button {
+
+.updateBtn{
+	text-align: center;
+	padding-bottom: 30px
+}
+
+.idpwButton {
 	border: none;
-	height: 50px;
 	width: 50%;
     padding: 15px 30px;
     font-family: "paybooc-Light", sans-serif;
@@ -168,12 +201,22 @@ legend{
 	font-size: 20px;
 	
 }
-button:hover {
+
+.idpwButton:hover {
     letter-spacing: 2px;
     transform: scale(1.2);
     cursor: pointer;
 }
 
+.upBtn{
+	padding: 8px 20px;
+    background: #27d613;
+    color: #ffffff;
+    border: none;
+    font-size: 15px;
+    border-radius: 20px;
+	
+}
 
 /* 본문 css 끝  */
 

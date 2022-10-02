@@ -97,9 +97,10 @@
 	
 		<section>
 			<div class="box-wrapper" id="player">
-			
+				<div class = "indexTitle">
 				<h1 class= "title">Group Up</h1>
-				<h3 class="subtitle">좋은 인연과 좋은 음식 <br>그리고 즐거운 하루</h3>
+				</div><!-- indexTitle 부분 끝 -->
+				<h3 class="subtitle">좋은 인연과 좋은 음식 <br> 그리고 <br>즐거운 하루</h3>
 				<a th:href="@{/delivery/index}">
 					<aside class="deliveryBox" >
 						<p>배달</p>
@@ -110,7 +111,7 @@
 						<p>놀러가기</p>
 					</aside>
 				</a>				
-			</div>
+			</div><!-- box-wrapper 부분 끝 -->
 			<div sec:authorize ="isAuthenticated">
 				<input type="hidden" id="loginUser" th:value="${#authentication.getPrincipal().getUsername()}">
 			</div>

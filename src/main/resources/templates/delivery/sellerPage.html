@@ -131,11 +131,11 @@
 			data : {"receiptNum" : receiptNum},
 			success : function(data) {
 				if(data == "") {
-					let alarm = "<h1>아직 주문 승인이 되지 않았습니다.</h1>";	
+					let alarm = "<h1 class ='msg'>아직 주문 승인이 되지 않았습니다.</h1>";	
 					$("#alarm").html(alarm);
 					$("#exampleModal").modal('show');
 				} else {
-					let alarm = "<h1>" + receiptNum + "번의 배달이 시작되었습니다.</h1>";
+					let alarm = "<h1 class = 'alreadyMsg'>&#128276; " + receiptNum + "번의 배달이 시작되었습니다.</h1>";
 					$("#alarm").html(alarm);
 					$("#exampleModal").modal('show');
 				}

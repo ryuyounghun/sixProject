@@ -34,7 +34,7 @@
 			}
 			
 			if(pw1.length < 8 || pw1.length > 16){
-				$("#text2").text("비밀번호는 8~15자리 이내로 입력해주세요.").css("color", "red");
+				$("#text2").text("비밀번호는 8~16자리 이내로 입력해주세요.").css("color", "red");
 				$("#doublePw").val("0");
 			} else if(pw1 == 0){
 				$("#text2").text("비밀번호는 공백없이 입력해주세요.").css("color", "red");
@@ -99,7 +99,8 @@
 				$("#phoneCheck").val("0");
 			}
 			else {
-				$("#text4").text("올바른 형식입니다.").css("color", "green");
+				// 1002 세련 수정함 text 내용 수정
+				$("#text4").text("알맞은 형식입니다.").css("color", "green");
 				$("#phoneCheck").val("1");
 			}
 			
@@ -124,11 +125,13 @@
 					$("#memberNameCheck").text("");
 				}
 				else if (kor == -1){ 
-					console.log("옳바르지 않거나 한국어만입력하세요.");
-					$("#memberNameCheck").text("바르지 않는 형식입니다. 한국어만 입력해 주세요.").css("color","red");
+					console.log("옳바르지 않거나 한국어만 입력하세요.");
+					//1002 세련 text 내용 수저함
+					$("#memberNameCheck").text("맞지 않는 형식입니다. 한국어만 입력해주세요.").css("color","red");
 				}
+					//1002 세련 text 내용 수정함
 				else {
-					$("#memberNameCheck").text("올바른 형식입니다.").css("color","green");
+					$("#memberNameCheck").text("알맞은 형식입니다.").css("color","green");
 				}
 				$("#memberNameCheck").show();
 			
@@ -182,7 +185,8 @@
 					$('.id_already').show();
 					$("#memberIdCheck").val("0");
 				} else {
-					$('.id_already').text("올바른 형식입니다.").css("color", "green");
+					//1002 세련 text내용 수정함
+					$('.id_already').text("알맞은 형식입니다.").css("color", "green");
 					$('.id_already').show();
 					$("#memberIdCheck").val("1");
 				}
@@ -241,7 +245,8 @@
 					$('.id_already2').show();
 					$("#pinNumberCheck").val("0");
 				} else {
-					$('.id_already2').text("올바른 형식입니다.").css("color", "green");
+					//1002 세련 text내용 수정함
+					$('.id_already2').text("알맞은 형식입니다.").css("color", "green");
 					$('.id_already2').show();
 					$("#pinNumberCheck").val("1");
 				}
@@ -261,7 +266,6 @@
 		<header>
 			<div class="header-container">
 				<a href="/" class="header-logo" >
-					ㄹ고
 				</a>
 				<a th:href="@{/delivery/indexqwe}" class="header-toAnother" >
 					배달로~
@@ -269,12 +273,12 @@
 				
 				<ui class = "header-logMenuList"> <!-- 로그인 및 로그아웃 링크 -->
 					<li sec:authorize ="not isAuthenticated">
-						<a th:href="@{/memberView/login}">
+						<a th:href="@{/member/login}">
 							로그인
 						</a>
 					</li>
 					<li sec:authorize="not isAuthenticated">
-						<a th:href ="@{/memberView/join}">
+						<a th:href ="@{/member/join}">
 							회원가입
 						</a>
 					</li>
@@ -315,9 +319,7 @@
 			<div class = "joinContainer">
 				<!-- 회원가입 제목 -->
 				<div class = "joinTitle">
-					<a href= "/">
-			        	<span class = "logo"></span>
-			        </a>
+					<h2>회원가입</h2>
 				</div>
 				<!-- 회원가입 내용 -->
 					<div class = "aside-center">

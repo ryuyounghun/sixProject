@@ -150,11 +150,11 @@ $(document).ready(function(){
 				} else {
 					$.each(data, function(index, item) {
 						// 0930 세련 수정함
-						htmlStr += "<div class = 'title1'>";
+						htmlStr += "<div class = 'couponCenter2'>";
 						htmlStr += "<span class = 'first1'>" + item.receiptNum + "</span>";
 						htmlStr += "<span class = 'first1'>" + item.totalAmount + "</span>";
 						htmlStr += "<span class= 'first1'>" + item.orderHistory + "</span>";
-						htmlStr += "<span><input onclick='writeReview(" + item.storeNum + "," + item.receiptNum + ")' type='button' class = 'btn1' value='리뷰쓰기'></span>";
+						htmlStr += "<span class= 'first1'><input type='button' class = 'btn1' value='리뷰쓰기' onclick='writeReview(" + item.storeNum + "," + item.receiptNum + ")'></span>";
 						htmlStr += "</div>";
 					});
 				}
@@ -208,11 +208,12 @@ $(document).ready(function(){
 				let htmlStr = "";
 				$.each(data, function(index, item) {
 					// 0930 세련 수정함
+					// 1002 세련 수정함 orderHistory,reviewContent 부분에 기호추가
 					htmlStr += "<div class = 'title2'>";
-					htmlStr += "<span class = 'second1'>" + item.nickname + "</span>";
-					htmlStr += "<span class = 'second1'> ★" + item.rating + "</span>";
-					htmlStr += "<span class = 'second1'>" + item.orderHistory + "</span>";
-					htmlStr += "<span class = 'second1'>" + item.reviewContent + "<span>";
+					htmlStr += "<span class = 'second1'>" + item.nickname + "  </span>";
+					htmlStr += "<span class = 'second1'> ★" + item.rating + "  </span>";
+					htmlStr += "<span class = 'second1'>《 " + item.orderHistory + " 》 </span>";
+					htmlStr += "<span class = 'second1'>' " + item.reviewContent + " '<span>";
 					htmlStr += "</div>";
 				});				
 				$("#myReviewList").html(htmlStr);
@@ -290,10 +291,11 @@ $(document).ready(function(){
 					
 					$.each(data, function(index, item) {
 						//0930 세련 수정함
-						htmlStr += "<div class = 'title4'>";
+						// 1002 세련 span class = 'cpBtn'로 수정함 
+						htmlStr += "<div class = 'couponCenter'>";
 						htmlStr += "<span class = 'fourth1'> 『 " + item.couponName + " 』</span>";
 						htmlStr += "<span class = 'fourth1'>" + item.couponPoint + "원</span>";
-						htmlStr += "<span class = 'fourth1'><input type='button' class = 'btn1' value='사용하기' onclick='useCoupon(" + item.myCouponNum + ")'></span>";
+						htmlStr += "<span class = 'cpBtn'><input type='button' class = 'btn1' value='사용하기' onclick='useCoupon(" + item.myCouponNum + ")'></span>";
 						htmlStr += "</div>";
 					});
 				}
