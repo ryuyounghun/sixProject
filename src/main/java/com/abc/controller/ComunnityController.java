@@ -191,6 +191,7 @@ public class ComunnityController{
 	// 번개방 생성
 	@PostMapping("/classWrite")
 	public String classWrite(ClassBoard cBoard,
+			@RequestParam MultipartFile file,
 			@AuthenticationPrincipal UserDetails user) {
 
 		log.debug("Post classWrite()시작");
@@ -219,6 +220,15 @@ public class ComunnityController{
 		
     	// 채팅방 생성 끝
     	
+		if(!file.isEmpty()) {
+			// 저장할 파일명 생성
+			String savedFile = FileService.saveFile(file, uploadPath);
+			log.debug("savedFuke : {}", savedFile);
+			cBoard.setSavedFile(savedFile);
+			cBoard.setOriginalFile(file.getOriginalFilename());
+			
+		}
+		
     	// 파티 생성
     	cBoard.setRoomId(ctRoom.getRoomId());
     	cService.insertClassBoard(cBoard);
@@ -229,6 +239,8 @@ public class ComunnityController{
 		cRoom.setMemberNum(member.getMemberNum());
 		cRoom.setAddress(member.getAddress());
 		cRoom.setNickname(mNickname);
+		
+		
 
 		log.debug("cRoom : {}", cRoom);
 

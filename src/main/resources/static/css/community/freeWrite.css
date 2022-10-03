@@ -96,6 +96,11 @@ input {
 	font-size: 15px;
 }
 
+#fileDiv {
+    	height : 200px;
+    	margin-top : 80px;
+    }
+
 textarea {
     width: 500px;
     float: center;
@@ -112,7 +117,11 @@ textarea {
 #fileBox input { font-size: 18px; }
 
 #file_0{
-	width: 400px;
+	width: 370px;
+}
+
+#fileDiv input {
+	width: 370px;
 }
 .buttonBox{
 	text-align: center;

@@ -570,7 +570,7 @@ public class MemberController {
 		@PostMapping("/updateImage")
 		public String updateImage(@RequestParam MultipartFile file,
 				Member member) {
-			
+			member = mService.selectOneMember(member.getMemberId());
 			if(!file.isEmpty()) {
 				// 저장할 파일명 생성
 				String savedFile = FileService.saveFile(file, uploadPath);
@@ -582,7 +582,7 @@ public class MemberController {
 			log.debug("member : {}", member);
 			
 			mService.updateMyImage(member);
-			return "redirect:/";
+			return "redirect:./mypage?num=" + member.getMemberNum();
 		}
 
 		// 1001 추가

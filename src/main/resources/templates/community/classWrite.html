@@ -23,6 +23,8 @@
     text-align: -webkit-match-parent;
     width: 125px;
     }
+    
+    
 	</style>
 </head>
 <body>
@@ -103,15 +105,16 @@
 						<label for = "peopleNum">인원 수<span style="font-size: 17px;" >(본인을 포함해서 설정해주세요.)</span></label>
 						<input type="number" class = "peopleNum" min="2" name="totalMember" value="2">
 					</div>
+					<div id="fileDiv">
+						<div class = "fileBox">
+							<label>첨부파일</label>
+							<input type = "file" name = "file" id = "file_0">
+						</div>
+					</div>
+						<div class = "buttonBox">
+						<input type = "submit" class = "btn1" value = "글쓰기">
+						</div>
 						
-					<div class = "fileBox">
-						<label>첨부파일</label>
-						<input type = "file" name = "file" id = "file_0">
-					</div>
-				
-					<div class = "buttonBox">
-					<input type = "submit" class = "btn1" value = "글쓰기">
-					</div>
 		</form>
 		</div>
 			</div>
