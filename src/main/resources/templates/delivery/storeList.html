@@ -8,25 +8,16 @@
 <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 <style>
 	.storeTable {
-	margin : 15px;
-	width : 40%;
-	color : white;
-	border : 1px solid black;
-	display : inline-block;
-	overflow: hidden;
-	}
-	.img {
-	  width: 80px;
-	  height: auto;
-	  object-fit: cover;
+		margin : 20px;
+		width : 44%;
+		color : black;
+		border : 1px solid black;
+		display : inline-block;
 	}
 	
-	.storeTable td {
-		padding : 15px;
-	}
 	
 	.storeTable a {
-		color : white;
+		color : black;
 		text-decoration : none;
 	}
 	
@@ -122,19 +113,30 @@
 				var goRead = [[@{/delivery/read}]];
 				
 				let htmlStr = "";
-				// 0930 세련 수정함.
+				// 1002 용석 span -> 테이블로 수정함.
 				// table -> div로 & 사진 크기 높이 지정함.
+				htmlStr += "<table>";
 				$.each(data, function(index, item) {
-					
+					/* 
 					htmlStr += "<a href='" + goRead + "?num=" + item.storeNum + "'>"; 
 					htmlStr += "<div class='storeTable'>";
 					htmlStr += "<span class = 'first1'><img src='storeDisplay?num=" + item.storeNum + "' width='80px; '' height='60px; '></span>"; 
-					htmlStr += "<span class='first1'>" + item.storeName + "</span>";
+					htmlStr += "<span class='first1 nameTd'>" + item.storeName + "</span>";
 					htmlStr += "<span class = 'first1'>★ " + item.rating + "</span>";
 					htmlStr += "<span class = 'first1'>♥ " + item.wishlist + "</span>";
 					htmlStr += "</div>";
 					htmlStr += "</a>"
+					 */
+					 
+					htmlStr += "<tr class='storeTable hideTable' onClick='selectStore("+ item.storeNum+")'; style='cursor:pointer'  >";
+					htmlStr += "<td><img src='storeDisplay?num="+item.storeNum+"' width='80px;' height='60px;'></td>";					
+					htmlStr += "<td  class='nameTd'>"+ item.storeName +"</td>";
+					htmlStr += "<td>★" + item.rating + "</td>";
+					htmlStr += "<td>♥" + item.wishlist + "</td>";
+					htmlStr += "</tr>";
+					
 				});
+				htmlStr += "</table>";
 				$("#center-dv").html(htmlStr);
 				/* ]]> */
 			}
@@ -265,5 +267,11 @@
 	</footer>
 	
 	
+<script type="text/javascript">
+function selectStore(storeNum) {
+	location.href="read?num="+storeNum;
+	
+}
+</script>
 </body>
 </html>

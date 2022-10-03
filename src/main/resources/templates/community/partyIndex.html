@@ -7,9 +7,92 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
 
-<link rel="stylesheet" href="/css/delivery/deliveryIndex.css">
+<link rel="stylesheet" href="/css/community/freeIndex.css">
 <link rel="stylesheet" href="/css/style.css">
 <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+
+	$(document).ready(function() {
+		$("#party").hide();
+		party();
+	});
+	
+	
+	function checkJoinedParty() {
+		let memberId = $("#loginUser").val();
+		console.log(memberId);
+		
+		$.ajax({
+			url : "checkJoinedParty",
+			type : "get",
+			data : {"memberId" : memberId},
+			success : function(data) {
+				console.log(data);
+				
+				if(data == "") {
+					location.href='classWrite';
+				} else {
+					alert("이미 참여한 파티가 있습니다.");
+				}
+			}
+		});
+	}
+	
+	// 0923 추가
+	function party() {
+		let memberId = $("#loginUser").val();
+		
+		$.ajax({
+			url : "checkJoinedParty",
+			type : "get",
+			data : {"memberId" : memberId},
+			success : function(data) {
+				console.log(data);
+				
+				if(data != "") {
+					$("#party").show();
+		   			
+   				realTimeParty();
+   				fullParty();
+		   				
+		   		
+				} 
+			}
+		});
+	}
+	
+	// 0922 추가
+	function realTimeParty() {
+		
+		$.ajax({
+			url : "realTimeParty",
+			type : "get",
+			success : function(data) {
+				if(data != "") {
+					let htmlLength =  data.length;
+					$("#realTimeParty").text(htmlLength);
+				}
+				
+			}
+		});
+	}
+	
+	// 0922 추가
+	function fullParty() {
+		
+		$.ajax({
+			url : "fullParty",
+			type : "get",
+			success : function(data) {
+				console.log(data);
+				$("#partyTitle").text(data.title);
+				$("#fullParty").text(data.totalMember);
+			}
+		});
+	}
+</script>
+
 <style>
 	table {
 		width:150px;
@@ -61,13 +144,41 @@
 				<aside>
 					<div class="aside-left">
 						<ul>
-							<li>카</li>
-							<li>테</li>
-							<li>고</li>
-							<li>리</li>
+							<li><b>이동하기</b></li>
+							<li>
+								<a th:href="@{/community/index}">메인</a>
+							</li>
+							<li>
+								<a th:href="@{/community/partyIndex}">모임 게시판</a>
+							</li>
+							<li>
+								<a th:href="@{/community/freeIndex}">자유 게시판</a>
+							</li>
+							<li>
+								<p>
+									 <a data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+									    파티 참가 현황 확인
+									 </a>
+								</p>
+							</li>
 						</ul>
+					<div class="collapse" id="collapseExample">
+					  <div class="card card-body">
+					    <div id="party">
+							<h3>파티참여현황</h3>
+							<h3 id="partyTitle"></h3>
+							<span id="realTimeParty">
+							
+							</span>
+							<span>/</span>
+							<span id="fullParty"></span>
+						</div>   
+					  </div>
+					</div>
 					</div>
 				</aside>
+
+
 
 				<aside>
 					<div class="aside-right">
@@ -78,52 +189,49 @@
 				
 				<div class="aside-center">
 					<div class="section-center">
-						<table th:each = "list:${cbList}">
+						<table th:each = "list : ${cbList}" th:onclick="|goClass(${list.classNum});|">
+							<tr>
+								<th>
+									<img th:src="@{partyDisplay(num = ${list.classNum})}" width="80px">
+								</th>
+							</tr> 
 							<tr>
 								<th  th:text="${list.title}"></th>
 							</tr> 
 							<tr>
-								<th th:text="${list.totalMember}">
+								<th th:text="|정원 : ${list.totalMember}명|">
 								</th>
 							</tr>
 							<tr>
 								<th th:text="${list.destination}">
 								</th>
 							</tr>
-							<tr>
-								<th>
-									<a th:href="@{|read?num=${list.classNum}|}">자세히보기</a>
-								</th>
-							</tr>
 						</table>
-					<input type="button" value="글쓰기" class="write-btn" onclick="javascript:location.href='classWrite'">
 					</div>
+					<input type="button" value="글쓰기" class="write-btn" onclick="checkJoinedParty();">
 					
 					<div id="navigation">
-								<nav aria-label="Page navigation example">
-								  <ul class="pagination justify-content-center">
-								  	<li class="page-item">
-								      <a class="page-link" th:href = "|javascript:pagingFormSubmit(${navi.currentPage - navi.pagePerGroup})|" aria-label="Previous">
-								        <span aria-hidden="true">&laquo;</span>
-								      </a>
-								    </li>
-								    <li class="page-item"><a class="page-link" th:href = "|javascript:pagingFormSubmit(${navi.currentPage - 1})|" id="prevPage">Previous</a></li>
-									    <span th:each="counter : ${#numbers.sequence(navi.startPageGroup, navi.endPageGroup)}">
-							  		  		<li class="page-item">
-								    
-								    			<a class="page-link" th:text ="${counter}" th:href = "|javascript:pagingFormSubmit(${counter})|">1</a>
-								    		</li>
-								    	</span>
-								    <li class="page-item"><a class="page-link" th:href = "|javascript:pagingFormSubmit(${navi.currentPage + 1})|" id="nextPage">Next</a></li>
-							  	  	<li class="page-item">
-								      <a class="page-link" th:href = "|javascript:pagingFormSubmit(${navi.currentPage + navi.pagePerGroup})|" aria-label="Next">
-								        <span aria-hidden="true">&raquo;</span>
-								      </a>
-						 			</li>
-								  
-								  </ul>
-								</nav>
-							</div>
+						<nav aria-label="Page navigation example">
+						  <ul class="pagination justify-content-center" >
+						  	<li class="page-item">
+						      <a class="page-link" th:href = "|javascript:pagingFormSubmit(${navi.currentPage - navi.pagePerGroup})|" aria-label="Previous">
+						        <span aria-hidden="true">&laquo;</span>
+						      </a>
+						    </li>
+						    <li class="page-item"><a class="page-link" th:href = "|javascript:pagingFormSubmit(${navi.currentPage - 1})|" id="prevPage">&#60;</a></li>
+			  		  		<li class="page-item" th:each="counter : ${#numbers.sequence(navi.startPageGroup, navi.endPageGroup)}">
+				    			<a class="page-link" th:text ="${counter}" th:href = "|javascript:pagingFormSubmit(${counter})|"></a>
+				    		</li>
+						    <li class="page-item"><a class="page-link" th:href = "|javascript:pagingFormSubmit(${navi.currentPage + 1})|" id="nextPage">&#62;</a></li>
+					  	  	<li class="page-item">
+						      <a class="page-link" th:href = "|javascript:pagingFormSubmit(${navi.currentPage + navi.pagePerGroup})|" aria-label="Next">
+						        <span aria-hidden="true">&raquo;</span>
+						      </a>
+				 			</li>
+						  
+						  </ul>
+						</nav>
+					</div>
 				
 					
 				</div>
@@ -131,20 +239,24 @@
 				
 			</div>
 		</section>
-
+	<input type = "hidden" id = "loginUser" th:value = "${#authentication.getPrincipal().getUsername()}">
 	</div>
 
 	<footer> </footer>
 	
 <script type="text/javascript">
-function pagingFormSubmit(currentPage){
-	let form = document.getElementById("pagingForm");
-	let page = document.getElementById("page");
+	function pagingFormSubmit(currentPage){
+		let form = document.getElementById("pagingForm");
+		let page = document.getElementById("page");
+		
+		
+		page.value = currentPage;
+		form.submit();
+	}
 	
-	
-	page.value = currentPage;
-	form.submit();
-}
+	function goClass(classNum) {
+		location.href="read?num=" + classNum;
+	}
 </script>
 </body>
 </html>

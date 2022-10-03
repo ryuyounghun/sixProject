@@ -621,7 +621,7 @@ public class MemberController {
 		
 		//1002 추가
 		@PostMapping("/checkPin")
-		@ResponseBody int checkPin(String checkPin,
+		public @ResponseBody int checkPin(String checkPin,
 				@AuthenticationPrincipal UserDetails user) {
 			Member member = mService.selectOneMember(user.getUsername());
 			int answer = 0;
@@ -633,6 +633,15 @@ public class MemberController {
 				answer = 0;
 			}
 			return answer;
+		}
+		
+		// 1003 추가
+		@PostMapping("/mypageLevel")
+		@ResponseBody
+		public Member mypageLevel(int memberNum) {
+			Member member = mService.selectOneMemberByMemberNum(memberNum);
+			
+			return member;
 		}
 
 }

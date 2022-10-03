@@ -4,9 +4,15 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<link rel="stylesheet" href="/css/community/communityIndex.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
+
+<link rel="stylesheet" href="/css/community/freeRead.css">
 <link rel="stylesheet" href="/css/style.css">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<style>
+	
+</style>
 </head>
 <body>
 	<div id="headerAndSection-wrapper">
@@ -44,78 +50,89 @@
 
 			</div>
 		</header>
-	
+		
+		
+			
 		<section>
 			<div class="section-container">
+			
+				<div id="spaceDiv"></div>
 				<aside>
 					<div class="aside-left">
-
+						<ul>
+							<li><b>이동하기</b></li>
+							<li>
+								<a th:href="@{/community/index}">메인</a>
+							</li>
+							<li>
+								<a th:href="@{/community/partyIndex}">모임 게시판</a>
+							</li>
+							<li>
+								<a th:href="@{/community/freeIndex}">자유 게시판</a>
+							</li>
+							
+						</ul>
 					</div>
 				</aside>
 				
 				<aside>
 					<div class="aside-right">
-
+						<div id="realtime">
+							실시간 키워드(aJax)
+						</div>
 					</div>
 				</aside>
 
 				<div class="aside-center">
 					<div class="section-center">
-
-						<table th:object="${board}">
-							<tr>
-								<th th:text="*{title}"></th>
-								<th th:text="*{viewCount}"></th>
-							</tr>
-							
-							<tr>
-								<td>
-									<img id="levelImg" src="">
-									<input type="hidden" id="memberLevel" th:value="*{memberLevel}">
-								</td>
-								<td th:text="*{nickname}"></td>
-								<td><p>|</p></td>
-								<td th:text="*{inputdate}"></td>
-								<td>
-									<button id="updateBtn">수정하기</button>
-								</td>
-							</tr>
-							<tr>
-								<td th:text=*{content}>
-							</tr>
-						</table>
-						
-						<div th:unless="${#lists.isEmpty(fileList)}" th:each="file : ${fileList}">
-							<img alt="asd" th:src="@{display(num=${file.fileNum})}" width="200">
+						<div th:object="${board}" id="board">
+							<table th:object="${board}" >
+								<tr id="tHead">
+									<th th:text="*{title}" colspan="2"></th>
+									<th th:text="*{viewCount}"></th>
+									<td>
+										<button type="button" class="btn btn-success" id="updateBtn">수정하기</button>
+									</td>
+								</tr>
+								
+								<tr>
+									<td>
+										<img id="levelImg" src="">
+										<p th:text="*{nickname}"></p>
+										<input type="hidden" id="memberLevel" th:value="*{memberLevel}">
+									</td>
+									<td><p>|</p></td>
+									<td th:text="*{inputdate}"></td>
+								</tr>
+								<tr th:unless="${#lists.isEmpty(fileList)}" th:each="file : ${fileList}">
+									<td colspan="4">
+										<img alt="asd" th:src="@{display(num=${file.fileNum})}" width="200">
+									</td>
+								</tr>
+								<tr>
+									<td colspan="4" >
+										<div th:text=*{content} id="contentBox"></div>
+									</td>
+								</tr>
+							</table>
 						</div>
-						<!-- <div th:unless="${#lists.isEmpty(fileList)}" th:each="file : ${fileList}">
-							<a th:href="@{download(num=${file.fileNum})}" th:text =${file.originalName}></a><br>
-						</div> -->
-					</div>
-					
-					<div id ="reList" >
-						
-					</div>
-					
 					<!-- 댓글 박스 -->
+					<div id ="reList" class="overflow-auto" style="height:180px;"></div>
 					<div sec:authorize="isAuthenticated">
 						<div>
 							<textarea name="content" id="content"></textarea>
-						</div>
-						<div>
-							<input type="button" value="댓글달기" id="btnReplyWrite">
+							<button type="button" class="btn btn-success replay" id="btnReplyWrite">댓글달기</button>
+							<button type="button" class="btn btn-success replay" id="btnReplyupdate">수정하기</button>
 						</div>
 						<input type="hidden" id="boardNum" name="boardNum" th:value="${board.boardNum}"> 		
 						<input type="hidden" id="memberNum" th:value="${member.memberNum}"> 		
 					</div>
-					
-					
-					
+					</div>
 				</div>
 			</div>		
 		</section>
+		<footer></footer>
 	</div>
-		
 	<script>
 						
 						$(document).ready(function(){
@@ -129,7 +146,18 @@
 							
 							getAllfbReply();
 							badge();
+							
+							// 1003 추가
+							$("#btnReplyupdate").hide();
+							
+							realtimeboard();
 						});
+						
+						
+						// 1002 추가
+				   		function goFbRead(boardNum) {
+				   			location.href="fbRead?num=" + boardNum;
+				   		}
 						
 						// 0929 추가
 						function getParameterByName(name) {
@@ -196,9 +224,9 @@
 										
 										// $("#reList").append(item.replyText);
 										htmlStr += "<tr>";	
-										htmlStr += "<td>" + item.nickname +"</td>";
-										htmlStr += "<td>" + item.content +"</td>";
-										htmlStr += "<td>" + item.inputdate +"</td>";	
+										htmlStr += "<td class='nicknameTd'>" + item.nickname +"</td>";
+										htmlStr += "<td style='word-break:break-all;' width='260px;'>" + item.content +"</td>";
+										htmlStr += "<td width='170px;'>" + item.inputdate +"</td>";	
 										htmlStr += "<td>";
 										if(loginMemberNum == item.memberNum){
 											htmlStr += "<a href='javascript:getOneReply("+ item.replyNum+");'>수정</a>";
@@ -208,10 +236,6 @@
 										htmlStr += "</td>";	
 										htmlStr += "</tr>";
 										
-										htmlStr += "<tr><div>";
-										htmlStr += "<textarea id="+item.replyNum +" style='display:none'></textarea>"
-										htmlStr += "<a id="+"a"+ item.replyNum +" href='javascript:updateReply("+ item.replyNum+");' style='display:none'>수정하기</a>";
-										htmlStr += "</div></tr>";
 									})
 									htmlStr += "</table>";
 									$("#reList").html(htmlStr);
@@ -239,6 +263,7 @@
 								
 							});
 						}
+						// 1003 수정
 						function getOneReply(replyNum){
 							$.ajax({
 								url : "getOneReply",
@@ -248,19 +273,18 @@
 								},
 								success : function(reply){
 									let r = reply.replyNum;
-									let a = "a" + reply.replyNum;
-									let reContent = "#" + r;
-									let reIdx = "#" + a;
-									$(reContent).val(reply.content);
-									$(reContent).show();
-									$(reIdx).show();
+									$(content).val(reply.content);
+									$("#btnReplyupdate").show();
+									$("#btnReplyWrite").hide();
+									
+									$("#btnReplyupdate").click(function() { updateReply(r); });
 								}
 								
 							});
 						}
 						function updateReply(replyNum){
 							let r = "#" + replyNum;
-							let reContent = $(r).val();
+							let reContent = $("#content").val();
 							$.ajax({
 								url : "updateReply",
 								type : "post",
@@ -275,9 +299,9 @@
 										alert("댓글이 수정 실패.");
 									}
 									
-									$("#"+replyNum).val("");
-									$("#a"+replyNum).hide();
-									$("#"+replyNum).hide();
+									$("#content").val("");
+									$("#btnReplyupdate").hide();
+									$("#btnReplyWrite").show();
 									getAllfbReply();
 								}
 							});
@@ -300,6 +324,42 @@
 							}
 							
 						}
+						
+						// 0930 추가 1002 추가
+				   		function realtimeboard() {
+				   			
+				   			$.ajax({
+				   				url : "realtimeboard",
+				   				type : "get",
+				   				success : function(data) {
+				   					
+									let htmlStr = "<h1 style='text-align:center' class='rankTitle'>조회수 순위</h1><ul>";
+									
+									$.each(data, function(index, item) {
+										if(index <= 9) {
+							                  if ( index <=2 ){
+							                     
+							                     htmlStr += "";
+							                     htmlStr += "<li class='top3Stores' onclick='goFbRead(" + item.boardNum + ")'>"+  "<img src='' id='realtime" + index + "'>  "  + "<span style='display: inline-block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 13ch;' >" + item.title +"</span>" + "</li>";
+							                  }else {
+							                     
+							                     htmlStr += "<li class='underTop3' onclick='goFbRead(" + item.boardNum + ")'>" + (index+1)+"위 " +item.title + "</li>";
+							                  }
+							               }
+									});
+									htmlStr += "</ul>";
+					   				$("#realtime").html(htmlStr);
+					   				
+					   				for ( let i =0; i<=2; i++){
+										let img_src = "/images/rank/rank"+ (i+1) + ".png";
+										document.getElementById("realtime"+i).src = img_src;
+										document.getElementById("realtime"+i).style.width="30px";
+										document.getElementById("realtime"+i).style.width="30px";
+									}	
+				   				}
+				   			});
+				   			
+				   		}
 					</script>
 </body>
 </html>

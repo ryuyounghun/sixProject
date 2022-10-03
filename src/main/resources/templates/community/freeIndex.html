@@ -13,7 +13,7 @@
 
 <style>
 	#myTable {
-		
+		cursor: pointer;
     	border : 1px solid black;
 		width:100%;
 	}
@@ -76,12 +76,28 @@
 	
 	
 	<section>
+			<br>
 			<div class="section-container">
 				
+				<div class="searchBar-wrapper">
+					<form th:action="@{freeIndex}" method="get" id="pagingForm">
+						<div class="container-searchBar">
+							<input class = "searchBar" type = "text" name="searchWord" th:value="${searchWord}" id="searchWord" placeholder="검색">
+							<input type="submit" value="검색" id="searchB">
+							<input type="button" value="글쓰기" class="write-btn" onclick="javascript:location.href='freeWrite'">
+						</div>
+						<input type="hidden" id="page" name="page" value="">
+					</form>
+				</div>
+				<br>
+				<br>
 				<aside>
 					<div class="aside-left">
 						<ul>
 							<li><b>이동하기</b></li>
+							<li>
+								<a th:href="@{/community/index}">메인</a>
+							</li>
 							<li>
 								<a th:href="@{/community/partyIndex}">모임 게시판</a>
 							</li>
@@ -94,7 +110,9 @@
 				
 				<aside>
 					<div class="aside-right">
-
+						<div id="realtime">
+							실시간 키워드(aJax)
+						</div>
 					</div>
 				</aside>
 
@@ -133,7 +151,7 @@
 							</div>
 							<div class="position-absolute bottom-0 end-40">
 							</div>
-							
+							<br>
 							<div id="navigation">
 								<nav aria-label="Page navigation example">
 								  <ul class="pagination justify-content-center" >
@@ -142,11 +160,11 @@
 								        <span aria-hidden="true">&laquo;</span>
 								      </a>
 								    </li>
-								    <li class="page-item"><a class="page-link" th:href = "|javascript:pagingFormSubmit(${navi.currentPage - 1})|" id="prevPage">Previous</a></li>
+								    <li class="page-item"><a class="page-link" th:href = "|javascript:pagingFormSubmit(${navi.currentPage - 1})|" id="prevPage">&#60;</a></li>
 					  		  		<li class="page-item" th:each="counter : ${#numbers.sequence(navi.startPageGroup, navi.endPageGroup)}">
 						    			<a class="page-link" th:text ="${counter}" th:href = "|javascript:pagingFormSubmit(${counter})|"></a>
 						    		</li>
-								    <li class="page-item"><a class="page-link" th:href = "|javascript:pagingFormSubmit(${navi.currentPage + 1})|" id="nextPage">Next</a></li>
+								    <li class="page-item"><a class="page-link" th:href = "|javascript:pagingFormSubmit(${navi.currentPage + 1})|" id="nextPage">&#62;</a></li>
 							  	  	<li class="page-item">
 								      <a class="page-link" th:href = "|javascript:pagingFormSubmit(${navi.currentPage + navi.pagePerGroup})|" aria-label="Next">
 								        <span aria-hidden="true">&raquo;</span>
@@ -156,22 +174,6 @@
 								  </ul>
 								</nav>
 							</div>
-							
-							
-							
-							
-							
-							<div class="searchBar-wrapper">
-								<form th:action="@{freeIndex}" method="get" id="pagingForm">
-									<div class="container-searchBar">
-										<input class = "searchBar" type = "text" name="searchWord" th:value="${searchWord}" id="searchWord" placeholder="검색">
-										<input type="submit" value="검색" id="searchB">
-										<input type="button" value="글쓰기" class="write-btn" onclick="javascript:location.href='freeWrite'">
-									</div>
-									<input type="hidden" id="page" name="page" value="">
-								</form>
-							</div>
-							
 							
 						</div>
 						
@@ -187,8 +189,50 @@
 	
 		$(document).ready(function() {
 			$("#searchB").click(function() {});
+			realtimeboard();
 		});
 	
+		// 1002 추가
+   		function goFbRead(boardNum) {
+   			location.href="fbRead?num=" + boardNum;
+   		}
+		
+		function realtimeboard() {
+   			
+   			$.ajax({
+   				url : "realtimeboard",
+   				type : "get",
+   				success : function(data) {
+   					
+					let htmlStr = "<h1 style='text-align:center' class='rankTitle'>조회수 순위</h1><ul>";
+					
+					$.each(data, function(index, item) {
+						if(index <= 9) {
+			                  if ( index <=2 ){
+			                     
+			                     htmlStr += "";
+			                     htmlStr += "<li class='top3Stores' onclick='goFbRead(" + item.boardNum + ")'>"+  "<img src='' id='realtime" + index + "'>  "  + "<span style='display: inline-block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 13ch;' >" + item.title +"</span>" + "</li>";
+			                  }else {
+			                     
+			                     htmlStr += "<li class='underTop3' onclick='goFbRead(" + item.boardNum + ")'>" + (index+1)+"위 " +item.title + "</li>";
+			                  }
+			               }
+					});
+					htmlStr += "</ul>";
+	   				$("#realtime").html(htmlStr);
+	   				
+	   				for ( let i =0; i<=2; i++){
+						let img_src = "/images/rank/rank"+ (i+1) + ".png";
+						document.getElementById("realtime"+i).src = img_src;
+						document.getElementById("realtime"+i).style.width="30px";
+						document.getElementById("realtime"+i).style.width="30px";
+					}	
+   				}
+   			});
+   			
+   		}
+		
+		
 		function searchBoard() {
 			let searchWord = $("#searchWord").val();
 			

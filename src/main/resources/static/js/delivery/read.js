@@ -100,6 +100,7 @@ $(document).ready(function() {
 		let storeNum = getParameterByName('num');
 		let loginUser = $("#loginUser").val();
 		let htmlStr = "";
+		$("#leftoverPoint").hide();
 		$.ajax({
 			url : "checkAddress",
 			type : "get",
@@ -130,6 +131,7 @@ $(document).ready(function() {
 							
 							
 							$("#receiptModal").html(htmlStr);
+							$("#leftoverPoint").show();
 							leftoverPoint();
 							$("#staticBackdrop").modal('show');
 						} else {

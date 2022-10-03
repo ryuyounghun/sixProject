@@ -4,7 +4,10 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<link rel="stylesheet" href="/css/community/communityIndex.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
+
+<link rel="stylesheet" href="/css/community/index.css">
 <link rel="stylesheet" href="/css/style.css">
 <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
    <script type="text/javascript">
@@ -14,6 +17,13 @@
    			realtimeboard();
    		});
    		
+   		
+   		function goClass(classNum) {
+   			location.href="read?num=" + classNum;
+   		}
+   		
+   		
+   		
    		// 1002 추가
    		function goFbRead(boardNum) {
    			location.href="fbRead?num=" + boardNum;
@@ -21,7 +31,6 @@
    		
    		// 0930 추가 1002 추가
    		function realtimeboard() {
-   			
    			$.ajax({
    				url : "realtimeboard",
    				type : "get",
@@ -67,7 +76,6 @@
    				data : {"memberId" : memberId},
    				success : function(data) {
    					console.log(data);
-   					
    					if(data == "") {
 	   					location.href='classWrite';
    					} else {
@@ -125,17 +133,10 @@
    					console.log(data);
    					$("#partyTitle").text(data.title);
    					$("#fullParty").text(data.totalMember);
-   					
    				}
    			});
-   			
    		}
    </script>
-   <style>
-   		#party{
-   			background-color: yellow;
-   		}
-   </style>
 </head>
 <body>
 	<div id="headerAndSection-wrapper">
@@ -163,35 +164,43 @@
 		<section>
 			<div class="section-container">
 
-				<div class="searchBar-wrapper">
-					<div class="container-searchBar">
-						<input class="searchBar" type="text" name="searchWord"
-							th:value="${searchWord}" id="searchWord" placeholder="메뉴검색">
-						검색
-					</div>
-				</div>
-
+				<div id="spaceDiv"></div>
 
 				<aside>
 					<div class="aside-left">
 						<ul>
+							<li><b>이동하기</b></li>
+							<li>
+								<a th:href="@{/community/index}">메인</a>
+							</li>
 							<li>
 								<a th:href="@{/community/partyIndex}">모임 게시판</a>
 							</li>
 							<li>
 								<a th:href="@{/community/freeIndex}">자유 게시판</a>
 							</li>
-							
+							<li>
+								<p>
+									 <a data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+									    파티 참가 현황 확인
+									 </a>
+								</p>
+							</li>
 						</ul>
-						<div id="party">
-								<h2>파티현황</h2>
-								<h3 id="partyTitle"></h3>
-								<span id="realTimeParty">
-								
-								</span>
-								<span>/</span>
-								<span id="fullParty"></span>
-						</div>
+							
+							<div class="collapse" id="collapseExample">
+							  <div class="card card-body">
+							    <div id="party">
+									<h3>파티참여현황</h3>
+									<h3 id="partyTitle"></h3>
+									<span id="realTimeParty">
+									
+									</span>
+									<span>/</span>
+									<span id="fullParty"></span>
+								</div>   
+							  </div>
+							</div>
 					</div>
 				</aside>
 
@@ -208,70 +217,75 @@
 
 				<div class="aside-center">
 					<div class="section-center">
-						<div class="boardBox">
-							<a th:href="@{partyIndex}">
-								<div>실시간 모임 구직</div>
-							</a>
-							<a th:href="@{freeIndex}">
-								<div>실시간 게시글</div>
-							</a>
-						</div>
 						<!--  ajax로 글보여주기 -->
 						<div class="write-container">
 							<div class="partyWrite">
-								<table>
-									<tr>
-										<th>작성자</th>
-										<th>제목</th>
-										<th>작성일</th>
-									</tr>
-									<tr th:each="list : ${cbList}">
-										<td th:text="${list.nickname}"></td>
-										<td>
-											<a th:href="@{|read?num=${list.classNum}|}">
+								<table class="table table-hover">
+									<thead>
+										<tr>
+											<th colspan="3">
+												<a th:href="@{partyIndex}">
+													실시간 모임 구직
+												</a>
+											</th>
+										</tr>
+										<tr>
+											<th>작성자</th>
+											<th>제목</th>
+											<th>작성일</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr th:each="list : ${cbList}" th:onclick="|goClass(${list.classNum});|">
+											<td th:text="${list.nickname}"></td>
+											<td class="btilte">
 												<span th:text="${list.title}"
-												style="display: inline-block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 13ch;">
+													style="display: inline-block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 13ch;">
 												</span>
-											</a>
-										</td>
-										<td th:text="${list.inputdate}"></td>
-									</tr>
+											</td>
+											<td th:text="${list.inputdate}"></td>
+										</tr>
+									</tbody>	
 								</table>
 							</div>
 							<div class="freeWrite">
-								<table>
-									<tr>
-										<th>작성자</th>
-										<th>제목</th>
-										<th>작성일</th>
-									</tr>
-									<tr th:each="list : ${fbList}">
-										<td th:text="${list.nickname}"></td>
-										<!--
-										 -->
-										<td>
-											<a th:href="@{|fbRead?num=${list.boardNum}|}">
+								<table class="table table-hover" >
+									<thead>
+										<tr>
+											<th colspan="3">
+												<a th:href="@{freeIndex}">
+													실시간 게시글
+												</a>
+											</th>
+										</tr>
+										<tr>
+											<th>작성자</th>
+											<th>제목</th>
+											<th>작성일</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr th:each="list : ${fbList}" th:onclick="|goFbRead(${list.boardNum});|">
+											<td th:text="${list.nickname}"></td>
+											<!--
+											 -->
+											<td class="btilte">
 												<span th:text="${list.title}"
-												style="display: inline-block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 13ch;">
+													style="display: inline-block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 13ch;">
 												</span>
-											</a>
-										</td>
-										<td th:text="${list.inputdate}"></td>
-									</tr>
+											</td>
+											<td th:text="${list.inputdate}"></td>
+										</tr>
+									</tbody>
 								</table>
 							</div>
 						</div>
 					</div>
 					
 				</div>
-				
-				
 			</div>
-				
-				
-			</div>
-		</section>
 		<input type = "hidden" id = "loginUser" th:value = "${#authentication.getPrincipal().getUsername()}">
+		</section>
 	</div>
 
 	<footer> </footer>

@@ -233,6 +233,7 @@
 		SELECT * FROM
 		RECEIPT
 		WHERE MEMBERNUM = #{memberNum}
+		ORDER BY RECEIPTNUM DESC
 	</select>
 	
 	<select id="selectReceiptByReceiptNum" parameterType="int" resultType="Receipt">

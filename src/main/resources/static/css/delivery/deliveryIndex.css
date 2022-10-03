@@ -101,7 +101,7 @@ body{
  .weatherIcon{
     width: 220px;
     height : 140px;
-    background-size: contain;
+    background-size: 100% 100% ;
     background-repeat: no-repeat;
  }
  .aside-right{
@@ -129,14 +129,23 @@ body{
     padding-bottom : 8px;
     border-bottom: 3px dashed #C98474;
  }
+ #storeRank li:hover{
+	text-decoration: underline;
+}
+ .top3Stores span:hover{
+	text-decoration: underline;
+ 
+ }
  .top3Stores span{
     position : absolute;
     display : inline-block;
     font-weight: bold;
     margin-top:5px;   
+	cursor : pointer;
 }
 .underTop3 {
    margin-top : 5px;
+	cursor : pointer;
 }
  .aside-center{
     position:absolute;
@@ -166,17 +175,25 @@ body{
     /*
     background-color : #C98474;
       */
-   box-shadow : 1px 1px 6px black;    
+   box-shadow : 1px 1px 4px black;    
     margin-right : 10px;
     margin-bottom : 10px;
-   width: 200px;
+   width: 190px;
    height: 200px;
    border : 1px solid grey;
    overflow: hidden;
    font-size: 25px;
    font-weight: bold;
    color : black;
+   border-radius: 10px;
  }
+ .foodList li:hover{
+	transition : .7s;
+	background-color: #FFAE6D;
+	border : 1px solid  #FFAE6D;
+	
+	
+}
 .foodList img{
    position : absolute;
    width: 100px;

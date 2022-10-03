@@ -52,12 +52,16 @@ li{
 /* 
 	본문 섹션 css
  */
+
+ 
  .section-container{
  	width : 100%;
- 	height : 72.3vh;
  	margin-bottom: 50px;
  	margin-top: 30px;
+ 	min-height: 90vh;
+ 	height: auto;
  }
+ 
  .searchBar-wrapper{
     width :  100%;
     margin:  auto;
@@ -111,34 +115,25 @@ li{
 .aside-left a{
  	text-decoration: none;
  	color : black;
-	
 } 
 .aside-left a:hover{
- 	color : black;
  	text-decoration: underline;
 	font-weight: bold;
  	font-size: 20px;
 } 
-.aside-right{
+ .aside-right{
     position : absolute;
     background-color: #874C62;
     border : 5px solid #C98474;
     color : white;
     width : 15%;
+    height: 60vh;
     right : 3%;
-    
+    cursor: pointer;
  }
  ul {
     list-style: none;
  }
- /*
- .rankTitle::after {
-    position : absolute;
-    content:"---------------------------";
-    top :40px;
-    left : 10px;
- }
-   */
  .rankTitle{
     padding-bottom : 8px;
     border-bottom: 3px dashed #C98474;
@@ -147,18 +142,16 @@ li{
     position : absolute;
     display : inline-block;
     font-weight: bold;
-    margin-top:5px;  
-     
+    margin-top:5px;   
 }
 .underTop3 {
-    cursor : pointer;
+   margin-top : 5px;
 }
 .first1 {
 	color : black;
-	padding : 10px;
 }
  .aside-center{
- 	position:absolute;
+ 	position: relative;
  	width :50%;
  	left: 25%;
  	right: 25%;
@@ -169,8 +162,7 @@ li{
  }
 
 .aside-center .storeThumbnail{
-	border : 1px solid grey;
-	margin-bottom : 20px;
+	background-color: olive;
 	width: inherit;
 	height: 150px;
 }
@@ -178,14 +170,16 @@ li{
 .brandImg{
 	position : absolute;
 	margin-left : 10px;
+	margin-top: 10px;
 	width : 100px;
-	height: 90px;
-	top : 50px;
+	height:100px;
 }
 .storeInfo{
-	margin-left: 130px;	
+	position : absolute;
+	left: 130px;	
 }
-.menuAndReview {
+.menuAndReview{
+	background-color: lime;
 	text-align: center;
 }
 .menuAndReviewList{
@@ -206,16 +200,53 @@ li{
   width: 1px;
   content: '';
 }
-.menuAndReviewList li  {
-	border : 1px solid grey;
-	flex-grow: 1;
-	padding : 10px;
-	cursor:  pointer;
-}
-.menuAndReviewList li:hover {
-	background-color : #F0F0F0;
-}
-.clicked {
-	background-color : #F0F0F0;
+.menuAndReviewList li {
+	background-color: orange;
+	width: 30%;
 }
 
+p {
+		display:inline-block;
+	}
+	
+	.section-center {
+		width:100%;
+	}
+	
+	table {
+		max-width: 700px;
+		margin: 0 auto;
+		border-top: 1px solid #000;
+		border-bottom: 1px solid #000;
+		 
+	}
+	
+	#tHead {
+		border-bottom: 1px solid #000;
+	}
+	
+	textarea {
+		width : 85%;
+		height : 70px;
+		margin-left : 20px;
+	}
+	
+	.replay {
+		margin-bottom: 60px;
+		height : 70px;
+	}
+	
+	#contentBox {
+		word-break:break-all;
+		width : 700px;
+		min-height : 300px;
+		height: auto;
+	}
+	
+	.nicknameTd {
+		width: 100px;
+	}
+	
+	#spaceDiv {
+		height : 100px;
+	}

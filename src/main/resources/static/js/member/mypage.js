@@ -60,17 +60,25 @@ $(document).ready(function(){
 	});
 	
 	
-	// 0928 레벨별 뱃지추가하기
+	// 0928 레벨별 뱃지추가하기  1003 추가
 	function badge(){
-			let memberLevel = $("#memberLevel").val();
-			
-			for ( let i =0; i <= 10; i++){
+		let memberNum = getParameterByName('num');
+		
+		$.ajax({
+			url : "mypageLevel",
+			type : "post",
+			data : {"memberNum" : memberNum},
+			success : function(data) {
+				let memberLevel = data.memberLevel;
+				
+				for ( let i =0; i <= 10; i++){
 				if(memberLevel == i){
 					img_src = "/images/levelBadges/lv"+ i + ".png";
 				}
 			}
-			
 			document.getElementById("levelImg").src=img_src;
+			}
+		});		
 	}
 	
 	// 0928 추가

@@ -127,19 +127,11 @@ li{
     width : 15%;
     height: 60vh;
     right : 3%;
-    
+    cursor: pointer;
  }
  ul {
     list-style: none;
  }
- /*
- .rankTitle::after {
-    position : absolute;
-    content:"---------------------------";
-    top :40px;
-    left : 10px;
- }
-   */
  .rankTitle{
     padding-bottom : 8px;
     border-bottom: 3px dashed #C98474;
@@ -210,6 +202,7 @@ li{
 	background-color: orange;
 	width: 30%;
 }
+
 
 footer {
 	margin-top : 50px;

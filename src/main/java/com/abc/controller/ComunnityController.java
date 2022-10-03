@@ -214,9 +214,6 @@ public class ComunnityController{
 		
 		log.debug("write cBoard : {}", cBoard);
 		
-		
-		
-		
 		// 채팅방 생성
 		ChatRoom ctRoom = chatService.createRoom(cBoard.getTitle());
 		
@@ -353,13 +350,11 @@ public class ComunnityController{
 			// 404 요소 없음
 			 return new ResponseEntity<Resource>(HttpStatus.NOT_FOUND);
 			// return new ResponseEntity<Resource>(HttpStatus.OK);
-			
 		}
 		HttpHeaders header = new HttpHeaders();
 		
 		// 경로를 가져오기 
 		Path filePath = null;
-		
 		try {
 			// 파일 경로
 			// 첨부한 내용의 타입은 파일
@@ -368,8 +363,6 @@ public class ComunnityController{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
-		
 		return new ResponseEntity<Resource>(resource, header, HttpStatus.OK);
 	}
 
@@ -495,18 +488,13 @@ public class ComunnityController{
 				searchWord);
 		log.debug("페이지 : {}", navi.getCurrentPage());
 		log.debug("페이지 : {}", navi.getEndPageGroup());
-		
 		// ------------------------------
 		if ( searchWord == null || searchWord.trim().length() == 0 ) {
-			
 			// 나중에 10개씩 출력하는걸로 바꾸기
 			// cbList =  cService.selectAllClassBoardNoParameter();
-
 			cbList = cService.selectAllClassBoard(navi);
 		
 		}else {
-			
-			
 			cbList = cService.selectAllClassBoard(navi, searchWord);
 		}
 		return cbList;
@@ -514,11 +502,8 @@ public class ComunnityController{
 
 	@GetMapping("/partyPeople")
 	public @ResponseBody List<ClassRoom> partyPeople(int classNum) {
-		
 		List<ClassRoom> cRList = cService.selectClassRoom(classNum);
-		
 		return cRList;
-		
 	}
 	
 	@GetMapping("/joinParty")
@@ -550,7 +535,6 @@ public class ComunnityController{
 					answer = "추가되었습니다.";
 				}
 			}
-			
 		} else {
 			answer = "이미 참여한 파티가 있습니다.";
 		}
@@ -754,5 +738,36 @@ public class ComunnityController{
 		return fList;
 	}
 	
+	// 1003 추가
+	@GetMapping("/partyDisplay")
+	public ResponseEntity<Resource> partyDisplay(int num) {
+		log.debug("num : {}", num);
+		
+		ClassBoard cBoard = cService.selectOneClassBoard(num);
+		
+		Resource resource 
+			= new FileSystemResource(uploadPath + "/" + cBoard.getSavedFile());
+	
+		// 파일이 존재하지 않을때
+		if(!resource.exists()) {
+			return new ResponseEntity<Resource>(HttpStatus.NOT_FOUND);
+		} 
+		
+		HttpHeaders header = new HttpHeaders();
+		
+		Path filePath = null;
+		
+		try {
+			filePath = Paths.get(uploadPath + "/" + cBoard.getSavedFile());
+			
+			// response의 header에
+			// 제가 첨부한 내용의 타입은 파일이에요
+			header.add("Content-type", Files.probeContentType(filePath));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return new ResponseEntity<Resource>(resource, header, HttpStatus.OK);
+	}
 
 }

@@ -52,11 +52,13 @@ li{
 /* 
 	본문 섹션 css
  */
+ 
  .section-container{
  	width : 100%;
- 	height : 72.3vh;
  	margin-bottom: 50px;
  	margin-top: 30px;
+ 	min-height: 90vh;
+ 	
  }
  .searchBar-wrapper{
     width :  100%;
@@ -64,6 +66,14 @@ li{
     padding : 0;
     text-align : center;
  }
+ 
+ #spaceDiv {
+ 	height : 80px;
+ }
+ 
+ 
+ 
+ 
  /* 9월 29일 추가 작업 */
  .placeholder{
     position:absolute;
@@ -76,26 +86,23 @@ li{
     cursor : pointer;
     border: none;
     transform : translate(-50px);
-    
  }
- #searchWord{
-    border : 5px solid #874C62;
-    width: 300px;
-    height: 30px;
+ .searchBar-wrapper{
+ 	width :  100%;
+ 	margin:  auto;
+ 	padding : 0;
+ 	text-align : center;
  }
- #searchBar{
-    width: 52px;
-    height : 42px;
-    background-color: #874C62;
-    border : 5px solid #874C62;
-    color : white;
-    transform : translate(10px);
-	cursor: pointer;
+ .searchBar{
+ 	border : 5px solid black;
+ 	width: 300px;
+ 	height: 30px;
  }
- .aside-left, .aside-right, .aside-center{
  
+ .aside-left, .aside-right, .aside-center{
  	box-sizing: content-box;
  }
+ 
  .aside-left{
  	position : absolute;
  	background-color: #F2D388;
@@ -103,6 +110,10 @@ li{
  	width : 15%;
  	box-shadow: 1px 1px 5px 0;
  	font-size: 18px;
+}
+
+.aside-left #party {
+	text-align:center;
 }
 .aside-left li {
 	
@@ -114,31 +125,23 @@ li{
 	
 } 
 .aside-left a:hover{
- 	color : black;
  	text-decoration: underline;
 	font-weight: bold;
  	font-size: 20px;
 } 
-.aside-right{
+ .aside-right{
     position : absolute;
     background-color: #874C62;
     border : 5px solid #C98474;
     color : white;
     width : 15%;
+    height: 60vh;
     right : 3%;
-    
+    cursor: pointer;
  }
  ul {
     list-style: none;
  }
- /*
- .rankTitle::after {
-    position : absolute;
-    content:"---------------------------";
-    top :40px;
-    left : 10px;
- }
-   */
  .rankTitle{
     padding-bottom : 8px;
     border-bottom: 3px dashed #C98474;
@@ -147,75 +150,92 @@ li{
     position : absolute;
     display : inline-block;
     font-weight: bold;
-    margin-top:5px;  
-     
+    margin-top:5px;   
 }
 .underTop3 {
-    cursor : pointer;
+   margin-top : 5px;
 }
 .first1 {
 	color : black;
-	padding : 10px;
 }
  .aside-center{
  	position:absolute;
  	width :50%;
  	left: 25%;
  	right: 25%;
+ 	background-color: white;
  }
  .aside-center .section-center{
- 	min-height: 60vh;
+ 	min-height: 76vh;
+ 	height : auto;
  	justify-content: center; 
  }
 
-.aside-center .storeThumbnail{
-	border : 1px solid grey;
-	margin-bottom : 20px;
-	width: inherit;
-	height: 150px;
+.boardBox{
+	display : flex;
+	width: 100%;
+	background-color: #F9F7F7;
+	justify-content: space-around;
+}
+.table { cursor: pointer; }
+.table thead a{
+ 	text-decoration: none;
+ 	color : black;
+ 	text-align:center;
+} 
+
+.table thead a:hover{
+ 	text-decoration: underline;
+	font-weight: bold;
+ 	font-size: 20px;
 }
 
-.brandImg{
-	position : absolute;
-	margin-left : 10px;
-	width : 100px;
-	height: 90px;
-	top : 50px;
-}
-.storeInfo{
-	margin-left: 130px;	
-}
-.menuAndReview {
-	text-align: center;
-}
-.menuAndReviewList{
-	margin : 0;
-	padding : 0;
-	list-style: none;
+.write-container{
 	display: flex;
-	justify-content: space-between;
+	width : inherit;
+	position: relative;
+	justify-content: space-around;
 	
 }
-.menuAndReviewList li:before {
-  display: inline-block;
-  width: 1px;
-  content: '';
-}
-.menuAndReviewList li:after {
-  display: inline-block;
-  width: 1px;
-  content: '';
-}
-.menuAndReviewList li  {
-	border : 1px solid grey;
-	flex-grow: 1;
-	padding : 10px;
-	cursor:  pointer;
-}
-.menuAndReviewList li:hover {
-	background-color : #F0F0F0;
-}
-.clicked {
-	background-color : #F0F0F0;
+.partyWrite{
+	position : absolute;
+	left: 0;
+	width: 50%;
 }
 
+.freeWrite{
+	position : absolute;
+	width: 50%;
+	right: 0;
+}
+
+.btilte {
+	width: 13ch;
+}
+
+.write-btn{
+	position: absolute;
+	right: 0;
+	bottom : 0;
+}
+ .foodList{
+ 	display: flex;
+ 	flex-direction : row;
+ 	flex-wrap : wrap;
+ 	list-style: none;
+ 	
+ }
+ .foodList li{
+ 	margin-top : 10px;
+	margin-right : 10px;
+	width: 160px;
+	height: 100px;
+	background-color: yellow;
+	overflow: hidden; 	
+ }
+
+
+footer {
+	margin-top : 50px;
+	
+}

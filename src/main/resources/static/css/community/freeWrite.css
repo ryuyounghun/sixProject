@@ -1,13 +1,12 @@
 @charset "UTF-8";
-
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@500&display=swap');
 * { font-family: 'Noto Sans KR', sans-serif;}
- 
+
 body{
 	margin : 0;
 	padding : 0;
 }
-	
+
 /*
 	헤더css
 */
@@ -15,9 +14,10 @@ body{
 .header-container{
 		width: 100%;
 		height: 100px;
-		background-color: #F9F7F7;
+		background-color: #F0F0EF;
 		position: relative;
 }
+
 
 .header-logo{
 	position : absolute;
@@ -49,89 +49,128 @@ body{
 }
 .header-logMenuList a {
 	text-decoration: none;
-	
-}
-.orderListBox{
-	height: 60px;
-	width: 466px;
-}
-#center-dv2{
-	padding-top: 20px;
 }
 
 /* 
 	본문 섹션 css
  */
 
-/* 1002 세련 수정함 */
-#myReviewList{
-	border: 1px solid #bdbdbd;
-}
-.mpTitle { 
-	/* padding-top: 20px; */
-	text-align: center;
-	font-size: 40px;
-	padding-bottom: 50px;
-	border-bottom: 1px solid #a8a8a8;
-}
-.mbName {
-    font-size: 25px;
-    font-weight: 300;
-}
-#point {
+
+.joinTitle{
 	padding-top: 20px;
+}
+
+h2{
+	font-size: 40px;
+    padding-top: 20px;
     padding-bottom: 20px;
+   	border-bottom: 2px solid #a8a8a8;
 }
 
-#starPoint{
-	text-align: center;
+form{
+	width:75%;
+	margin: 0 auto; 
 }
 
-.reviewScore{
-	font-size: 20px;
+.meetPlaceBox{
+	padding-top: 20px;	
+}
+form div {
+	margin-bottom: 30px;
 }
 
-.rating{
-	margin-right: 15px;
-}
-ul {
-	padding-right: 30px;
-    margin-top: 20px;
-}
-
-.listul{
-	padding-bottom: 15px;	
-	cursor: pointer;	
-}
-
-/* label {
-	margin: 150px; 
- } */
- 
-.sectitle{
+label {
 	font-size: 20px;
 	font-weight: bold;
+	float: left;
+	
 }
 
-.replyList{
-	border: 1px solid #bdbdbd; 
+#fdIdx_0{padding-top: 50px;}
+
+input {
+    width: 500px;
+    float: center;
+    padding: 2px 5px;
+    box-sizing: border-box;
+	font-size: 15px;
 }
+
+textarea {
+    width: 500px;
+    float: center;
+    height: 450px;
+    padding: 2px 5px;
+    box-sizing: border-box;
+    font-size: 15px;
+}
+
+#writerBox span { margin-left: 65px; }
+
+#contentBox { height: 400px; }
+
+#fileBox input { font-size: 18px; }
+
+#file_0{
+	width: 400px;
+}
+.buttonBox{
+	text-align: center;
 	
-.expBar{
+}
+.btn1 {
+    border: none;
+    font-weight: 600;
+    background-color: #66442b;
+    /* border-radius: 20px; */
+    color: white;
+    padding: 10px 0px;
+    display: inline-block;
+    width: 300px;
+	
+}
+.button2Box{
+    padding-top: 30px;	
+	padding-bottom: 10px;
+	padding-left: 50px;
+} 
+.buttonBox{
+	padding-top: 10px;	
+	padding-bottom: 10px;
+	padding-left: 50px;
+} 
+.btn-two {
+	border: none;
+	background-color: #66442b;
+    color: white; 
+  	padding: 10px 150px;
+  	display: inline-block;
+	
+}
+    
+
+.btn-two:active {
+  top: 1px;
+  border-color: rgba(0,0,0,0.34) rgba(0,0,0,0.21) rgba(0,0,0,0.21);
+  box-shadow: 0 1px 0 rgba(255,255,255,0.89),0 1px rgba(0,0,0,0.05) inset;
+  position: relative;
+}
+
+/* 본문 css 끝  */
+
+
+.writeBox{
 	text-align: center;
 }
-/* 1002 세련 수정함 */
-.btnBox{
-	background-color: #0069d9;
-	border: none;
-	color: #ffffff;
-    padding: 7px 15px;
-    border-radius: 15px;
-	
+
+
+.joinContainer{
+ box-sizing: content-box;	
 }
+
  .section-container{
- 	width : 100%;
- 	min-height : 100vh;
+ 	width:100%;
+ 	min-height:100vh;
  	margin-bottom: 50px;
  	margin-top: 30px;
  }
@@ -151,19 +190,12 @@ ul {
  }
  .aside-left{
  	position : absolute;
- 	/* background-color: red; */
+ 	background-color: red;
  	width : 15%;
- 	height: 80vh;
+ 	height: 60vh;
  	left : 5%;
- 	text-align: center;
  }
  
-/*  img {
- 	padding-top: 20px;
- 	padding-bottom: 10px;
- 	
- 	} */
- 	
  .aside-right{
  	position : absolute;
  	background-color: blue;
@@ -172,59 +204,16 @@ ul {
  	right : 5%;
  }
  .aside-center{
- 	position:absolute;
- 	width :70%;
+ 	position: relative;
+ 	width :50%;
  	left: 25%;
- 	right: 5%;
- 	/* background-color: purple; */
+ 	right: 25%;
  }
  .aside-center .section-center{
- 	min-height: 80vh;
+ 	min-height: 60vh;
  	justify-content: center; 
  }
-.replyContent{
-	width: 50px;
-	height: 50px;	
-}
 
-.contentBox{
-	padding-top: 20px;
-}
-
-.content{
-	width: 500px;
-    margin-right: 25px;
-    font-size: 15px;
-}
-
-
-
-/* 쿠폰 div 하나 */
-.couponCenter{
-	padding-top: 12px;
-	padding-bottom: 12px;
-	border-bottom: 1px solid #a8a8a8;
-}
-
-.couponCenter2 {
-    padding-top: 25px;
-    padding-bottom: 25px;
-    border-bottom: 1px solid #a8a8a8;
-}
-
-/* 1002 세련 수정함 float 추가  */
-/* 쿠폰 구매하기 버튼 */
-.cpBtn{
-	font-size: 13px;
-	border: none;
-	float: right;
-}
-
-.btn1{
-	float: right;
-	border: none;
-	font-size: 13px;
-}
 .mapInfo{
 	padding : 40px;
 }
@@ -241,20 +230,10 @@ ul {
 .aside-center .partyJoinOut{
 	margin-top : 40px;
 	margin-left : 40px;
-	text-align : left;
-	/* background-color: olive; */
+	text-align : center;
+	background-color: olive;
 	width : 300px;
-	float: left;
 }
-
-.aside-center .partyJoinOut2{
-	margin-top : 40px;
-	margin-right : 40px;
-	height: 300px;
-	float: right;	
-	
-}
-
 .menuImg{
 	position:absolute;
 	right : 50px;
@@ -276,3 +255,11 @@ ul {
 	
 }
 
+footer{
+	position: relative;
+	margin-top: 10px;
+	width : 100%;
+	height: 100px;
+	background-color : lime;
+	
+}
