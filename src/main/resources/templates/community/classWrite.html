@@ -1,91 +1,135 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>모임게시판</title>
+<link rel = "stylesheet" href = "/css/community/classWrite.css">
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
 	<style>
-		.storeTable{
-			border : 1px solid black;
-			background-color: aqua;
+	
+	.storeTable {
+	    table-layout: fixed;
+	    word-wrap: break-word;
 		}
+	.storeTable th{
+		padding-bottom: 10px;
+	}
+	
+	table, tr, th {
+    text-align: inherit;
+    text-align: -webkit-match-parent;
+    width: 125px;
+    }
 	</style>
 </head>
 <body>
 
-	<form action = "classWrite" method = "POST" onsubmit = "return checkValues();" enctype = "multipart/form-data">
-		<table>
-			<tr>
-				<th>약속장소</th>
-				<td>
-					<input type="text" id="address_kakao" name="destination" readonly>
-				</td>
+	<div id="headerAndSection-wrapper">
+		<header>
+			<div class="header-container">
+				<a href="/" class="header-logo" >
+				</a>
 				
-				<td>
-					<input type="button" value="지도 참고하기" onclick="openDestinationForm();">
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<input type="button" value="가게찾기" onclick="showModal()">
-				</td>				
-			</tr>
-			<tr>
-				<th>제목</th>
-				<td>
-					<input type = "text" name = "title" id = "title">
-				</td>
-			</tr>
-			<tr>
-				<th>내용</th>
-				<td>
-					<textarea id = "content" name = "content"></textarea>
-				</td>
-			</tr>
-			<tr>
-                <input  type="hidden" name="classTag" id="tagList" value="">
-				
-				<ul id="tag-list"></ul>
-
-				<div class="form-group">
-					<input type="text" id="tag" size="7"
-					placeholder="스페이스바로 해시태그를 등록해주세요." style="width: 300px;" />
-				</div>
-			</tr>
-			<tr>
-				<th>인원(본인포함!)</th>
-				<td>
-					<input type="number" min="2" name="totalMember" value="2">
-				</td>
-			</tr>
-			<tr>
-				<th colspan = "2">
-					<input type = "submit" value = "글쓰기">
-				</th>
-			</tr>
-			<tr>
-				<th>첨부파일</th>
-				<td>
-					<input type = "file" name = "file" >
-				</td>
-			</tr>
-		</table>
-	</form>
+				<ui class = "header-logMenuList"> <!-- 로그인 및 로그아웃 링크 -->
+					<li sec:authorize ="not isAuthenticated">
+						<a th:href="@{/member/login}">
+							로그인
+						</a>
+					</li>
+					<li sec:authorize="not isAuthenticated">
+						<a th:href ="@{/member/join}">
+							회원가입
+						</a>
+					</li>
+					<li sec:authorize="isAuthenticated">
+						<a th:href ="@{/logout}">
+							로그아웃
+						</a>
+					</li>
+					<li sec:authorize="isAuthenticated">
+						<a th:href ="@{/memberView/updateInfo}">
+							회원정보
+						</a>
+					</li>
+				</ui>
+			</div><!-- header-container 부분 끝 -->
+		</header><!-- header 부분 끝 -->
 	
+	
+		<section id = "contentWrap" class = "clearfix">
+			<div class="section-container">
+				<div class = "aside-center">
+				<div class = "writeBox">
+				<!-- 글쓰기 제목 -->
+				<h2>글쓰기</h2>	
+					<!-- 글씨기용 폼 내용 -->
+					<form action = "classWrite" method = "POST" onsubmit = "return checkValues();" enctype = "multipart/form-data" >
+					
+					<div class = "meetPlaceBox">
+					<label for = "address_kakao" class ="placeTitle">약속장소</label>
+					<input type="text" id="address_kakao" name="destination" readonly placeholder="약속장소를 정하기 위해 눌러주세요.">
+					</div>
+					<div>
+					<input type="button" id= "address_kakao2" value="지도 참고하기" onclick="openDestinationForm();">
+					<input type="button" class= "searchStore" value="가게찾기" onclick="showModal()">
+					</div>
+					<!-- <div class = "searchStore">
+					<input type="button" class= "searchStore" value="가게찾기" onclick="showModal()">
+					</div>	 -->					
+					<div class = "titleBox">
+					<label for = "title">제목</label>
+					<input type = "text" name = "title" id = "title" placeholder="제목을 입력해주세요.">
+					</div>		
+					<div class = "contentBox">
+					<label for = "content">내용</label>
+					<textarea id = "content" name = "content" placeholder="내용을 입력해주세요."></textarea>
+					</div>	
+					<div class = "tagBox">
+					<label for = "tag">해시태그</label>
+		                <input  type="hidden" name="classTag" id="tagList" value="">
+						
+						<span id="tag-list"></span>
+		
+						<div class="form-group">
+						<input type="text" id="tag" size="7"
+							placeholder="스페이스바를 누르면 '해시태그'가 등록됩니다." style="width: 500px;" />
+						</div>
+						
+					</div>
+					<div class = "peopleNumBox">
+						<label for = "peopleNum">인원 수<span style="font-size: 17px;" >(본인을 포함해서 설정해주세요.)</span></label>
+						<input type="number" class = "peopleNum" min="2" name="totalMember" value="2">
+					</div>
+						
+					<div class = "fileBox">
+						<label>첨부파일</label>
+						<input type = "file" name = "file" id = "file_0">
+					</div>
+				
+					<div class = "buttonBox">
+					<input type = "submit" class = "btn1" value = "글쓰기">
+					</div>
+		</form>
+		</div>
+			</div>
+			</div>
+			</section>
+			</div>
 	
 	<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
 	  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
 	    <div class="modal-content">
 	      <div class="modal-header">
-	        <h5 class="modal-title" id="staticBackdropLabel">가게 찾기</h5>
+	        <h5 class="modal-title" id="staticBackdropLabel">가게 찾아보기</h5>
 	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 	      </div>
 	      <div class="modal-body">
 	      	
 	      	<div id="categoryModal">
-				<ul>
+				<ul style="text-align: center;">
 					<li value="all" onclick="findStore('all')">전체보기</li>
 					<li value="1" onclick="findStore('1')">한식</li>
 					<li value="2" onclick="findStore('2')">중식</li>
@@ -109,6 +153,11 @@
 	  </div>
 	</div>
 	
+	</div>
+	
+	<footer>
+	
+	</footer>
 </body>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script>
@@ -160,10 +209,10 @@
 				
 					$.each(data, function(index, item) {
 						htmlStr += "<table class='storeTable' onclick='setStore(" + item.storeNum + ");'>";
-						htmlStr += "<tr><th>" + item.storeNum + "</th>";
-						htmlStr += "<th>" + item.storeName + "</th>";
-						htmlStr += "<th> ★ " + item.rating + "</th>";
-						htmlStr += "<th> ♥ " + item.wishlist + "</th></tr>";
+						htmlStr += "<tr><th class = 'span1'>" + item.storeNum + "</th>";
+						htmlStr += "<th class = 'span2'>" + item.storeName + "</th>";
+						htmlStr += "<th class = 'span3'> ★ " + item.rating + "</th>";
+						htmlStr += "<th class = 'span4'> ♥ " + item.wishlist + "</th></tr>";
 						htmlStr += "</table>";
 					});
 					
@@ -239,7 +288,7 @@ $(document).ready(function () {
             
                 // 해시태그가 중복되었는지 확인
                 if (result.length == 0) { 
-                    $("#tag-list").append("<li class='tag-item'>"+tagValue+"<span class='del-btn' idx='"+counter+"'>x</span></li>");
+                    $("#tag-list").append("<span class='tag-item'>"+tagValue+"<span class='del-btn' idx='"+counter +"'> x </span></span>");
                     addTag(tagValue);
                     self.val("");
                 } else {

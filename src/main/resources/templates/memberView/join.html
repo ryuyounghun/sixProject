@@ -63,7 +63,7 @@
 			}
 			
 			if(pw2.length < 8 || pw2.length > 16){
-				$("#text2").text("비밀번호는 8~15자리 이내로 입력해주세요.").css("color", "red");
+				$("#text2").text("비밀번호는 8~16자리 이내로 입력해주세요.").css("color", "red");
 				$("#doublePw").val("0");
 			} else if(pw2 == 0){
 				$("#text2").text("비밀번호는 공백없이 입력해주세요.").css("color", "red");
@@ -86,7 +86,7 @@
 				$("#text4").text("전화번호는 필수입력 입니다.").css("color", "red");
 				$("#phoneCheck").val("0");
 			} else if(phone.length < 10 || phone.length > 12){
-				$("#text4").text("전화번호는 11자리로 입력해주세요").css("color", "red");
+				$("#text4").text("전화번호는 11자리로 입력해주세요.").css("color", "red");
 				$("#phoneCheck").val("0");
 			} else if(kor >= 0){
 				$("#text4").text("전화번호는 숫자만 입력해야 합니다.").css("color", "red");
@@ -169,7 +169,7 @@
 					$('.id_already').show();
 					$("#memberIdCheck").val("0");
 				} else if (mdId.length < 3 || mdId.length > 13) {
-					$('.id_already').text("아이디는 3~12글자 사이로 입력해주세요.").css("color", "red");
+					$('.id_already').text("아이디는 3~13글자 사이로 입력해주세요.").css("color", "red");
 					$('.id_already').show();
 					$("#memberIdCheck").val("0");
 				} else if (num < 0 || eng < 0){
@@ -204,7 +204,7 @@
 		let pnum = $("#pinNumber").val();
 		// 핀번호 영문 대소문자 + 숫자 조합으로
 		// 한글 + 특수기호 금지
-		let nameRegExp = /^[a-zA-z0-9]{4,12}$/;
+		let nameRegExp = /^[a-zA-z0-9]{3,6}$/;
 		let kor = pnum.search(/[ㄱ-ㅎㅏ-ㅣ가-힣]/g);
 		let num = pnum.search(/[0-9]/g);
         let eng = pnum.search(/[a-z]/ig);
@@ -228,8 +228,8 @@
 					$('.id_already2').text("핀번호에는 한글을 사용할 수 없습니다.").css("color", "red");
 					$('.id_already2').show();
 					$("#pinNumberCheck").val("0");
-				} else if (pnum.length < 3 || pnum.length > 13) {
-					$('.id_already2').text("핀번호는 3~12글자 사이로 입력해주세요.").css("color", "red");
+				} else if (pnum.length < 3 || pnum.length > 6) {
+					$('.id_already2').text("핀번호는 3~6글자 사이로 입력해주세요.").css("color", "red");
 					$('.id_already2').show();
 					$("#pinNumberCheck").val("0");
 				} else if (num < 0 || eng < 0){

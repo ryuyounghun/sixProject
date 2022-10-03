@@ -7,7 +7,7 @@
 모임 게시판 관련 쿼리
  -->
  
-	<!-- 자유 게시판 글 쓰기 -->
+	<!-- 자유 게시판 글쓰기 -->
 		<insert id="insertFreeBoard" parameterType="FreeBoard">
 			INSERT INTO FREE_BOARD(
 				BOARDNUM,
