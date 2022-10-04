@@ -133,6 +133,7 @@ public class MemberController {
 	@PostMapping("/checkId")
 	@ResponseBody
 	public int checkId(@RequestParam("id") String id) {
+		log.debug("id : {}" , id);
 		int result = mService.checkId(id);
 		return result;
 	}
@@ -583,7 +584,7 @@ public class MemberController {
 			
 			mService.updateMyImage(member);
 			return "redirect:./mypage?num=" + member.getMemberNum();
-		}
+		} 
 
 		// 1001 추가
 		@GetMapping("/checkComplete")

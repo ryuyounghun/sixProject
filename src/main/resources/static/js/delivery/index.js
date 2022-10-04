@@ -6,41 +6,42 @@
 	});
 	
 	function rank() {
-		
-		$.ajax({
-			url : "storeRank",
-			type : "get",
-			success : function(data) {
-				
-				// 9월 29일 랭킹뱃지 추가작업 
+      
+      $.ajax({
+         url : "storeRank",
+         type : "get",
+         success : function(data) {
+            
+            // 9월 29일 랭킹뱃지 추가작업 
             let htmlStr = "<h1 style='text-align:center' class='rankTitle'>가게 랭킹</h1><ul>";
+            
             $.each(data, function(index, item) {
+   
                
                if(index <= 9) {
                   if ( index <=2 ){
                      
-                     htmlStr += "";
-                     htmlStr += "<li class='top3Stores'>"+  "<img src='' id='storeRank" + index + "'>  "  + "<span style='display: inline-block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 13ch;' >" + item.storeName +"</span>" + "</li>";
+                     htmlStr += "<li class='top3Stores' onClick='selectStore("+ item.storeNum+ ")'>"+  "<img src='' id='storeRank" + index + "'>  "  + "<span style='display: inline-block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 13ch;' >" + item.storeName +"</span>" + "</li>";
                   }else {
                      
-                     htmlStr += "<li class='underTop3'>" + (index+1)+"위 " +item.storeName + "</li>";
+                     htmlStr += "<li class='underTop3' onClick='selectStore("+ item.storeNum+ ")'>" + (index+1)+"위 " +item.storeName + "</li>";
                   }
                }
                
             });
-				htmlStr += "</ul>";
-				$("#storeRank").html(htmlStr);
-				
-				for ( let i =0; i<=2; i++){
-					let img_src = "/images/rank/rank"+ (i+1) + ".png";
-					document.getElementById("storeRank"+i).src = img_src;
-					document.getElementById("storeRank"+i).style.width="30px";
-					document.getElementById("storeRank"+i).style.width="30px";
-				}				
-			}
-			
-		});
-	}
+            htmlStr += "</ul>";
+            $("#storeRank").html(htmlStr);
+            
+            for ( let i =0; i<=2; i++){
+               let img_src = "/images/rank/rank"+ (i+1) + ".png";
+               document.getElementById("storeRank"+i).src = img_src;
+               document.getElementById("storeRank"+i).style.width="30px";
+               document.getElementById("storeRank"+i).style.width="30px";
+            }            
+         }
+         
+      });
+   }
 	
 	
 	function button() {

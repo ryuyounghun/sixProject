@@ -4,8 +4,9 @@
 	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
 <meta charset="UTF-8">
+<link rel="shortcut icon" type="image/x-icon" href="/images/logo.jpg">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<title>Insert title here</title>
+<title>Group Up</title>
 <link rel="stylesheet" href="/css/community/communityRead.css">
 <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
@@ -51,9 +52,7 @@
 				<a href="/" class="header-logo" >
 					ㄹ고
 				</a>
-				<a th:href="@{/delivery/index}" class="header-toAnother" >
-					배달로~
-				</a>
+				
 				
 				<ui class="header-logMenuList"> <!-- 로그인 및 로그아웃 링크 -->
 					<li sec:authorize ="not isAuthenticated">
@@ -73,6 +72,11 @@
 					</li>
 					<li sec:authorize="isAuthenticated">
 						<a th:href="|@{/member/mypage}?num=${member.memberNum}|"> 회원정보 </a>
+					</li>
+					<li>
+						<a th:href="@{/delivery/index}">
+							배달
+						</a>
 					</li>
 				</ui>
 

@@ -3,8 +3,8 @@
 		xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
-
+<title>Group Up</title>
+<link rel="shortcut icon" type="image/x-icon" href="/images/logo.jpg">
 <script src="/js/delivery/index.js"></script>
 <link rel="stylesheet" href="/css/delivery/deliveryRead.css">
 <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
@@ -121,8 +121,9 @@
 					th:href="@{/member/join}"> 회원가입 </a></li>
 				<li sec:authorize="isAuthenticated"><a th:href="@{/logout}">
 						로그아웃 </a></li>
-				<li sec:authorize="isAuthenticated"><a
-					th:href="@{/member/mypage}"> 회원정보 </a></li>
+				<li sec:authorize="isAuthenticated">
+						<a th:href="|@{/member/mypage}?num=${member.memberNum}|"> 회원정보 </a>
+					</li>
 				<li>
 					<a th:href="@{/community/index}" class="header-toAnother"> 커뮤니티
 					</a>

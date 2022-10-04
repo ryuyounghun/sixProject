@@ -29,13 +29,12 @@ public class ClassBoardServiceImpl implements ClassBoardService{
 		
 		int total= cDAO.countAllClassBoard(map);
 		
-		
-		
 		PageNavigator navi =
 				new PageNavigator(pagePerGroup, countPerPage, Page, total);
 		
 		return navi;
 	}
+	
 	@Override
 	public PageNavigator getPageNavigator(int pagePerGroup, int countPerPage, int Page, String searchWord) {
 		
@@ -54,8 +53,6 @@ public class ClassBoardServiceImpl implements ClassBoardService{
 		// TODO Auto-generated method stub
 		return cDAO.selectAllClassBoardNoParameter();
 	}
-	
-	
 	
 	
 	@Override

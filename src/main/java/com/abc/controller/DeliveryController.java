@@ -124,7 +124,7 @@ public class DeliveryController {
 		log.debug("store : {} ", store);
 		dService.insertStore(store);
 		
-		return "redirect:./index";
+		return "redirect:./sellerPage";
 	}
 	
 	@GetMapping("/storeList")
@@ -209,7 +209,7 @@ public class DeliveryController {
 		}
 		dService.insertItem(item);
 		
-		return "redirect:./index";
+		return "redirect:./sellerPage";
 	}
 	
 	@GetMapping("/itemListAjax")
@@ -575,6 +575,7 @@ public class DeliveryController {
 		return wish;
 	}
 	
+	// 1004 추가
 	@GetMapping("/sellerPage")
 	public String sellerPage(Model model,
 			@AuthenticationPrincipal UserDetails user) {
@@ -582,8 +583,10 @@ public class DeliveryController {
 			List<Store> storeList = dService.selectMemberOne(member.getMemberNum());
 			
 			model.addAttribute("storeList", storeList);
-		
-		
+			//
+			model.addAttribute("member", member);
+			//
+			
 		return d + "/sellerPage";
 	}
 	
@@ -654,12 +657,16 @@ public class DeliveryController {
 	}
 	
 	
-	// 9월 29일 작업
+	// 9월 29일 작업 1004 추가
 		@GetMapping("/searchResultScroll")
 		public String searchResultScroll(Model model,
 				@RequestParam(name = "page", defaultValue="1") int page,
-				String searchWord) {
-			
+				String searchWord,
+				@AuthenticationPrincipal UserDetails user) {
+			//
+			Member member = mService.selectOneMember(user.getUsername());
+			model.addAttribute("member", member);
+			//
 				PageNavigator navi =  dService.getPageNavigator(
 						pagePerGroup, countPerPage, page, searchWord);
 			List<Store> sList = null;

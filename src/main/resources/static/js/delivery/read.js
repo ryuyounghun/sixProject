@@ -28,8 +28,9 @@ $(document).ready(function() {
 		resultMenu();
 		printReview();
 		loadWish();
-		loadMap();
+		$("#infoButton").click(function() { loadMap(); });
 		
+		//map.relayout();
 	});
 	
 	function loadWish(){
@@ -129,14 +130,14 @@ $(document).ready(function() {
 							htmlStr += "<tr><th>" + data.totalAmount + "원</th></tr>";
 							htmlStr += "</table>";
 							
-							
+							$("#checkBtn").hide();
 							$("#receiptModal").html(htmlStr);
 							$("#leftoverPoint").show();
 							leftoverPoint();
 							$("#staticBackdrop").modal('show');
 						} else {
 							htmlStr = "<h3>잔액이 모자랍니다.</h3>"
-							
+							$("#checkBtn").hide();
 							$("#receiptModal").html(htmlStr);
 							$("#staticBackdrop").modal('show');
 						}

@@ -21,11 +21,15 @@ public class MainController {
 	@Autowired
 	private MemberService mService;
 	
-	
+	// 1004 추가
 	@GetMapping("/")
-	public String index() {
+	public String index(Model model,
+			@AuthenticationPrincipal UserDetails user) {
 		log.debug("index실행 ");
-		
+		if (user != null) {
+			Member member = mService.selectOneMember(user.getUsername());
+			model.addAttribute("member", member);
+		}
 		
 		return "/index";
 	}

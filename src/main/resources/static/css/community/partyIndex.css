@@ -10,11 +10,6 @@ li{
 	list-style: none;
 
 }
-
-#map{
-		width:300px;
-		height:200px;
-	}
 /*
 	헤더css
 */
@@ -57,11 +52,12 @@ li{
 /* 
 	본문 섹션 css
  */
+ 
  .section-container{
  	width : 100%;
- 	height : 72.3vh;
  	margin-bottom: 50px;
  	margin-top: 30px;
+ 	min-height: 90vh;
  }
  .searchBar-wrapper{
     width :  100%;
@@ -119,31 +115,23 @@ li{
 	
 } 
 .aside-left a:hover{
- 	color : black;
  	text-decoration: underline;
 	font-weight: bold;
  	font-size: 20px;
 } 
-.aside-right{
+ .aside-right{
     position : absolute;
     background-color: #874C62;
     border : 5px solid #C98474;
     color : white;
     width : 15%;
+    height: 60vh;
     right : 3%;
-    
+    cursor: pointer;
  }
  ul {
     list-style: none;
  }
- /*
- .rankTitle::after {
-    position : absolute;
-    content:"---------------------------";
-    top :40px;
-    left : 10px;
- }
-   */
  .rankTitle{
     padding-bottom : 8px;
     border-bottom: 3px dashed #C98474;
@@ -152,15 +140,13 @@ li{
     position : absolute;
     display : inline-block;
     font-weight: bold;
-    margin-top:5px;  
-     
+    margin-top:5px;   
 }
 .underTop3 {
-    cursor : pointer;
+   margin-top : 5px;
 }
 .first1 {
 	color : black;
-	padding : 10px;
 }
  .aside-center{
  	position:absolute;
@@ -173,54 +159,24 @@ li{
  	justify-content: center; 
  }
 
-.aside-center .storeThumbnail{
-	border : 1px solid grey;
-	margin-bottom : 20px;
-	width: inherit;
-	height: 150px;
+table {
+	margin : 25px;
+	width:150px;
+	border : 1px solid black;
+	display:inline-block;
+	cursor: pointer;
+}
+ /* 1004 세련 수정함  */
+#card {
+    display: inline-flex;
+    margin: 35px;
 }
 
-.brandImg{
-	position : absolute;
-	margin-left : 10px;
-	width : 100px;
-	height: 90px;
-	top : 50px;
-}
-.storeInfo{
-	margin-left: 130px;	
-}
-.menuAndReview {
-	text-align: center;
-}
-.menuAndReviewList{
-	margin : 0;
-	padding : 0;
-	list-style: none;
-	display: flex;
-	justify-content: space-between;
-	
-}
-.menuAndReviewList li:before {
-  display: inline-block;
-  width: 1px;
-  content: '';
-}
-.menuAndReviewList li:after {
-  display: inline-block;
-  width: 1px;
-  content: '';
-}
-.menuAndReviewList li  {
-	border : 1px solid grey;
-	flex-grow: 1;
-	padding : 10px;
-	cursor:  pointer;
-}
-.menuAndReviewList li:hover {
-	background-color : #F0F0F0;
-}
-.clicked {
-	background-color : #F0F0F0;
+#card .tag{
+	display : block !important; 
 }
 
+.card img {
+	width : 285px;
+	height : 200px;
+}

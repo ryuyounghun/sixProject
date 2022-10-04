@@ -3,11 +3,12 @@
 	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Group Up</title>
+<link rel="shortcut icon" type="image/x-icon" href="/images/logo.jpg">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
 
-<link rel="stylesheet" href="/css/community/freeIndex.css">
+<link rel="stylesheet" href="/css/community/partyIndex.css">
 <link rel="stylesheet" href="/css/style.css">
 <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 
@@ -93,13 +94,6 @@
 	}
 </script>
 
-<style>
-	table {
-		width:150px;
-		border : 1px solid black;
-		margin : 30px;
-	}
-</style>
 
 </head>
 <body>
@@ -119,7 +113,7 @@
 						<a th:href="|@{/member/mypage}?num=${member.memberNum}|"> 회원정보 </a>
 					</li>
 					<li>
-						<a th:href="@{/delivery/index}" class="header-toAnother"> 배달</a>
+						<a th:href="@{/delivery/index}"> 배달</a>
 					</li>
 				</ui>
 
@@ -189,10 +183,11 @@
 				
 				<div class="aside-center">
 					<div class="section-center">
-						<table th:each = "list : ${cbList}" th:onclick="|goClass(${list.classNum});|">
+						
+						<!-- <table th:each = "list : ${cbList}" th:onclick="|goClass(${list.classNum});|">
 							<tr>
 								<th>
-									<img th:src="@{partyDisplay(num = ${list.classNum})}" width="80px">
+									<img th:src="@{partyDisplay(num = ${list.classNum})}" width="145px" height="60px;">
 								</th>
 							</tr> 
 							<tr>
@@ -203,11 +198,33 @@
 								</th>
 							</tr>
 							<tr>
-								<th th:text="${list.destination}">
+								<th th:text="${list.destination}"
+								style="display: inline-block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 13ch;">
 								</th>
 							</tr>
-						</table>
+						</table> -->
+					
+					
+						<div class="card" id="card" style="width: 18rem;" th:each = "list : ${cbList}" th:onclick="|goClass(${list.classNum});|">
+						  <img th:if="${list.savedFile == null}" src="/images/logo_height.png" class="card-img-top">
+						  <img th:if="${list.savedFile != null}" th:src="@{partyDisplay(num = ${list.classNum})}" class="card-img-top">
+						  <div class="card-body">
+						    <h5 class="card-title" th:text="${list.title}">Card title</h5>
+						    <p  class="card-text tag" th:text="${list.content}"
+						    data-bs-toggle="tooltip" data-bs-placement="top"
+							        data-bs-custom-class="custom-tooltip"
+							        th:data-bs-title="${list.content}"
+						    style="display: inline-block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 18ch;"></p>
+						 	<p class="card-text tag" th:if = "${list.classTag == null}">...</p>
+						 	<p  class="card-text tag" th:if = "${list.classTag != null}" th:text = "${list.classTag}"
+						 	data-bs-toggle="tooltip" data-bs-placement="top"
+							        data-bs-custom-class="custom-tooltip"
+							        th:data-bs-title="${list.classTag}"
+						 	style="display: inline-block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 18ch;"></p>
+				 	 	  </div>
+						</div>
 					</div>
+					
 					<input type="button" value="글쓰기" class="write-btn" onclick="checkJoinedParty();">
 					
 					<div id="navigation">
@@ -257,6 +274,8 @@
 	function goClass(classNum) {
 		location.href="read?num=" + classNum;
 	}
+	const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+	const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
 </script>
 </body>
 </html>

@@ -3,7 +3,8 @@
 	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Group Up</title>
+<link rel="shortcut icon" type="image/x-icon" href="/images/logo.jpg">
 <link rel="stylesheet" href="/css/delivery/sellerPage.css">
 <link rel="stylesheet" href="/css/style.css">
 
@@ -180,7 +181,7 @@
 						</a>
 					</li>
 					<li sec:authorize="isAuthenticated">
-						<a th:href ="@{/member/mypage}">
+						<a th:href="|@{/member/mypage}?num=${member.memberNum}|">
 							회원정보
 						</a>
 					</li>

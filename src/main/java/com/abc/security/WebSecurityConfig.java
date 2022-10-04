@@ -34,7 +34,15 @@ public class WebSecurityConfig {
 		hs.csrf().disable() //인증방법 무효 
 		.authorizeRequests() // 권한 또는 인증 요청
 		.antMatchers(
-				"/**",
+				"/index",
+				"/member/join",
+				"/member/checkId",
+				"/member/checkPnum",
+				"/member/login",
+				"/member/findIdPw",
+				"/member/socialIdCheck",
+				"/member/kakaoSignUp",
+				"/member/naverSignUp",
 				"/images/**",
 				"/css/**",
 				"/js/**"

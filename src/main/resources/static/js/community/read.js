@@ -257,8 +257,13 @@ $(document).ready(function() {
 
 			//return getTimeHTML(polyline.getLength());//미터단위로 길이 반환;
 			console.log("길이"+polyline.getLength());
-			
-			$("#m").text(polyline.getLength()+"미터");
+			let mt = polyline.getLength().toFixed(0);
+			if (mt > 1000) {
+				mt = mt / 1000; 
+				$("#m").text("목적지까지 " + mt +"KM입니다.");				
+			} else if (mt < 1000) {
+				$("#m").text("목적지까지 " + mt +"M입니다.");
+			}
 			return polyline.getLength();			    
 	}	
 	

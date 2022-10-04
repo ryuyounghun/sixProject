@@ -82,6 +82,9 @@ public class ComunnityController{
 	@Value("${user.board.page}")
 	private int countPerPage;
 
+	// 1004 추가 page당 글 수 classWrite
+	private int classCountPerPage = 2;
+	
 	// 업로드 패스
 	@Value("${spring.servlet.multipart.location}") // 설정파일(properties)의 속성의 값을 가지고 오고 싶을 때 사용할 수 있는 annotation
 	private String uploadPath;
@@ -180,11 +183,13 @@ public class ComunnityController{
 		return c  + "read"; 
 	}
     
+	// 1004 추가
 	@GetMapping("/classWrite")
-	public String classWrite() {
+	public String classWrite(Model model,
+			@AuthenticationPrincipal UserDetails user) {
 		log.debug("classWrite() 실행");
-		
-		
+		Member member = mService.selectOneMember(user.getUsername());
+		model.addAttribute("member", member);
 		return c + "classWrite";
 	}
 
@@ -268,8 +273,13 @@ public class ComunnityController{
 	}
 	
 	@GetMapping("/freeWrite")
-	public String freeWrite() {
+	public String freeWrite(@AuthenticationPrincipal UserDetails user,
+			Model model) {
 		log.debug("freeWrite() 실행");
+		Member member = mService.selectOneMember(user.getUsername());
+		
+		model.addAttribute("member", member);
+		
 		return c + "freeWrite";
 	}
 	
@@ -458,8 +468,8 @@ public class ComunnityController{
 		log.debug(searchWord);
 		List<ClassBoard> cbList = null;
 		PageNavigator navi = cService.getPageNavigator(
-				pagePerGroup, 
-				countPerPage,
+				pagePerGroup, // 1004 수정
+				classCountPerPage,
 				page,
 				searchWord);
 		log.debug("페이지 : {}", navi.getCurrentPage());
@@ -691,9 +701,10 @@ public class ComunnityController{
 		return new ResponseEntity<Resource>(resource, header, HttpStatus.OK);
 	}
 	
-	// 0929 추가 자유게시판 
+	// 0929 추가 자유게시판 1004 추가
 	@GetMapping("/updateFreeWrite")
-	public String updateFreeWrite(int boardNum, Model model) {
+	public String updateFreeWrite(int boardNum, Model model,
+			@AuthenticationPrincipal UserDetails user) {
 		FreeBoard fBoard = fService.selectOneFreeBoard(boardNum);
 		log.debug("fBoard : {}", fBoard);
 		model.addAttribute("fBoard",fBoard);
@@ -702,6 +713,11 @@ public class ComunnityController{
 		log.debug("fileList : {}", fileList);
 		
 		model.addAttribute("fileList", fileList);
+		
+		//
+		Member member = mService.selectOneMember(user.getUsername());
+		model.addAttribute("member", member);
+		//
 		
 		return c + "updateFreeWrite";
 	}

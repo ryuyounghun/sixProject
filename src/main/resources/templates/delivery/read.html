@@ -3,7 +3,8 @@
 	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Group Up</title>
+<link rel="shortcut icon" type="image/x-icon" href="/images/logo.jpg">
 <link rel="stylesheet" href="/css/delivery/deliveryRead.css">
 <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 <script src="/js/delivery/read.js"></script>
@@ -34,6 +35,8 @@
 	  height: auto;
 	  object-fit: cover;
 	}
+	
+	
 </style>
 
 </head>
@@ -191,7 +194,7 @@
 						</div>
 						<div id="info">
 							<h3>가게정보</h3>
-							<div id="map" style="width:300px;height:200px;"></div>
+							<div id="map"></div>
 							<p th:text="${store.address}" id="storeAddress"></p><br>
 							<p th:text="${store.phone}"></p>
 						</div>
@@ -211,7 +214,7 @@
 	  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
 	    <div class="modal-content">
 	      <div class="modal-header">
-	        <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+	        <h5 class="modal-title" id="staticBackdropLabel"></h5>
 	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 	      </div>
 	      <div>
@@ -238,12 +241,14 @@
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=6e7c79dc40e0d0df1bb9a7bb0628d68a&libraries=services"></script>	
 <script type="text/javascript">
 
+
+
 	$("li[id*='Button']").on("click", function(){
 		$("li[id*='Button']").removeClass("clicked");
 		$(this).addClass("clicked");
 	});
 
-
+	
 
 	function loadMap() {
 		let address = $("#storeAddress").text();
@@ -256,19 +261,19 @@
 				let b = data.documents[0];
 				console.log(b);
 				
-				let x = b.y;
-				let y = b.x;
+				let mx = b.y;
+				let my = b.x;
 				
 				var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
 				mapOption = { 
-				    center: new kakao.maps.LatLng(x, y), // 지도의 중심좌표
+				    center: new kakao.maps.LatLng(mx, my), // 지도의 중심좌표
 				    level: 3 // 지도의 확대 레벨
 				};
 				
 				var map = new kakao.maps.Map(mapContainer, mapOption);
 				
 				//마커가 표시될 위치입니다 
-				var markerPosition  = new kakao.maps.LatLng(x, y); 
+				var markerPosition  = new kakao.maps.LatLng(mx, my); 
 				
 				//마커를 생성합니다
 				var marker = new kakao.maps.Marker({
@@ -279,7 +284,7 @@
 				marker.setMap(map);
 				
 				var iwContent = '<div style="padding:5px;">' + name + '</div>', // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
-				iwPosition = new kakao.maps.LatLng(x, y); //인포윈도우 표시 위치입니다
+				iwPosition = new kakao.maps.LatLng(mx, my); //인포윈도우 표시 위치입니다
 				
 				//인포윈도우를 생성합니다
 				var infowindow = new kakao.maps.InfoWindow({
@@ -293,6 +298,7 @@
 			}
 		});
 	}
+	
 </script>
 
 </body>

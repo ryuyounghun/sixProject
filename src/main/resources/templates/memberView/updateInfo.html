@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@500&display=swap" rel="stylesheet">
-<title>회원정보 수정</title>
+<title>Group Up</title>
  <link rel="shortcut icon" type="image/x-icon" href="/images/logo.jpg">
 <link rel = "stylesheet" href = "/css/member/updateInfo_style.css">
 <link rel = "stylesheet" href = "/css/style.css">
@@ -275,9 +275,7 @@
 						</a>
 					</li>
 					<li sec:authorize="isAuthenticated">
-						<a th:href ="@{/member/updateInfo}">
-							회원정보
-						</a>
+						<a th:href="|@{/member/mypage}?num=${member.memberNum}|"> 회원정보 </a>
 					</li>
 				</ui>
 			</div>

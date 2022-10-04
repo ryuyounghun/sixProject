@@ -59,6 +59,12 @@ $(document).ready(function(){
 		$("#btnReply_update").hide();
 	});
 	
+	// 1004 추가
+	function goStoreRead(storeNum) {
+		location.href = "/delivery/read?num=" + storeNum;
+	}
+	
+	
 	
 	// 0928 레벨별 뱃지추가하기  1003 추가
 	function badge(){
@@ -250,7 +256,7 @@ $(document).ready(function(){
 	}
 	
 	
-	//0924 추가
+	//0924 추가  1004 수정
 	function wishList() {
 		$("#couponList").hide();
 		$("#buyCoupon").hide();
@@ -277,9 +283,9 @@ $(document).ready(function(){
 					$.each(data, function(index, item) {
 						// 0930 세련 수정함 타이틀1(수정예정)
 						// 1001 세련 img 높이 설정 추가
-						htmlStr += "<div class='title1'>";
+						htmlStr += "<div class='title1' onclick='goStoreRead(" + item.storeNum + ")'>";
 						htmlStr += "<span class = 'thrid1'><img src='storeDisplay?num=" + item.storeNum + "' width='80px;' height='45px;'></span>"; 
-						htmlStr += "<span class = 'thrid1'><a href='/delivery/read" + "?num=" + item.storeNum + "'>" + item.storeName + "</a></span>";
+						htmlStr += "<span class = 'thrid1'>" + item.storeName + "</a></span>";
 						htmlStr += "<span class = 'thrid1'> ★ " + item.rating + "</span>";
 						htmlStr += "<span class = 'thrid1'> ♥ " + item.wishlist + "</span>";
 						htmlStr += "</div>"
