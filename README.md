@@ -35,7 +35,7 @@ Framework
 
 API
 * KAKAO 地図API
-* 道路名住所API
 * KAKAO LOCALAPI
-* 短期予報API
 * KAKAO LOGINAPI / NAVER LOGINAPI
+* 短期予報API
+* 道路名住所API
