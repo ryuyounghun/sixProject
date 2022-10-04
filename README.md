@@ -34,8 +34,8 @@ Framework
 * Bootstrap
 
 API
-* KAKAO 地図API
-* KAKAO LOCALAPI
-* KAKAO LOGINAPI / NAVER LOGINAPI
-* 短期予報API
-* 道路名住所API
+* KAKAO 地図
+* KAKAO LOCAL
+* KAKAO LOGIN / NAVER LOGIN
+* 短期予報
+* 道路名住所
