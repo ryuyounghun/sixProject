@@ -133,5 +133,19 @@
 		DELETE CLASS_BOARD
 		WHERE CLASSNUM = #{classNum}
 	</delete>
+	
+	<!-- 1004 추가 -->
+	<update id="updateViewCount" parameterType="int">
+		UPDATE CLASS_BOARD
+		SET VIEWCOUNT = VIEWCOUNT + 1
+		WHERE CLASSNUM = #{classNum}
+	</update>
+	
+	<!-- 1004 추가 -->
+	<select id="selectClassBoardRank" resultType="ClassBoard">
+		SELECT * FROM
+		CLASS_BOARD
+		ORDER BY VIEWCOUNT DESC
+	</select>
 </mapper>
 

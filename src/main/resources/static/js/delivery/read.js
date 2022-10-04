@@ -1,11 +1,12 @@
 
 $(document).ready(function() {
+		
 		$("#searchWord").on("keyup", function() { load(); });
 		
 		$("#menuButton").on("click", function() { 
-			$("#menu").show();
 			$("#info").hide();
 			$("#review").hide();
+			$("#menu").show();
 		});
 		
 		$("#reviewButton").on("click", function() { 
@@ -16,8 +17,8 @@ $(document).ready(function() {
 		
 		$("#infoButton").on("click", function() { 
 			$("#menu").hide();
-			$("#info").show();
 			$("#review").hide();
+			$("#info").show();
 		});
 		
 		$("#wish").on("click", function() { clickWish(); });
@@ -28,9 +29,9 @@ $(document).ready(function() {
 		resultMenu();
 		printReview();
 		loadWish();
-		$("#infoButton").click(function() { loadMap(); });
+		$("#infoButton").click(function() {loadMap();});
 		
-		//map.relayout();
+		
 	});
 	
 	function loadWish(){
@@ -100,8 +101,8 @@ $(document).ready(function() {
 	function allOrder(orderData) {
 		let storeNum = getParameterByName('num');
 		let loginUser = $("#loginUser").val();
-		let htmlStr = "";
 		$("#leftoverPoint").hide();
+		let htmlStr = "";
 		$.ajax({
 			url : "checkAddress",
 			type : "get",
@@ -130,6 +131,7 @@ $(document).ready(function() {
 							htmlStr += "<tr><th>" + data.totalAmount + "원</th></tr>";
 							htmlStr += "</table>";
 							
+							
 							$("#checkBtn").hide();
 							$("#receiptModal").html(htmlStr);
 							$("#leftoverPoint").show();
@@ -137,6 +139,7 @@ $(document).ready(function() {
 							$("#staticBackdrop").modal('show');
 						} else {
 							htmlStr = "<h3>잔액이 모자랍니다.</h3>"
+							
 							$("#checkBtn").hide();
 							$("#receiptModal").html(htmlStr);
 							$("#staticBackdrop").modal('show');
@@ -181,9 +184,9 @@ $(document).ready(function() {
 			data : {"storeNum" : storeNum},
 			success : function(data) {
 				
-				let htmlStr = "<h1>총금액</h1>";
-				htmlStr += "<h2>" + data + "원</h2>";
-				htmlStr += "<input type='button' onclick='allOrder(" + data + ")' value='주문'>";
+				let htmlStr = "<h1 style='border-top: 2px solid #C98474' >총금액</h1>";
+				htmlStr += "<input type='button' onclick='allOrder(" + data + ")' value='주문' class='order-btn'>";
+				htmlStr += "<h2>" + data.toLocaleString('ko-kr') + "원</h2>";
 				
 				$(".aside-right-allPay").html(htmlStr);
 			}
@@ -286,20 +289,25 @@ $(document).ready(function() {
 				console.log(data);
 				
 				let htmlStr = "<table>";
+					htmlStr += "<tr class='receiptTitle-rightSide'>"
+					htmlStr += "<td>메뉴명</td>";
+					htmlStr += "<td style='text-align:center'>가격</td>";
+					htmlStr += "<td colspan='3' style='text-align:center'>수량</td>";
+					htmlStr += "</tr>";
+					
 				$.each(data, function(index, item) {
 					
-					htmlStr += "<tr>"
-					htmlStr += "<td colspan='5'>" + item.itemName + "</td>";
-					htmlStr += "</tr><tr>"; 
-					htmlStr += "<td><input type='button' value='X' onclick='deleteOrder(" + item.orderNum + ")'></td>";
-					htmlStr += "<td>" + item.itemPrice + "</td>";
+					htmlStr += "<tr class='receiptInfo-rightSide'>"; 
+					htmlStr += "<td  style='text-align:center'>" + item.itemName + "</td>";
+					htmlStr += "<td  style='text-align:center'>" + item.itemPrice + "원</td>";
 					htmlStr += "<td><input type='button' value='-' onclick='minus(" + item.orderNum + ")'></td>";
-					htmlStr += "<td>" + item.quantity + "</td>";
+					htmlStr += "<td style='text-align:center'>" + item.quantity + "개</td>";
 					htmlStr += "<td><input type='button' value='+' onclick='plus(" + item.orderNum + ")'></td>";
+					htmlStr += "<td><input type='button' value='X' onclick='deleteOrder(" + item.orderNum + ")'></td>";
 					htmlStr += "</tr>";
+			
 				});
 					htmlStr += "</table>"
-				
 				
 				$(".aside-right-order").html(htmlStr);
 				orderPrice(); 
@@ -325,14 +333,25 @@ $(document).ready(function() {
 				let htmlStr = "";
 				
 				$.each(data, function(index, item) {
-					htmlStr += "<table border='1' class='menuTable'>";
+					htmlStr += "<table class='menuTable'>";
 					htmlStr += "<tr>"; 
-					htmlStr += "<td><img src='itemDisplay?num=" + item.itemNum + "' width='80px;'></td>"; 
-					htmlStr += "<td><a>" + item.itemName + "</a></td>";
-					htmlStr += "<td>" + item.itemPrice + "</td>";
-					htmlStr += "<td><input type='button' value='주문' id='item" + item.itemNum + "' onclick='checkItem(" + item.itemNum + ");'></td>";
+					htmlStr += "<td class='menu-info'> "+  item.itemName + "</td>";
+					htmlStr += "</tr>"; 
+					
+					htmlStr += "<tr>"; 
+					htmlStr += "<td class='menu-info' style='color: #999999;'>" + item.itemContent + "</td>";
+					htmlStr += "</tr>"; 
+					
+					htmlStr += "<tr>"; 
+					htmlStr += "<td class='menu-info'>" + item.itemPrice.toLocaleString('ko-KR') + "원</td>";
+					htmlStr += "</tr>"; 
+					
+					htmlStr += "<tr>"; 
+					htmlStr += "<td><img alt='구매하기' src='/images/deliveryImages/cart.png'class='cart-icon'  id='item" + item.itemNum + "' onclick='checkItem(" + item.itemNum + ");'></td>";
+					htmlStr += "<td><img src='itemDisplay?num=" + item.itemNum + "' width='80px;' class='menu-img'></td>"; 
 					htmlStr += "</tr>";
 					htmlStr += "</table>"
+					htmlStr += "<hr>"
 				});
 				
 				

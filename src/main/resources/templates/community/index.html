@@ -11,133 +11,7 @@
 <link rel="stylesheet" href="/css/community/index.css">
 <link rel="stylesheet" href="/css/style.css">
 <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
-   <script type="text/javascript">
-   		$(document).ready(function() {
-   			$("#party").hide();
-   			party();
-   			realtimeboard();
-   		});
-   		
-   		
-   		function goClass(classNum) {
-   			location.href="read?num=" + classNum;
-   		}
-   		
-   		
-   		
-   		// 1002 추가
-   		function goFbRead(boardNum) {
-   			location.href="fbRead?num=" + boardNum;
-   		}
-   		
-   		// 0930 추가 1002 추가
-   		function realtimeboard() {
-   			$.ajax({
-   				url : "realtimeboard",
-   				type : "get",
-   				success : function(data) {
-   					
-					let htmlStr = "<h1 style='text-align:center' class='rankTitle'>조회수 순위</h1><ul>";
-					
-					$.each(data, function(index, item) {
-						if(index <= 9) {
-			                  if ( index <=2 ){
-			                     
-			                     htmlStr += "";
-			                     htmlStr += "<li class='top3Stores' onclick='goFbRead(" + item.boardNum + ")'>"+  "<img src='' id='realtime" + index + "'>  "  + "<span style='display: inline-block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 13ch;' >" + item.title +"</span>" + "</li>";
-			                  }else {
-			                     
-			                     htmlStr += "<li class='underTop3' onclick='goFbRead(" + item.boardNum + ")'>" + (index+1)+"위 " +item.title + "</li>";
-			                  }
-			               }
-					});
-					htmlStr += "</ul>";
-	   				$("#realtime").html(htmlStr);
-	   				
-	   				for ( let i =0; i<=2; i++){
-						let img_src = "/images/rank/rank"+ (i+1) + ".png";
-						document.getElementById("realtime"+i).src = img_src;
-						document.getElementById("realtime"+i).style.width="30px";
-						document.getElementById("realtime"+i).style.width="30px";
-					}	
-   				}
-   			});
-   			
-   		}
-   		
-   		
-   		
-   		function checkJoinedParty() {
-   			let memberId = $("#loginUser").val();
-   			console.log(memberId);
-   			
-   			$.ajax({
-   				url : "checkJoinedParty",
-   				type : "get",
-   				data : {"memberId" : memberId},
-   				success : function(data) {
-   					console.log(data);
-   					if(data == "") {
-	   					location.href='classWrite';
-   					} else {
-   						alert("이미 참여한 파티가 있습니다.");
-   					}
-   				}
-   			});
-   		}
-   		
-   		// 0923 추가
-   		function party() {
-   			let memberId = $("#loginUser").val();
-   			
-   			$.ajax({
-   				url : "checkJoinedParty",
-   				type : "get",
-   				data : {"memberId" : memberId},
-   				success : function(data) {
-   					console.log(data);
-   					
-   					if(data != "") {
-   						$("#party").show();
-   			   			
-		   				realTimeParty();
-		   				fullParty();
-   			   				
-   			   		
-   					} 
-   				}
-   			});
-   		}
-   		
-   		// 0922 추가
-   		function realTimeParty() {
-   			
-   			$.ajax({
-   				url : "realTimeParty",
-   				type : "get",
-   				success : function(data) {
-   					console.log(data.length);
-   					htmlLength =  data.length;
-   					
-   					$("#realTimeParty").text(data.length);
-   				}
-   			});
-   		}
-   		
-   		// 0922 추가
-   		function fullParty() {
-   			
-   			$.ajax({
-   				url : "fullParty",
-   				type : "get",
-   				success : function(data) {
-   					console.log(data);
-   					$("#partyTitle").text(data.title);
-   					$("#fullParty").text(data.totalMember);
-   				}
-   			});
-   		}
-   </script>
+  
 </head>
 <body>
 	<div id="headerAndSection-wrapper">
@@ -241,6 +115,9 @@
 											<td th:text="${list.nickname}"></td>
 											<td class="btilte">
 												<span th:text="${list.title}"
+													data-bs-toggle="tooltip" data-bs-placement="top"
+										        	data-bs-custom-class="custom-tooltip"
+										       		th:data-bs-title="${list.title}"
 													style="display: inline-block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 13ch;">
 												</span>
 											</td>
@@ -272,6 +149,9 @@
 											 -->
 											<td class="btilte">
 												<span th:text="${list.title}"
+													data-bs-toggle="tooltip" data-bs-placement="top"
+										        	data-bs-custom-class="custom-tooltip"
+										       		th:data-bs-title="${list.title}"
 													style="display: inline-block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 13ch;">
 												</span>
 											</td>
@@ -290,6 +170,114 @@
 	</div>
 
 	<footer> </footer>
-	
+	 <script type="text/javascript">
+   		$(document).ready(function() {
+   			$("#party").hide();
+   			party();
+   			realtimeboard();
+   		});
+   		
+   		const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+   		const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+   		
+   		function goClass(classNum) {
+   			location.href="read?num=" + classNum;
+   		}
+   		
+   		
+   		
+   		// 1002 추가
+   		function goFbRead(boardNum) {
+   			location.href="fbRead?num=" + boardNum;
+   		}
+   		
+   		// 0930 추가 1002 추가
+   		function realtimeboard() {
+   			$.ajax({
+   				url : "realtimeboard",
+   				type : "get",
+   				success : function(data) {
+   					
+					let htmlStr = "<h1 style='text-align:center' class='rankTitle'>조회수 순위</h1><ul>";
+					
+					$.each(data, function(index, item) {
+						if(index <= 9) {
+			                  if ( index <=2 ){
+			                     
+			                     htmlStr += "";
+			                     htmlStr += "<li class='top3Stores' onclick='goFbRead(" + item.boardNum + ")'>"+  "<img src='' id='realtime" + index + "'>  "  + "<span style='display: inline-block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 13ch;' >" + item.title +"</span>" + "</li>";
+			                  }else {
+			                     
+			                     htmlStr += "<li class='underTop3' onclick='goFbRead(" + item.boardNum + ")'>" + (index+1)+"위 " +item.title + "</li>";
+			                  }
+			               }
+					});
+					htmlStr += "</ul>";
+	   				$("#realtime").html(htmlStr);
+	   				
+	   				for ( let i =0; i<=2; i++){
+						let img_src = "/images/rank/rank"+ (i+1) + ".png";
+						document.getElementById("realtime"+i).src = img_src;
+						document.getElementById("realtime"+i).style.width="30px";
+						document.getElementById("realtime"+i).style.width="30px";
+					}	
+   				}
+   			});
+   			
+   		}
+   		
+   		
+   		// 0923 추가
+   		function party() {
+   			let memberId = $("#loginUser").val();
+   			
+   			$.ajax({
+   				url : "checkJoinedParty",
+   				type : "get",
+   				data : {"memberId" : memberId},
+   				success : function(data) {
+   					console.log(data);
+   					
+   					if(data != "") {
+   						$("#party").show();
+   			   			
+		   				realTimeParty();
+		   				fullParty();
+   					} 
+   				}
+   			});
+   		}
+   		
+   		// 0922 추가
+   		function realTimeParty() {
+   			
+   			$.ajax({
+   				url : "realTimeParty",
+   				type : "get",
+   				success : function(data) {
+   					console.log(data.length);
+   					htmlLength =  data.length;
+   					
+   					$("#realTimeParty").text(data.length);
+   				}
+   			});
+   		}
+   		
+   		// 0922 추가
+   		function fullParty() {
+   			
+   			$.ajax({
+   				url : "fullParty",
+   				type : "get",
+   				success : function(data) {
+   					console.log(data);
+   					$("#partyTitle").text(data.title);
+   					$("#fullParty").text(data.totalMember);
+   				}
+   			});
+   		}
+   		
+   		
+   </script>
 </body>
 </html>

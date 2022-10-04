@@ -30,4 +30,9 @@ public interface ClassBoardService {
 	public ClassRoom selectClassRoomByMemberNumAndClassNum(int memberNum, int classNum);
 	public int withdrawalParty(int memberNum, int classNum);
 	public ClassRoom selectClassRoomByMemberNum(int memberNum);
+	
+	
+	// 1004 추가
+	public int updateViewCount(int classNum);
+	public List<ClassBoard> selectClassBoardRank();
 }

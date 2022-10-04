@@ -129,15 +129,15 @@ $(document).ready(function() {
 			type : "get",
 			data : {"classNum" : classNum},
 			success : function(data) {
-				console.log(data);
+				console.log(data.memberLevel);
 				
 				let htmlStr = "";
 				$.each(data, function(index, item) {
 					htmlStr += "<table><tr>";
-					htmlStr += "<td>" + item.memberNum + "</td>";
+					htmlStr += "<td><img src='/images/levelBadges/lv" + item.memberLevel + ".png'></td>";
 					htmlStr += "<th>" + item.nickname + "</th>";
 					htmlStr += "<td>" + item.address + "</td>";
-					htmlStr += "<td><input type='button' onclick='memberPage(" + item.memberNum + ")' value='마이페이지 방문'></td>";
+					htmlStr += "<td><input type='button' onclick='memberPage(" + item.memberNum + ")' value='방문'></td>";
 					htmlStr += "</tr></table>";
 				});
 				
@@ -145,6 +145,9 @@ $(document).ready(function() {
 			}
 		});
 	}
+	
+	
+	
 	
 	function loadAddress() {
 		let destination = $("#destination").val();

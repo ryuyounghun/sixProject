@@ -4,10 +4,11 @@
 	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
 <meta charset="UTF-8">
-<link rel="shortcut icon" type="image/x-icon" href="/images/logo.jpg">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <title>Group Up</title>
-<link rel="stylesheet" href="/css/community/communityRead.css">
+<link rel="shortcut icon" type="image/x-icon" href="/images/logo.jpg">
+<link rel="stylesheet" href="/css/community/classRead.css">
+<link rel="stylesheet" href="/css/style.css">
 <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
    
@@ -50,7 +51,6 @@
 		<header>
 			<div class="header-container">
 				<a href="/" class="header-logo" >
-					ㄹ고
 				</a>
 				
 				
@@ -87,7 +87,19 @@
 			<div class="section-container">
 				<aside>
 					<div class="aside-left">
-
+						<ul>
+							<li><b>이동하기</b></li>
+							<li>
+								<a th:href="@{/community/index}">메인</a>
+							</li>
+							<li>
+								<a th:href="@{/community/partyIndex}">모임 게시판</a>
+							</li>
+							<li>
+								<a th:href="@{/community/freeIndex}">자유 게시판</a>
+							</li>
+							
+						</ul>
 					</div>
 				</aside>
 				
@@ -101,8 +113,9 @@
 							  미니 채팅방 보기
 							</button>
 				        </div>
-						<script type="text/javascript">
-						</script>
+						<div class="participient">
+							참가자ajax
+						</div>
 					</div>
 				</aside>
 
@@ -136,9 +149,7 @@
 							<div id="roomContent" th:text="${cBoard.content}"></div>
 						</div>
 						
-						<div class="participient">
-							참가자ajax
-						</div>
+						
 					</div>
 				</div>	
 			</div>		

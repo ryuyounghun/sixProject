@@ -10,11 +10,6 @@ li{
 	list-style: none;
 
 }
-
-#map{
-		width:300px;
-		height:200px;
-	}
 /*
 	헤더css
 */
@@ -68,6 +63,7 @@ li{
     margin:  auto;
     padding : 0;
     text-align : center;
+    box-sizing: content-box;
  }
  /* 9월 29일 추가 작업 */
  .placeholder{
@@ -86,7 +82,8 @@ li{
  #searchWord{
     border : 5px solid #874C62;
     width: 300px;
-    height: 30px;
+    min-height: 30px;
+    
  }
  #searchBar{
     width: 52px;
@@ -129,13 +126,32 @@ li{
     background-color: #874C62;
     border : 5px solid #C98474;
     color : white;
-    width : 15%;
     right : 3%;
+    min-width:250px;
     
  }
  ul {
     list-style: none;
+    
  }
+.aside-right-allPay{
+	height : 100px;
+	background-color: #874C62;
+	position: relative;
+}
+.receiptTitle-rightSide{
+	height: 2em;
+	border-bottom: 1px solid #C98474;
+}
+.receiptInfo-rightSide{
+	height: 3em;
+	border-bottom : 1px dashed black;
+}
+.order-btn{
+	position : absolute;
+	right : 10px;
+	top: 10px;
+}
  /*
  .rankTitle::after {
     position : absolute;
@@ -214,7 +230,7 @@ li{
 .menuAndReviewList li  {
 	border : 1px solid grey;
 	flex-grow: 1;
-	padding : 10px;
+	padding : 15px;
 	cursor:  pointer;
 }
 .menuAndReviewList li:hover {
@@ -222,5 +238,60 @@ li{
 }
 .clicked {
 	background-color : #F0F0F0;
+	
+}
+li[class*=clicked]{
+	border-bottom : 4px solid #999;
+	
+}
+.menu-info{
+	text-align: left;
+}
+.info-theme{
+	font-weight: bold;	
+}
+.info-subTheme{
+	color : grey;
+}
+.info-subContent{
+	color : black;
 }
 
+.menuTable {
+	position : relative;
+	width: 100%;
+	margin : 10px 0 10px 0;
+	height : 50px;
+	text-align:center;
+	
+}
+
+#orderList {
+	text-align : center;
+}
+.menu-info{
+	padding-left : 30px;	
+}
+.cart-icon {
+	position : absolute;
+	border-radius : 10px;
+	background-color : #f0f0f0;
+	height: 32px;
+	width: 32px;
+	cursor: pointer;
+	right : 20px;
+	top : 10px;
+	
+}
+.cart-icon:hover {
+    transform : translate(10px);
+    transition : .7s;
+}
+.menu-img{
+	position: absolute;
+	top : 10px;
+	right : 100px;
+	width: 120px;
+	height : 80px;
+	background-size: contain;
+}

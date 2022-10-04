@@ -169,12 +169,15 @@ public class ComunnityController{
 		return c + "index"; 
 	}
 	
+	// 1004 추가
 	@GetMapping("/read")
 	public String communityRead(Model model, int num, @AuthenticationPrincipal UserDetails user) {
 		log.debug("읽기파일");
 		
 		log.debug("num : {}", num);
-
+		// 조회수 상승
+		cService.updateViewCount(num);
+		//
 		ClassBoard cBoard = cService.selectOneClassBoard(num);
 		Member member = mService.selectOneMember(user.getUsername());
 		model.addAttribute("cBoard", cBoard);
@@ -208,7 +211,7 @@ public class ComunnityController{
 		addExp(user.getUsername());
 		member.setMemberLevel( calcLevel(member.getMemberExp()) );
 		cBoard.setMemberLevel(member.getMemberLevel());
-		
+		cRoom.setMemberLevel(member.getMemberLevel());
 		
 		// 게시판 객체 설정
 		String mNickname = member.getNickname();
@@ -798,4 +801,13 @@ public class ComunnityController{
 		return new ResponseEntity<Resource>(resource, header, HttpStatus.OK);
 	}
 
+	
+	// 1004 추가
+	@GetMapping("/realtimeClassboard")
+	@ResponseBody
+	public List<ClassBoard> realtimeClassboard() {
+		List<ClassBoard> cList = cService.selectClassBoardRank();
+		return cList;
+	}
+	
 }

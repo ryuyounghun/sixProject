@@ -25,6 +25,7 @@ public class ClassBoard {
 	private String content;
 	private String inputdate;
 	private String roomId;
+	private int viewCount;
 	
 	private String originalFile;	 
 	private String savedFile;

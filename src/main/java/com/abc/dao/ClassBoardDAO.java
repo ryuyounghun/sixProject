@@ -27,4 +27,8 @@ public interface ClassBoardDAO {
 	public ClassRoom selectClassRoomByMemberNumAndClassNum(Map<Object, Object> map);
 	public int withdrawalParty(Map<Object, Object> map);
 	public ClassRoom selectClassRoomByMemberNum(int memberNum);
+	
+	// 1004 추가
+	public int updateViewCount(int classNum);
+	public List<ClassBoard> selectClassBoardRank();
 }

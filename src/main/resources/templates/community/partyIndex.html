@@ -130,10 +130,11 @@
 							<div class="container-searchBar">
 								<input class="searchBar" type="text" name="searchWord"
 									th:value="${searchWord}" id="searchWord" placeholder="태그 & 통합검색">
+									<input type="submit" value="검색" class="write-btn">
+								<input type="button" value="글쓰기" class="write-btn" onclick="checkJoinedParty();">
 							</div>
 						</form>
 					</div>
-					
 					
 				<aside>
 					<div class="aside-left">
@@ -177,34 +178,15 @@
 				<aside>
 					<div class="aside-right">
 						<!-- 실시간 키워드(aJax)  -->
-						<div id="">실시간 키워드(aJax)</div>
+						<div id="realtime">
+							실시간 키워드(aJax)
+						</div>
 					</div>
 				</aside>
 				
 				<div class="aside-center">
 					<div class="section-center">
 						
-						<!-- <table th:each = "list : ${cbList}" th:onclick="|goClass(${list.classNum});|">
-							<tr>
-								<th>
-									<img th:src="@{partyDisplay(num = ${list.classNum})}" width="145px" height="60px;">
-								</th>
-							</tr> 
-							<tr>
-								<th  th:text="${list.title}"></th>
-							</tr> 
-							<tr>
-								<th th:text="|정원 : ${list.totalMember}명|">
-								</th>
-							</tr>
-							<tr>
-								<th th:text="${list.destination}"
-								style="display: inline-block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 13ch;">
-								</th>
-							</tr>
-						</table> -->
-					
-					
 						<div class="card" id="card" style="width: 18rem;" th:each = "list : ${cbList}" th:onclick="|goClass(${list.classNum});|">
 						  <img th:if="${list.savedFile == null}" src="/images/logo_height.png" class="card-img-top">
 						  <img th:if="${list.savedFile != null}" th:src="@{partyDisplay(num = ${list.classNum})}" class="card-img-top">
@@ -224,8 +206,6 @@
 				 	 	  </div>
 						</div>
 					</div>
-					
-					<input type="button" value="글쓰기" class="write-btn" onclick="checkJoinedParty();">
 					
 					<div id="navigation">
 						<nav aria-label="Page navigation example">
@@ -262,10 +242,14 @@
 	<footer> </footer>
 	
 <script type="text/javascript">
+	$(document).ready(function() {
+		realtimeboard();
+	});
+
+
 	function pagingFormSubmit(currentPage){
 		let form = document.getElementById("pagingForm");
 		let page = document.getElementById("page");
-		
 		
 		page.value = currentPage;
 		form.submit();
@@ -276,6 +260,64 @@
 	}
 	const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
 	const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
-</script>
+
+	function goClass(classNum) {
+   			location.href="read?num=" + classNum;
+   		}
+	
+	
+		// 0930 추가 1002 추가
+   		function realtimeboard() {
+   			$.ajax({
+   				url : "realtimeClassboard",
+   				type : "get",
+   				success : function(data) {
+   					
+					let htmlStr = "<h1 style='text-align:center' class='rankTitle'>조회수 순위</h1><ul>";
+					
+					$.each(data, function(index, item) {
+						if(index <= 9) {
+			                  if ( index <=2 ){
+			                     htmlStr += "";
+			                     htmlStr += "<li class='top3Stores' onclick='goClass(" + item.classNum + ")'>"+  "<img src='' id='realtime" + index + "'>  "  + "<span style='display: inline-block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 13ch;' >" + item.title +"</span>" + "</li>";
+			                  }else {
+			                     
+			                     htmlStr += "<li class='underTop3' onclick='goClass(" + item.classNum + ")'>" + (index+1)+"위 " +item.title + "</li>";
+			                  }
+			               }
+					});
+					htmlStr += "</ul>";
+	   				$("#realtime").html(htmlStr);
+	   				
+	   				for ( let i =0; i<=2; i++){
+						let img_src = "/images/rank/rank"+ (i+1) + ".png";
+						document.getElementById("realtime"+i).src = img_src;
+						document.getElementById("realtime"+i).style.width="30px";
+						document.getElementById("realtime"+i).style.width="30px";
+					}	
+   				}
+   			});
+   			
+   		}
+   		
+	function checkJoinedParty() {
+			let memberId = $("#loginUser").val();
+			console.log(memberId);
+			
+			$.ajax({
+				url : "checkJoinedParty",
+				type : "get",
+				data : {"memberId" : memberId},
+				success : function(data) {
+					console.log(data);
+					if(data == "") {
+   					location.href='classWrite';
+					} else {
+						alert("이미 참여한 파티가 있습니다.");
+					}
+				}
+			});
+		}
+	</script>
 </body>
 </html>

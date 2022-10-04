@@ -21,4 +21,7 @@ public class ClassRoom {
 	private int memberNum;
 	private String nickname;
 	private String address;
+	
+	// 레벨용 아이디
+	private int memberLevel;
 }

@@ -132,5 +132,17 @@ public class ClassBoardServiceImpl implements ClassBoardService{
 		return cDAO.selectAllClassBoard(map, rb);
 	}
 
+	@Override
+	public int updateViewCount(int classNum) {
+		// TODO Auto-generated method stub
+		return cDAO.updateViewCount(classNum);
+	}
+
+	@Override
+	public List<ClassBoard> selectClassBoardRank() {
+		// TODO Auto-generated method stub
+		return cDAO.selectClassBoardRank();
+	}
+
 
 }

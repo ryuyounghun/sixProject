@@ -40,6 +40,8 @@ public class WebSecurityConfig {
 				"/member/checkPnum",
 				"/member/login",
 				"/member/findIdPw",
+				"/member/findMemberId",
+				"/member/updatePw",
 				"/member/socialIdCheck",
 				"/member/kakaoSignUp",
 				"/member/naverSignUp",
