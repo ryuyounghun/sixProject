@@ -97,12 +97,21 @@
 			MEMBERNUM,
 			NICKNAME,
 			ADDRESS
+			<if test = "originalFile != null and savedFile != null">
+				, ORIGINALFILE
+				, SAVEDFILE
+			</if>
 		) VALUES (
 			CLASS_ROOM_SEQ.NEXTVAL,
 			#{classNum},
 			#{memberNum},
 			#{nickname},
-			#{address}		
+			#{address}
+			<!-- 첨부파일 정보 유무 확인 -->
+			<if test = "originalFile != null and savedFile != null">
+				, #{originalFile}
+				, #{savedFile}
+			</if>	
 		)
 	</insert>
 	

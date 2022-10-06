@@ -251,12 +251,14 @@
 						switch (rain) {
 						case '1':
 							$('.in0').append(" / 비");
+							$(".weatherIcon").css({"background-image" : "url(/images/weather/rain.jpg)"});
 							break;
 						case '2':
 							$('.in0').append(" / 비/눈");
 							break;
 						case '3':
 							$('.in0').append(" / 눈");
+							$(".weatherIcon").css({"background-image" : "url(/images/weather/snow.jpg)"});
 							break;
 						}
 					} else {

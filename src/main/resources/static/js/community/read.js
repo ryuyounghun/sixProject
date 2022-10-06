@@ -1,9 +1,10 @@
+
 $(document).ready(function() {
 		loadAddress();
 		partyPeople();
-		$("#btn").on("click",function() { mmaapp(); });
 		deleteClassBoard();
 		storeInfo();
+		setTimeout(()=>mmaapp(), 100);
 	});
 	
 	function getParameterByName(name) {
@@ -66,7 +67,7 @@ $(document).ready(function() {
 				console.log(data.memberId);
 				
 				if(memberId == data.memberId) {
-					htmlStr = "<input type='button' value='게시글 삭제하기' onclick='deleteBoard()'>";
+					htmlStr = "<button class='partyJoinOut-btn btn btn-outline-danger' onclick='deleteBoard()'>삭제하기</button>";
 					$("#deleteArea").html(htmlStr);
 				}
 			}
@@ -77,17 +78,24 @@ $(document).ready(function() {
 	
 	function withdrawalParty() {
 		let classNum = getParameterByName('num');
+		let answer = confirm("파티에서 나가시겠습니까?");
 		
-		$.ajax({
-			url : "withdrawalParty",
-			type : "get",
-			data : {"classNum" : classNum},
-			success : function() {
-				partyPeople();
-				// 0924 추가
-				location.href="/community/index";
-			}
-		});
+		if ( answer == true){
+			
+			$.ajax({
+				url : "withdrawalParty",
+				type : "get",
+				data : {"classNum" : classNum},
+				success : function() {
+					partyPeople();
+					// 0924 추가
+					location.href="/community/index";
+				}
+			});
+		}
+		else {
+			return false;
+		}
 	}
 	
 	function enterChat() {
@@ -103,21 +111,26 @@ $(document).ready(function() {
 	
 	function joinParty() {
 		let classNum = getParameterByName('num');
-		$.ajax({
-			url : "joinParty",
-			type : "get",
-			data : {"classNum" : classNum},
-			success : function(data) {
-				partyPeople();
-				alert(data);
-				
-			}
-		});
+		let answer = confirm("참여하시겠습니까?");
+		if ( answer == true ){
+			$.ajax({
+				url : "joinParty",
+				type : "get",
+				data : {"classNum" : classNum},
+				success : function(data) {
+					partyPeople();
+					alert(data);
+					
+				}
+			});
+		}
+		else {
+			return false;
+		}
 	}
 	
 	// 0923추가
 	function memberPage(memberNum) {
-		
 		location.href = "/member/mypage?num=" + memberNum;
 	}
 	
@@ -129,16 +142,27 @@ $(document).ready(function() {
 			type : "get",
 			data : {"classNum" : classNum},
 			success : function(data) {
-				console.log(data.memberLevel);
+				console.log(data);
+				
 				
 				let htmlStr = "";
 				$.each(data, function(index, item) {
-					htmlStr += "<table><tr>";
-					htmlStr += "<td><img src='/images/levelBadges/lv" + item.memberLevel + ".png'></td>";
-					htmlStr += "<th>" + item.nickname + "</th>";
-					htmlStr += "<td>" + item.address + "</td>";
-					htmlStr += "<td><input type='button' onclick='memberPage(" + item.memberNum + ")' value='방문'></td>";
-					htmlStr += "</tr></table>";
+				
+					htmlStr += "<div class='card participatientList'>";
+					
+						if(item.savedFile != null) {
+							htmlStr += "<img  class='card-img-top partipatientImg' src='memberDisplay?num=" + item.memberNum + "' width='100px'>";
+						} else if (item.savedFile == null){
+							htmlStr += "<img  class='card-img-top partipatientImg' src='/images/rabbit.jpg' width='100px'>";
+						}
+					htmlStr += "<div class='card-body'>";
+					htmlStr += "<img src='/images/levelBadges/lv" + item.memberLevel + ".png'>";
+					htmlStr += "<h5 class='card-title'>" + item.nickname + "</h5>";
+					htmlStr += "<input class='btn btn-primary' type='button' onclick='memberPage(" + item.memberNum + ")' value='방문'>";
+					htmlStr += "</div>";
+
+					htmlStr += "</div >";
+					
 				});
 				
 				$(".participient").html(htmlStr);
@@ -172,7 +196,6 @@ $(document).ready(function() {
 	}				
 		
 		function mmaapp() {
-			
 		
 			let sX = $("#x1").val();
 			let sY = $("#y1").val();

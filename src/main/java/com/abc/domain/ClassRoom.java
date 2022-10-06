@@ -24,4 +24,7 @@ public class ClassRoom {
 	
 	// 레벨용 아이디
 	private int memberLevel;
+
+	private String originalFile;	 
+	private String savedFile;
 }

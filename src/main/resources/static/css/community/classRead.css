@@ -1,4 +1,6 @@
 @charset "UTF-8";
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@500&display=swap');
+* { font-family: 'Noto Sans KR', sans-serif;}
 
 body{
 	margin : 0;
@@ -96,12 +98,25 @@ body{
     position : absolute;
     background-color: #874C62;
     border : 5px solid #C98474;
-    color : white;
-    width : 15%;
-    height: 60vh;
+    color : black;
+    width : 20%;
+    height: 31vh;
     right : 3%;
     cursor: pointer;
  }
+ 
+ .partyJoinOut{
+    position: absolute;
+    right: 3%;
+    top: 57%;
+}
+
+.partyJoinOut-btn{
+	cursor : pointer;	
+	width : 300px;
+	height: 50px;
+	margin-top:30px;
+}
  ul {
     list-style: none;
  }
@@ -110,47 +125,96 @@ body{
  	width :50%;
  	left: 25%;
  	right: 25%;
- 	background-color: purple;
  }
  .aside-center .section-center{
  	min-height: 60vh;
  	justify-content: center; 
  }
 
-.mapInfo{
-	padding : 40px;
-}
-.mapInfo p{
-	position : absolute;
-	color: #6666FF;
-	width: 300px;
-	background-color: navy;
-}
-.mapImg{
-	width : 300px;
-	height:200px;
-}
-.aside-center .partyJoinOut{
-	margin-top : 40px;
-	margin-left : 40px;
-	text-align : center;
-	background-color: olive;
-	width : 300px;
+.menuImg img {
+    width: 50px;
+    height: 50px;
 }
 .menuImg{
-	position:absolute;
-	right : 50px;
-	top : 50px;
+	float : right;
+	position:relative;
+    width : 300px;
+    height : 150px;
+    background-color: red;
 }
-.menuImg img{
-	width : 280px;
-	height: 150px;
+.mapInfo{
+	/* clear : both;
+	position: absolute;
+	margin-top : 10px;
+	float : right;
+	position : relative; */
+}
+.mapInfo p{
+	color : white;
+	background-color : #258FFF;
+	width: 307px;
+	font-weight: 400;
+}
+.mapImg{
+	border : 1px solid #888;
+	width : 307px;
+	height:200px;
 }
 
-/* .participient{
-	position:absolute;
-	right : 40px;
-	top : 240px;
-	width : 300px;
-	height:200px;
+	
+.classHashTag{
+	font-weight: bold;
+	text-shadow: #FC0 1px 0 3px;
+}
+/*
+
+*/
+/* .participient .participatientList{
+	width : 30%;
+	margin-top : 10px;
+	float : left;
+	border : 1px solid black;
+	
 } */
+/* 글내용 */
+#roomContent{
+	position : absolute;
+	min-height : 100px;
+}
+
+.participient{
+   width : 750px;
+   /* position : relative; */
+  /*  display : flex; */
+   background-color: green;
+   height: 280px;
+  /*  flex-wrap: wrap; */
+  /* overflow-x : scroll; */
+  overflow: auto;
+  white-space: nowrap;
+  
+}
+.participient .participatientList{
+   width: 200px;
+    display : inline-block;
+    margin-right: 5px;
+   
+}
+.participient .participatientList .partipatientImg{
+  /*  width: 200px; */
+   height: 150px;
+}
+
+.participient .card-body {
+	width: 200px;
+}
+
+.participient .card-body .btn {
+	/* width: 100px; */
+}
+/* 채팅 */
+.container {
+	margin-top:50px;
+	height: 280px;
+	background-color: aqua; 
+}

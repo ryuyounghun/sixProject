@@ -24,26 +24,12 @@
         }
         
 	table {
-		border : 1px solid black;
-		background-color : aqua;
 		width:100%;
-		margin:10px;
 	}	
+
+
 	
-	.menuImg {
-		background-color : white;
-		width : 300px;
-		height : 150px;
-	}
-	.menuImg #storeInfo {
-		width : 250px;
-		margin-left:15px;
-	}
 	
-	.menuImg img {
-	    width: 50px;
-	    height: 50px;
-	}
 </style>
 </head>
 <body>
@@ -105,27 +91,14 @@
 				
 				<aside>
 					<div class="aside-right">
-						
-				        <div id="chatBtn">
-							<input type="button" value="채팅방" onclick="enterChat()">
-				        	<!-- Button trigger modal -->
-							<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-							  미니 채팅방 보기
-							</button>
-				        </div>
-						<div class="participient">
-							참가자ajax
-						</div>
-					</div>
-				</aside>
-
-				<div class="aside-center">
-					<div class="section-center">
-						<div class="mapInfo">
+							<div class="mapInfo">
 							<div id="map" class="mapImg"></div>
 							<div>
-								<p id="m">우리집으로부터 몇 미터<input type="button" id="btn" value="목적지까지 거리보기"></p>
-								
+								<p id="m">우리집으로부터 몇 미터
+								<!--
+								 <input type="button" id="btn" value="목적지까지 거리보기"> 
+								 -->
+								</p>
 								<input type="hidden" th:value="${cBoard.destination}" id="destination">
 								<input type="hidden" th:value="${member.address}" id="myAddress">
 								<input type="hidden" value="" id="x1">
@@ -134,52 +107,50 @@
 								<input type="hidden" value="" id="y2">
 							</div>
 						</div>
-						<div class="partyJoinOut">
-							<div>
-								<a onclick="joinParty()">참여하기</a> 
-							</div> 
-							<div>
-								<a onclick="withdrawalParty()">나가기</a> 
-							</div> 
-							<div id="deleteArea"></div>
-						</div>
-						<div class="menuImg">
-							<div id="storeInfo"></div>
-							<div th:text="${cBoard.classTag}"></div>
-							<div id="roomContent" th:text="${cBoard.content}"></div>
-						</div>
-						
-						
 					</div>
-				</div>	
-			</div>		
-			<div>
-				<input type="hidden" id="loginUser" th:value="${#authentication.getPrincipal().getUsername()}">
-				<input type="hidden" th:value="${cBoard.roomId}" id="roomId">
-		    </div>
-		</section>
+				<div class="partyJoinOut">
+					<div>
+						<button class='partyJoinOut-btn btn btn-outline-success' onclick="joinParty()">참여하기</button> 
+					</div> 
+					<div>
+						<button class='partyJoinOut-btn btn btn-outline-danger' onclick="withdrawalParty()">나가기</button> 
+					</div> 
+					<div id="deleteArea"></div>
+				</div>
+				        <!-- <div id="chatBtn">
+							<input type="button" value="채팅방" onclick="enterChat()">
+				        	Button trigger modal
+							<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+							  미니 채팅방 보기
+							</button>
+				        </div> -->
+				</aside>
 
-	</div>
-	
-	<footer>
-		
-	</footer>
-	
-	
-	
-	<!-- Modal -->
-	<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-	  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-	    <div class="modal-content">
-	      <div class="modal-header">
-	        <h5 class="modal-title" id="staticBackdropLabel">채팅</h5>
-	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-	      </div>
-	      <div class="modal-body">
-	        <div class="container" id="app" v-cloak>
-			    <div>
+					
+				<div class="aside-center">
+					<div class="section-center">
+						
+						<div th:text="${cBoard.title}" >\
+						</div>
+						
+						<!-- <div id="roomContent" th:text="${cBoard.content}" >\
+						</div>
+						 -->
+						
+						<div class="participient">
+							참가자ajax
+						</div>
+						
+						<!-- <div class="menuImg">
+							<div id="storeInfo"></div>
+							<div th:text="${cBoard.classTag}" class="classHashTag"></div>
+						</div>	 -->
+							
+							
+			<div class="container overflow-auto" id="app" v-cloak>
+			   <!--  <div>
 			        <h2>{{room.roomName}}</h2>
-			    </div>
+			    </div> -->
 			    
 			    <div class="input-group">
 			        <div class="input-group-prepend">
@@ -190,8 +161,8 @@
 			            <button class="btn btn-primary" type="button" @click="sendMessage">보내기</button>
 			        </div>
 			    </div>
-			    <div id="messageDiv">
-				    <ul class="list-group">
+			    <div id="messageDiv overflow-auto">
+				    <ul class="list-group" >
 				        <li class="list-group-item" v-for="message in messages">
 				            {{message.sender}} - {{message.message}}
 				            <button  v-on:click="reportMessage(message.sender, message.message)">신고하기</button>
@@ -204,14 +175,21 @@
 			    	<input type="hidden" th:value="${#authentication.getPrincipal().getUsername()}" name="reporter" id="reporter">
 			    </div>
 			</div>
-	      </div>
-	      <div class="modal-footer">
-	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-	        <button type="button" class="btn btn-primary">Understood</button>
-	      </div>
-	    </div>
-	  </div>
+							
+					
+						
+					</div>
+				</div>	
+			</div>		
+			<div>
+				<input type="hidden" id="loginUser" th:value="${#authentication.getPrincipal().getUsername()}">
+				<input type="hidden" th:value="${cBoard.roomId}" id="roomId">
+		    </div>
+		</section>
+		<footer></footer>
 	</div>
+	
+	
 	
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=6e7c79dc40e0d0df1bb9a7bb0628d68a&libraries=services"></script>
 <script src="/js/community/read.js"></script>

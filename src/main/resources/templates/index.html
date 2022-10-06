@@ -51,8 +51,6 @@
 			type : "post",
 			data : {"address" : address, "phone" : phone},
 			success : function(data) {
-				console.log(data.address);
-				console.log(data.phone);
 				
 				$('#exampleModal').modal('hide');
 			}
@@ -136,7 +134,7 @@
 	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 	      </div>
 	      <div class="modal-body">
-	      		<h4>소셜 회원가입은 주소와 전화번호를 기입해야합니다.</h4>
+	      		<h4>전부 입력하셔야 합니다.</h4>
 	          <div class="mb-3">
 	            <label for="recipient-name" class="col-form-label">New address</label>
 	            <input type="text" class="form-control" id="sample4_roadAddress">
@@ -214,6 +212,7 @@
         }).open();
 		
     }
+    
 	</script>
 </body>
 </html>

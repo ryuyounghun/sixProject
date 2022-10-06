@@ -247,7 +247,9 @@ public class ComunnityController{
 		cRoom.setMemberNum(member.getMemberNum());
 		cRoom.setAddress(member.getAddress());
 		cRoom.setNickname(mNickname);
-		
+		// 1006 추가
+		cRoom.setOriginalFile(member.getOriginalFile());
+		cRoom.setSavedFile(member.getSavedFile());
 		
 
 		log.debug("cRoom : {}", cRoom);
@@ -808,6 +810,38 @@ public class ComunnityController{
 	public List<ClassBoard> realtimeClassboard() {
 		List<ClassBoard> cList = cService.selectClassBoardRank();
 		return cList;
+	}
+	
+	// 1006 추가
+	@GetMapping("/memberDisplay")
+	public ResponseEntity<Resource> memberDisplay(int num) {
+		
+		log.debug("num : {}", num);
+		
+		Member member = mService.selectOneMemberByMemberNum(num);
+		Resource resource 
+			= new FileSystemResource(uploadPath + "/" + member.getSavedFile());
+	
+		// 파일이 존재하지 않을때
+		if(!resource.exists()) {
+			return new ResponseEntity<Resource>(HttpStatus.NOT_FOUND);
+		} 
+		
+		HttpHeaders header = new HttpHeaders();
+		
+		Path filePath = null;
+		
+		try {
+			filePath = Paths.get(uploadPath + "/" + member.getSavedFile());
+			
+			// response의 header에
+			// 제가 첨부한 내용의 타입은 파일이에요
+			header.add("Content-type", Files.probeContentType(filePath));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return new ResponseEntity<Resource>(resource, header, HttpStatus.OK);
 	}
 	
 }
