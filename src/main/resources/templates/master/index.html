@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<meta charset="UTF-8">
+<title>Group Up</title>
+ <link rel="shortcut icon" type="image/x-icon" href="/images/logo.jpg">
+<link rel="stylesheet" href="/css/master/masterIndex.css">
+<link rel="stylesheet" href="/css/style.css">
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+<style type="text/css">
+	#exampleModalToggledialog {
+		--bs-modal-width: 1000px;
+		--bs-modal-margin: 0.5rem;
+	} 
+	#exampleModalToggledialog2 {
+		--bs-modal-width: 1000px;
+		--bs-modal-margin: 0.5rem;
+	} 
+</style>
+</head>
+<body>
+	<div id="headerAndSection-wrapper">
+		<header>
+			<div class="header-container">
+				<a href="/" class="header-logo" >
+				</a>
+				<ui class="header-logMenuList"> <!-- 로그인 및 로그아웃 링크 -->
+					<li sec:authorize ="not isAuthenticated">
+						<a th:href="@{/member/login}">
+							로그인
+						</a>
+					</li>
+					<li sec:authorize="not isAuthenticated">
+						<a th:href ="@{/member/join}">
+							회원가입
+						</a>
+					</li>
+					<li sec:authorize="isAuthenticated">
+						<a th:href ="@{/logout}">
+							로그아웃
+						</a>
+					</li>
+				</ui>
+
+			</div>
+		</header>
+	
+		<section>
+			<div class="section-container">
+				
+				
+
+				<div class="aside-center">
+					<div class="section-center">
+						<h2 class = "masterTitle">관리자 페이지</h2>
+							<div class = "masterIndex">
+							  	<input value = "쿠폰등록하기" class="btn btn-primary master" type="button" id="insertCouponBtn"><br><br>
+							  	<input value = "레벨관리하기" class="btn btn-primary master" type="button" id="insertExpBtn"><br><br>
+							  	<a class="btn btn-primary master" data-bs-toggle="modal" href="#exampleModalToggle" role="button">계정정지 및 복구 관리하기</a>
+							</div>
+					</div>
+				</div>	
+			</div>		
+		
+		</section>
+
+	</div>
+
+	<footer>
+		
+	</footer>
+	
+	<!-- 1001 세련 수정함 -->
+	<!-- Modal -->
+	<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+	      </div>
+	      <div class="modal-body">
+	      	<div id="insertCoupon">
+				<form action = "insertCoupon" method = "post" onsubmit="return checkValues();">
+					<div class = "">
+						<h3>쿠폰정보 입력</h3><span style="color: red;">(* 표시한 부분은 필수입력입니다.)</span>
+						<div class = "elseBox"></div>
+						
+						<!-- 쿠폰명 -->
+						<div class = "joinIdWrap">
+							<label for = "insertCoupon_name" class = "cpName">* 쿠폰명</label><br>
+							<input type = "text" id = "couponId" name = "couponName" placeholder="쿠폰명을 입력해주세요." required>
+							<input type = "hidden" id = "couponIdCheck" value = 0><br>
+							<span id = "text1"></span>
+						</div>
+						<div class = "elseBox"></div>
+						<!-- 쿠폰 금액 -->
+						<div class = "joinIdWrap">
+						<label for = "insertCoupon_title" class = "cpPrice">* 쿠폰 금액</label><br>
+						<select id = "couponBill" name = "couponPoint" required style="width: 238.4px; height: 30px;">
+							<option>금액을 고르세요.</option>
+							<option value=1000>1000</option>
+							<option value=5000>5000</option>
+							<option value=10000>10000</option>
+							<option value=50000>50000</option>
+							<option value=100000>100000</option>								
+						</select>
+						<input type = "hidden" id = "couponBillCheck" value = 0><br>
+						<span id = "text2"></span>
+					</div> <!-- joinIdWrap 부분 끝 -->
+						
+						<!-- 버튼 -->
+						<div class = "buttons">
+							<button type = "submit" class = "btn1">등록하기</button>&nbsp;&nbsp;&nbsp;
+							<button type = "reset" class = "btn2">취소하기</button>
+						</div>
+						</div><!-- section-center 부분 끝 -->
+					</form>
+	      	</div><!-- insertCoupon -->
+			<div class = "ExpContent" id="insertExp">
+				<form action = "insertExp" method = "post">
+					<div class = "insertLevel">
+					<h3>레벨정보 입력</h3><span style="color: red;">(* 표시한 부분은 필수입력입니다.)</span>
+						<div class = "elseBox"></div>
+						<fieldset class = "requiredInfo">
+						<span class = "userLevelBox">* 사용자 Level 지정하기</span><br>
+						<select name = "userLevel" class = "selectbox">
+							<option value = "" class = "level-option">레벨을 선택해주세요.</option>
+							<option value = "2" class = "level-option">2</option>
+							<option value = "3" class = "level-option">3</option>
+							<option value = "4" class= "level-option">4</option>
+							<option value = "5" class = "level-option">5</option>
+							<option value = "6" class = "level-option">6</option>
+							<option value = "7" class = "level-option">7</option>
+							<option value = "8" class = "level-option">8</option>
+							<option value = "9" class = "level-option">9</option>
+							<option value = "10" class = "level-option">10</option>
+						</select>
+						<div class = elseBox></div>
+						<span class = "userExpBox">* 사용자의 Exp 지정하기</span><br>
+							<input type = "text" name = "userExp" placeholder="내용을 입력해주세요." required> 
+						</fieldset>
+						<div class = "buttons">
+							<button type = "submit" id = "rightBtn" class = "btn1">등록하기</button>&nbsp;&nbsp;&nbsp;
+							<button type = "reset" id = "cancelBtn" class = "btn2">취소하기</button>
+						</div>
+					</div><!-- insertLevel 부분 끝 -->
+				</form>
+			</div>	
+			
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	
+	<div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+	  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" id="exampleModalToggledialog">
+	    <div class="modal-content" id="exampleModalToggleContent">
+	      <div class="modal-header" id="exampleModalToggleHeader">
+	        <h5 class="modal-title" id="exampleModalToggleLabel">사용자 관리하기</h5>
+	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+	      </div>
+	      <div class="modal-body" id="exampleModalToggleBody">
+	        
+	        <div id="reportModal">
+				<table style="width: 100%;">
+					<tr>
+						<th style="width:15%;">신고번호</th>
+						<th style="width:15%;">처벌대상 ID</th>
+						<th style="width:15%;">메세지</th>
+						<th style="width:15%;">신고자</th>
+						<th style="width:15%;">방 ID</th>
+						<th style="width:15%;">신고일시</th>
+					</tr>
+					<tr th:each="list : ${cmList}">
+							<td th:text="${list.reportNum}" ></td>
+							<td th:text="${list.sender}" ></td>
+							<td th:text="${list.message}" ></td>
+							<td th:text="${list.reporter}" ></td>
+							<td th:text="${list.roomId}"></td>
+							<td th:text="${list.inputdate}"></td>
+							<td>
+								<a th:href="@{|/master/handleReport?reportNum=${list.reportNum}|}">계정정지</a>
+							</td>
+					</tr>
+					<tr th:if = "${cmList.size()==0}">
+						<td  colspan="6">
+							<p>신고리스트가 없습니다</p>
+						</td>
+					</tr>
+				</table>
+			</div>
+	        
+	      </div>
+	      <div class="modal-footer" id="exampleModalToggleFooter1">
+	        <button class="btn btn-primary" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal">계정 복구</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	<div class="modal fade" id="exampleModalToggle2" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+	  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" id="exampleModalToggledialog2">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="exampleModalToggleLabel2">사용자 계정 복구하기</h5>
+	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+	      </div>
+	      <div class="modal-body">
+
+	        <div>
+	        	<table style="width: 100%;">
+					<tr>
+						<th style="width:15%;">계정</th>
+						<th style="width:15%;">신고사유</th>
+						<th style="width:15%;">신고자</th>
+						<th style="width:15%;">정지일</th>
+					</tr>
+					<tr th:each="list : ${bannedList}">
+							<td th:text="${list.memberId}" ></td>
+							<td th:text="${list.message}" ></td>
+							<td th:text="${list.reporter}" ></td>
+							<td th:text="${list.inputdate}" ></td>
+							<td>
+								 <a th:href="@{|/master/unbanMember?memberId=${list.memberId}|}">계정복구</a>
+							</td>
+					</tr>
+					<tr th:if = "${bannedList.size()==0}">
+						<td  colspan="6">
+							<p>밴 리스트가 없습니다</p>
+						</td>
+					</tr>
+				</table>
+	        </div>
+
+	      </div>
+	      <div class="modal-footer">
+	        <button class="btn btn-primary" data-bs-target="#exampleModalToggle" data-bs-toggle="modal">계정 정지하기</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	
+		
+		
+		
+	
+	
+	
+<script>
+	
+	$(document).ready(function(){
+		checkCouponName();
+		$("#insertCoupon").hide();
+		$("#insertExp").hide();
+		$("#insertCouponBtn").click(function() { insertCoupon(); });
+		$("#insertExpBtn").click(function() { insertExp(); });
+	});
+	
+	function insertCoupon() {
+		let htmlStr = "<h2>쿠폰 등록하기</h2>";
+		$("#exampleModalLabel").html(htmlStr);
+		$("#insertExp").hide();
+		$("#insertCoupon").show();
+		$("#exampleModal").modal("show");
+	}
+	
+	function insertExp() {
+		let htmlStr = "<h2>레벨 관리</h2>";
+		$("#exampleModalLabel").html(htmlStr);
+		$("#insertCoupon").hide();
+		$("#insertExp").show();
+		$("#exampleModal").modal("show");
+	}
+	
+	
+	function checkCouponName() {
+		$("#couponId").on("blur", function(){
+			let cpId = $("#couponId").val();
+			let nameExp = /[가-힣]{3,21}/;
+			
+			if(cpId.length < 3 || cpId.length > 21){
+				$("#text1").text("쿠폰명은 3~20자리 이내로 입력해주세요.").css("color", "red");
+				$("#couponIdCheck").val("0");
+			} else if(!nameExp.test(cpId)){
+				$("#text1").text("쿠폰명은 한글로만 입력해주세요.").css("color", "red");
+				$("#couponIdCheck").val("0");
+			} else {
+				$("#text1").text("멋진 쿠폰명입니다!").css("color", "green");
+				$("#couponIdCheck").val("1");
+			}
+		});
+	}
+	
+	function checkValues() {
+		/* let couponId = document.getElementById('couponId');
+		let nameExp = /^[가-힣]{3,21}$/;
+		
+		if(couponId.value.trim().length == 0){
+			alert('쿠폰명을 입력해주세요.');
+			couponId.focus();
+			return false;
+		} else if(couponId.value.trim().length < 3 || couponId.value.trim().length > 21){
+			alert('쿠폰명은 3~12글자 사이로 입력해주세요.');
+			couponId.focus();
+			return false;
+		} else if (!nameExp.test(couponId.value)){
+			alert('쿠폰명은 한글로1만 입력해주세요. ');
+			couponId.focus();
+			return false;
+		}  */
+		
+		let couponBill = document.getElementById('couponBill');	
+		
+		if(couponBill.value.trim().length == 0){
+			alert('쿠폰금액을 입력해주세요.');
+			couponBill.focus();
+			return false;
+		} else if(couponBill.value.trim().length < 3 || couponBill.value.trim().length > 7){
+			alert('쿠폰금액 3~7글자 사이로 입력해주세요.');
+			couponBill.focus();
+			return false;
+		} 
+		
+
+		let couponIdCheck = document.getElementById("couponIdCheck");
+		if(couponIdCheck.value == 0) {
+			return false;
+		} else {
+			return true;
+		}
+		
+		let couponBillCheck = document.getElementById("couponBillCheck");
+		if(couponBillCheck.value == 0){
+			return false;
+		} else {
+			return true;
+		}
+	} 
+</script>
+</body>
+</html>

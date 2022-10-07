@@ -13,6 +13,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
+// 구매할 수 있는 쿠폰 리스트
 public class Coupon {
 
 	private int couponNum;

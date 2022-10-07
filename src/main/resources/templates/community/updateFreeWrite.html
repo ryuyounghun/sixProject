@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<meta charset="UTF-8">
+<title>Group Up</title>
+<link rel="shortcut icon" type="image/x-icon" href="/images/logo.jpg">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
+
+<link rel = "stylesheet" href = "/css/community/freeWrite.css">
+<link rel = "stylesheet" href = "/css/style.css">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<style type="text/css">
+	
+</style>
+</head>
+<body >
+	<div id="headerAndSection-wrapper">
+		<header>
+			<div class="header-container">
+				<a href="/" class="header-logo" >
+				</a>
+				
+				<ui class = "header-logMenuList"> <!-- 로그인 및 로그아웃 링크 -->
+					<li sec:authorize ="not isAuthenticated">
+						<a th:href="@{/member/login}">
+							로그인
+						</a>
+					</li>
+					<li sec:authorize="not isAuthenticated">
+						<a th:href ="@{/member/join}">
+							회원가입
+						</a>
+					</li>
+					<li sec:authorize="isAuthenticated">
+						<a th:href ="@{/logout}">
+							로그아웃
+						</a>
+					</li>
+					<li sec:authorize="isAuthenticated">
+						<a th:href ="|@{/member/mypage}?num=${member.memberNum}|">
+							회원정보
+						</a>
+					</li>
+					<li>
+						<a th:href="@{/delivery/index}" >
+							배달
+						</a>
+					</li>
+				</ui>
+			</div><!-- header-container 부분 끝 -->
+		</header><!-- header 부분 끝 -->
+		
+		
+		<!-- contentWrap 부분  -->
+		<section id = "contentWrap" class = "clearfix">
+			<div class="section-container">
+				<div class = "aside-center">
+				<div class = "writeBox">
+				<!-- 글쓰기 제목 -->
+				<h2>글쓰기</h2>
+					<!-- 글쓰기용 폼 내용 -->
+						<form action = "updateFreeWrite" method = "POST"  onsubmit = "return checkValues();" enctype = "multipart/form-data">
+							<!-- 제목 -->
+							<div id = "titleBox">
+								<label for = "title">제목</label>
+								<input type="text" name="title" th:value="${fBoard.title}" required>
+							</div><!-- titleBox 부분 끝 -->
+							
+							<!-- 내용 -->
+							<div id = "contentBox">
+								<label for = "content">내용</label>
+								<textarea name = "content" class = "content" th:text="${fBoard.content}" required></textarea>
+								<input type="hidden" th:value="${fBoard.boardNum}" name="boardNum">
+							</div><!-- contentBox 부분 끝 -->
+							
+							<div id="fileDiv"  class="overflow-auto">
+								<!-- 파일 업로드 버튼 -->
+								<div name="fileDiv" id= "fdIdx_0">
+									<input type="file" name="files" id="file_0" />
+									<button type="button" onclick="addFile()" >
+										+
+									</button>
+									<button type="button" onclick="removeFile('fdIdx_0')" >
+										-
+									</button>
+								</div><!-- fdIdx_0 부분 끝 -->
+								<!-- 파일 -->
+								<div id="fileboxForPlusFile"></div>
+							</div>
+							
+							<!-- 글쓰기 버튼 -->
+							<div class = "buttonBox">
+							<input type="submit" class = "btn1" value = "글쓰기">
+							</div><!-- buttonBox -->
+						</form>
+					</div>
+				</div><!-- aside-center 부분 끝 -->
+			</div><!-- section-container 부분 끝 -->
+			</section>
+		</div><!-- headerAndSection-wrapper 부분 끝 -->
+	<footer>
+	
+	</footer>
+	
+</body>
+<script >
+let fdIdx = 0;
+let fileIdx = 0; 
+
+function addFile() {
+
+	fdIdx++;
+	fileIdx++;
+
+	alert(fileIdx);
+	prev = fileIdx-1;
+	let prevFileIdx = $("#file_" + prev).val().length;
+	alert( prevFileIdx );
+	
+	if ( prevFileIdx == 0 ){
+		alert("파일을 추가해 주세요.");
+		fdIdx--;
+		fileIdx--;
+
+		return false;
+	}else{
+		
+	}
+	let fileHtml = `
+		<div name="fileDiv" id= "fdIdx_${fdIdx}">
+			<input type="file" name="files" id="file_${fileIdx}" />
+			<button type="button" onclick="addFile()" >
+				+
+			</button>
+			<button type="button" onclick="removeFile('fdIdx_${fdIdx}')" >
+				-
+			</button>
+		</div>
+	`;
+	$('#fileboxForPlusFile').before(fileHtml);
+}
+
+function removeFile(param){
+	
+	if ( $("#file_0").val().length >= 0 ){
+		alert("첫 번째 파일칸은 지울 수 없습니다.");
+		return false;
+	}
+	
+	console.log(param);
+	let p = param;
+	let element = "#" + p;
+	$(element).children().remove();
+}
+
+function checkValues(){
+	let title = document.getElementById('title');
+	let content = document.getElementById('content');
+
+	if ( title.value.trim().length == 0){
+		alert('제목을 입력해 주세요.');
+		title.focus();
+		return false;
+	
+	}
+	if ( content.value.trim().length == 0){
+		alert('내용을 입력해 주세요.');
+		content.focus();
+		return false;
+	}
+}
+
+</script>
+</html>

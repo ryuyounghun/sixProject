@@ -1,0 +1,278 @@
+@charset "UTF-8";
+
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@500&display=swap');
+* { font-family: 'Noto Sans KR', sans-serif;}
+ 
+body{
+	margin : 0;
+	padding : 0;
+}
+	
+/*
+	헤더css
+*/
+
+.header-container{
+		width: 100%;
+		height: 100px;
+		background-color: #F9F7F7;
+		position: relative;
+}
+
+.header-logo{
+	position : absolute;
+	height : 100px;
+	width : 170px;
+	left : 5%;
+	top: -2%;
+	float: left;
+	background: url(/../images/logo_height.png) no-repeat center;
+	background-size: contain;
+}
+
+.header-toAnother{
+	position : absolute;
+	height : 75px;
+	top: 10%;
+	left : 16%;
+	
+}
+.header-logMenuList{
+	position: absolute;
+	display : flex;
+	right : 10%;
+	list-style: none;
+	top: 10%;
+}
+.header-logMenuList li {
+	margin-right : 20px;
+}
+.header-logMenuList a {
+	text-decoration: none;
+	
+}
+.orderListBox{
+	height: 60px;
+	width: 466px;
+}
+#center-dv2{
+	padding-top: 20px;
+}
+
+/* 
+	본문 섹션 css
+ */
+
+/* 1002 세련 수정함 */
+#myReviewList{
+	border: 1px solid #bdbdbd;
+}
+.mpTitle { 
+	/* padding-top: 20px; */
+	text-align: center;
+	font-size: 40px;
+	padding-bottom: 50px;
+	border-bottom: 1px solid #a8a8a8;
+}
+.mbName {
+    font-size: 25px;
+    font-weight: 300;
+}
+#point {
+	padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+#starPoint{
+	text-align: center;
+}
+
+.reviewScore{
+	font-size: 20px;
+}
+
+.rating{
+	margin-right: 15px;
+}
+ul {
+	padding-right: 30px;
+    margin-top: 20px;
+}
+
+.listul{
+	padding-bottom: 15px;	
+	cursor: pointer;	
+}
+
+/* label {
+	margin: 150px; 
+ } */
+ 
+.sectitle{
+	font-size: 20px;
+	font-weight: bold;
+}
+
+.replyList{
+	border: 1px solid #bdbdbd; 
+}
+	
+.expBar{
+	text-align: center;
+}
+/* 1002 세련 수정함 */
+.btnBox{
+	background-color: #0069d9;
+	border: none;
+	color: #ffffff;
+    padding: 7px 15px;
+    border-radius: 15px;
+	
+}
+ .section-container{
+ 	width : 100%;
+ 	min-height : 100vh;
+ 	margin-bottom: 50px;
+ 	margin-top: 30px;
+ }
+ .searchBar-wrapper{
+ 	width :  100%;
+ 	margin:  auto;
+ 	padding : 0;
+ 	text-align : center;
+ }
+ .searchBar{
+ 	border : 5px solid black;
+ 	width: 300px;
+ 	height: 30px;
+ }
+ .aside-left, .aside-right, .aside-center{
+	margin-top : 20px;
+ }
+ .aside-left{
+ 	position : absolute;
+ 	/* background-color: red; */
+ 	width : 15%;
+ 	height: 80vh;
+ 	left : 5%;
+ 	text-align: center;
+ }
+ 
+/*  img {
+ 	padding-top: 20px;
+ 	padding-bottom: 10px;
+ 	
+ 	} */
+ 	
+ .aside-right{
+ 	position : absolute;
+ 	background-color: blue;
+ 	width : 15%;
+ 	height: 60vh;
+ 	right : 5%;
+ }
+ .aside-center{
+ 	position:absolute;
+ 	width :70%;
+ 	left: 25%;
+ 	right: 5%;
+ 	/* background-color: purple; */
+ }
+ .aside-center .section-center{
+ 	min-height: 80vh;
+ 	justify-content: center; 
+ }
+.replyContent{
+	width: 50px;
+	height: 50px;	
+}
+
+.contentBox{
+	padding-top: 20px;
+}
+
+.content{
+	width: 500px;
+    margin-right: 25px;
+    font-size: 15px;
+}
+
+
+
+/* 쿠폰 div 하나 */
+.couponCenter{
+	padding-top: 12px;
+	padding-bottom: 12px;
+	border-bottom: 1px solid #a8a8a8;
+}
+
+.couponCenter2 {
+    padding-top: 25px;
+    padding-bottom: 25px;
+    border-bottom: 1px solid #a8a8a8;
+}
+
+/* 1002 세련 수정함 float 추가  */
+/* 쿠폰 구매하기 버튼 */
+.cpBtn{
+	font-size: 13px;
+	border: none;
+	float: right;
+}
+
+.btn1{
+	float: right;
+	border: none;
+	font-size: 13px;
+}
+.mapInfo{
+	padding : 40px;
+}
+.mapInfo p{
+	position : absolute;
+	color: #6666FF;
+	width: 300px;
+	background-color: navy;
+}
+.mapImg{
+	width : 300px;
+	height:200px;
+}
+.aside-center .partyJoinOut{
+	margin-top : 40px;
+	margin-left : 40px;
+	text-align : left;
+	/* background-color: olive; */
+	width : 300px;
+	float: left;
+}
+
+.aside-center .partyJoinOut2{
+	margin-top : 40px;
+	margin-right : 40px;
+	height: 300px;
+	float: right;	
+	
+}
+
+.menuImg{
+	position:absolute;
+	right : 50px;
+	top : 50px;
+}
+
+.menuImg img{
+	width : 280px;
+	height: 150px;
+}
+
+.participient{
+	position:absolute;
+	right : 40px;
+	top : 240px;
+	width : 300px;
+	height:200px;
+	
+	
+}
+

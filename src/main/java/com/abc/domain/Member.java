@@ -17,12 +17,23 @@ public class Member implements UserDetails {
 	private int memberNum;
 	private String memberId;
 	private String memberPw;
+	private String memberName;
 	private String nickname;
 	private String pinNumber;	// 핀번호
 	private String address;
 	private String phone;
 	private int memberExp;		// 경험치
 	private int memberPoint;	// 포인트
+	private String roomId;
+	
+	// 레벨용 추가
+	private int memberLevel;	
+	
+	// 0928 마이페이지 이미지용 추가
+	private String originalFile;	 
+	private String savedFile;
+	
+	
 	
 	// Spring Security를 위한 필드 지정
 	private boolean enabled;	// 계정 상태가 유효한지 확인하기 위한 변수 1 이면 유효, 0 이면 유효X

@@ -1,0 +1,91 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.abc.dao.FreeBoardDAO">
+<!--
+모임 게시판 관련 쿼리
+ -->
+ 
+	<!-- 자유 게시판 글 쓰기 -->
+		<insert id="insertFreeBoard" parameterType="FreeBoard">
+			INSERT INTO FREE_BOARD(
+				BOARDNUM,
+				MEMBERNUM,
+				NICKNAME,
+				TITLE,
+				CONTENT,
+				MEMBERLEVEL
+			)
+			VALUES (
+				BOARDNUM_SEQ.NEXTVAL,
+				#{memberNum},
+				#{nickname},
+				#{title},
+				#{content},
+				#{memberLevel}
+			)
+		</insert>
+		
+	<!-- 자유 게시판 글 불러오기 -->
+	<select id="selectAllFreeBoard" resultType="FreeBoard" parameterType="map">
+		SELECT 
+			*
+		FROM FREE_BOARD
+		<if test="searchWord != null">
+			<where>
+				TITLE LIKE '%'||#{searchWord}||'%'
+				OR 
+				CONTENT LIKE '%'||#{searchWord}||'%'
+				OR
+				NICKNAME LIKE '%'||#{searchWord}||'%'
+			</where>
+		</if>
+		ORDER BY BOARDNUM DESC
+	</select>
+	<select id = "countAllFreeBoard" parameterType="map" resultType = "int">
+		SELECT
+			count(*)
+		FROM FREE_BOARD
+			<if test="searchWord != null">
+			<where>
+				TITLE LIKE '%'||#{searchWord}||'%'
+				OR 
+				CONTENT LIKE '%'||#{searchWord}||'%'
+				OR
+				NICKNAME LIKE '%'||#{searchWord}||'%'
+			</where>
+			</if>
+	</select>
+	
+	
+	<select id="selectOneFreeBoard" resultType="FreeBoard" parameterType="int">
+		SELECT 
+			*
+		FROM FREE_BOARD
+		WHERE BOARDNUM = #{boardNum} 
+	</select>
+	
+	<!-- 0929 추가 -->
+	<update id="updateFreeBoard" parameterType="FreeBoard">
+		UPDATE FREE_BOARD
+		SET TITLE = #{title}, CONTENT = #{content}
+		WHERE BOARDNUM = #{boardNum}
+	</update>
+	
+	
+	<!-- 0930 추가 -->
+	<update id="updateViewCount" parameterType="int">
+		UPDATE FREE_BOARD
+		SET VIEWCOUNT = VIEWCOUNT + 1
+		WHERE BOARDNUM = #{boardNum}
+	</update>
+	
+	<!-- 0930 추가 -->
+	<select id="selectFreeBoardRank" resultType="FreeBoard">
+		SELECT * FROM
+		FREE_BOARD
+		ORDER BY VIEWCOUNT DESC
+	</select>
+</mapper>
+

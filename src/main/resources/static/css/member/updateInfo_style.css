@@ -1,0 +1,273 @@
+@charset "UTF-8";
+/* 1002 세련 글꼴 추가함 */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@500&display=swap');
+* { font-family: 'Noto Sans KR', sans-serif;}
+
+body{
+	margin : 0;
+	padding : 0;
+}
+
+/*
+	헤더css
+*/
+
+.header-container{
+		width: 100%;
+		height: 100px;
+		background-color: #ffe208; /* #fcf5b3; */
+		position: relative;
+}
+
+.header-logo{
+	position : absolute;
+	height : 75px;
+	width : 75px;
+	background-color: blue;
+	top: 10%;
+	left : 10%;
+}
+.header-toAnother{
+	position : absolute;
+	height : 75px;
+	top: 10%;
+	left : 16%;
+	
+}
+.header-logMenuList{
+	position: absolute;
+	display : flex;
+	right : 10%;
+	list-style: none;
+	top: 10%;
+}
+.header-logMenuList li {
+	margin-right : 20px;
+}
+.header-logMenuList a {
+	text-decoration: none;
+	
+}
+
+/* 
+	본문 섹션 css
+ */
+
+
+.joinTitle{
+	padding-top: 20px;
+}
+
+.joinTitle h2{
+	text-align: center;
+	font-size: 40px;
+}
+
+.joinContent {
+    width: 500px;
+    min-height: 70vh;
+    box-sizing: border-box;
+    margin: 0 auto;
+    padding: 0;
+}
+/* .aside-center fieldset{
+	border: none;
+	background: yellow;
+} */
+
+.joinContent .joinContent{
+	width: 100%;
+	padding: 20px 0px;
+	box-sizing: border-box;
+	/* 박스의 크기를 어떤 것을 기준으로 할 것인지(테두리 기준) */
+} 
+/* span {
+    font-size: 13px;
+    line-height: 20px;
+    color: #dc941b;
+    margin-top: 5px;
+} */
+
+.uInputArea {
+    display: table;
+    width: 80%;
+    height: 30px;
+    padding: 5px 0;
+    border-bottom: 1px solid #000;
+}
+
+.uInputArea label {
+    font-size: 17px;
+    line-height: 30px;
+    color: #000;
+    float: left;
+    font-weight: bold;
+}
+
+.uInputArea .inputText {
+    font-size: 15px;
+    line-height: 30px;
+    color: #000;
+    display: block;
+    width: 100%;
+    height: 30px;
+    padding: 0 25px 0 10px;
+    box-sizing: border-box;
+    border: 0;
+    outline: 0;
+    background: none;
+}
+  
+.address1{
+ 	font-size: 15px;
+    line-height: 30px;
+    color: #000;
+    display: block;
+    width: 100%;
+    height: 30px;
+    padding: 0 25px 0 10px;
+    box-sizing: border-box;
+    border: 0;
+    outline: 0;
+    background: none;
+   
+ }
+ 
+ 
+.addressFind{
+	border:none;
+	background-color: #66442b;
+    color: white; 
+  	padding: 10px 150px;
+  	display: inline-block;
+	
+}
+
+.addressFind:active {
+  top: 1px;
+  border-color: rgba(0,0,0,0.34) rgba(0,0,0,0.21) rgba(0,0,0,0.21);
+  box-shadow: 0 1px 0 rgba(255,255,255,0.89),0 1px rgba(0,0,0,0.05) inset;
+  position: relative;
+}
+ 
+ /* 1002 세련 수정함 */
+.buttonBox{
+	padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 50px;
+} 
+.btn-two {
+	border: none;
+	background-color: #66442b;
+    color: white; 
+  	padding: 10px 150px;
+  	display: inline-block;;
+	
+}
+    
+
+.btn-two:active {
+  top: 1px;
+  border-color: rgba(0,0,0,0.34) rgba(0,0,0,0.21) rgba(0,0,0,0.21);
+  box-shadow: 0 1px 0 rgba(255,255,255,0.89),0 1px rgba(0,0,0,0.05) inset;
+  position: relative;
+}
+
+/* 본문 css 끝  */
+
+.joinContainer{
+ box-sizing: content-box;	
+}
+ .section-container{
+ 	width : 100%;
+ 	min-height : 100vh; 
+ 	margin-bottom: 50px;
+ 	margin-top: 30px;
+ }
+ .searchBar-wrapper{
+ 	width :  100%;
+ 	margin:  auto;
+ 	padding : 0;
+ 	text-align : center;
+ }
+ .searchBar{
+ 	border : 5px solid black;
+ 	width: 300px;
+ 	height: 30px;
+ }
+ .aside-left, .aside-right, .aside-center{
+	margin-top : 20px;
+ }
+ .aside-left{
+ 	position : absolute;
+ 	background-color: red;
+ 	width : 15%;
+ 	height: 60vh;
+ 	left : 5%;
+ }
+ 
+ .aside-right{
+ 	position : absolute;
+ 	background-color: blue;
+ 	width : 15%;
+ 	height: 60vh;
+ 	right : 5%;
+ }
+ .aside-center{
+ 	position:absolute;
+ 	width :50%;
+ 	left: 25%;
+ 	right: 25%;
+ }
+ .aside-center .section-center{
+ 	min-height: 60vh;
+ 	justify-content: center; 
+ }
+
+.mapInfo{
+	padding : 40px;
+}
+.mapInfo p{
+	position : absolute;
+	color: #6666FF;
+	width: 300px;
+	background-color: navy;
+}
+.mapImg{
+	width : 300px;
+	height:200px;
+}
+.aside-center .partyJoinOut{
+	margin-top : 40px;
+	margin-left : 40px;
+	text-align : center;
+	background-color: olive;
+	width : 300px;
+}
+.menuImg{
+	position:absolute;
+	right : 50px;
+	top : 50px;
+}
+.menuImg img{
+	width : 280px;
+	height: 150px;
+}
+
+.participient{
+	position:absolute;
+	right : 40px;
+	top : 240px;
+	width : 300px;
+	height:200px;
+	
+	
+}
+
+footer{
+	position: relative;
+	margin-top: 10px;
+	width : 100%;
+	height: 100px;
+	background-color : lime;
+}

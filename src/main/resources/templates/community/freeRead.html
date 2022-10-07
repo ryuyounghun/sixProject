@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<meta charset="UTF-8">
+<title>Group Up</title>
+<link rel="shortcut icon" type="image/x-icon" href="/images/logo.jpg">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
+
+<link rel="stylesheet" href="/css/community/freeRead.css">
+<link rel="stylesheet" href="/css/style.css">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<style>
+	
+</style>
+</head>
+<body>
+	<div id="headerAndSection-wrapper">
+		<header>
+			<div class="header-container">
+				<a href="/" class="header-logo" >
+				</a>
+				
+				<ui class="header-logMenuList"> <!-- 로그인 및 로그아웃 링크 -->
+					<li sec:authorize ="not isAuthenticated">
+						<a th:href="@{/member/login}">
+							로그인
+						</a>
+					</li>
+					<li sec:authorize="not isAuthenticated">
+						<a th:href ="@{/member/join}">
+							회원가입
+						</a>
+					</li>
+					<li sec:authorize="isAuthenticated">
+						<a th:href ="@{/logout}">
+							로그아웃
+						</a>
+					</li>
+					<li sec:authorize="isAuthenticated">
+						<a th:href ="|@{/member/mypage}?num=${member.memberNum}|">
+							회원정보
+						</a>
+					</li>
+					<li>
+						<a th:href="@{/delivery/indexqwe}">배달</a>
+					</li>
+				</ui>
+
+			</div>
+		</header>
+		
+		
+			
+		<section>
+			<div class="section-container">
+			
+				<div id="spaceDiv"></div>
+				<aside>
+					<div class="aside-left">
+						<ul>
+							<li><b>이동하기</b></li>
+							<li>
+								<a th:href="@{/community/index}">메인</a>
+							</li>
+							<li>
+								<a th:href="@{/community/partyIndex}">모임 게시판</a>
+							</li>
+							<li>
+								<a th:href="@{/community/freeIndex}">자유 게시판</a>
+							</li>
+							
+						</ul>
+					</div>
+				</aside>
+				
+				<aside>
+					<div class="aside-right">
+						<div id="realtime">
+							실시간 키워드(aJax)
+						</div>
+					</div>
+				</aside>
+
+				<div class="aside-center">
+					<div class="section-center">
+						<div th:object="${board}" id="board">
+							<table th:object="${board}" >
+								<tr id="tHead">
+									<th th:text="*{title}" colspan="2"></th>
+									<th th:text="*{viewCount}"></th>
+									<td>
+										<button type="button" class="btn btn-success" id="updateBtn">수정하기</button>
+									</td>
+								</tr>
+								
+								<tr>
+									<td>
+										<img id="levelImg" src="">
+										<p th:text="*{nickname}"></p>
+										<input type="hidden" id="memberLevel" th:value="*{memberLevel}">
+									</td>
+									<td><p>|</p></td>
+									<td th:text="*{inputdate}"></td>
+								</tr>
+								<tr th:unless="${#lists.isEmpty(fileList)}" th:each="file : ${fileList}">
+									<td colspan="4">
+										<img alt="asd" th:src="@{display(num=${file.fileNum})}" width="200">
+									</td>
+								</tr>
+								<tr>
+									<td colspan="4" >
+										<pre>
+											<div th:text=*{content} id="contentBox"></div>
+										</pre>
+									</td>
+								</tr>
+							</table>
+						</div>
+					<!-- 댓글 박스 -->
+					<div id ="reList" class="overflow-auto" style="height:180px;"></div>
+					<div sec:authorize="isAuthenticated">
+						<div>
+							<textarea name="content" id="content"></textarea>
+							<button type="button" class="btn btn-success replay" id="btnReplyWrite">댓글달기</button>
+							<button type="button" class="btn btn-success replay" id="btnReplyupdate">수정하기</button>
+						</div>
+						<input type="hidden" id="boardNum" name="boardNum" th:value="${board.boardNum}"> 		
+						<input type="hidden" id="memberNum" th:value="${member.memberNum}"> 		
+					</div>
+					</div>
+				</div>
+			</div>		
+		</section>
+		<footer>
+			
+		</footer>
+	</div>
+	<script>
+						
+						$(document).ready(function(){
+							$("#btnReplyWrite").on("click", function(){
+								writeReply();
+							});
+							// 0929 추가
+							$("#updateBtn").click(function() { updateFreeBoard(); });
+							viewUpdateBtn();
+							
+							
+							getAllfbReply();
+							badge();
+							
+							// 1003 추가
+							$("#btnReplyupdate").hide();
+							
+							realtimeboard();
+						});
+						
+						
+						// 1002 추가
+				   		function goFbRead(boardNum) {
+				   			location.href="fbRead?num=" + boardNum;
+				   		}
+						
+						// 0929 추가
+						function getParameterByName(name) {
+							  name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+							  var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+							  results = regex.exec(location.search);
+							  return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+						}
+						
+						// 0929 추가
+						function viewUpdateBtn() {
+							let fBoardNum = getParameterByName('num');
+							let memberNum = $("#memberNum").val();
+							$.ajax({
+								url : "viewUpdateBtn",
+								type : "get",
+								data : {"fBoardNum" : fBoardNum},
+								success : function(data) {
+									console.log(data.memberNum);
+									if(memberNum != data.memberNum) {
+										$("#updateBtn").hide();
+									}
+									
+								}
+							});
+						}
+						
+						
+						
+						// 0929 추가
+						function updateFreeBoard() {
+							let fBoardNum = getParameterByName('num');
+							
+							location.href="updateFreeWrite?boardNum=" + fBoardNum;
+						}
+						
+						// 레벨별 뱃지추가하기
+						function badge(){
+								let memberLevel = $("#memberLevel").val();
+								
+								for ( let i =0; i <= 10; i++){
+									if(memberLevel == i){
+										img_src = "/images/levelBadges/lv"+ i + ".png";
+									}
+								}
+								
+								document.getElementById("levelImg").src=img_src;
+						}
+						
+						
+						function getAllfbReply(){
+							let bNum = $("#boardNum").val();
+							let loginMemberNum = $("#memberNum").val();
+							
+							$.ajax({
+								url : "getAllfbReply",
+								type : "get",
+								data : { "num" : bNum},
+								success : function (data){
+									
+									let htmlStr = "<table>";
+									$.each(data, function(index, item){
+										// 각 댓글번호마다 고유번호 달아주기
+										
+										// $("#reList").append(item.replyText);
+										htmlStr += "<tr>";	
+										htmlStr += "<td class='nicknameTd'>" + item.nickname +"</td>";
+										htmlStr += "<td style='word-break:break-all;' width='260px;'>" + item.content +"</td>";
+										htmlStr += "<td width='170px;'>" + item.inputdate +"</td>";	
+										htmlStr += "<td>";
+										if(loginMemberNum == item.memberNum){
+											htmlStr += "<a href='javascript:getOneReply("+ item.replyNum+");'>수정</a>";
+											htmlStr += " | ";
+											htmlStr += "<a href='javascript:deleteReply("+ item.replyNum+");'>삭제</a>";
+										}
+										htmlStr += "</td>";	
+										htmlStr += "</tr>";
+										
+									})
+									htmlStr += "</table>";
+									$("#reList").html(htmlStr);
+								
+								}
+								
+							});
+						}
+						
+						function writeReply(){
+							let content = $("#content").val();
+							let boardNum = $("#boardNum").val();
+							
+							$.ajax({
+								url : "fbWriteReply",
+								type : "Post",
+								data : {
+									"content" : content,
+									"boardNum" : boardNum,
+								},
+								success : function (){
+									$("#content").val(""); 
+									getAllfbReply();			
+								}
+								
+							});
+						}
+						// 1003 수정
+						function getOneReply(replyNum){
+							$.ajax({
+								url : "getOneReply",
+								type : "get",
+								data : {
+									"replyNum" : replyNum
+								},
+								success : function(reply){
+									let r = reply.replyNum;
+									$(content).val(reply.content);
+									$("#btnReplyupdate").show();
+									$("#btnReplyWrite").hide();
+									
+									$("#btnReplyupdate").click(function() { updateReply(r); });
+								}
+								
+							});
+						}
+						function updateReply(replyNum){
+							let r = "#" + replyNum;
+							let reContent = $("#content").val();
+							$.ajax({
+								url : "updateReply",
+								type : "post",
+								data : {
+									"replyNum" : replyNum,
+									"content" : reContent
+								},
+								success : function(text){
+									if ( text == "changeSuccess"){
+										alert("댓글이 수정되었습니다.");
+									}else{
+										alert("댓글이 수정 실패.");
+									}
+									
+									$("#content").val("");
+									$("#btnReplyupdate").hide();
+									$("#btnReplyWrite").show();
+									getAllfbReply();
+								}
+							});
+						}
+						
+						function deleteReply(replyNum){
+							let answer = confirm("삭제하시겠습니까?");
+							
+							if ( answer == true ){
+								$.ajax({
+									url : "deleteReply",
+									type : "get",
+									data : {"num" : replyNum},
+									success: function (){
+										alert("삭제완료");
+										getAllfbReply();
+									}
+								})
+								
+							}
+							
+						}
+						
+						// 0930 추가 1002 추가
+				   		function realtimeboard() {
+				   			
+				   			$.ajax({
+				   				url : "realtimeboard",
+				   				type : "get",
+				   				success : function(data) {
+				   					
+									let htmlStr = "<h1 style='text-align:center' class='rankTitle'>조회수 순위</h1><ul>";
+									
+									$.each(data, function(index, item) {
+										if(index <= 9) {
+							                  if ( index <=2 ){
+							                     
+							                     htmlStr += "";
+							                     htmlStr += "<li class='top3Stores' onclick='goFbRead(" + item.boardNum + ")'>"+  "<img src='' id='realtime" + index + "'>  "  + "<span style='display: inline-block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 13ch;' >" + item.title +"</span>" + "</li>";
+							                  }else {
+							                     
+							                     htmlStr += "<li class='underTop3' onclick='goFbRead(" + item.boardNum + ")'>" + (index+1)+"위 " +item.title + "</li>";
+							                  }
+							               }
+									});
+									htmlStr += "</ul>";
+					   				$("#realtime").html(htmlStr);
+					   				
+					   				for ( let i =0; i<=2; i++){
+										let img_src = "/images/rank/rank"+ (i+1) + ".png";
+										document.getElementById("realtime"+i).src = img_src;
+										document.getElementById("realtime"+i).style.width="30px";
+										document.getElementById("realtime"+i).style.width="30px";
+									}	
+				   				}
+				   			});
+				   			
+				   		}
+					</script>
+</body>
+</html>

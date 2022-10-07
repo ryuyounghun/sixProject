@@ -102,8 +102,27 @@ body{
 	justify-content: space-around;
 	margin-top: 30px;
 }
-.boardBox{
+.write-container{
+	display: flex;
+	width : inherit;
+	position: relative;
+	justify-content: space-around;
+}
+.partyWrite{
+	position : absolute;
+	left: 0;
+	width: 48%;
+}
+.freeWrite{
+	position : absolute;
+	width: 48%;
+	right: 0;
 	
+}
+.write-btn{
+	position: absolute;
+	right: 0;
+	bottom : 0;
 }
  .foodList{
  	display: flex;
@@ -121,10 +140,3 @@ body{
 	overflow: hidden; 	
  }
 
-footer{
-	bottom: 0;
-	width : 100%;
-	height : 100px;
-	background-color : lime;
-	
-}

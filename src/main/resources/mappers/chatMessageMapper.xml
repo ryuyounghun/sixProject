@@ -1,0 +1,29 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.abc.dao.ChatMessageDAO">
+
+	<insert id="insertReportMessage" parameterType="MessageReport">
+		INSERT INTO MESSAGEREPORT(
+			REPORTNUM,
+			SENDER,
+			MESSAGE,
+			REPORTER,
+			ROOMID
+		)VALUES(
+			MESSAGEREPORT_SEQ.NEXTVAL,
+			#{sender},
+			#{message},
+			#{reporter},
+			#{roomId}
+		)
+	</insert>
+	
+	<select id="selectAllReportMessage" resultType="MessageReport">
+		SELECT *
+      FROM MESSAGEREPORT m, delivery_member dm
+        WHERE dm.enabled = 1 AND m.sender = dm.MEMBERID
+	</select>
+</mapper>
+

@@ -34,7 +34,17 @@ public class WebSecurityConfig {
 		hs.csrf().disable() //인증방법 무효 
 		.authorizeRequests() // 권한 또는 인증 요청
 		.antMatchers(
-				"/**",
+				"/index",
+				"/member/join",
+				"/member/checkId",
+				"/member/checkPnum",
+				"/member/login",
+				"/member/findIdPw",
+				"/member/findMemberId",
+				"/member/updatePw",
+				"/member/socialIdCheck",
+				"/member/kakaoSignUp",
+				"/member/naverSignUp",
 				"/images/**",
 				"/css/**",
 				"/js/**"
@@ -50,7 +60,7 @@ public class WebSecurityConfig {
 		.passwordParameter("memberPw") 
 		.and()
 		.logout() // 로그아웃설정
-		.logoutSuccessUrl("/") // 로그 아웃 성공시 이동할 주소
+		.logoutSuccessUrl("/") // 로그아웃 성공시 이동할 주소
 		.permitAll()
 		.and()
 		.cors()

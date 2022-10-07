@@ -1,0 +1,160 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.abc.dao.ClassBoardDAO">
+<!--
+모임 게시판 관련 쿼리
+ -->
+ 
+	<!-- 모임게시판 글 쓰기 -->
+		<insert id="insertClassBoard" parameterType="ClassBoard">
+			INSERT INTO CLASS_BOARD(
+				CLASSNUM,
+				MEMBERNUM,
+				DESTINATION,
+				TOTALMEMBER,
+				NICKNAME,
+				TITLE,
+				CONTENT,
+				CLASSTAG,
+				ROOMID
+				<!-- 첨부파일 정보가 있을때 -->
+				<if test = "originalFile != null and savedFile != null">
+					, ORIGINALFILE
+					, SAVEDFILE
+				</if>
+			)
+			VALUES (
+				CLASS_BOARD_SEQ.NEXTVAL,
+				#{memberNum},
+				#{destination},
+				#{totalMember},
+				#{nickname},
+				#{title},
+				#{content},
+				#{classTag},
+				#{roomId}
+				<!-- 첨부파일 정보 유무 확인 -->
+				<if test = "originalFile != null and savedFile != null">
+					, #{originalFile}
+					, #{savedFile}
+				</if>
+			)
+		</insert>
+	<!-- 모임 게시판 글 불러오기 -->
+	<!-- 모임 게시판 글 불러오기 -->
+	<select id="selectAllClassBoard" resultType="ClassBoard" parameterType="map">
+		SELECT 
+		*
+		FROM CLASS_BOARD
+		<if test="searchWord != null">
+			<where>
+				TITLE LIKE '%'||#{searchWord}||'%'
+				OR 
+				DESTINATION LIKE '%'||#{searchWord}||'%'
+				OR
+				CLASSTAG LIKE '%'||#{searchWord}||'%'
+			</where>
+		</if>
+		ORDER BY CLASSNUM DESC
+	</select>
+	
+	<select id = "countAllClassBoard" parameterType="map" resultType = "int">
+		SELECT
+			count(*)
+		FROM CLASS_BOARD
+		<if test="searchWord != null">
+			<where>
+				TITLE LIKE '%'||#{searchWord}||'%'
+				OR 
+				DESTINATION LIKE '%'||#{searchWord}||'%'
+				OR
+				CLASSTAG LIKE '%'||#{searchWord}||'%'
+			</where>
+		</if>
+	</select>
+	<select id="selectAllClassBoardNoParameter" resultType="ClassBoard">
+		SELECT 
+			*
+		FROM CLASS_BOARD
+		ORDER BY CLASSNUM DESC
+	</select>
+	
+	<select id="selectOneClassBoard" resultType="ClassBoard" parameterType="int">
+		SELECT * FROM
+		CLASS_BOARD
+		WHERE CLASSNUM = #{classNum}
+	</select>
+	
+	<insert id="insertClassRoom" parameterType="ClassRoom">
+		<selectKey resultType="int" keyProperty="classNum" order="BEFORE">
+			SELECT MAX(CLASSNUM) FROM CLASS_BOARD		
+		</selectKey>
+		INSERT INTO CLASS_ROOM(
+			ROOMNUM,
+			CLASSNUM,
+			MEMBERNUM,
+			NICKNAME,
+			ADDRESS
+			<if test = "originalFile != null and savedFile != null">
+				, ORIGINALFILE
+				, SAVEDFILE
+			</if>
+		) VALUES (
+			CLASS_ROOM_SEQ.NEXTVAL,
+			#{classNum},
+			#{memberNum},
+			#{nickname},
+			#{address}
+			<!-- 첨부파일 정보 유무 확인 -->
+			<if test = "originalFile != null and savedFile != null">
+				, #{originalFile}
+				, #{savedFile}
+			</if>	
+		)
+	</insert>
+	
+	<select id = "selectClassRoom" parameterType="int" resultType="ClassRoom">
+		SELECT * FROM
+		CLASS_ROOM
+		WHERE CLASSNUM = #{classNum}
+	</select>
+	
+	<select id="selectClassRoomByMemberNumAndClassNum" parameterType="map" resultType="ClassRoom">
+		SELECT * FROM
+		CLASS_ROOM
+		WHERE MEMBERNUM = #{memberNum} AND CLASSNUM = #{classNum}
+	</select>
+	
+	<delete id="withdrawalParty" parameterType="map">
+		DELETE CLASS_ROOM
+		WHERE CLASSNUM = #{classNum} AND MEMBERNUM = #{memberNum}
+	</delete>
+	
+	<select id="selectClassRoomByMemberNum" parameterType="int" resultType="ClassRoom">
+		SELECT * FROM
+		CLASS_ROOM
+		WHERE MEMBERNUM = #{memberNum}
+	</select>
+	
+	<delete id="deleteClassBoard" parameterType="int">
+		DELETE CLASS_BOARD
+		WHERE CLASSNUM = #{classNum}
+	</delete>
+	
+	<!-- 1004 추가 -->
+	<update id="updateViewCount" parameterType="int">
+		UPDATE CLASS_BOARD
+		SET VIEWCOUNT = VIEWCOUNT + 1
+		WHERE CLASSNUM = #{classNum}
+	</update>
+	
+	<!-- 1004 추가 -->
+	<select id="selectClassBoardRank" resultType="ClassBoard">
+		SELECT * FROM
+		CLASS_BOARD
+		ORDER BY VIEWCOUNT DESC
+	</select>
+</mapper>
+

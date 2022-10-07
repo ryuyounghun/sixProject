@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<meta charset="UTF-8">
+<title>Group Up</title>
+<link rel="shortcut icon" type="image/x-icon" href="/images/logo.jpg">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
+
+<link rel="stylesheet" href="/css/community/partyIndex.css">
+<link rel="stylesheet" href="/css/style.css">
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+
+	$(document).ready(function() {
+		$("#party").hide();
+		party();
+	});
+	
+	
+	function checkJoinedParty() {
+		let memberId = $("#loginUser").val();
+		console.log(memberId);
+		
+		$.ajax({
+			url : "checkJoinedParty",
+			type : "get",
+			data : {"memberId" : memberId},
+			success : function(data) {
+				console.log(data);
+				
+				if(data == "") {
+					location.href='classWrite';
+				} else {
+					alert("이미 참여한 파티가 있습니다.");
+				}
+			}
+		});
+	}
+	
+	// 0923 추가
+	function party() {
+		let memberId = $("#loginUser").val();
+		
+		$.ajax({
+			url : "checkJoinedParty",
+			type : "get",
+			data : {"memberId" : memberId},
+			success : function(data) {
+				console.log(data);
+				
+				if(data != "") {
+					$("#party").show();
+		   			
+   				realTimeParty();
+   				fullParty();
+		   				
+		   		
+				} 
+			}
+		});
+	}
+	
+	// 0922 추가
+	function realTimeParty() {
+		
+		$.ajax({
+			url : "realTimeParty",
+			type : "get",
+			success : function(data) {
+				if(data != "") {
+					let htmlLength =  data.length;
+					$("#realTimeParty").text(htmlLength);
+				}
+				
+			}
+		});
+	}
+	
+	// 0922 추가
+	function fullParty() {
+		
+		$.ajax({
+			url : "fullParty",
+			type : "get",
+			success : function(data) {
+				console.log(data);
+				$("#partyTitle").text(data.title);
+				$("#fullParty").text(data.totalMember);
+			}
+		});
+	}
+</script>
+
+
+</head>
+<body>
+	<div id="headerAndSection-wrapper">
+		<header>
+			<div class="header-container">
+				<a href="/" class="header-logo"></a> 
+				
+				<ui class="header-logMenuList"> <!-- 로그인 및 로그아웃 링크 -->
+					<li sec:authorize="not isAuthenticated"><a
+						th:href="@{/member/login}"> 로그인 </a></li>
+					<li sec:authorize="not isAuthenticated"><a
+						th:href="@{/member/join}"> 회원가입 </a></li>
+					<li sec:authorize="isAuthenticated"><a th:href="@{/logout}">
+							로그아웃 </a></li>
+					<li sec:authorize="isAuthenticated">
+						<a th:href="|@{/member/mypage}?num=${member.memberNum}|"> 회원정보 </a>
+					</li>
+					<li>
+						<a th:href="@{/delivery/index}"> 배달</a>
+					</li>
+				</ui>
+
+			</div>
+		</header>
+
+		<section>
+			<div class="section-container">
+				
+					<div class="searchBar-wrapper">
+						
+						<form th:action="@{partyIndex}" method="get" id="pagingForm">
+							<input type="hidden" id="page" name="page" value="">
+							<div class="container-searchBar">
+								<input class="searchBar" type="text" name="searchWord"
+									th:value="${searchWord}" id="searchWord" placeholder="태그 & 통합검색">
+									<input type="submit" value="검색" class="write-btn">
+								<input type="button" value="글쓰기" class="write-btn" onclick="checkJoinedParty();">
+							</div>
+						</form>
+					</div>
+					
+				<aside>
+					<div class="aside-left">
+						<ul>
+							<li><b>이동하기</b></li>
+							<li>
+								<a th:href="@{/community/index}">메인</a>
+							</li>
+							<li>
+								<a th:href="@{/community/partyIndex}">모임 게시판</a>
+							</li>
+							<li>
+								<a th:href="@{/community/freeIndex}">자유 게시판</a>
+							</li>
+							<li>
+								<p>
+									 <a data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+									    파티 참가 현황 확인
+									 </a>
+								</p>
+							</li>
+						</ul>
+					<div class="collapse" id="collapseExample">
+					  <div class="card card-body">
+					    <div id="party">
+							<h3>파티참여현황</h3>
+							<h3 id="partyTitle"></h3>
+							<span id="realTimeParty">
+							
+							</span>
+							<span>/</span>
+							<span id="fullParty"></span>
+						</div>   
+					  </div>
+					</div>
+					</div>
+				</aside>
+
+
+
+				<aside>
+					<div class="aside-right">
+						<!-- 실시간 키워드(aJax)  -->
+						<div id="realtime">
+							실시간 키워드(aJax)
+						</div>
+					</div>
+				</aside>
+				
+				<div class="aside-center">
+					<div class="section-center">
+						
+						<div class="card" id="card" style="width: 18rem;" th:each = "list : ${cbList}" th:onclick="|goClass(${list.classNum});|">
+						  <img th:if="${list.savedFile == null}" src="/images/logo_height.png" class="card-img-top">
+						  <img th:if="${list.savedFile != null}" th:src="@{partyDisplay(num = ${list.classNum})}" class="card-img-top">
+						  <div class="card-body">
+						    <h5 class="card-title" th:text="${list.title}">Card title</h5>
+						    <p  class="card-text tag" th:text="${list.content}"
+						    data-bs-toggle="tooltip" data-bs-placement="top"
+							        data-bs-custom-class="custom-tooltip"
+							        th:data-bs-title="${list.content}"
+						    style="display: inline-block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 18ch;"></p>
+						 	<p class="card-text tag" th:if = "${list.classTag == null}">...</p>
+						 	<p  class="card-text tag" th:if = "${list.classTag != null}" th:text = "${list.classTag}"
+						 	data-bs-toggle="tooltip" data-bs-placement="top"
+							        data-bs-custom-class="custom-tooltip"
+							        th:data-bs-title="${list.classTag}"
+						 	style="display: inline-block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 18ch;"></p>
+				 	 	  </div>
+						</div>
+					</div>
+					
+					<div id="navigation">
+						<nav aria-label="Page navigation example">
+						  <ul class="pagination justify-content-center" >
+						  	<li class="page-item">
+						      <a class="page-link" th:href = "|javascript:pagingFormSubmit(${navi.currentPage - navi.pagePerGroup})|" aria-label="Previous">
+						        <span aria-hidden="true">&laquo;</span>
+						      </a>
+						    </li>
+						    <li class="page-item"><a class="page-link" th:href = "|javascript:pagingFormSubmit(${navi.currentPage - 1})|" id="prevPage">&#60;</a></li>
+			  		  		<li class="page-item" th:each="counter : ${#numbers.sequence(navi.startPageGroup, navi.endPageGroup)}">
+				    			<a class="page-link" th:text ="${counter}" th:href = "|javascript:pagingFormSubmit(${counter})|"></a>
+				    		</li>
+						    <li class="page-item"><a class="page-link" th:href = "|javascript:pagingFormSubmit(${navi.currentPage + 1})|" id="nextPage">&#62;</a></li>
+					  	  	<li class="page-item">
+						      <a class="page-link" th:href = "|javascript:pagingFormSubmit(${navi.currentPage + navi.pagePerGroup})|" aria-label="Next">
+						        <span aria-hidden="true">&raquo;</span>
+						      </a>
+				 			</li>
+						  
+						  </ul>
+						</nav>
+					</div>
+				
+					
+				</div>
+				
+				
+			</div>
+		</section>
+	<input type = "hidden" id = "loginUser" th:value = "${#authentication.getPrincipal().getUsername()}">
+	</div>
+
+	<footer> </footer>
+	
+<script type="text/javascript">
+	$(document).ready(function() {
+		realtimeboard();
+	});
+
+
+	function pagingFormSubmit(currentPage){
+		let form = document.getElementById("pagingForm");
+		let page = document.getElementById("page");
+		
+		page.value = currentPage;
+		form.submit();
+	}
+	
+	function goClass(classNum) {
+		location.href="read?num=" + classNum;
+	}
+	const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+	const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+
+	function goClass(classNum) {
+   			location.href="read?num=" + classNum;
+   		}
+	
+	
+		// 0930 추가 1002 추가
+   		function realtimeboard() {
+   			$.ajax({
+   				url : "realtimeClassboard",
+   				type : "get",
+   				success : function(data) {
+   					
+					let htmlStr = "<h1 style='text-align:center' class='rankTitle'>조회수 순위</h1><ul>";
+					
+					$.each(data, function(index, item) {
+						if(index <= 9) {
+			                  if ( index <=2 ){
+			                     htmlStr += "";
+			                     htmlStr += "<li class='top3Stores' onclick='goClass(" + item.classNum + ")'>"+  "<img src='' id='realtime" + index + "'>  "  + "<span style='display: inline-block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 13ch;' >" + item.title +"</span>" + "</li>";
+			                  }else {
+			                     
+			                     htmlStr += "<li class='underTop3' onclick='goClass(" + item.classNum + ")'>" + (index+1)+"위 " +item.title + "</li>";
+			                  }
+			               }
+					});
+					htmlStr += "</ul>";
+	   				$("#realtime").html(htmlStr);
+	   				
+	   				for ( let i =0; i<=2; i++){
+						let img_src = "/images/rank/rank"+ (i+1) + ".png";
+						document.getElementById("realtime"+i).src = img_src;
+						document.getElementById("realtime"+i).style.width="30px";
+						document.getElementById("realtime"+i).style.width="30px";
+					}	
+   				}
+   			});
+   			
+   		}
+   		
+	function checkJoinedParty() {
+			let memberId = $("#loginUser").val();
+			console.log(memberId);
+			
+			$.ajax({
+				url : "checkJoinedParty",
+				type : "get",
+				data : {"memberId" : memberId},
+				success : function(data) {
+					console.log(data);
+					if(data == "") {
+   					location.href='classWrite';
+					} else {
+						alert("이미 참여한 파티가 있습니다.");
+					}
+				}
+			});
+		}
+	</script>
+</body>
+</html>

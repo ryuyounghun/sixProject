@@ -1,48 +1,53 @@
 @charset "UTF-8";
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@500&display=swap');
+* { font-family: 'Noto Sans KR', sans-serif;}
 
 body{
 	margin : 0;
 	padding : 0;
 }
+li{ 
+	list-style: none;
 
+}
 /*
 	헤더css
 */
 .header-container{
-		width: 100%;
-		height: 100px;
-		background-color: fuchsia;
-		position: relative;
+      width: 100%;
+      height: 100px;
+      background-color: #F9F7F7;
+      position: relative;
 }
 
 .header-logo{
-	position : absolute;
-	height : 75px;
-	width : 75px;
-	background-color: blue;
-	top: 10%;
-	left : 10%;
+   position : absolute;
+   height : 100px;
+   width : 170px;
+   left : 5%;
+   top: -2%;
+   float: left;
+   background: url(/../images/logo_height.png) no-repeat center;
+   background-size: contain;
 }
-.header-toAnother{
-	position : absolute;
-	height : 75px;
-	top: 10%;
-	left : 16%;
-	
-}
+
 .header-logMenuList{
-	position: absolute;
-	display : flex;
-	right : 10%;
-	list-style: none;
-	top: 10%;
+   position: absolute;
+   display : flex;
+   right : 10%;
+   list-style: none;
+   top: 10%;
 }
 .header-logMenuList li {
-	margin-right : 20px;
+   margin-right : 20px;
 }
 .header-logMenuList a {
-	text-decoration: none;
-	
+   text-decoration: none;
+   
+}
+.header-logMenuList a:hover {
+   text-decoration: underline;
+   
 }
 /* 
 	본문 섹션 css
@@ -54,40 +59,130 @@ body{
  	margin-top: 30px;
  }
  .searchBar-wrapper{
- 	width :  100%;
- 	margin:  auto;
- 	padding : 0;
- 	text-align : center;
+    width :  100%;
+    margin:  auto;
+    padding : 0;
+    text-align : center;
+    box-sizing: content-box;
  }
- .searchBar{
- 	border : 5px solid black;
- 	width: 300px;
- 	height: 30px;
+ /* 9월 29일 추가 작업 */
+ .placeholder{
+    position:absolute;
+    width : 40px;
+    height : 42px;
+    background: url(/images/deliveryImages/placeholder.png);
+    background-size: contain;
+    background-repeat:no-repeat;
+    background-size : contain;
+    cursor : pointer;
+    border: none;
+    transform : translate(-50px);
+    
+ }
+ #searchWord{
+    border : 5px solid #874C62;
+    width: 300px;
+    min-height: 30px;
+    
+ }
+ #searchBar{
+    width: 52px;
+    height : 42px;
+    background-color: #874C62;
+    border : 5px solid #874C62;
+    color : white;
+    transform : translate(10px);
+	cursor: pointer;
  }
  .aside-left, .aside-right, .aside-center{
-	margin-top : 20px;
+ 
+ 	box-sizing: content-box;
  }
  .aside-left{
  	position : absolute;
- 	background-color: red;
+ 	background-color: #F2D388;
+ 	left : 3%;
  	width : 15%;
- 	height: 60vh;
- 	left : 5%;
+ 	box-shadow: 1px 1px 5px 0;
+ 	font-size: 18px;
+}
+.aside-left li {
+	
+	margin-bottom : 10px;
+}
+.aside-left a{
+ 	text-decoration: none;
+ 	color : black;
+	
+} 
+.aside-left a:hover{
+ 	color : black;
+ 	text-decoration: underline;
+	font-weight: bold;
+ 	font-size: 20px;
+} 
+.aside-right{
+    position : absolute;
+    background-color: #874C62;
+    border : 5px solid #C98474;
+    color : white;
+    right : 3%;
+    min-width:250px;
+    
  }
- 
- .aside-right{
- 	position : absolute;
- 	background-color: blue;
- 	width : 15%;
- 	height: 60vh;
- 	right : 5%;
+ ul {
+    list-style: none;
+    
  }
+.aside-right-allPay{
+	height : 100px;
+	background-color: #874C62;
+	position: relative;
+}
+.receiptTitle-rightSide{
+	height: 2em;
+	border-bottom: 1px solid #C98474;
+}
+.receiptInfo-rightSide{
+	height: 3em;
+	border-bottom : 1px dashed black;
+}
+.order-btn{
+	position : absolute;
+	right : 10px;
+	top: 10px;
+}
+ /*
+ .rankTitle::after {
+    position : absolute;
+    content:"---------------------------";
+    top :40px;
+    left : 10px;
+ }
+   */
+ .rankTitle{
+    padding-bottom : 8px;
+    border-bottom: 3px dashed #C98474;
+ }
+ .top3Stores span{
+    position : absolute;
+    display : inline-block;
+    font-weight: bold;
+    margin-top:5px;  
+     
+}
+.underTop3 {
+    cursor : pointer;
+}
+.first1 {
+	color : black;
+	padding : 10px;
+}
  .aside-center{
  	position:absolute;
  	width :50%;
  	left: 25%;
  	right: 25%;
- 	background-color: purple;
  }
  .aside-center .section-center{
  	min-height: 60vh;
@@ -95,7 +190,8 @@ body{
  }
 
 .aside-center .storeThumbnail{
-	background-color: olive;
+	border : 1px solid grey;
+	margin-bottom : 20px;
 	width: inherit;
 	height: 150px;
 }
@@ -103,16 +199,14 @@ body{
 .brandImg{
 	position : absolute;
 	margin-left : 10px;
-	margin-top: 10px;
 	width : 100px;
-	height:100px;
+	height: 90px;
+	top : 50px;
 }
 .storeInfo{
-	position : absolute;
-	left: 130px;	
+	margin-left: 130px;	
 }
-.menuAndReview{
-	background-color: lime;
+.menuAndReview {
 	text-align: center;
 }
 .menuAndReviewList{
@@ -133,15 +227,71 @@ body{
   width: 1px;
   content: '';
 }
-.menuAndReviewList li {
-	background-color: orange;
-	width: 30%;
+.menuAndReviewList li  {
+	border : 1px solid grey;
+	flex-grow: 1;
+	padding : 15px;
+	cursor:  pointer;
+}
+.menuAndReviewList li:hover {
+	background-color : #F0F0F0;
+}
+.clicked {
+	background-color : #F0F0F0;
+	
+}
+li[class*=clicked]{
+	border-bottom : 4px solid #999;
+	
+}
+.menu-info{
+	text-align: left;
+}
+.info-theme{
+	font-weight: bold;	
+}
+.info-subTheme{
+	color : grey;
+}
+.info-subContent{
+	color : black;
 }
 
-footer{
-	bottom: 0;
-	width : 100%;
-	height : 100px;
-	background-color : lime;
+.menuTable {
+	position : relative;
+	width: 100%;
+	margin : 10px 0 10px 0;
+	height : 50px;
+	text-align:center;
 	
+}
+
+#orderList {
+	text-align : center;
+}
+.menu-info{
+	padding-left : 30px;	
+}
+.cart-icon {
+	position : absolute;
+	border-radius : 10px;
+	background-color : #f0f0f0;
+	height: 32px;
+	width: 32px;
+	cursor: pointer;
+	right : 20px;
+	top : 10px;
+	
+}
+.cart-icon:hover {
+    transform : translate(10px);
+    transition : .7s;
+}
+.menu-img{
+	position: absolute;
+	top : 10px;
+	right : 100px;
+	width: 120px;
+	height : 80px;
+	background-size: contain;
 }

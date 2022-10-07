@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org/"
+   	xmlns:sec="http://www.thyemeleaf.org/extras/spring-security">
+<head>
+<meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@500&display=swap" rel="stylesheet">
+<title>Group Up</title>
+ <link rel="shortcut icon" type="image/x-icon" href="/images/logo.jpg">
+<link rel = "stylesheet" href = "/css/member/updateInfo_style.css">
+<link rel = "stylesheet" href = "/css/style.css">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
+
+<script>
+
+	/* 비밀번호 유효성 검사 */
+	$(document).ready(function(){
+		
+		$("#memberPw").on("blur", function(){
+			
+			let pw1 = $("#memberPw").val();
+			let pw2 = $("#memberPwChk").val();
+			let num = pw1.search(/[0-9]/g);
+			let eng = pw1.search(/[a-z]/ig);
+			let spe = pw1.search(/[`~!@@#$%^&*|₩₩₩'₩";:₩/?]/gi);
+
+			
+			if(pw1 == pw2){
+				$("#text2").text("비밀번호가 일치합니다.").css("color", "green");
+				$("#doublePw").val("1");
+			} else if (pw1 != pw2) {
+				$("#text2").text("비밀번호가 일치하지 않습니다.").css("color", "red");
+				$("#doublePw").val("0");
+			}
+			
+			if(pw1.length < 8 || pw1.length > 16){
+				$("#text2").text("비밀번호는 8자리~16자리 이내로 입력해주세요.").css("color", "red");
+				$("#doublePw").val("0");
+			} else if(pw1.search(/\s/) != -1){
+				$("#text2").text("비밀번호는 공백 없이 입력해주세요.").css("color", "red");
+				$("#doublePw").val("0");
+			} else if(num < 0 || eng < 0 || spe < 0){
+				$("#text2").text("영문, 숫자, 특수문자를 혼합하여 입력해주세요.").css("color", "red");
+				$("#doublePw").val("0");
+			} 
+			
+		});
+		
+		/* 비밀번호 유효성 검사 */
+		$("#memberPwChk").on("blur", function(){
+			let pw1 = $("#memberPw").val();
+			let pw2 = $("#memberPwChk").val();
+			let num = pw2.search(/[0-9]/g);
+			let eng = pw2.search(/[a-z]/ig);
+			let spe = pw2.search(/[`~!@@#$%^&*|₩₩₩'₩";:₩/?]/gi);	
+			
+			if(pw1 == pw2){
+				$("#text2").text("비밀번호가 일치합니다.").css("color", "green");
+				$("#doublePw").val("1");
+			} else if (pw1 != pw2) {
+				$("#text2").text("비밀번호가 일치하지 않습니다.").css("color", "red");
+				$("#doublePw").val("0");
+			}
+			
+			if(pw2.length < 8 || pw2.length > 16){
+				$("#text2").text("비밀번호는 8자리~16자리 이내로 입력해주세요.").css("color", "red");
+				$("#doublePw").val("0");
+			} else if(pw2.search(/\s/) != -1){
+				$("#text2").text("비밀번호는 공백 없이 입력해주세요.").css("color", "red");
+				$("#doublePw").val("0");
+			} else if(num < 0 || eng < 0 || spe < 0){
+				$("#text2").text("영문, 숫자, 특수문자를 혼합하여 입력해주세요.").css("color", "red");
+				$("#doublePw").val("0");
+			}
+			
+		});
+		
+		$("#phone").on("blur", function(){
+			let phone = $("#phone").val();
+			let eng = phone.search(/[a-z]/ig);
+			let num = phone.search(/[0-9]/g);
+			let kor = phone.search(/[ㄱ-ㅎㅏ-ㅣ가-힣]/g);
+			let phRegExp = /^\d{3}-\d{3,4}-\d{4}$/;
+			if(phone.trim().length == 0){
+				$("#text4").text("전화번호는 필수입력 입니다.").css("color", "red");
+				$("#phoneCheck").val("0");
+			} else if(phone.length < 10 || phone.length > 12){
+				$("#text4").text("전화번호는 11자리로 입력해주세요").css("color", "red");
+				$("#phoneCheck").val("0");
+			} else if(kor >= 0){
+				$("#text4").text("전화번호는 숫자만 입력해야 합니다.").css("color", "red");
+				$("#phoneCheck").val("0");
+			}else if(eng >= 0){
+				$("#text4").text("전화번호는 숫자만 입력해야 합니다.").css("color", "red");
+				$("#phoneCheck").val("0");
+			}else if(num != 0){
+				$("#text4").text("전화번호는 숫자만 입력해야 합니다.").css("color", "red");
+				$("#phoneCheck").val("0");
+			}
+			else {
+				$("#text4").text("올바른 형식입니다.").css("color", "green");
+				$("#phoneCheck").val("1");
+			}
+			
+			
+		});
+		
+		$("#memberName").keyup( function(){
+			let mName = $("#memberName").val();
+			let kor = mName.search(/^[가-힣]+$/);
+			let doubleCheckKor = mName.search(/^[ㄱ-ㅎ]+$/);
+			let eng = mName.search(/[a-zA-Z]/g);
+			let num = mName.search(/[0-9]/g);
+				console.log("-----");
+				console.log(kor);
+				console.log(doubleCheckKor);
+				console.log(eng);
+				console.log(num);
+				console.log("-----");
+				if ( mName.trim().length == 0){
+					$("#memberNameCheck").text("");
+				}
+				else if (kor == -1){ 
+					console.log("잘못된 형식입니다. 한국어만 입력해주세요.");
+					$("#memberNameCheck").text("잘못된 형식입니다. 한국어만 입력해주세요.").css("color","red");
+				}
+				else {
+					$("#memberNameCheck").text("올바른 형식입니다.").css("color","green");
+				}
+				$("#memberNameCheck").show();
+			
+		});
+	});
+	
+	/* 아이디 중복 체크 + 아이디 유효성 검사 */
+	function checkIdValues(){
+		let mdId = $("#memberId").val();
+		// 아이디 영문 대소문자 + 숫자 조합으로
+		// 한글 + 특수기호 금지
+		let nameRegExp = /^[a-zA-z0-9]{4,12}$/;
+		let kor = mdId.search(/[ㄱ-ㅎㅏ-ㅣ가-힣]/g);
+		let num = mdId.search(/[0-9]/g);
+        let eng = mdId.search(/[a-z]/ig);
+        let spe = mdId.search(/[`~!@@#$%^&*|₩₩₩'₩";:₩/?]/gi);
+         
+		$('.id_ok').hide();
+		$('.id_already').hide();
+		
+		$.ajax({
+			url: 'checkId',
+			type: 'post',
+			data: {id:mdId},
+			success: function(result){
+				console.log(result);
+				
+				if(mdId == 0){
+					$('.id_already').text("아이디는 공백없이 입력해주세요.").css("color", "red");
+					$('.id_already').show();
+					$("#memberIdCheck").val("0");
+				} else if (mdId.length < 3 || mdId.length > 13) {
+					$('.id_already').text("아이디는 3~12글자 사이로 입력해주세요.").css("color", "red");
+					$('.id_already').show();
+					$("#memberIdCheck").val("0");
+				} else if (num < 0 || eng < 0){
+					$('.id_already').text("아이디는 영문과 숫자를 섞어서 입력해주세요").css("color", "red");;
+	               	$('.id_already').show();
+					$('#memberIdCheck').val("0");
+		        } else if (spe > 0){
+		        	$('.id_already').text("특수문자는 사용할 수 없습니다").css("color", "red");;
+	                $('.id_already').show();
+	                $("#memberIdCheck").val("0");
+	             } else if (kor > 0){
+					$('.id_already').text("아이디에는 한글을 사용할 수 없습니다.").css("color", "red");
+					$('.id_already').show();
+					$("#memberIdCheck").val("0");
+				} else if(result == 1) {
+					$('.id_already').text("이미 사용중인 아이디입니다.").css("color", "red");
+					$('.id_already').show();
+					$("#memberIdCheck").val("0");
+				} else {
+					$('.id_already').text("올바른 형식입니다.").css("color", "green");
+					$('.id_already').show();
+					$("#memberIdCheck").val("1");
+				}
+	
+			},
+			error:function(){
+				alert("아이디 에러!");
+			}
+
+		});
+		
+	}
+		
+		/* 핀번호 중복 체크 + 핀번호 유효성 검사 */
+		function checkPinValues(){
+			let pnum = $("#pinNumber").val();
+			// 핀번호 영문 대소문자 + 숫자 조합으로
+			// 한글 + 특수기호 금지
+			let nameRegExp = /^[a-zA-z0-9]{4,12}$/;
+			let kor = pnum.search(/[ㄱ-ㅎㅏ-ㅣ가-힣]/g);
+			let num = pnum.search(/[0-9]/g);
+	        let eng = pnum.search(/[a-z]/ig);
+	        let spe = pnum.search(/[`~!@@#$%^&*|₩₩₩'₩";:₩/?]/gi);
+	         
+			$('.id_ok2').hide();
+			$('.id_already2').hide();
+			
+			$.ajax({
+				url: 'checkPnum',
+				type: 'post',
+				data: {pnum:pnum},
+				success: function(result){
+					console.log(pnum);
+
+					if(pnum == 0){
+						$('.id_already2').text("핀번호는 공백없이 입력해주세요.").css("color", "red");
+						$('.id_already2').show();
+						$("#pinNumberCheck").val("0");
+					} else if (kor >= 0){
+						$('.id_already2').text("핀번호에는 한글을 사용할 수 없습니다.").css("color", "red");
+						$('.id_already2').show();
+						$("#pinNumberCheck").val("0");
+					} else if (pnum.length < 3 || pnum.length > 13) {
+						$('.id_already2').text("핀번호는 3~12글자 사이로 입력해주세요.").css("color", "red");
+						$('.id_already2').show();
+						$("#pinNumberCheck").val("0");
+					} else if (num < 0 || eng < 0){
+						$('.id_already2').text("핀번호는 영문과 숫자를 섞어서 입력해주세요.").css("color", "red");;
+		               	$('.id_already2').show();
+						$('#pinNumberCheck').val("0");
+			        } else if (spe > 0){
+			        	$('.id_already2').text("특수문자는 사용할 수 없습니다.").css("color", "red");;
+		                $('.id_already2').show();
+		                $("#pinNumberCheck").val("0");
+		             } else if(result == 1) {
+						$('.id_already2').text("이미 사용중인 핀넘버 입니다.").css("color", "red");
+						$('.id_already2').show();
+						$("#pinNumberCheck").val("0");
+					} else {
+						$('.id_already2').text("올바른 형식입니다.").css("color", "green");
+						$('.id_already2').show();
+						$("#pinNumberCheck").val("1");
+					}
+				},
+				error:function(){
+					alert("핀넘버 에러입니다.");
+				}
+			});
+	}
+</script>	
+</head>
+<body>
+	<div id = "headerAndSection-wrapper">
+		<header>
+			<div class="header-container">
+				<a href="/" class="header-logo" >
+				</a>
+				
+				<ui class = "header-logMenuList"> <!-- 로그인 및 로그아웃 링크 -->
+					<li sec:authorize ="not isAuthenticated">
+						<a th:href="@{/memberView/login}">
+							로그인
+						</a>
+					</li>
+					<li sec:authorize="not isAuthenticated">
+						<a th:href ="@{/memberView/join}">
+							회원가입
+						</a>
+					</li>
+					<li sec:authorize="isAuthenticated">
+						<a th:href ="@{/logout}">
+							로그아웃
+						</a>
+					</li>
+					<li sec:authorize="isAuthenticated">
+						<a th:href="|@{/member/mypage}?num=${member.memberNum}|"> 회원정보 </a>
+					</li>
+				</ui>
+			</div>
+		</header>
+		
+		<section>
+			<div class = "section-container">
+			<!-- 헤더 윗 부분(로그인, 회원가입) -->
+			
+		    <!-- 회원정보 수정 내용 들어갈 container -->
+		   	<div class = "joinContainer">
+		   		<!-- 회원가입 제목 -->
+				<div class = "joinTitle">
+					<h2>회원정보수정</h2>
+				</div>
+				<!-- 회원가입 내용 -->
+				<div class = "aside-center">
+					<div class = "joinContent">
+					<!-- 서버에 보낼 링크랑 방식 적어야함 -->
+					<form action = "updateInfo" method = "post" th:object = "${member}" onsubmit = "return checkValues();">
+						<!-- 회원가입 기본정보 -->
+						<fieldset class = "requiredInfo">
+							<!-- 아이디 -->
+							<div id = "idBox" class = "uInputArea">
+							<label for = "memberId">아이디</label><br>
+							<span class = "inputText" th:text = "*{memberId}">아이디</span>
+		        			</div>
+		        			<!-- 비밀번호 -->
+		        			<div class = "uInputArea">
+							<label for = "memberPw">비밀번호</label><br>
+							<input type = "password" id = "memberPw" name = "memberPw" class = "inputText" placeholder = "비밀번호는 필수입력입니다." required>
+							<input type = "hidden" id = "doublePw" value = "0"> 
+							</div>
+							<!-- 비밀번호 확인 -->
+							<div class = "uInputArea">
+							<label for = "memberPwChk">비밀번호 확인</label>
+							<input type = "password" id = "memberPwChk" class = "inputText" placeholder = "비밀번호를 한번 더 입력해주세요." required>
+							<span id = "text2"></span>
+		        			</div>
+		        			<!-- 이름 -->
+		        			<div class = "uInputArea">
+		        			<label for = "name">이름</label>
+							<input type = "text" id = "memberName" name = "memberName" class = "inputText" th:value = "*{memberName}" placeholder = "이름을 입력해주세요." required>
+		        			<span style='display:none' id = "memberNameCheck"></span>
+							</div>
+		        			<!-- 닉네임 -->
+		        			<div class = "uInputArea">
+		        			<label for = "nickname">닉네임</label>
+		        			<input type = "text" id = "nickname" name = "nickname"  class = "inputText" th:value = "*{nickname}" required>
+							</div>
+							
+							<!-- 주소 -->
+							<div class = "uInputArea">
+			        			<label for = "address">주소</label>
+			        			<input type = "text" id = "sample4_roadAddress" class = "address1" name = "address" placeholder = "주소찾기를 눌러주세요" readonly>
+			        			<!-- 1002 세련 수정함 -->
+			        			<div class = "buttonBox">
+			        			<input type = "button" value = "주소찾기" class = "addressFind" onclick="sample4_execDaumPostcode()">
+								</div>
+								<input type = "text" class = "address1" id="sample4_detailAddress" placeholder = "상세 주소를 입력해주세요">
+							
+			        			<input type="hidden" id="sample4_postcode" placeholder="우편번호">
+								<input type="hidden" id="sample4_jibunAddress" placeholder="지번주소">
+								<span id="guide" style="color:#999;display:none"></span>
+								<input type="hidden" id="sample4_extraAddress" placeholder="참고항목">
+								<!-- <input type="hidden" id="fullAddress" value="" name="address">  -->
+							</div>
+							<!-- 전화번호 -->
+							<div class = "uInputArea">
+							<label for = "phone">전화번호</label>
+							<input type = "text" id = "phone" name = "phone"  class = "inputText" th:value = "*{phone}" placeholder = "전화번호를 입력해주세요.">
+							<input type = "hidden" id = "phoneCheck" value = "0">
+							<span id = "text4"></span>    
+							</div>
+						<!-- pinNumber -->
+						<!-- <label for = "pinNumber">핀번호</label>
+						<input type = "text" id = "pinNumber" name = "pinNumber" oninput = "return checkPinValues();" placeholder="핀번호를 입력해주세요." required>
+						<span class = "id_already2"></span> -->
+						<input type = "hidden" name ="pinNumber" id = "pinNumber2" value = "">							
+						</fieldset>
+						
+						<fieldset>
+						<!-- 버튼 -->
+						<div class = "buttonBox">
+							<button type = "submit" class=btn-two>수정하기</button>
+						</div>
+						</fieldset>
+						
+						</form>
+					</div>
+					</div>
+				</div>
+			</div>		   	
+		</section>
+	</div><!-- headerAndSection-wrapper 부분 끝 -->
+	
+	<footer>
+	</footer>
+	
+<script>
+	function checkValues() {
+		let memberId = document.getElementById('memberId');
+		let memberName = document.getElementById('name');
+		let phone = document.getElementById('phone');
+	
+		
+		let doublePw = document.getElementById("doublePw");
+		if(doublePw.value == 0) {
+			return false;
+		}
+		
+		
+		let pinNumberCheck = document.getElementById("pinNumberCheck");
+		
+		if(pinNumberCheck.value == 0) {
+			return false;
+		} 
+		
+		let phoneCheck = document.getElementById("phoneCheck");
+		
+		if(phoneCheck.value == 0){
+			return false;
+		}
+	
+	}
+	
+	function joinSubmit(){
+		let pinNumber = $("#pinNumber").val();
+		$("#pinNumber2").val(pinNumber);
+		let form = document.getElementById("joinForm");
+		form.submit();
+	}
+	
+	function openModal(){
+		$("#exampleModal").modal("show");
+		
+	}
+</script>
+	
+	
+	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+	<script>
+	function sample4_execDaumPostcode() {
+	new daum.Postcode({
+	    oncomplete: function(data) {
+	
+	    	var roadAddr = data.roadAddress; // 도로명 주소 변수
+	        var extraRoadAddr = ''; // 참고 항목 변수
+	
+	        if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+	            extraRoadAddr += data.bname;
+	        }
+	        if(data.buildingName !== '' && data.apartment === 'Y'){
+	           extraRoadAddr += (extraRoadAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+	        }
+	        if(extraRoadAddr !== ''){
+	            extraRoadAddr = ' (' + extraRoadAddr + ')';
+	        }
+	
+	        document.getElementById('sample4_postcode').value = data.zonecode;
+	        document.getElementById("sample4_roadAddress").value = roadAddr;
+	        document.getElementById("sample4_jibunAddress").value = data.jibunAddress;
+	        
+	        if(roadAddr !== ''){
+	            document.getElementById("sample4_extraAddress").value = extraRoadAddr;
+	        } else {
+	            document.getElementById("sample4_extraAddress").value = '';
+	        }
+	
+	        var guideTextBox = document.getElementById("guide");
+	        if(data.autoRoadAddress) {
+	            var expRoadAddr = data.autoRoadAddress + extraRoadAddr;
+	            guideTextBox.innerHTML = '(예상 도로명 주소 : ' + expRoadAddr + ')';
+	            guideTextBox.style.display = 'block';
+	
+	        } else if(data.autoJibunAddress) {
+	            var expJibunAddr = data.autoJibunAddress;
+	            guideTextBox.innerHTML = '(예상 지번 주소 : ' + expJibunAddr + ')';
+	            guideTextBox.style.display = 'block';
+	        } else {
+	            guideTextBox.innerHTML = '';
+	            guideTextBox.style.display = 'none';
+	        }
+	    }
+	}).open();
+	
+	}
+</script>
+</body>
+</html>

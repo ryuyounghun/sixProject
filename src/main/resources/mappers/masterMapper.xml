@@ -1,0 +1,109 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.abc.dao.MasterDAO">
+<!--
+쿠폰 게시판(관리자) 관련 쿼리
+ -->
+ 	<!-- 쿠폰 등록하기 -->
+	<insert id = "insertCoupon" parameterType = "Coupon">
+		INSERT INTO COUPON(
+			COUPONNUM,
+			COUPONNAME,
+			COUPONPOINT
+		) VALUES (
+			COUPON_SEQ.NEXTVAL,
+			#{couponName},
+			#{couponPoint}
+		)
+	</insert>
+	
+	<select id="selectAllCoupon" resultType="Coupon">
+		SELECT * FROM
+		COUPON
+		ORDER BY COUPONNUM ASC
+	</select>
+	
+	<select id="selectCoupon" parameterType="int" resultType="Coupon">
+		SELECT * FROM
+		COUPON
+		WHERE COUPONNUM = #{couponNum}
+	</select>
+	
+	<insert id="insertMyCoupon" parameterType="MyCoupon">
+		INSERT INTO MYCOUPON(
+			MYCOUPONNUM,
+			MEMBERNUM,
+			COUPONNUM,
+			COUPONNAME,
+			COUPONPOINT
+		)VALUES(
+			MYCOUPON_SEQ.NEXTVAL,
+			#{memberNum},
+			#{couponNum},
+			#{couponName},
+			#{couponPoint}
+		)
+	</insert>
+	
+	<select id="selectAllMyCoupon" resultType="MyCoupon" parameterType="int">
+		SELECT * FROM
+		MYCOUPON
+		WHERE MEMBERNUM = #{memberNum}
+	</select>
+	
+	<select id="useOneMyCoupon" resultType="MyCoupon" parameterType="int">
+		SELECT * FROM
+		MYCOUPON
+		WHERE MYCOUPONNUM = #{myCouponNum}
+	</select>
+	
+	<delete id="deleteOneMyCoupon" parameterType="int">
+		DELETE FROM MYCOUPON
+		WHERE MYCOUPONNUM = #{myCouponNum}
+	</delete>
+	
+	<update id="banMember" parameterType="String">
+		UPDATE DELIVERY_MEMBER
+		SET ENABLED = 0
+		WHERE MEMBERID = #{memberId}
+	</update>
+	
+	<select id="selectAllBannedList" resultType="BannedMember">
+		SELECT * 
+		FROM banList b, DELIVERY_MEMBER DM
+		WHERE DM.ENABLED = 0 AND b.MEMBERID = dm.MEMBERID
+		
+	</select>
+		
+	<select id="selectOneReport" resultType="MessageReport" parameterType="int">
+		SELECT * 
+		FROM MESSAGEREPORT
+		WHERE REPORTNUM = #{reportNum}
+	</select>
+	
+	<insert id="insertBanListMember" parameterType="BannedMember">
+		INSERT INTO banList(
+			MEMBERID,
+    		MESSAGE,
+    		REPORTER
+		)VALUES(
+			#{memberId},
+			#{message},
+			#{reporter}
+		)
+	</insert>
+	
+	<update id="unBanMember" parameterType="String">
+		UPDATE DELIVERY_MEMBER
+		SET ENABLED = 1
+		WHERE MEMBERID = #{memberId}
+	</update>
+	
+	<delete id="deleteBanMember" parameterType="String">
+		DELETE FROM BANLIST
+		WHERE MEMBERID = #{memberId}
+	</delete>
+</mapper>
+

@@ -1,0 +1,172 @@
+@charset "UTF-8";
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@500&display=swap');
+* { font-family: 'Noto Sans KR', sans-serif;}
+
+body{
+	margin : 0;
+	padding : 0;
+}
+
+/*
+	헤더css
+*/
+
+.header-logMenuList{
+	position: absolute;
+	display : flex;
+	right : 10%;
+	list-style: none;
+	top: 10%;
+}
+.header-logMenuList li {
+	margin-right : 20px;
+}
+.header-logMenuList a {
+	text-decoration: none;
+	
+}
+/* 
+	본문 섹션 css
+ */
+ 
+ /* 1001 세련 수정함  */
+ 
+
+.btn-primary{
+ margin-left: 85px;
+
+}
+.elseBox{
+	padding-bottom: 20px;
+}
+
+.btn-primary{
+	width: 450px;
+	margin-left: 180px;
+	
+}
+/* 1002 류영훈 추가 */
+.section-center .masterIndex .master {
+	background-color : red;
+}
+
+
+.cpName{
+	font-size: 17px;
+	font-weight: bold;
+}
+.cpPrice{
+	font-size: 17px;
+	font-weight: bold;
+}
+
+.buttons{ 
+	padding-top: 20px;
+    text-align: center;
+}
+
+.btn1{
+    padding: 8px 20px;
+    background: #27d613;
+    color: #ffffff;
+    border: none;
+    font-size: 17px;
+    border-radius: 20px;
+}
+
+.btn2{
+	background:#fa1414;
+	padding: 8px 20px;
+    color: #ffffff;
+    border: none;
+    font-size: 17px;
+    border-radius: 20px;
+}
+
+.masterTitle{
+	text-align: center;
+	font-size: 40px;
+	padding-bottom: 50px;
+	border-bottom: 1px solid #a8a8a8;
+}
+ 
+.masterIndex{
+	padding-top: 110px;
+}
+.userLevelBox{
+	font-size: 17px;
+	font-weight: bold;
+}
+.userExpBox{
+	font-size: 17px;
+	font-weight: bold;
+}
+ .section-container{
+ 	width : 100%;
+ 	height : 72.3vh;
+ 	margin-bottom: 50px;
+ 	margin-top: 50px;
+ }
+ .searchBar-wrapper{
+ 	width :  100%;
+ 	margin:  auto;
+ 	padding : 0;
+ 	text-align : center;
+ }
+ .searchBar{
+ 	border : 5px solid black;
+ 	width: 300px;
+ 	height: 30px;
+ }
+ .aside-left, .aside-right, .aside-center{
+	margin-top : 5%;
+ }
+ .aside-left{
+ 	position : absolute;
+ 	background-color: red;
+ 	width : 15%;
+ 	height: 60vh;
+ 	left : 5%;
+ }
+ 
+ .aside-right{
+ 	position : absolute;
+ 	background-color: blue;
+ 	width : 15%;
+ 	height: 60vh;
+ 	right : 5%;
+ }
+ .aside-center{
+ 	position:absolute;
+ 	width :50%;
+ 	left: 25%;
+ 	right: 25%;
+ }
+ .aside-center .section-center{
+ 	min-height: 60vh;
+ 	justify-content: center; 
+ }
+
+ .foodList{
+ 	display: flex;
+ 	flex-direction : row;
+ 	flex-wrap : wrap;
+ 	list-style: none;
+ 	
+ }
+ .foodList li{
+ 	margin-top : 10px;
+	margin-right : 10px;
+	width: 160px;
+	height: 100px;
+	background-color: yellow;
+	overflow: hidden; 	
+ }
+
+footer{
+	bottom: 0;
+	width : 100%;
+	height : 100px;
+	background-color : lime;
+	
+}

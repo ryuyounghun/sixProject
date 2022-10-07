@@ -16,6 +16,7 @@ import lombok.ToString;
 public class ClassBoard {
 
 	private int classNum;
+	private String classTag;
 	private int memberNum;
 	private String destination;
 	private int totalMember;
@@ -23,7 +24,12 @@ public class ClassBoard {
 	private String title;
 	private String content;
 	private String inputdate;
+	private String roomId;
+	private int viewCount;
 	
 	private String originalFile;	 
 	private String savedFile;
+	
+	// 레벨용 아이디
+	private int memberLevel;
 }

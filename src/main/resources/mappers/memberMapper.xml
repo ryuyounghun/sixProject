@@ -1,0 +1,202 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- com.abc.dao.MemberDAO 인터페이스와 매핑됨 -->
+<mapper namespace="com.abc.dao.MemberDAO">
+
+	<!-- 회원정보 등록 쿼리 -->
+	<insert id = "insertMember" parameterType = "member">
+		INSERT INTO DELIVERY_MEMBER (
+			MEMBERNUM, 
+			MEMBERID, 
+			MEMBERPW, 
+			MEMBERNAME, 
+			NICKNAME, 
+			ADDRESS, 
+			PHONE
+			<if test="pinNumber != null"> 
+				,PINNUMBER
+			</if>
+			<!-- 첨부파일 정보가 있을때 -->
+		)VALUES (
+			DELIVERY_MEMBER_SEQ.NEXTVAL, 
+			#{memberId}, 
+			#{memberPw}, 
+			#{memberName}, 
+			#{nickname}, 
+			#{address}, 
+			#{phone} 
+			<if test="pinNumber != null">
+				,#{pinNumber}
+			</if>
+		)
+	</insert>
+	<!-- 0924 추가 -->
+	<update id="setRoomId" parameterType="Member">
+		<selectKey resultType="int" keyProperty="memberNum" order="BEFORE">
+			SELECT MAX(MEMBERNUM) FROM DELIVERY_MEMBER		
+		</selectKey>
+	
+		UPDATE DELIVERY_MEMBER
+		SET ROOMID = #{roomId}
+		WHERE MEMBERNUM = #{memberNum}
+	</update>
+	
+	
+	<select id = "selectOneMember" parameterType = "string" resultType = "member">
+	 	SELECT * FROM DELIVERY_MEMBER
+	 	WHERE MEMBERID = #{memberId}
+	</select>
+	
+	<select id = "checkId" parameterType="string" resultType="int">
+		SELECT COUNT(MEMBERID) FROM DELIVERY_MEMBER
+		WHERE MEMBERID = #{memberId}
+	</select>
+	
+	<!-- 회원정보 수정 쿼리 -->
+	<update id = "updateMember" parameterType="member">
+		UPDATE DELIVERY_MEMBER
+		SET 
+		<if test = "memberPw != null">
+			MEMBERPW = #{memberPw}
+		</if>
+		<if test = "memberName != null">
+			,MEMBERNAME = #{memberName}
+		</if>
+		<if test = "nickname != null">
+			,NICKNAME = #{nickname}
+		</if>
+		<if test = "address != null">
+			,ADDRESS = #{address}
+		</if>
+		<if test = "phone != null">
+			,PHONE = #{phone}
+		</if>
+		WHERE
+			MEMBERID = #{memberId}
+	</update>
+	
+	<update id="updateAddressAndPhone" parameterType="Member">
+		UPDATE DELIVERY_MEMBER
+		SET ADDRESS = #{address}, PHONE = #{phone}
+		WHERE MEMBERID = #{memberId}		
+	</update>
+	
+	<update id="updatePoint" parameterType="Member">
+		UPDATE DELIVERY_MEMBER
+		SET MEMBERPOINT = MEMBERPOINT + #{memberPoint}
+		WHERE MEMBERID = #{memberId}
+	</update>
+	
+	<update id="useMyPoint" parameterType="Member">
+		UPDATE DELIVERY_MEMBER
+		SET MEMBERPOINT = #{memberPoint}
+		WHERE MEMBERID = #{memberId}
+	</update>
+	
+	<!-- 마이페이지 댓글 달기  -->
+	<insert id = "insertMyPage" parameterType="GuestBook">
+		INSERT INTO GUESTBOOK
+		(
+			GUESTBOOKNUM,
+			MEMBERNUM,
+			WRITERNUM,
+			NICKNAME,
+			CONTENT
+		)
+	VALUES
+		(	
+			GUESTBOOK_SEQ.NEXTVAL,
+			#{memberNum},
+			#{writerNum},
+			#{nickname},
+			#{content}
+		)
+	</insert>
+	<!-- 마이페이지 댓글 전체 보기 -->
+	<select id = "selectAllReply" resultType="GuestBook" parameterType="int">
+		SELECT * FROM GUESTBOOK
+		WHERE MEMBERNUM = #{memberNum}
+		ORDER BY INPUTDATE DESC
+	</select>
+	
+	<!-- 0923 추가 / 멤버번호로 멤버찾기 -->
+	<select id="selectOneMemberByMemberNum" resultType="Member" parameterType="int">
+		SELECT * FROM
+		DELIVERY_MEMBER
+		WHERE MEMBERNUM = #{memberNum}
+	</select>
+	
+	
+	<!-- 0925 세련씨 -->
+	<!-- 회원 탈퇴하기  -->
+	<update id = "blockLogin" parameterType="member">
+		UPDATE DELIVERY_MEMBER
+		SET ENABLED = 0
+		WHERE MEMBERID = #{memberId}
+	</update>
+	
+	<select id = "checkPnum" parameterType="string" resultType="int">
+		SELECT COUNT(PINNUMBER) FROM DELIVERY_MEMBER
+		WHERE PINNUMBER = #{pinNumber}
+	</select>
+	
+	<!-- ID 찾기 -->
+	<select id = "findMemberId" parameterType="string" resultType="string">
+		SELECT MEMBERID FROM DELIVERY_MEMBER
+		WHERE PINNUMBER = #{pinNumber}
+	</select>
+	
+	<!-- Pin받아서 Pw 수정하기 -->
+	<update id = "updatePw" parameterType="member">
+		UPDATE DELIVERY_MEMBER
+		SET
+			MEMBERPW = #{memberPw}
+		WHERE
+			PINNUMBER = #{pinNumber}
+	</update>
+	
+	<!-- 0927 용석씨 추가 -->
+	<update id="addExp" parameterType="String">
+		UPDATE DELIVERY_MEMBER
+		SET MEMBEREXP = MEMBEREXP + 1000
+		WHERE MEMBERID = #{memberId}
+	</update>
+	
+	<!-- 0927 용석씨 추가 -->
+	<update id="addExpByReply" parameterType="String">
+		UPDATE DELIVERY_MEMBER
+		SET MEMBEREXP = MEMBEREXP + 300
+		WHERE MEMBERID = #{memberId}
+	</update>
+	
+	
+	<!-- 0928 추가 마이페이지 이미지 -->
+	<update id="updateMyImage" parameterType="Member">
+		UPDATE DELIVERY_MEMBER
+		SET ORIGINALFILE = #{originalFile}, SAVEDFILE = #{savedFile}
+		WHERE MEMBERID = #{memberId}
+	</update>
+	
+	<!-- 1001 추가 마이페이지 방명록 업데이트 확인 -->
+	<select id="selectGuestBookByNum" parameterType="int" resultType="GuestBook">
+		SELECT * FROM
+		GUESTBOOK
+		WHERE GUESTBOOKNUM = #{guestBookNum} 
+	</select>
+	
+	<!-- 1001 추가 마이페이지 방명록 수정 -->
+	<update id="updateGuestBook" parameterType="GuestBook">
+		UPDATE GUESTBOOK
+		SET CONTENT = #{content}
+		WHERE GUESTBOOKNUM = #{guestBookNum}
+	</update>
+	
+	<!-- 1001 추가 마이페이지 방명록 삭제 -->
+	<update id="deleteGuestBook" parameterType="int">
+		DELETE GUESTBOOK
+		WHERE GUESTBOOKNUM = #{guestBookNum}
+	</update>
+</mapper>
+

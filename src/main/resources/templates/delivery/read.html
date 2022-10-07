@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" href="/css/delivery/deliveryRead.css">
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+<script src="/js/delivery/read.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
+
+</head>
+<body>
+	<div id="headerAndSection-wrapper">
+		<header>
+			<div class="header-container">
+				<a href="/" class="header-logo" >
+				</a>
+				
+				
+				<ui class="header-logMenuList"> <!-- 로그인 및 로그아웃 링크 -->
+					<li sec:authorize ="not isAuthenticated">
+						<a th:href="@{/member/login}">
+							로그인
+						</a>
+					</li>
+					<li sec:authorize="not isAuthenticated">
+						<a th:href ="@{/member/join}">
+							회원가입
+						</a>
+					</li>
+					<li sec:authorize="isAuthenticated">
+						<a th:href ="@{/logout}">
+							로그아웃
+						</a>
+					</li>
+					<li sec:authorize="isAuthenticated">
+						<a th:href="|@{/member/mypage}?num=${member.memberNum}|">
+							회원정보
+						</a>
+					</li>
+					<li sec:authorize="isAuthenticated">
+						<a th:href="@{/community/index}" class="header-toAnother" >
+							커뮤니티
+						</a>
+					</li>
+				</ui>
+
+			</div>
+		</header>
+	
+		<section>
+			<div class="section-container">
+				
+				<div class="searchBar-wrapper">
+					<div class="container-searchBar">
+						<input   type = "text" name="searchWord" th:value="${searchWord}" id="searchWord" placeholder="메뉴검색">
+						<input type = "button" th:value="검색" id="searchBar" style="width: 52px; height: 36px; justify-content: center;" >
+							
+					</div>
+				</div>
+				
+				<aside>
+					<div class="aside-left">
+						<ul class="foodList">
+							<li>
+								<a th:href = "|@{storeList}?category=all|">
+									전체보기
+								</a>
+							</li>
+							<li>
+								<a th:href="|@{storeList}?category=1|">
+									한식
+								</a>
+							</li>
+							<li>	
+								<a th:href="|@{storeList}?category=2|">
+									중식
+								</a>
+							</li>
+							<li>
+								<a th:href="|@{storeList}?category=3|">
+									일식
+								</a>
+							</li>
+							<li>
+								<a th:href="|@{storeList}?category=4|">
+									양식
+								</a>
+							</li>
+							<li>
+								<a th:href="|@{storeList}?category=5|">
+									디저트
+								</a>
+							</li>
+							<li>
+								<a th:href="|@{storeList}?category=6|">
+									야식
+								</a>
+							</li>
+							<li>
+								<a th:href="|@{storeList}?category=7|">
+									도시락
+								</a>
+							</li>
+						</ul>
+					</div>
+				</aside>
+				
+				<aside>
+					<div class="aside-right">
+						<div class="aside-right-order"></div>
+						<div class="aside-right-allPay"></div>
+					</div>
+				</aside>
+
+				<div class="aside-center"  style="margin-top : 30px">
+					<div class="section-center">
+
+						<!-- 썸네일 -->
+						<div class="storeThumbnail">
+							<span class="storename" th:text="${store.storeName}">&nbsp;&nbsp;</span>
+							<hr>
+							<div>
+								<img th:src="@{storeDisplay(num = ${store.storeNum})}" class="brandImg">
+								<span class="storeInfo" th:text="|${store.rating}점|"></span><br>
+								<span class="storeInfo" th:text="${store.storeContent}"></span><br>
+								<input class="storeInfo" type="button" value="♡" id="wish">
+								<span th:text="${store.wishlist}" id="countWishlist"></span>
+								<input type="hidden" id="loginUser" th:value="${#authentication.getPrincipal().getUsername()}">
+							</div>
+						</div>
+						
+						<!-- ajax로 리뷰랑 메뉴 보여주는 리스트  -->
+						<div>
+						
+						</div>
+						<!-- 메뉴 및 리뷰 -->
+						<div class="menuAndReview">
+							<ul class="menuAndReviewList">
+								<li id="menuButton" class="clicked" >
+									<a>
+										메뉴
+									</a>
+								</li>
+								<li id="reviewButton" >
+									<a>
+										리뷰
+									</a>
+								</li>
+								<li id="infoButton">
+									<a>
+										가게정보
+									</a>
+								</li>
+								<script type="text/javascript">
+										$("li[id*='Button']").on("click", function(){
+											$("li[id*='Button']").removeClass("clicked");
+											$(this).addClass("clicked");
+										});
+								</script>
+							</ul>
+						</div>
+						<hr>
+						<!-- ajax로 리뷰랑 메뉴 보여주는 리스트  -->
+						<div id="menu">
+							ajax로 보여주기
+						</div>
+						<div id="review">
+							ajax로 보여주기
+						</div>
+						<div id="info">
+							<br>
+							<span class="info-theme">위치정보</span>
+							<hr>
+							<div id="map" style="width:300px;height:200px;"></div>
+							<p class="info-subTheme">위치: 
+								<span class="info-subContent" th:text="${store.address}" id="storeAddress">
+								</span>
+							</p>
+							
+							<br>
+							<span class="info-theme">가게정보</span>
+							<hr>
+							<p class="info-subTheme">소개: 
+								<span class="info-subContent" th:text="${store.storeContent}" id="storeAddress">
+								</span>
+							</p>
+							<p class="info-subTheme">전화번호: 
+								<span th:text="${store.phone}"></span>
+								</span>
+							</p>
+							
+						
+						</div>
+					</div>
+				</div>	
+			</div>		
+		</section>
+	</div>
+
+	<footer>
+		
+	</footer>
+	
+	
+	<!-- Modal -->
+	<div class="modal fade " id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+	  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+	      </div>
+	      <div>
+		      <div class="modal-body" id="receiptModal">
+		      
+		      </div>
+	      	  <div id="leftoverPoint">
+	      	  
+	      	  </div>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+	        <button type="button" class="btn btn-primary" id="checkBtn">확인</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	
+	
+	
+	
+	
+	
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=6e7c79dc40e0d0df1bb9a7bb0628d68a&libraries=services"></script>	
+<script type="text/javascript">
+	function loadMap() {
+		let address = $("#storeAddress").text();
+		let name = $(".storename").text();
+		$.ajax({           
+			url:'https://dapi.kakao.com/v2/local/search/address.json?query='+encodeURIComponent(address),
+			type:'GET',           
+			headers: {'Authorization' : 'KakaoAK ff7e45d762a8cd9c3235651811e41a69'},   
+			success:function(data){
+				let b = data.documents[0];
+				console.log(b);
+				
+				let x = b.y;
+				let y = b.x;
+				
+				var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+				mapOption = { 
+				    center: new kakao.maps.LatLng(x, y), // 지도의 중심좌표
+				    level: 3 // 지도의 확대 레벨
+				};
+				
+				var map = new kakao.maps.Map(mapContainer, mapOption);
+				
+				//마커가 표시될 위치입니다 
+				var markerPosition  = new kakao.maps.LatLng(x, y); 
+				
+				//마커를 생성합니다
+				var marker = new kakao.maps.Marker({
+				position: markerPosition
+				});
+				
+				//마커가 지도 위에 표시되도록 설정합니다
+				marker.setMap(map);
+				
+				var iwContent = '<div style="padding:5px;">' + name + '</div>', // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+				iwPosition = new kakao.maps.LatLng(x, y); //인포윈도우 표시 위치입니다
+				
+				//인포윈도우를 생성합니다
+				var infowindow = new kakao.maps.InfoWindow({
+				position : iwPosition, 
+				content : iwContent 
+				});
+				
+				//마커 위에 인포윈도우를 표시합니다. 두번째 파라미터인 marker를 넣어주지 않으면 지도 위에 표시됩니다
+				infowindow.open(map, marker); 
+				
+			}
+		});
+	}
+</script>
+
+</body>
+</html>

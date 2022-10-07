@@ -1,0 +1,252 @@
+@charset "UTF-8";
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@500&display=swap');
+* { font-family: 'Noto Sans KR', sans-serif;}
+
+body{
+	margin : 0;
+	padding : 0;
+}
+li{ 
+	list-style: none;
+
+}
+/*
+	헤더css
+*/
+.header-container{
+      width: 100%;
+      height: 100px;
+      background-color: #F9F7F7;
+      position: relative;
+}
+
+.header-logo{
+   position : absolute;
+   height : 100px;
+   width : 170px;
+   left : 5%;
+   top: -2%;
+   float: left;
+   background: url(/../images/logo_height.png) no-repeat center;
+   background-size: contain;
+}
+
+.header-logMenuList{
+   position: absolute;
+   display : flex;
+   right : 10%;
+   list-style: none;
+   top: 10%;
+}
+.header-logMenuList li {
+   margin-right : 20px;
+}
+.header-logMenuList a {
+   text-decoration: none;
+   
+}
+.header-logMenuList a:hover {
+   text-decoration: underline;
+   
+}
+/* 
+	본문 섹션 css
+ */
+
+ 
+ .section-container{
+ 	width : 100%;
+ 	margin-bottom: 50px;
+ 	margin-top: 30px;
+ 	min-height: 90vh;
+ 	height: auto;
+ }
+ 
+ .searchBar-wrapper{
+    width :  100%;
+    margin:  auto;
+    padding : 0;
+    text-align : center;
+ }
+ /* 9월 29일 추가 작업 */
+ .placeholder{
+    position:absolute;
+    width : 40px;
+    height : 42px;
+    background: url(/images/deliveryImages/placeholder.png);
+    background-size: contain;
+    background-repeat:no-repeat;
+    background-size : contain;
+    cursor : pointer;
+    border: none;
+    transform : translate(-50px);
+    
+ }
+ #searchWord{
+    border : 5px solid #874C62;
+    width: 300px;
+    height: 30px;
+ }
+ #searchBar{
+    width: 52px;
+    height : 42px;
+    background-color: #874C62;
+    border : 5px solid #874C62;
+    color : white;
+    transform : translate(10px);
+	cursor: pointer;
+ }
+ .aside-left, .aside-right, .aside-center{
+ 
+ 	box-sizing: content-box;
+ }
+ .aside-left{
+ 	position : absolute;
+ 	background-color: #F2D388;
+ 	left : 3%;
+ 	width : 15%;
+ 	box-shadow: 1px 1px 5px 0;
+ 	font-size: 18px;
+}
+.aside-left li {
+	
+	margin-bottom : 10px;
+}
+.aside-left a{
+ 	text-decoration: none;
+ 	color : black;
+} 
+.aside-left a:hover{
+ 	text-decoration: underline;
+	font-weight: bold;
+ 	font-size: 20px;
+} 
+ .aside-right{
+    position : absolute;
+    background-color: #874C62;
+    border : 5px solid #C98474;
+    color : white;
+    width : 15%;
+    height: 60vh;
+    right : 3%;
+    cursor: pointer;
+ }
+ ul {
+    list-style: none;
+ }
+ .rankTitle{
+    padding-bottom : 8px;
+    border-bottom: 3px dashed #C98474;
+ }
+ .top3Stores span{
+    position : absolute;
+    display : inline-block;
+    font-weight: bold;
+    margin-top:5px;   
+}
+.underTop3 {
+   margin-top : 5px;
+}
+.first1 {
+	color : black;
+}
+ .aside-center{
+ 	position: relative;
+ 	width :50%;
+ 	left: 25%;
+ 	right: 25%;
+ }
+ .aside-center .section-center{
+ 	min-height: 60vh;
+ 	justify-content: center; 
+ }
+
+.aside-center .storeThumbnail{
+	background-color: olive;
+	width: inherit;
+	height: 150px;
+}
+
+.brandImg{
+	position : absolute;
+	margin-left : 10px;
+	margin-top: 10px;
+	width : 100px;
+	height:100px;
+}
+.storeInfo{
+	position : absolute;
+	left: 130px;	
+}
+.menuAndReview{
+	background-color: lime;
+	text-align: center;
+}
+.menuAndReviewList{
+	margin : 0;
+	padding : 0;
+	list-style: none;
+	display: flex;
+	justify-content: space-between;
+	
+}
+.menuAndReviewList li:before {
+  display: inline-block;
+  width: 1px;
+  content: '';
+}
+.menuAndReviewList li:after {
+  display: inline-block;
+  width: 1px;
+  content: '';
+}
+.menuAndReviewList li {
+	background-color: orange;
+	width: 30%;
+}
+
+p {
+		display:inline-block;
+	}
+	
+	.section-center {
+		width:100%;
+	}
+	
+	table {
+		max-width: 700px;
+		margin: 0 auto;
+		border-top: 1px solid #000;
+		border-bottom: 1px solid #000;
+		 
+	}
+	
+	#tHead {
+		border-bottom: 1px solid #000;
+	}
+	
+	textarea {
+		width : 85%;
+		height : 70px;
+		margin-left : 20px;
+	}
+	
+	.replay {
+		margin-bottom: 60px;
+		height : 70px;
+	}
+	
+	#contentBox {
+		word-break:break-all;
+		width : 700px;
+		min-height : 300px;
+		height: auto;
+	}
+	
+	.nicknameTd {
+		width: 100px;
+	}
+	
+	#spaceDiv {
+		height : 100px;
+	}

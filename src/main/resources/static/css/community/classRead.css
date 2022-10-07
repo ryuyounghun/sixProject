@@ -1,0 +1,240 @@
+@charset "UTF-8";
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@500&display=swap');
+* { font-family: 'Noto Sans KR', sans-serif;}
+
+body{
+	margin : 0;
+	padding : 0;
+}
+
+/*
+	헤더css
+*/
+.header-container{
+		width: 100%;
+		height: 100px;
+		background-color: fuchsia;
+		position: relative;
+}
+
+.header-logo{
+	position : absolute;
+	height : 75px;
+	width : 75px;
+	background-color: blue;
+	top: 10%;
+	left : 10%;
+}
+.header-toAnother{
+	position : absolute;
+	height : 75px;
+	top: 10%;
+	left : 16%;
+	
+}
+.header-logMenuList{
+	position: absolute;
+	display : flex;
+	right : 10%;
+	list-style: none;
+	top: 10%;
+}
+.header-logMenuList li {
+	margin-right : 20px;
+}
+.header-logMenuList a {
+	text-decoration: none;
+	
+}
+/* 
+	본문 섹션 css
+ */
+ .section-container{
+ 	width : 100%;
+ 	height : 72.3vh;
+ 	margin-bottom: 50px;
+ 	margin-top: 30px;
+ }
+ .searchBar-wrapper{
+ 	width :  100%;
+ 	margin:  auto;
+ 	padding : 0;
+ 	text-align : center;
+ }
+ .searchBar{
+ 	border : 5px solid black;
+ 	width: 300px;
+ 	height: 30px;
+ }
+ .aside-left, .aside-right, .aside-center{
+	margin-top : 20px;
+ }
+ .aside-left, .aside-right, .aside-center{
+ 
+ 	box-sizing: content-box;
+ }
+ .aside-left{
+ 	position : absolute;
+ 	background-color: #F2D388;
+ 	left : 3%;
+ 	width : 15%;
+ 	box-shadow: 1px 1px 5px 0;
+ 	font-size: 18px;
+ 	    top: 25%;
+}
+.aside-left li {
+	
+	margin-bottom : 10px;
+}
+.aside-left a{
+ 	text-decoration: none;
+ 	color : black;
+} 
+.aside-left a:hover{
+ 	text-decoration: underline;
+	font-weight: bold;
+ 	font-size: 20px;
+} 
+ .aside-right{
+    position : absolute;
+    background-color: #874C62;
+    border : 5px solid #C98474;
+    color : black;
+    width : 21%;
+    height:41vh;
+    right : 2%;
+    cursor: pointer;
+        top: 25%;
+ }
+ 
+ .partyJoinOut{
+    position: absolute;
+    right: 3%;
+        top: 74%;
+}
+
+.partyJoinOut-btn{
+	cursor : pointer;	
+	width : 300px;
+	height: 50px;
+	margin-top:30px;
+}
+ ul {
+    list-style: none;
+ }
+ .aside-center{
+ 	position:absolute;
+ 	width :50%;
+ 	left: 25%;
+ 	right: 25%;
+ }
+ .aside-center .section-center{
+ 	min-height: 60vh;
+ 	justify-content: center; 
+ }
+
+.menuImg img {
+    width: 50px;
+    height: 50px;
+}
+.menuImg{
+	float : right;
+	position:relative;
+    width : 300px;
+    height : 150px;
+    background-color: red;
+}
+.mapInfo{
+	/* clear : both;
+	position: absolute;
+	margin-top : 10px;
+	float : right;
+	position : relative; */
+}
+.mapInfo p{
+	color : white;
+	background-color : #258FFF;
+	width: 318px;
+	font-weight: 400;
+}
+.mapImg{
+	border : 1px solid #888;
+	width : 318px;
+	height: 272px;
+}
+
+	
+.classHashTag{
+	font-weight: bold;
+	text-shadow: #FC0 1px 0 3px;
+}
+/*
+
+*/
+/* .participient .participatientList{
+	width : 30%;
+	margin-top : 10px;
+	float : left;
+	border : 1px solid black;
+	
+} */
+/* 글내용 */
+#roomContent{
+	position : absolute;
+	min-height : 100px;
+}
+
+#boardTitle {
+	background-color: #F9F7F7;
+	border: 3px solid black; 
+	margin-bottom: 10px;
+	width: 100%;
+	height : 40px;
+	border-radius: 20px;
+	font-weight: bold;
+	font-size: 24px;
+	text-align: center;
+}
+
+.participient{
+   width: 100%;
+   background-color:#F9F7F7;
+   height: 310px;
+   overflow: auto;
+   white-space: nowrap;
+   border: 3px solid black;
+   border-radius: 20px;
+}
+
+.participient .participatientList{
+   width: 200px;
+    display : inline-block;
+    margin: 3px;
+   
+}
+.participient .participatientList .partipatientImg{
+  /*  width: 200px; */
+   height: 150px;
+}
+
+.participient .card-body {
+	width: 200px;
+}
+
+.participient .card-body .btn {
+	/* width: 100px; */
+}
+/* 채팅 */
+#app {
+	border-radius: 20px;
+	margin-top:50px;
+	height: 280px;
+	background-color:#F9F7F7; 
+	margin-bottom:50px;
+	border: 3px solid black;
+	width: 100%;
+}
+
+section {
+	margin-bottom: 200px;
+}
