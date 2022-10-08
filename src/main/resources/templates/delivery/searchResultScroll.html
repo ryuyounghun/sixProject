@@ -56,12 +56,12 @@
 				},
 				success : function(data) {
 					let htmlStr = "";
-						htmlStr += "<table >"
+						htmlStr += "<table class='tableW'>"
 					$.each(data,function(index,item){
 						
 						htmlStr += "<tr class='storeTable hideTable' onClick='selectStore("+ item.storeNum+")'; style='cursor:pointer'  >";
 						htmlStr += "<td><img src='storeDisplay?num="+item.storeNum+"' width='80px;' height='60px;'></td>";					
-						htmlStr += "<td  class='nameTd'>"+ item.storeName +"</td>";
+						htmlStr += "<td  class='nameTd'><span span style='display: inline-block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 13ch;'>"+ item.storeName +"</span></td>";
 						htmlStr += "<td>★" + item.rating + "</td>";
 						htmlStr += "<td>♥" + item.wishlist + "</td>";
 						htmlStr += "</tr>";
@@ -201,12 +201,14 @@
 				<div class="aside-center">
 					<div class="section-center">
 						<div id="storeList">
-							<table>
+							<table class='tableW'>
 								<tr th:each='list:${sList}' class="storeTable" th:onClick="|selectStore(${list.storeNum});|" style="cursor:pointer;">
 									<td>
 										<img  th:src="@{storeDisplay(num=${list.storeNum})}" width='80px;' height='60px;'>
 									</td>					
-									<td class='nameTd' th:text='${list.storeName}'></td>
+									<td class='nameTd' >
+										<span th:text='${list.storeName}' span style='display: inline-block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 13ch;'></span>
+									</td>
 									<td    th:text="|★${#numbers.formatInteger(list.rating,1)}|">
 									
 									</td>
@@ -265,10 +267,10 @@ $(document).ready(function() {
                   if ( index <=2 ){
                      
                      htmlStr += "";
-                     htmlStr += "<li class='top3Stores'>"+  "<img src='' id='storeRank" + index + "'>  "  + "<span style='display: inline-block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 13ch;' >" + item.storeName +"</span>" + "</li>";
+                     htmlStr += "<li class='top3Stores' onClick='selectStore("+ item.storeNum+ ")'>"+  "<img src='' id='storeRank" + index + "'>  "  + "<span style='display: inline-block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 13ch;' >" + item.storeName +"</span>" + "</li>";
                   }else {
                      
-                     htmlStr += "<li class='underTop3'>" + (index+1)+"위 " +item.storeName + "</li>";
+                     htmlStr += "<li class='underTop3' onClick='selectStore("+ item.storeNum+ ")'>" + (index+1)+"위 " +item.storeName + "</li>";
                   }
                }
                
@@ -286,7 +288,10 @@ $(document).ready(function() {
 			
 		});
 	}
-	
+	function selectStore(storeNum) {
+	      location.href="read?num="+storeNum;
+	      
+	   }
 	</script>
 </body>
 </html>

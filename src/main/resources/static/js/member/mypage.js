@@ -394,14 +394,16 @@ $(document).ready(function(){
 				let htmlStr = "<table>";
 				$.each(data, function(index, value){	//data는 리스트니까 반복문 each로 돌려줘야함 그래서 index 얼마나 있는지 볼라고 필요함
 					htmlStr += "<tr>";
-					htmlStr += "<td>" + value.content + "</td>";
+					// 1008 추가
+					htmlStr += "<td class = 'contentBox2'>" + value.content + "</td>";
 					htmlStr += "<td>" + value.nickname + "</td>";
-					htmlStr += "<td>" + value.inputdate + "</td>";
+					htmlStr += "<td class = 'inputdateBox2'>" + value.inputdate + "&nbsp;&nbsp;&nbsp;</td>";
 					// 1001 추가
+					// 1008 추가 
 					if(loginMember == value.writerNum){
-						htmlStr += "<td><a href='javascript:updateCheckGuestbook("+ value.guestBookNum+");'>수정</a>";
-						htmlStr += " | ";
-						htmlStr += "<a href='javascript:deleteGuestbook("+ value.guestBookNum+");'>삭제</a></td>";
+						htmlStr += "<td class = 'updateDeleteBox2'><a href='javascript:updateCheckGuestbook("+ value.guestBookNum+");' class = 'update2'>수정&nbsp;&nbsp;</a>";
+						htmlStr += "  |  ";
+						htmlStr += "<a href='javascript:deleteGuestbook("+ value.guestBookNum+");' class = 'delete2'>&nbsp;&nbsp;삭제</a></td>";
 					}
 					htmlStr += "</tr>";	
 				});
@@ -474,7 +476,6 @@ $(document).ready(function(){
 	      
 	      });
 	   }
-
 
 
 	

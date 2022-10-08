@@ -134,6 +134,25 @@ li{
     list-style: none;
     
  }
+ 
+  #storeRank li:hover{
+	text-decoration: underline;
+}
+ .top3Stores span:hover{
+	text-decoration: underline;
+ 
+ }
+ .top3Stores span{
+    position : absolute;
+    display : inline-block;
+    font-weight: bold;
+    margin-top:5px;   
+	cursor : pointer;
+}
+.underTop3 {
+   margin-top : 5px;
+	cursor : pointer;
+}
 .aside-right-allPay{
 	height : 100px;
 	background-color: #874C62;
@@ -195,6 +214,10 @@ li{
 	width: inherit;
 	height: 150px;
 }
+
+.tableW {
+	width: 750px;
+	}
 
 .brandImg{
 	position : absolute;
