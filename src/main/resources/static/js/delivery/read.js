@@ -106,8 +106,8 @@ $(document).ready(function() {
 			data : {"loginUser" : loginUser},
 			success : function(data) {
 				
-				htmlStr = "<h3>이 주소가 맞습니까?</h3>";
-				htmlStr += "<h4>" + data.address + "</h4>";
+				htmlStr = "<h2 class = 'addressBox'>이 주소가 맞습니까?</h2>";
+				htmlStr += "<h4 class = 'addressBox'>" + '&#127969;' + data.address + "</h4>";
 				$("#receiptModal").html(htmlStr);
 				$("#staticBackdrop").modal('show');
 				
@@ -121,11 +121,13 @@ $(document).ready(function() {
 						console.log(data);
 						resultMenu();
 						if(data != "") {
+							// 1005 세련 수정함 
 							htmlStr = "<table id='orderList'>";
-							htmlStr += "<tr><th>주문서</th></tr>";
-							htmlStr += "<tr><th>잠시만 기다려주세요.</th></tr>";
-							htmlStr += "<tr><th>" + data.orderHistory + "</th></tr>";
-							htmlStr += "<tr><th>" + data.totalAmount + "원</th></tr>";
+							htmlStr += "<td id = 'orderBox'>";
+							htmlStr += "<tr><th class = 'orderTitle'></th></tr>";
+							htmlStr += "<tr><th>주문목록 : " + data.orderHistory + "</th></tr>";
+							htmlStr += "<tr><th>합계 : " + data.totalAmount + "원</th></tr>";
+							htmlStr += "</td>";
 							htmlStr += "</table>";
 							
 							
@@ -133,7 +135,8 @@ $(document).ready(function() {
 							leftoverPoint();
 							$("#staticBackdrop").modal('show');
 						} else {
-							htmlStr = "<h3>잔액이 모자랍니다.</h3>"
+							// 1005 세련 수정함
+							htmlStr = "<h3 class = 'errormsg'>포인트가 모자랍니다.</h3>"
 							
 							$("#receiptModal").html(htmlStr);
 							$("#staticBackdrop").modal('show');
@@ -157,8 +160,8 @@ $(document).ready(function() {
 			type : "get",
 			success : function(data) {
 				console.log(data);
-				
-				let htmlStr = "<h1>잔여 포인트 : " + data.memberPoint + " 포인트</h1>";
+				// 1005 세련 수정함
+				let htmlStr = "<h3>잔여 포인트 : " + data.memberPoint + " point</h3>";
 				
 				$("#leftoverPoint").html(htmlStr);
 			}

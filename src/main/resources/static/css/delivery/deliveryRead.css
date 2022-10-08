@@ -20,6 +20,7 @@ li{
       position: relative;
 }
 
+
 .header-logo{
    position : absolute;
    height : 100px;
@@ -52,6 +53,41 @@ li{
 /* 
 	본문 섹션 css
  */
+ 
+th.menuBox {
+    width: 600px;
+}
+
+table#orderList {
+    width: 460px;
+    text-align: center;
+}
+
+ #receiptModal {
+    margin: auto;
+    text-align: center
+ }
+ 
+ tr{
+     font-size: 17px;
+ }
+.orderTitle{
+	font-size: 25px;
+    padding-bottom: 20px
+}
+ .addressBox{text-align: center;}
+ 
+ h3{
+ 	text-align: center;
+    padding-top: 20px;
+ 	}
+ 
+ #orderBox{text-align: center;}
+ 
+ table, tr, th, td{
+ 	padding: auto;
+	 
+ }
  .section-container{
  	width : 100%;
  	height : 72.3vh;
@@ -64,6 +100,7 @@ li{
     padding : 0;
     text-align : center;
  }
+ 
  /* 9월 29일 추가 작업 */
  .placeholder{
     position:absolute;

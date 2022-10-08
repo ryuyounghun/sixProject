@@ -10,41 +10,89 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
 
 <script type="text/javascript">
+$(document).ready(function() {
+	$("#insertInfo").on("click", function() { updateMember(); });
+	let user = $("#loginUser").val();
+	console.log(user);
+	if(user != null) {
+		joinInfo();
+	}
 	
-	$(document).ready(function() {
-		$("#insertInfo").on("click", function() { updateMember(); });
-		let user = $("#loginUser").val();
-		console.log(user);
-		if(user != null) {
-			joinInfo();
-		}
-		
-	});
+	$("#phoneNumber").on("blur", function() { phoneCheck(); });
 
-	function joinInfo() {
+});
+
+
+	function phoneCheck() {
+		let phone = $("#phoneNumber").val();
+		let eng = phone.search(/[a-z]/ig);
+		let num = phone.search(/[0-9]/g);
+		let kor = phone.search(/[ㄱ-ㅎㅏ-ㅣ가-힣]/g);
+		let phRegExp = /^\d{3}-\d{3,4}-\d{4}$/;
 		
 		$.ajax({
-			url : "memberCheck",
-			type : "get",
-			success : function(data) {
-				console.log(data.phone);
+			url:'checkPhone',
+			type:'post',
+			data:{"phone":phone},
+			success: function(data){
+				console.log(data);
 				
-				if(data.address == "다시 입력해 주세요" && data.phone == "다시 입력해 주세요") {
-					$('#exampleModal').modal('show');
-				} else if (data.address == "다시 입력해 주세요") {
-					$('#exampleModal').modal('show');
+				if(phone.trim().length == 0){
+					$("#text4").text("전화번호는 필수입력입니다.").css("color", "red");
+					$("#phoneCheck").val("0");
+				} else if(phone.length < 10 || phone.length > 12){
+					$("#text4").text("전화번호는 11자리로 입력해주세요.").css("color", "red");
+					$("#phoneCheck").val("0");
+				} else if(kor >= 0){
+					$("#text4").text("전화번호는 숫자만 입력해야 합니다.").css("color", "red");
+					$("#phoneCheck").val("0");
+				}else if(eng >= 0){
+					$("#text4").text("전화번호는 숫자만 입력해야 합니다.").css("color", "red");
+					$("#phoneCheck").val("0");
+				}else if(num != 0){
+					$("#text4").text("전화번호는 숫자만 입력해야 합니다.").css("color", "red");
+					$("#phoneCheck").val("0");
+				} else {
+					// 1002 세련 수정함 text 내용 수정
+					$("#text4").text("알맞은 형식입니다.").css("color", "green");
+					$("#phoneCheck").val("1");
 				}
-				
+			},
+			error:function(){
+				alert('에러입니다.');
 			}
 		});
+		
+		
 	}
-
+function joinInfo() {
 	
-	function updateMember() {
-		
-		let address = $("#sample4_roadAddress").val();
-		let phone = $("#phoneNumber").val();
-		
+	$.ajax({
+		url : "memberCheck",
+		type : "get",
+		success : function(data) {
+			console.log(data.phone);
+			
+			if(data.address == "다시 입력해 주세요" && data.phone == "다시 입력해 주세요") {
+				$('#exampleModal').modal('show');
+			} else if (data.address == "다시 입력해 주세요") {
+				$('#exampleModal').modal('show');
+			}
+			
+		}
+	});
+}
+
+
+function updateMember() {
+	
+	let address = $("#sample4_roadAddress").val();
+	let phone = $("#phoneNumber").val();
+	
+	let phoneCheck = document.getElementById("phoneCheck");
+	if(phoneCheck.value == "0"){
+		alert('fdfd2');
+	} else if(phoneCheck.value == "1")  {
 		$.ajax({
 			url : "addressAndPhone",
 			type : "post",
@@ -58,7 +106,8 @@
 		});
 	}
 	
-	
+}
+
 </script>
 </head>
 <body>
@@ -67,7 +116,6 @@
 		<header>
 			<div class="header-container">
 				<a href="/" class="header-logo" >
-					asd
 				</a>
 			
 				<ui class="header-logMenuList"> <!-- 로그인 및 로그아웃 링크 -->
@@ -127,13 +175,13 @@
 	  <div class="modal-dialog">
 	    <div class="modal-content">
 	      <div class="modal-header">
-	        <h5 class="modal-title" id="exampleModalLabel">New userInfo</h5>
+	        <h5 class="modal-title" id="exampleModalLabel">회원정보</h5>
 	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 	      </div>
 	      <div class="modal-body">
-	      		<h4>소셜 회원가입은 주소와 전화번호를 기입해야합니다.</h4>
+	      		<h5>소셜 회원가입은 <b>주소</b>와 <b>전화번호</b>를 기입해야합니다.</h5>
 	          <div class="mb-3">
-	            <label for="recipient-name" class="col-form-label">New address</label>
+	            <label for="recipient-name" class="col-form-label">주소 작성하기</label>
 	            <input type="text" class="form-control" id="sample4_roadAddress">
 	       			<input type = "button" value = "주소찾기" class = "addressFind" onclick="sample4_execDaumPostcode()">
 				
@@ -143,13 +191,16 @@
 					<input type="hidden" id="sample4_extraAddress" placeholder="참고항목">
 	          </div>
 	          <div class="mb-3">
-	            <label for="recipient-name" class="col-form-label">New Phone</label>
-	            <input type="text" class="form-control" id="phoneNumber">
+	            <label for="recipient-name" class="col-form-label">전화번호 작성하기</label>
+	            <input type="text" class="form-control" id="phoneNumber" name = "phoneNumber" placeholder="전화번호를 입력해주세요." required>
+	         	<input type = "hidden" id = "phoneCheck" value = "0">
+				<br>
+				<span id = "text4"></span>       
 	          </div>
 	      </div>
 	      <div class="modal-footer">
 	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-	        <button type="button" class="btn btn-primary" id="insertInfo">확인</button>
+	        <button type="button" class="btn btn-primary" id="insertInfo" >확인</button>
 	      </div>
 	    </div>
 	  </div>
@@ -206,9 +257,21 @@
                     guideTextBox.style.display = 'none';
                 }
             }
+        
         }).open();
 		
     }
+	</script>
+	<script>
+	function joinSubmit() {
+		console.log('fdfd');
+		let phoneCheck = document.getElementById("phoneCheck");
+		if(phoneCheck.value == 0){
+			console.log('fdfd2');
+			return false;
+		}
+	}  
+	
 	</script>
 </body>
 </html>

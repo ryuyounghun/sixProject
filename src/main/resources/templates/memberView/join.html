@@ -83,7 +83,7 @@
 			let kor = phone.search(/[ㄱ-ㅎㅏ-ㅣ가-힣]/g);
 			let phRegExp = /^\d{3}-\d{3,4}-\d{4}$/;
 			if(phone.trim().length == 0){
-				$("#text4").text("전화번호는 필수입력 입니다.").css("color", "red");
+				$("#text4").text("전화번호는 필수입력입니다.").css("color", "red");
 				$("#phoneCheck").val("0");
 			} else if(phone.length < 10 || phone.length > 12){
 				$("#text4").text("전화번호는 11자리로 입력해주세요.").css("color", "red");
@@ -122,18 +122,18 @@
 				console.log(num);
 				console.log("-----");
 				if ( mName.trim().length == 0){
-					$("#memberNameCheck").text("");
-				}
-				else if (kor == -1){ 
-					console.log("옳바르지 않거나 한국어만 입력하세요.");
-					//1002 세련 text 내용 수저함
-					$("#memberNameCheck").text("맞지 않는 형식입니다. 한국어만 입력해주세요.").css("color","red");
-				}
+					$("#memberNameCheck").text("이름은 필수입력입니다.").css("color","red");
+				} else if (kor == -1){ 
+					// 1004 세련 문구 전체적으로 수정 else if(이름 길이 유효성) 추가
 					//1002 세련 text 내용 수정함
-				else {
+					$("#memberNameCheck").text("한글만 입력해주세요.").css("color","red");
+					//1002 세련 text 내용 수정함
+				} else if (mName.length < 1 || mName.length > 6){
+					$("#memberNameCheck").text("이름은 1~6자리 이내로 입력해주세요.").css("color","red");
+				} else {
 					$("#memberNameCheck").text("알맞은 형식입니다.").css("color","green");
 				}
-				$("#memberNameCheck").show();
+					$("#memberNameCheck").show();
 			
 		});
 		
@@ -357,7 +357,7 @@
 								<!-- 닉네임 -->
 								<div class = "uInputArea">
 								<label for = "nickname">닉네임</label>
-								<input type = "text" id = "nickname" name = "nickname"  class = "inputText" oninput = "return checkPinValues();" placeholder = "미입력시 이름이 닉네임으로 지정됩니다.">
+								<input type = "text" id = "nickname" name = "nickname"  class = "inputText"  placeholder = "미입력시 이름이 닉네임으로 지정됩니다.">
 								</div>
 								<!-- 주소 -->
 								<div class = "uInputArea">
@@ -419,6 +419,7 @@
 	        <!-- 입력하는 칸(내용) -->
 			<label for = "pinNumber">핀번호</label>
 			<input type = "text" id = "pinNumber" oninput = "return checkPinValues();" placeholder="핀번호를 입력해주세요." required>
+			<br>
 			<span class = "id_already2"></span>	        
 	      </div>
 	      <div class="modal-footer">
@@ -475,7 +476,6 @@
 			return false;
 		} 
 		
-		//여기문제임
 		let memberIdCheck = document.getElementById("memberIdCheck");
 		
 		if(memberIdCheck.value == 0) {

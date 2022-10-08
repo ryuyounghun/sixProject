@@ -30,7 +30,8 @@
 				if(data == 0){
 					$('#pinNumber').text('존재하지 않은 핀넘버입니다.').css("color","red");
 				} else {
-					$('#pinNumber').text('회원님의 아이디는 [' + data + '] 입니다.').css("color","green");
+					 $('#pinNumber').text('회원님의 아이디는 [' + data + '] 입니다.').css("color", "black"); 
+
 				}
 			},
 			error:function(){
@@ -100,7 +101,7 @@
 						let spe = pw2.search(/[`~!@@#$%^&*|₩₩₩'₩";:₩/?]/gi);
 						
 					 	if(pw1.length < 8 || pw1.length > 16){
-							$("#text2").text("8~15자리 이내로 입력해주세요.").css("color", "red");
+							$("#text2").text("8~16자리 이내로 입력해주세요.").css("color", "red");
 							$("#doublePw").val("0");
 						} else if(kor >= 0) {
 							$("#text2").text("비밀번호는 공백 없이 입력해주세요.").css("color", "red");

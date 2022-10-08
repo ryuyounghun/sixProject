@@ -48,6 +48,12 @@ public class MainController {
 		return member;
 	}
 	
+	@PostMapping("/checkPhone")
+	public @ResponseBody Member phoneCheck(String phone) {
+		Member member = mService.selectOneMember(phone);
+		return member;
+	}
+	
 	@GetMapping("/memberCheck")
 	public @ResponseBody Member memberCheck(@AuthenticationPrincipal UserDetails user) {
 		

@@ -120,6 +120,20 @@ ul {
 .expBar{
 	text-align: center;
 }
+
+/* 1005 세련 수정함 */
+a{
+	color: #707070;
+	text-decoration: none;
+}
+
+td.updateDeleteBox {
+    padding-left: 7px;
+}
+
+.nicknameBox{
+	 padding-right: 5px;
+}
 /* 1002 세련 수정함 */
 .btnBox{
 	background-color: #0069d9;
@@ -198,7 +212,6 @@ ul {
 }
 
 
-
 /* 쿠폰 div 하나 */
 .couponCenter{
 	padding-top: 12px;
@@ -215,7 +228,7 @@ ul {
 /* 1002 세련 수정함 float 추가  */
 /* 쿠폰 구매하기 버튼 */
 .cpBtn{
-	font-size: 13px;
+	font-size: 15px;
 	border: none;
 	float: right;
 }
@@ -223,7 +236,7 @@ ul {
 .btn1{
 	float: right;
 	border: none;
-	font-size: 13px;
+	font-size: 15px;
 }
 .mapInfo{
 	padding : 40px;

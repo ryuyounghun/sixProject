@@ -377,17 +377,18 @@ $(document).ready(function(){
 			type:"get",
 			data: {"memberNum": memberNum},	// ""=> 콘트롤러 파라미터로 넘겨줌(이름 콘트롤러랑 똑같이)
 			success: function(data){	// data는 콘트롤러에서 return 값으로 가져온거(list 결과들, 이름을 어떻게 가져와도 자유!)
-				let htmlStr = "<table>";
+				let htmlStr = "<table class='storeTable'>";
 				$.each(data, function(index, value){	//data는 리스트니까 반복문 each로 돌려줘야함 그래서 index 얼마나 있는지 볼라고 필요함
 					htmlStr += "<tr>";
-					htmlStr += "<td>" + value.content + "</td>";
-					htmlStr += "<td>" + value.nickname + "</td>";
-					htmlStr += "<td>" + value.inputdate + "</td>";
+					htmlStr += "<td id ='contentBox1'>" + value.content + "</td>";
+					htmlStr += "<td class = 'nicknameBox'>" + value.nickname + "</td>";
+					htmlStr += "<td>" + value.inputdate + " </td>";
 					// 1001 추가
 					if(loginMember == value.writerNum){
-						htmlStr += "<td><a href='javascript:updateCheckGuestbook("+ value.guestBookNum+");'>수정</a>";
-						htmlStr += " | ";
-						htmlStr += "<a href='javascript:deleteGuestbook("+ value.guestBookNum+");'>삭제</a></td>";
+						// 1005 세련 수정
+						htmlStr += "<td class = 'updateDeleteBox'><a style = 'color: #828181; text-decoration: none;'  href='javascript:updateCheckGuestbook("+ value.guestBookNum+");'>수정</a>";
+						htmlStr += "<span> | </span>";
+						htmlStr += "<a style = 'color: #828181; text-decoration: none;' href='javascript:deleteGuestbook("+ value.guestBookNum+");'>삭제</a></td>";
 					}
 					htmlStr += "</tr>";	
 				});

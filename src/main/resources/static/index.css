@@ -67,7 +67,6 @@ body{
 }
 
 
-
 .header-logMenuList li {
 	margin-top : 20px;
 	margin-right : 20px;
@@ -79,6 +78,13 @@ body{
 /* 
 	본문 섹션 css
  */
+ 
+ /* 1006 세련 수정함 */
+ 
+ .addressFind{
+	margin-top: 20px;	
+}
+ /* 1006 세련 여기까지 */
  .box-wrapper{
  	height: 100vh;
  	background-image : url("/images/indexImg.jpg");

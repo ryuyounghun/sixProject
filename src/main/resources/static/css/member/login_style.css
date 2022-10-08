@@ -117,12 +117,14 @@ input {
 	box-sizing: border-box; /* 패딩수치를 인사이드 처리 */
 }
 
-
+/* 1004 세련 수정 */
 .elseBox{
     list-style: none;
     text-align: center;
-  	padding-top: 30px;
+    padding-top: 22px;
     font-size: 17px;
+    padding-left: 17px;
+    padding-bottom: 20px;
 }
 
 .elseText{color: #9e9b9b;}
