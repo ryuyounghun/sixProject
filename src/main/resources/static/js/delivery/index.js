@@ -194,7 +194,6 @@
 			ForecastGribUrl += "&base_time=" + now + "00";
 			ForecastGribUrl += "&nx=" + rs.x + "&ny=" + rs.y;
 			arr.push({'url' : ForecastGribUrl}); 
-			
 	
 			
 			$.ajax({

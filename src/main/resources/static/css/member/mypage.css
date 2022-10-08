@@ -225,6 +225,17 @@ ul {
 	border: none;
 	font-size: 13px;
 }
+
+.contentBox2{
+	width: 1000px;
+}
+.inputdateBox2{
+	width: 450px;
+}
+.updateDeleteBox2{
+    width: 290px;
+}
+	
 .mapInfo{
 	padding : 40px;
 }
@@ -275,4 +286,3 @@ ul {
 	
 	
 }
-

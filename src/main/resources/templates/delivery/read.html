@@ -154,12 +154,7 @@
 										가게정보
 									</a>
 								</li>
-								<script type="text/javascript">
-										$("li[id*='Button']").on("click", function(){
-											$("li[id*='Button']").removeClass("clicked");
-											$(this).addClass("clicked");
-										});
-								</script>
+								
 							</ul>
 						</div>
 						<hr>
@@ -188,8 +183,7 @@
 								</span>
 							</p>
 							<p class="info-subTheme">전화번호: 
-								<span th:text="${store.phone}"></span>
-								</span>
+								<span class="info-subContent" th:text="${store.phone}"></span>
 							</p>
 							
 						
@@ -235,6 +229,12 @@
 	
 	
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=6e7c79dc40e0d0df1bb9a7bb0628d68a&libraries=services"></script>	
+<script type="text/javascript">
+		$("li[id*='Button']").on("click", function(){
+			$("li[id*='Button']").removeClass("clicked");
+			$(this).addClass("clicked");
+		});
+</script>
 <script type="text/javascript">
 	function loadMap() {
 		let address = $("#storeAddress").text();
