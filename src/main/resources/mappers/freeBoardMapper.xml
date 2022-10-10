@@ -87,5 +87,10 @@
 		FREE_BOARD
 		ORDER BY VIEWCOUNT DESC
 	</select>
+	
+	<delete id="deleteFreeBoard" parameterType="int">
+		DELETE FREE_BOARD
+		WHERE BOARDNUM = #{boardNum}
+	</delete>
 </mapper>
 

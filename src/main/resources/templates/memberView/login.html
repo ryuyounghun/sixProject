@@ -209,15 +209,18 @@
 	function kakaoLogin() {
 	    Kakao.Auth.login({
 	      success: function (response) {
+	    	  console.log(Kakao.Auth.getAccessToken());
+	    	  var token = getCookie('authorize-access-token');
+	    	  Kakao.Auth.setAccessToken(Kakao.Auth.getAccessToken());
 	        Kakao.API.request({
 	          url: '/v2/user/me',
 	          success: function (response) {
-	        	  console.log(response);
+	        	  
 	        	  let kakaoid = response.id;
 	        	  let email = "K" + response.kakao_account.email;
 	        	  let nickname = response.properties.nickname;
 	        
-	        	  $.ajax({
+	        	 $.ajax({
 	        		 url : "socialIdCheck",
 	        		 type : "post",
 	        		 data : {"id" : email},
@@ -251,7 +254,7 @@
 						}
 	        		 
 	        		 }
-	        	  }); 
+	        	  });
 	        	  
 	        	  
 	          },
@@ -276,6 +279,11 @@
 		
 		form.submit();
 	}
+	
+	 function getCookie(name) {
+		    var parts = document.cookie.split(name + '=');
+		    if (parts.length === 2) { return parts[1].split(';')[0]; }
+		  }
 </script>
 </body>
 </html>

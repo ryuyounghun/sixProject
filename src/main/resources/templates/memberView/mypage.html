@@ -210,7 +210,7 @@
 										<!-- 1002 세련 수정함 placeholder 추가함  -->
 										<input th:object = "${guestbook}" th:onclick = "${content}" name="content" id="content" class="content" placeholder="내용을 입력해주세요.">
 										<button id = "btnReply_write" class = "btnBox">작성하기</button>
-										<!-- <input type = "button" value = "수정하기" id = "btnReply_update"> -->
+										<input type = "button" value = "수정하기" id = "btnReply_update" class = "btnBox">
 										<input type = "hidden" id = "loginUser" th:value = "${#authentication.getPrincipal().getUsername()}">
 									</div>
 							</div><!-- partyJoinOut2 부분 끝 -->

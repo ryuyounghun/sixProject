@@ -610,6 +610,7 @@ public class MemberController {
 		public void updateGuestbook(int guestBookNum, String content) {
 			GuestBook gBook = mService.selectGuestBookByNum(guestBookNum);
 			gBook.setContent(content);
+			log.debug("gBook : {}", gBook);
 			mService.updateGuestBook(gBook);
 		}
 		

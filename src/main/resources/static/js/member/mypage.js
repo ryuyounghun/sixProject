@@ -422,7 +422,6 @@ $(document).ready(function(){
 			type : "get",
 			data : {"guestBookNum" : guestBookNum},
 			success : function(data) {
-				data.content
 				$("#content").val(data.content);
 				$("#btnReply_write").hide();
 				$("#btnReply_update").show();
@@ -440,7 +439,7 @@ $(document).ready(function(){
 			success : function() {
 				loadAllReply();
 				$("#btnReply_write").show();
-				$("#btnReply_update").hide();
+				$("#btnReply_update").off().hide();
 				$("#content").val("");
 			}
 		});
@@ -448,7 +447,6 @@ $(document).ready(function(){
 	
 	// 1001 추가
 	function deleteGuestbook(guestBookNum) {
-		
 		$.ajax({
 			url : "deleteGuestbook",
 			type : "get",
@@ -461,8 +459,8 @@ $(document).ready(function(){
 	
 	function writeReply(){
 	      let content = $("#content").val();
-	      
 	      let memberNum = getParameterByName('num');
+	      
 	      console.log("dlkj");
 	      $.ajax({
 	         url: "writeReply",

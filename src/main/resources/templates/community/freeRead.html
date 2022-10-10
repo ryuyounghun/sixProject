@@ -92,6 +92,7 @@
 									<th th:text="*{viewCount}"></th>
 									<td>
 										<button type="button" class="btn btn-success" id="updateBtn">수정하기</button>
+										<button type="button" class="btn btn-success" id="deleteBtn">삭제하기</button>
 									</td>
 								</tr>
 								
@@ -140,12 +141,16 @@
 	<script>
 						
 						$(document).ready(function(){
+							$("#updateBtn").hide();
+							$("#deleteBtn").hide();
+							viewUpdateBtn();
 							$("#btnReplyWrite").on("click", function(){
 								writeReply();
 							});
 							// 0929 추가
 							$("#updateBtn").click(function() { updateFreeBoard(); });
-							viewUpdateBtn();
+							// 1009 추가
+							$("#deleteBtn").click(function() { deleteFreeBoard(); });
 							
 							
 							getAllfbReply();
@@ -181,8 +186,9 @@
 								data : {"fBoardNum" : fBoardNum},
 								success : function(data) {
 									console.log(data.memberNum);
-									if(memberNum != data.memberNum) {
-										$("#updateBtn").hide();
+									if(memberNum == data.memberNum) {
+										$("#updateBtn").show();
+										$("#deleteBtn").show();
 									}
 									
 								}
@@ -196,6 +202,19 @@
 							let fBoardNum = getParameterByName('num');
 							
 							location.href="updateFreeWrite?boardNum=" + fBoardNum;
+						}
+						
+						function deleteFreeBoard() {
+							let fBoardNum = getParameterByName('num');
+							
+							$.ajax({
+								url : "deleteFreeBoard",
+								type : "get",
+								data : {"fBoardNum" : fBoardNum},
+								success : function() {
+									location.href="/community/index";
+								}
+							});
 						}
 						
 						// 레벨별 뱃지추가하기
