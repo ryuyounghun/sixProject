@@ -201,6 +201,7 @@ $(document).ready(function(){
 				console.log(data.complete);
 				if(data.complete == 'Y') {
 					endReview(receiptNum);
+					
 				}else {
 					alert("아직 주문이 완료되지 않았습니다.");
 				}
@@ -221,6 +222,7 @@ $(document).ready(function(){
 				if(data == "") {
 					$("#orderList").hide();
 					$("#reviewModal").show();
+					
 				} else {
 					alert("이미 리뷰 한 주문입니다.");
 				}

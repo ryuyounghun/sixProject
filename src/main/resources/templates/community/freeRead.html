@@ -252,9 +252,9 @@
 										htmlStr += "<td width='170px;'>" + item.inputdate +"</td>";	
 										htmlStr += "<td>";
 										if(loginMemberNum == item.memberNum){
-											htmlStr += "<a href='javascript:getOneReply("+ item.replyNum+");'>수정</a>";
+											htmlStr += "<a href='javascript:getOneReply("+ item.replyNum+");' class = 'updateDeleteBox2'>수정&nbsp;&nbsp;</a>";
 											htmlStr += " | ";
-											htmlStr += "<a href='javascript:deleteReply("+ item.replyNum+");'>삭제</a>";
+											htmlStr += "<a href='javascript:deleteReply("+ item.replyNum+");' class = 'delete2'>&nbsp;&nbsp;삭제</a>";
 										}
 										htmlStr += "</td>";	
 										htmlStr += "</tr>";

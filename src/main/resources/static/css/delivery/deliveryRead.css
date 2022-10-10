@@ -52,6 +52,35 @@ li{
 /* 
 	본문 섹션 css
  */
+ 
+/*  1010 세련 수정함 */
+
+
+.poinMsgtBox{
+	text-align: center;	
+}
+
+table#orderList td {
+    text-align: center;
+    width: 465px;
+    
+}
+
+.orderMsg{
+	font-size: 30px;
+}
+.orderMsg2{
+	font-size: 19px;
+}
+em {
+    font-size: 25px;
+}
+/* 1010 세련 수정 여기까지 */
+.updateDeleteBox2{
+	text-decoration: none;
+	color:black;
+}
+
  .section-container{
  	width : 100%;
  	height : 72.3vh;
@@ -134,25 +163,6 @@ li{
     list-style: none;
     
  }
- 
-  #storeRank li:hover{
-	text-decoration: underline;
-}
- .top3Stores span:hover{
-	text-decoration: underline;
- 
- }
- .top3Stores span{
-    position : absolute;
-    display : inline-block;
-    font-weight: bold;
-    margin-top:5px;   
-	cursor : pointer;
-}
-.underTop3 {
-   margin-top : 5px;
-	cursor : pointer;
-}
 .aside-right-allPay{
 	height : 100px;
 	background-color: #874C62;
@@ -214,10 +224,6 @@ li{
 	width: inherit;
 	height: 150px;
 }
-
-.tableW {
-	width: 750px;
-	}
 
 .brandImg{
 	position : absolute;

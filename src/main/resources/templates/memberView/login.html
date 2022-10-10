@@ -202,16 +202,18 @@
 <!-- 카카오 스크립트 -->
 	<script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
 	<script>
-	Kakao.init('6e7c79dc40e0d0df1bb9a7bb0628d68a'); //발급받은 키 중 javascript키를 사용해준다.
-	console.log(Kakao.isInitialized()); // sdk초기화여부판단
-	//kauth.kakao.com/oauth/authorize?client_id=ff7e45d762a8cd9c3235651811e41a69&redirect_uri=http://localhost:1123/member/kakao&response_type=code
-	//카카오로그인
+		Kakao.init('6e7c79dc40e0d0df1bb9a7bb0628d68a'); //발급받은 키 중 javascript키를 사용해준다.
+		console.log(Kakao.isInitialized()); // sdk초기화여부판단
+		//kauth.kakao.com/oauth/authorize?client_id=ff7e45d762a8cd9c3235651811e41a69&redirect_uri=http://localhost:1123/member/kakao&response_type=code
+		//카카오로그인
+	
+		
 	function kakaoLogin() {
+		
 	    Kakao.Auth.login({
 	      success: function (response) {
 	    	  console.log(Kakao.Auth.getAccessToken());
-	    	  var token = getCookie('authorize-access-token');
-	    	  Kakao.Auth.setAccessToken(Kakao.Auth.getAccessToken());
+	    	  Kakao.Auth.setAccessToken(Kakao.Auth.getAccessToken(), true);
 	        Kakao.API.request({
 	          url: '/v2/user/me',
 	          success: function (response) {
@@ -254,7 +256,7 @@
 						}
 	        		 
 	        		 }
-	        	  });
+	        	  }); 
 	        	  
 	        	  
 	          },
@@ -279,11 +281,6 @@
 		
 		form.submit();
 	}
-	
-	 function getCookie(name) {
-		    var parts = document.cookie.split(name + '=');
-		    if (parts.length === 2) { return parts[1].split(';')[0]; }
-		  }
 </script>
 </body>
 </html>

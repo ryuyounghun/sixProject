@@ -513,7 +513,7 @@ public class MemberController {
 		
 		dService.updateRating(store);
 		
-		return "redirect:/";
+		return "redirect:./mypage?num=" + member.getMemberNum();
 	}
 	
 	// 0925 추가

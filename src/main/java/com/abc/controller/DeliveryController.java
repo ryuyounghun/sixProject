@@ -61,6 +61,7 @@ public class DeliveryController {
 	@Value("${user.board.page}")
 	private int countPerPage;
 	
+	
 	@Value("${user.board.group}")
 	private int pagePerGroup;
 	
@@ -92,10 +93,6 @@ public class DeliveryController {
 	}
 	
 
-	@GetMapping("/inputStore")
-	public String inputStore() {
-		return d + "/inputStore";
-	}
 	
 	@PostMapping("/inputStore")
 	public String inputStore(Store store,
@@ -178,17 +175,6 @@ public class DeliveryController {
 		return new ResponseEntity<Resource>(resource, header, HttpStatus.OK);
 	}
 	
-	@GetMapping("/inputItem")
-	public String inputItem(Model model,
-			@AuthenticationPrincipal UserDetails user) {
-		
-		Member member = mService.selectOneMember(user.getUsername());
-		List<Store> storeList = dService.selectMemberOne(member.getMemberNum());
-		
-		model.addAttribute("storeList", storeList);
-		
-		return d + "/inputItem";
-	}
 	
 	@PostMapping("/inputItem")
 	public String inputItem(Item item,
@@ -402,59 +388,7 @@ public class DeliveryController {
 
 	
 	
-	@GetMapping("/myCompleteOrderList")	
-	public String myCompleteOrderList(Model model,
-			@AuthenticationPrincipal UserDetails user) {
-		
-		Member member = mService.selectOneMember(user.getUsername());
-		
-		List<Receipt> rList = dService.selectReceipt(member.getMemberNum());
-		//Review review = dService.selectReviewsByMemberNum(member.getMemberNum());
-		model.addAttribute("rList", rList);
-		log.debug("rList : {}", rList);
-		
-		/*
-		 * int num = 1;
-		 * 
-		 * for (int i = 0; i < rList.size(); i++) { if(review == null) { num = 1; } else
-		 * if (rList.get(i).getReceiptNum() == review.getReceiptNum()) { num = 0; } }
-		 * model.addAttribute("num", num);
-		 */
-		return d + "/myCompleteOrderList";
-	}
 	
-	@PostMapping("/myCompleteOrderList")
-	public String myCompleteOrderList(Review review,
-			@AuthenticationPrincipal UserDetails user) {
-		
-		Member member = mService.selectOneMember(user.getUsername());
-		Receipt receipt = dService.selectReceiptByReceiptNum(review.getReceiptNum());
-		Store store = dService.selectOneStore(review.getStoreNum());
-		
-		review.setOrderHistory(receipt.getOrderHistory());
-		review.setMemberNum(member.getMemberNum());
-		review.setNickname(member.getNickname());
-		
-		log.debug("review : {}", review);
-		
-		dService.insertReview(review);
-		
-		List<Review> rList = dService.selectReviews(review.getStoreNum());
-
-		log.debug("rList : {}", rList);
-		int sum = 0;
-		for (int i = 0; i < rList.size(); i++) {
-			sum += rList.get(i).getRating();  
-		}
-		log.debug("sum : {}", sum);
-		double rate = sum / rList.size();
-		
-		store.setRating(rate);
-		
-		dService.updateRating(store);
-		
-		return "redirect:./index";
-	}
 	
 	@GetMapping("/checkReview")
 	public @ResponseBody Review checkReview(int receiptNum) {

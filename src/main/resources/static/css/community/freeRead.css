@@ -54,6 +54,21 @@ li{
  */
 
  
+.updateDeleteBox2{
+	text-decoration: none;
+	color:gray;
+}
+.updateDeleteBox2:hover{
+	color: blue;
+}
+
+.delete2{
+	text-decoration: none;
+	color:gray;
+}
+.delete2:hover{
+	color: red;
+}
  .section-container{
  	width : 100%;
  	margin-bottom: 50px;

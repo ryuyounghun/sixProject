@@ -354,6 +354,7 @@
 		SELECT * FROM
 		WISHLIST
 		WHERE MEMBERNUM = #{memberNum}
+		
 	</select>
 	
 	<!-- 0925 추가 -->
@@ -361,6 +362,7 @@
 		SELECT * FROM
 		REVIEW
 		WHERE MEMBERNUM = #{memberNum}
+		ORDER BY REVIEWNUM DESC
 	</select>
 	
 	<!-- 0925 추가 -->
