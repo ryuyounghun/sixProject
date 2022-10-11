@@ -469,7 +469,7 @@ public class MemberController {
 		Member member = mService.selectOneMember(user.getUsername());
 		mService.blockLogin(member);
 		
-		return "redirect:/";
+		return "redirect:/logout";
 	}
 	// 0925 세련씨
 	

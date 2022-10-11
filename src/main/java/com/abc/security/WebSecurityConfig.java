@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 
 /**
@@ -35,6 +36,9 @@ public class WebSecurityConfig {
 		.authorizeRequests() // 권한 또는 인증 요청
 		.antMatchers(
 				"/index",
+				"/member/checkPhone",
+				"/member/memberCheck",
+				"/member/addressAndPhone",
 				"/member/join",
 				"/member/checkId",
 				"/member/checkPnum",
