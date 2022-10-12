@@ -234,11 +234,10 @@
                 this.messages.unshift({"type":recv.type,"sender":recv.type=='ENTER'?'[알림]':recv.sender,"message":recv.message})
             },
             reportMessage : function(sender, message) {
-                console.log(sender);
-                console.log(message);
+            	alert("신고되었습니다.");
+            	
                 let reporter = $("#reporter").val();
-                console.log(reporter);
-                ws.send("/app/chat/report", {}, JSON.stringify({type:'TALK', roomId:this.roomId, sender:this.sender, message:message, reporter:reporter}));
+                ws.send("/app/chat/report", {}, JSON.stringify({type:'TALK', roomId:this.roomId, sender: sender, message:message, reporter:reporter}));
                 this.message='';
             }
         }

@@ -49,7 +49,7 @@ public class MasterController {
 		
 		// 0928 추가 리폿
 		List<MessageReport> cmList = cmService.selectAllReportMessage();
-		log.debug("cmList : {}", cmList);
+		log.debug("cmList : {}", cmList.get(0).toString());
 		model.addAttribute("cmList",cmList);
 		// 리폿 th
 		

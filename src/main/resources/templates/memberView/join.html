@@ -159,8 +159,12 @@
 	         data : {"id" : mdId},
 	         success : function(result) {
 	            console.log(result);
-
-	            if(mdId == 0){
+			
+	            if(result == 1) {
+	               $('.id_already').text("이미 사용중인 아이디입니다.").css("color", "red");
+	               $('.id_already').show();
+	               $("#memberIdCheck").val("0");
+	            } else if(mdId == 0){
 	               $('.id_already').text("아이디는 공백없이 입력해주세요.").css("color", "red");
 	               $('.id_already').show();
 	               $("#memberIdCheck").val("0");
@@ -168,8 +172,8 @@
 	               $('.id_already').text("한글은 사용할 수 없습니다.").css("color", "red");
 	               $('.id_already').show();
 	               $("#memberIdCheck").val("0");
-	            } else if (mdId.length < 3 || mdId.length > 13) {
-	               $('.id_already').text("아이디는 3~13글자 사이로 입력해주세요.").css("color", "red");
+	            } else if (mdId.length < 3 || mdId.length > 12) {
+	               $('.id_already').text("아이디는 3~12글자 사이로 입력해주세요.").css("color", "red");
 	               $('.id_already').show();
 	               $("#memberIdCheck").val("0");
 	            } else if (num < 0 || eng < 0){
@@ -180,10 +184,7 @@
 	                 $('.id_already').text("특수문자는 사용할 수 없습니다.").css("color", "red");;
 	                   $('.id_already').show();
 	                   $("#memberIdCheck").val("0");
-	                } else if(result == 1) {
-	               $('.id_already').text("이미 사용중인 아이디입니다.").css("color", "red");
-	               $('.id_already').show();
-	               $("#memberIdCheck").val("0");
+	               
 	            } else {
 	               //1002 세련 text내용 수정함
 	               $('.id_already').text("알맞은 형식입니다.").css("color", "green");
