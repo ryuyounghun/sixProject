@@ -262,13 +262,13 @@
 							
 							<!-- 가게 설명 -->
 		        			<br><label for = "content">* 가게 설명</label><br>
-		        			<textarea id = "content" name = "storeContent" class = "storeContent" placeholder = "가게에 대한 설명을 적어주세요."></textarea>
+		        			<textarea id = "content" name = "storeContent" class = "storeContent" placeholder = "가게에 대한 설명을 적어주세요." required></textarea>
 		        			
 		        			<!-- 1001 세련 수정함 -->
 		        			<!--  가게 썸네일 -> 가게 이미지 설정 -->
 		        			<!-- 가게 이미지 설정하기 -->
 		        			<br><label for = "content">* 가게 이미지 설정</label><br>
-		        			<input type="file" name="file" class = "file">
+		        			<input type="file" name="file" class = "file" required>
 		        			<br>
 		        			<!-- 주소 -->
 		        			<span class = "inputAddress" style="font-size: 17px; font-weight: bold;">* 주소 등록</span>
@@ -276,9 +276,9 @@
 		        			<!-- 1001 세련 수정함  -->
 		        			<!-- placeholder 부분 온점 추가함~  -->
 		        			<!-- fieldset 두 개로 나뉘어져 있는 걸 하나로 합쳤습니다.  -->
-		        			<input type = "text" id = "sample4_roadAddress" class = "address1" name = "address" placeholder = "주소찾기를 눌러주세요." readonly>
-		        			<input type = "button" value = "주소찾기" class = "addressFind" onclick="sample4_execDaumPostcode()">
-							<br><input type = "text" class = "address1" id="sample4_detailAddress" placeholder = "상세 주소를 입력해주세요.">
+		        			<input type = "text" id = "sample4_roadAddress" class = "address1" name = "address" placeholder = "주소찾기를 눌러주세요." readonly required>
+		        			<input type = "button" value = "주소찾기" class = "addressFind" onclick="sample4_execDaumPostcode()" required>
+							<br><input type = "text" class = "address1" id="sample4_detailAddress" placeholder = "상세 주소를 입력해주세요." required>
 						
 		        			<input type="hidden" id="sample4_postcode" placeholder="우편번호">
 							<input type="hidden" id="sample4_jibunAddress" placeholder="지번주소">
@@ -315,7 +315,7 @@
 		        					th:text="${storeList.storeName}"
 		        					></option>
 		        				</select>
-		        				<input type="hidden" value="" id="hiddenNumItem" name="storeNum">
+		        				<input type="hidden" value="" id="hiddenNumItem" name="storeNum" >
 		        			</div>
 							
 							<!-- 가격 -->
@@ -324,11 +324,11 @@
 							
 							<!-- 상품 설명 -->
 		        			<br><label for = "content">* 상품내용</label><br>
-		        			<textarea id = "content" name = "itemContent" class = "storeContent" placeholder = "상품에 대한 설명을 적어주세요."></textarea>
+		        			<textarea id = "content" name = "itemContent" class = "storeContent" placeholder = "상품에 대한 설명을 적어주세요." required></textarea>
 		        			
 		        			<!-- 상품 이미지 -->
 		        			<br><label for = "content">* 상품 이미지</label><br>
-		        			<input type="file" name="file">
+		        			<input type="file" name="file" required>
 		        			
 					</fieldset>
 					<!-- 버튼 -->

@@ -469,7 +469,7 @@ public class MemberController {
 		Member member = mService.selectOneMember(user.getUsername());
 		mService.blockLogin(member);
 		
-		return "redirect:/";
+		return "redirect:/logout";
 	}
 	// 0925 세련씨
 	
@@ -513,7 +513,7 @@ public class MemberController {
 		
 		dService.updateRating(store);
 		
-		return "redirect:/";
+		return "redirect:./mypage?num=" + member.getMemberNum();
 	}
 	
 	// 0925 추가
@@ -610,6 +610,7 @@ public class MemberController {
 		public void updateGuestbook(int guestBookNum, String content) {
 			GuestBook gBook = mService.selectGuestBookByNum(guestBookNum);
 			gBook.setContent(content);
+			log.debug("gBook : {}", gBook);
 			mService.updateGuestBook(gBook);
 		}
 		

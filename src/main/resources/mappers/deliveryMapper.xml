@@ -354,6 +354,7 @@
 		SELECT * FROM
 		WISHLIST
 		WHERE MEMBERNUM = #{memberNum}
+		
 	</select>
 	
 	<!-- 0925 추가 -->
@@ -361,6 +362,7 @@
 		SELECT * FROM
 		REVIEW
 		WHERE MEMBERNUM = #{memberNum}
+		ORDER BY REVIEWNUM DESC
 	</select>
 	
 	<!-- 0925 추가 -->
@@ -385,7 +387,7 @@
 				CATEGORY LIKE '%'||#{searchWord}||'%'
 			</where>
 		</if>
-		ORDER BY STORENAME DESC
+		ORDER BY STORENAME asc
 	</select>
 	
 	<select id = "countAllStore" parameterType="map" resultType = "int">

@@ -210,7 +210,7 @@
 										<!-- 1002 세련 수정함 placeholder 추가함  -->
 										<input th:object = "${guestbook}" th:onclick = "${content}" name="content" id="content" class="content" placeholder="내용을 입력해주세요.">
 										<button id = "btnReply_write" class = "btnBox">작성하기</button>
-										<!-- <input type = "button" value = "수정하기" id = "btnReply_update"> -->
+										<input type = "button" value = "수정하기" id = "btnReply_update" class = "btnBox">
 										<input type = "hidden" id = "loginUser" th:value = "${#authentication.getPrincipal().getUsername()}">
 									</div>
 							</div><!-- partyJoinOut2 부분 끝 -->
@@ -315,7 +315,6 @@
 				            <textarea class="form-control" id="message-text" name="reviewContent" placeholder="리뷰를 남겨주세요."></textarea>
 				        </div>
 					    <div class="modal-footer">
-					    	<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
 					    	<button type="submit" class="btn btn-primary">리뷰 남기기</button>
 					    </div>
 	        		</form>
@@ -390,10 +389,8 @@
                 this.messages.unshift({"type":recv.type,"sender":recv.type=='ENTER'?'[알림]':recv.sender,"message":recv.message})
             },
             reportMessage : function(sender, message) {
-                console.log(sender);
-                console.log(message);
+            	alert("신고되었습니다.");
                 let reporter = $("#reporter").val();
-                console.log(reporter);
                 ws.send("/app/chat/report", {}, JSON.stringify({type:'TALK', roomId:this.roomId, sender:this.sender, message:message, reporter:reporter}));
                 this.message='';
             }

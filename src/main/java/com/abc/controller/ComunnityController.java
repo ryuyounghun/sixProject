@@ -121,6 +121,9 @@ public class ComunnityController{
 				log.debug("레벨2 : {}", list.get(i).getUserExp());
 				mLevel = list.get(i).getUserLevel();
 				
+			} else if(0 <= mExp && list.get(0).getUserExp() > mExp) {
+				mLevel = 1;
+				break;
 			}
 			else if ( list.get(i).getUserExp() <= mExp
 					 && list.get(i+1).getUserExp() > mExp ) {
@@ -234,7 +237,6 @@ public class ComunnityController{
 			log.debug("savedFuke : {}", savedFile);
 			cBoard.setSavedFile(savedFile);
 			cBoard.setOriginalFile(file.getOriginalFilename());
-			
 		}
 		
     	// 파티 생성
@@ -557,6 +559,8 @@ public class ComunnityController{
 					cRoom.setClassNum(classNum);
 					cRoom.setMemberNum(member.getMemberNum());
 					cRoom.setNickname(member.getNickname());
+					cRoom.setOriginalFile(member.getOriginalFile());
+					cRoom.setSavedFile(member.getSavedFile());
 					
 					cService.insertClassRoom(cRoom);
 					answer = "추가되었습니다.";
@@ -844,4 +848,10 @@ public class ComunnityController{
 		return new ResponseEntity<Resource>(resource, header, HttpStatus.OK);
 	}
 	
+	// 1009 추가 게시물 삭제 기능
+	@GetMapping("/deleteFreeBoard")
+	@ResponseBody
+	public void deleteFreeBoard(int fBoardNum) {
+		fService.deleteFreeBoard(fBoardNum);
+	}
 }

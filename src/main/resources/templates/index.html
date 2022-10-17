@@ -136,10 +136,10 @@ function updateMember() {
 						</a>
 					</li>
 					<li sec:authorize="isAuthenticated">
-						<a th:href ="@{/logout}" class="logMenu1">
-							로그아웃
-						</a>
+						<a class="logMenu1" href="https://kauth.kakao.com/oauth/logout?client_id=6e7c79dc40e0d0df1bb9a7bb0628d68a&logout_redirect_uri=http://localhost:1123/logout">로그아웃</a>
+						
 					</li>
+					
 					<li sec:authorize="isAuthenticated">
 						<a th:href="|@{/member/mypage}?num=${member.memberNum}|" class="logMenu2">
 						 회원정보

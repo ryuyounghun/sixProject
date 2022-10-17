@@ -38,6 +38,8 @@ public interface FreeBoardService {
 	
 	// 0929 추가 수정기능
 	public int updateFreeBoard(FreeBoard fb);
+	// 1009 추가 삭제기능
+		public int deleteFreeBoard(int fBoardNum);
 	
 	// 0930 추가
 	public int updateViewCount(int boardNum);

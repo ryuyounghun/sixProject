@@ -31,6 +31,9 @@
 		
 	}
 	
+	.tableW {
+		width:750px;
+	}
 </style>
 <script th:inline="javascript">
 	
@@ -259,6 +262,14 @@
 <script type="text/javascript">
 function selectStore(storeNum) {
 	location.href="read?num="+storeNum;
+}
+
+function getMyAddress(){
+	let myAddress = $("#myAddress").val();
+	if ( myAddress == null || myAddress.trim().length == 0){
+		alert("회원님의 등록된 주소가 없습니다.")
+	}
+	$("#searchWord").val(myAddress);
 }
 </script>
 </body>

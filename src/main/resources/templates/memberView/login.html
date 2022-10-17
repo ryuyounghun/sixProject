@@ -99,8 +99,10 @@
 		        				</div><!-- social 부분 끝 -->
 		        				
 			        			</fieldset>
-			        			
-			        			
+		        			</form>
+		        			<form action = "login" method = "post" id="loginForm2">
+		        				<input type="hidden" id = "loginId2" name = "memberId">
+		        				<input type = "hidden" id = "loginPw2" name = "memberPw">
 		        			</form>
 		      			 </div><!-- loginContent 부분 끝 -->
       			 </div><!-- aside-center 부분 끝 -->
@@ -108,8 +110,6 @@
    		</div>
    		</section>
     </div>
-	   	<footer>
-		</footer> 
 	    <!-- //section 끝 -->
 <!-- 네이버 스크립트 -->
 <script src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js" charset="utf-8"></script>
@@ -202,22 +202,27 @@
 <!-- 카카오 스크립트 -->
 	<script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
 	<script>
-	Kakao.init('6e7c79dc40e0d0df1bb9a7bb0628d68a'); //발급받은 키 중 javascript키를 사용해준다.
-	console.log(Kakao.isInitialized()); // sdk초기화여부판단
-	//kauth.kakao.com/oauth/authorize?client_id=ff7e45d762a8cd9c3235651811e41a69&redirect_uri=http://localhost:1123/member/kakao&response_type=code
-	//카카오로그인
+		Kakao.init('6e7c79dc40e0d0df1bb9a7bb0628d68a'); //발급받은 키 중 javascript키를 사용해준다.
+		console.log(Kakao.isInitialized()); // sdk초기화여부판단
+		//kauth.kakao.com/oauth/authorize?client_id=ff7e45d762a8cd9c3235651811e41a69&redirect_uri=http://localhost:1123/member/kakao&response_type=code
+		//카카오로그인
+	
+		
 	function kakaoLogin() {
+		
 	    Kakao.Auth.login({
 	      success: function (response) {
+	    	  console.log(Kakao.Auth.getAccessToken());
+	    	  Kakao.Auth.setAccessToken(Kakao.Auth.getAccessToken(), true);
 	        Kakao.API.request({
 	          url: '/v2/user/me',
 	          success: function (response) {
-	        	  console.log(response);
+	        	  
 	        	  let kakaoid = response.id;
 	        	  let email = "K" + response.kakao_account.email;
 	        	  let nickname = response.properties.nickname;
 	        
-	        	  $.ajax({
+	        	 $.ajax({
 	        		 url : "socialIdCheck",
 	        		 type : "post",
 	        		 data : {"id" : email},
@@ -269,10 +274,10 @@
 	
 	function LoginForm(email, id) {
 		
-		let form = document.getElementById("loginForm");
+		let form = document.getElementById("loginForm2");
 		
-		$("#loginId").val(email);
-		$("#loginPw").val(id);
+		$("#loginId2").val(email);
+		$("#loginPw2").val(id);
 		
 		form.submit();
 	}

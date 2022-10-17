@@ -57,6 +57,7 @@ $(document).ready(function(){
 		
 		// 1001 추가
 		$("#btnReply_update").hide();
+		
 	});
 	
 	// 1004 추가
@@ -157,15 +158,17 @@ $(document).ready(function(){
 		$("#wishlistStore").hide();
 		$("#profileModal").hide();
 		let memberNum = getParameterByName('num');
+		let loginMember = $("#loginMember").val();
 		
 		$.ajax({
 			url : "myOrderList",
 			type : "get",
 			data : {"memberNum" : memberNum},
 			success : function(data) {
+				console.log(data);
 				let htmlStr = "";
 				
-				if(data == "") {
+				if(data.memberNum == "") {
 					htmlStr += htmlStr += "<span class = 'couponTitle'>주문 목록이 없습니다.</span>";
 				} else {
 					$.each(data, function(index, item) {
@@ -174,7 +177,9 @@ $(document).ready(function(){
 						htmlStr += "<span class = 'first1'>" + item.receiptNum + "</span>";
 						htmlStr += "<span class = 'first1'>" + item.totalAmount + "</span>";
 						htmlStr += "<span class= 'first1'>" + item.orderHistory + "</span>";
-						htmlStr += "<span class= 'first1'><input type='button' class = 'btn1' value='리뷰쓰기' onclick='writeReview(" + item.storeNum + "," + item.receiptNum + ")'></span>";
+						if(item.memberNum == loginMember) {
+							htmlStr += "<span class= 'first1'><input type='button' class = 'btn1' value='리뷰쓰기' onclick='writeReview(" + item.storeNum + "," + item.receiptNum + ")'></span>";
+						}
 						htmlStr += "</div>";
 					});
 				}
@@ -201,6 +206,7 @@ $(document).ready(function(){
 				console.log(data.complete);
 				if(data.complete == 'Y') {
 					endReview(receiptNum);
+					
 				}else {
 					alert("아직 주문이 완료되지 않았습니다.");
 				}
@@ -220,6 +226,7 @@ $(document).ready(function(){
 			success : function(data) {
 				if(data == "") {
 					$("#orderList").hide();
+					$("#exampleModalLabel").text("리뷰");
 					$("#reviewModal").show();
 				} else {
 					alert("이미 리뷰 한 주문입니다.");
@@ -422,7 +429,6 @@ $(document).ready(function(){
 			type : "get",
 			data : {"guestBookNum" : guestBookNum},
 			success : function(data) {
-				data.content
 				$("#content").val(data.content);
 				$("#btnReply_write").hide();
 				$("#btnReply_update").show();
@@ -440,7 +446,7 @@ $(document).ready(function(){
 			success : function() {
 				loadAllReply();
 				$("#btnReply_write").show();
-				$("#btnReply_update").hide();
+				$("#btnReply_update").off().hide();
 				$("#content").val("");
 			}
 		});
@@ -448,7 +454,6 @@ $(document).ready(function(){
 	
 	// 1001 추가
 	function deleteGuestbook(guestBookNum) {
-		
 		$.ajax({
 			url : "deleteGuestbook",
 			type : "get",
@@ -461,8 +466,8 @@ $(document).ready(function(){
 	
 	function writeReply(){
 	      let content = $("#content").val();
-	      
 	      let memberNum = getParameterByName('num');
+	      
 	      console.log("dlkj");
 	      $.ajax({
 	         url: "writeReply",

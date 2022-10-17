@@ -99,6 +99,7 @@ $(document).ready(function() {
 	
 	
 	function allOrder(orderData) {
+		$("#checkBtn").show();
 		let storeNum = getParameterByName('num');
 		let loginUser = $("#loginUser").val();
 		$("#leftoverPoint").hide();
@@ -109,8 +110,8 @@ $(document).ready(function() {
 			data : {"loginUser" : loginUser},
 			success : function(data) {
 				
-				htmlStr = "<h3>이 주소가 맞습니까?</h3>";
-				htmlStr += "<h4>" + data.address + "</h4>";
+				htmlStr = "<h4>배달 받을 주소와 일치하는지 확인해 주세요.</h4>";
+				htmlStr += "<h4>&#127969; &nbsp;" + data.address + "</h4>";
 				$("#receiptModal").html(htmlStr);
 				$("#staticBackdrop").modal('show');
 				
@@ -124,11 +125,15 @@ $(document).ready(function() {
 						console.log(data);
 						resultMenu();
 						if(data != "") {
-							htmlStr = "<table id='orderList'>";
-							htmlStr += "<tr><th>주문서</th></tr>";
-							htmlStr += "<tr><th>잠시만 기다려주세요.</th></tr>";
-							htmlStr += "<tr><th>" + data.orderHistory + "</th></tr>";
-							htmlStr += "<tr><th>" + data.totalAmount + "원</th></tr>";
+							// 1010 세련 수정함
+							htmlStr = "<table id='orderList' class = 'orderListBox'>";
+							htmlStr += "<tr><td class = 'orderMsg'><em>영수증</em></td></tr>";
+							htmlStr += "<tr><td>==============================================</td></tr>";
+							htmlStr += "<tr><td><br></td></tr>";
+							htmlStr += "<tr><td class = 'orderMsg2'>" + data.orderHistory + "</td></tr>";
+							htmlStr += "<tr><td><br></td></tr>";
+							htmlStr += "<tr><td><em calss = 'orderPriceMsg'>총 가격 : " + data.totalAmount + "원</em></td></tr>";
+							htmlStr += "<tr><td>==============================================</td></tr>";
 							htmlStr += "</table>";
 							
 							
@@ -138,7 +143,7 @@ $(document).ready(function() {
 							leftoverPoint();
 							$("#staticBackdrop").modal('show');
 						} else {
-							htmlStr = "<h3>잔액이 모자랍니다.</h3>"
+							htmlStr = "<h3>잔액이 모자랍니다.</h3>";
 							
 							$("#checkBtn").hide();
 							$("#receiptModal").html(htmlStr);
@@ -164,7 +169,7 @@ $(document).ready(function() {
 			success : function(data) {
 				console.log(data);
 				
-				let htmlStr = "<h1>잔여 포인트 : " + data.memberPoint + " 포인트</h1>";
+				let htmlStr = "<h4 class = 'poinMsgtBox'>잔여 포인트 : " + data.memberPoint + " Point</h4>";
 				
 				$("#leftoverPoint").html(htmlStr);
 			}

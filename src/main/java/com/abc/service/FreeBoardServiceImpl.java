@@ -163,6 +163,12 @@ public class FreeBoardServiceImpl implements FreeBoardService{
 		return navi;
 	}
 
+	@Override
+	public int deleteFreeBoard(int fBoardNum) {
+		// TODO Auto-generated method stub
+		return fbDAO.deleteFreeBoard(fBoardNum);
+	}
+
 	
 
 
