@@ -99,8 +99,10 @@
 		        				</div><!-- social 부분 끝 -->
 		        				
 			        			</fieldset>
-			        			
-			        			
+		        			</form>
+		        			<form action = "login" method = "post" id="loginForm2">
+		        				<input type="hidden" id = "loginId2" name = "memberId">
+		        				<input type = "hidden" id = "loginPw2" name = "memberPw">
 		        			</form>
 		      			 </div><!-- loginContent 부분 끝 -->
       			 </div><!-- aside-center 부분 끝 -->
@@ -108,8 +110,6 @@
    		</div>
    		</section>
     </div>
-	   	<footer>
-		</footer> 
 	    <!-- //section 끝 -->
 <!-- 네이버 스크립트 -->
 <script src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js" charset="utf-8"></script>
@@ -274,10 +274,10 @@
 	
 	function LoginForm(email, id) {
 		
-		let form = document.getElementById("loginForm");
+		let form = document.getElementById("loginForm2");
 		
-		$("#loginId").val(email);
-		$("#loginPw").val(id);
+		$("#loginId2").val(email);
+		$("#loginPw2").val(id);
 		
 		form.submit();
 	}

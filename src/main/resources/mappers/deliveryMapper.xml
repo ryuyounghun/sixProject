@@ -387,7 +387,7 @@
 				CATEGORY LIKE '%'||#{searchWord}||'%'
 			</where>
 		</if>
-		ORDER BY STORENAME DESC
+		ORDER BY STORENAME asc
 	</select>
 	
 	<select id = "countAllStore" parameterType="map" resultType = "int">
